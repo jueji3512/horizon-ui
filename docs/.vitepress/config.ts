@@ -31,6 +31,8 @@ export default defineConfig({
             { text: 'Icon 图标', link: '/components/icon' },
             { text: 'Checkbox 多选框', link: '/components/checkbox' },
             { text: 'Radio 单选框', link: '/components/radio' },
+            { text: 'Text 文本', link: '/components/text' },
+            { text: 'Title 标题', link: '/components/title' },
             { text: 'Tooltip 文字提示', link: '/components/tooltip' },
           ],
         },

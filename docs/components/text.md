@@ -1,0 +1,120 @@
+# Text 文本
+
+文本格式组件，支持语义色和格式标记，默认 14px。
+
+## 语义色
+
+`type` 支持 6 种语义色。
+
+<div class="flex flex-wrap gap-3">
+  <Text>default 正文</Text>
+  <Text type="primary">primary 主色</Text>
+  <Text type="success">success 成功</Text>
+  <Text type="warning">warning 警告</Text>
+  <Text type="danger">danger 危险</Text>
+  <Text type="muted">muted 辅助</Text>
+</div>
+
+::: details 查看代码
+```html
+<Text>default 正文</Text>
+<Text type="primary">primary 主色</Text>
+<Text type="success">success 成功</Text>
+<Text type="warning">warning 警告</Text>
+<Text type="danger">danger 危险</Text>
+<Text type="muted">muted 辅助</Text>
+```
+:::
+
+## 格式标记
+
+`strong`、`italic`、`underline`、`delete`、`code`、`mark`、`keyboard`，可自由组合。
+
+<div class="flex flex-wrap items-baseline gap-3">
+
+<Text strong>strong 加粗</Text>
+<Text italic>italic 斜体</Text>
+<Text underline>underline 下划线</Text>
+<Text delete>delete 删除线</Text>
+<Text code>code 代码</Text>
+<Text mark>mark 高亮</Text>
+<Text keyboard>Ctrl + S</Text>
+
+</div>
+
+<div class="flex flex-wrap items-baseline gap-3" style="margin-top:12px;">
+
+<Text strong italic underline>组合：粗+斜+下划线</Text>
+<Text type="danger" delete strong>⚠ 重要通知已失效</Text>
+
+</div>
+
+::: details 查看代码
+```html
+<Text strong>strong 加粗</Text>
+<Text italic>italic 斜体</Text>
+<Text underline>underline 下划线</Text>
+<Text delete>delete 删除线</Text>
+<Text code>code 代码</Text>
+<Text mark>mark 高亮</Text>
+<Text keyboard>Ctrl + S</Text>
+
+<Text strong italic underline>组合：粗+斜+下划线</Text>
+<Text type="danger" delete strong>⚠ 重要通知已失效</Text>
+```
+:::
+
+## 自定义标签
+
+`tag` 指定渲染的 HTML 标签。
+
+<div class="flex flex-wrap gap-3">
+  <Text tag="p">渲染为 &lt;p&gt; 标签</Text>
+  <Text tag="div">渲染为 &lt;div&gt; 标签</Text>
+  <Text tag="label">渲染为 &lt;label&gt; 标签</Text>
+</div>
+
+::: details 查看代码
+```html
+<Text tag="p">渲染为 &lt;p&gt; 标签</Text>
+<Text tag="div">渲染为 &lt;div&gt; 标签</Text>
+<Text tag="label">渲染为 &lt;label&gt; 标签</Text>
+```
+:::
+
+## 禁用态
+
+`disabled` 置灰并禁用交互。
+
+<div class="flex flex-wrap gap-3">
+  <Text disabled>禁用的文本</Text>
+  <Text type="danger" disabled>禁用的危险文本</Text>
+</div>
+
+::: details 查看代码
+```html
+<Text disabled>禁用的文本</Text>
+<Text type="danger" disabled>禁用的危险文本</Text>
+```
+:::
+
+## Props
+
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `type` | `'default' \| 'primary' \| 'success' \| 'warning' \| 'danger' \| 'muted'` | `'default'` | 语义色 |
+| `strong` | `boolean` | `false` | 加粗 |
+| `italic` | `boolean` | `false` | 斜体 |
+| `underline` | `boolean` | `false` | 下划线 |
+| `delete` | `boolean` | `false` | 删除线 |
+| `code` | `boolean` | `false` | 行内代码样式 |
+| `mark` | `boolean \| string` | `false` | 高亮标记，为 `true` 时使用默认高亮色，也可直接传入颜色值 |
+| `keyboard` | `boolean` | `false` | 快捷键样式 |
+| `disabled` | `boolean` | `false` | 禁用态 |
+| `tag` | `string` | `'span'` | 渲染的 HTML 标签 |
+
+## Slots
+
+| 插槽 | 说明 |
+|------|------|
+| `default` | 文本内容 |

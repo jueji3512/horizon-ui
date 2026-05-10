@@ -33,6 +33,7 @@ export default defineConfig({
             { text: 'Radio 单选框', link: '/components/radio' },
             { text: 'Text 文本', link: '/components/text' },
             { text: 'Title 标题', link: '/components/title' },
+            { text: 'Callout 标注', link: '/components/callout' },
             { text: 'Tooltip 文字提示', link: '/components/tooltip' },
           ],
         },

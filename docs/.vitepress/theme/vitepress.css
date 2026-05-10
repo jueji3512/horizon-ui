@@ -9,6 +9,10 @@
   margin: 32px 0 12px;
 }
 
+.h-title {
+  all: revert-layer;
+}
+
 .h-btn {
   all: revert-layer;
 }

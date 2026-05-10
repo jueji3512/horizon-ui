@@ -2,6 +2,13 @@
 
 /* VitePress base.css 中对 button 的 reset 是未分层的，会覆盖 Tailwind @layer utilities。
    只对 .h-btn 生效，避免影响 VitePress 自身的按钮。 */
+/* 重置 VitePress h2 默认分割线和间距 */
+.vp-doc h2 {
+  border-top: none;
+  padding-top: 0;
+  margin: 32px 0 12px;
+}
+
 .h-btn {
   all: revert-layer;
 }

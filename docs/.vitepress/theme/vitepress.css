@@ -1,0 +1,62 @@
+/* ========== VitePress 适配样式 ========== */
+
+/* VitePress base.css 中对 button 的 reset 是未分层的，会覆盖 Tailwind @layer utilities。
+   只对 .h-btn 生效，避免影响 VitePress 自身的按钮。 */
+.h-btn {
+  all: revert-layer;
+}
+
+.h-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* 折叠代码块美化 */
+.vp-doc .custom-block.details {
+  border: 1px solid var(--color-neutral-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+  background: transparent;
+  padding: 0;
+  margin: 16px 0;
+}
+
+.vp-doc .custom-block.details summary {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-neutral-muted);
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+  background: var(--color-neutral-subtle);
+  margin: 0;
+}
+
+.vp-doc .custom-block.details summary:hover {
+  color: var(--color-neutral-text);
+}
+
+.vp-doc .custom-block.details summary::before {
+  content: '▶';
+  font-size: 10px;
+  margin-right: 8px;
+  transition: transform 0.2s;
+  color: var(--color-neutral-muted);
+}
+
+.vp-doc .custom-block.details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.vp-doc .custom-block.details .custom-block-title {
+  display: none;
+}
+
+.vp-doc .custom-block.details > div[class*='language-'],
+.vp-doc .custom-block.details > div:not(.custom-block-title) {
+  margin: 0;
+  border-radius: 0;
+  border: none;
+}

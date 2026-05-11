@@ -5,8 +5,9 @@ import Icon from './Icon/Icon.vue'
 import Radio from './Radio/Radio.vue'
 import RadioGroup from './Radio/RadioGroup.vue'
 import Callout from './Callout/Callout.vue'
+import Divider from './Divider/Divider.vue'
 import Text from './Text/Text.vue'
 import Title from './Title/Title.vue'
 import Tooltip from './Tooltip/Tooltip.vue'
 
-export { Button, Checkbox, CheckboxGroup, Icon, Callout, Radio, RadioGroup, Text, Title, Tooltip }
+export { Button, Checkbox, CheckboxGroup, Icon, Callout, Divider, Radio, RadioGroup, Text, Title, Tooltip }

@@ -1,6 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
-import { Button, Checkbox, CheckboxGroup, Icon, Callout, Radio, RadioGroup, Text, Title, Tooltip } from '@/components'
+import { Button, Checkbox, CheckboxGroup, Icon, Callout, Divider, Radio, RadioGroup, Text, Title, Tooltip } from '@/components'
 import '@/styles/horizon.css'
 import './vitepress.css'
 import IconGrid from './components/IconGrid.vue'
@@ -18,6 +18,7 @@ export default {
     app.component('Title', Title)
     app.component('Callout', Callout)
     app.component('Tooltip', Tooltip)
+    app.component('Divider', Divider)
     app.component('IconGrid', IconGrid)
   },
 } satisfies Theme

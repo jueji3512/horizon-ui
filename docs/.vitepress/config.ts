@@ -34,6 +34,7 @@ export default defineConfig({
             { text: 'Text 文本', link: '/components/text' },
             { text: 'Title 标题', link: '/components/title' },
             { text: 'Callout 标注', link: '/components/callout' },
+            { text: 'Divider 分割线', link: '/components/divider' },
             { text: 'Tooltip 文字提示', link: '/components/tooltip' },
           ],
         },

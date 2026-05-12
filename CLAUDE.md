@@ -114,7 +114,6 @@ Events: `click` (disabled/loading 时不触发)
 - iconSizeMap: sm=14, md=16, lg=18
 - icon-only 自动圆形：`isIconOnly` 触发 roundSizeMap（固定 h-*/w-* 保证正圆）
 - loading 态使用 `<Icon name="loading">` + CSS spin 动画
-- CSS class: `h-btn`（用于 VitePress revert-layer 选择器）
 
 ### Icon (`src/components/Icon/Icon.vue`)
 
@@ -200,7 +199,7 @@ Events: `update:modelValue`, `change`
 - 组件特定 CSS 写在 `<style scoped>` 中
 - 不硬编码颜色/间距值，使用语义 CSS 变量或 Tailwind token
 - VitePress 适配样式写在 `docs/.vitepress/theme/vitepress.css`
-- **`.h-btn { all: revert-layer; }`** — 所有使用 `<button>` 元素的组件必须加 `h-btn` 类，否则 VitePress 非分层 button reset 覆盖 Tailwind `@layer utilities`
+- **`DemoBox` 组件** — 所有组件 demo 必须用 `<DemoBox>` 包裹，该组件提供视觉卡片容器并在内部做 VitePress 样式隔离（`revert-layer`）
 - 文档代码块统一使用 `::: details 查看代码` 可折叠块
 - 文档中 `<script setup>` 只能有一个，所有 demo 的 `ref` 写在同一块中
 
@@ -213,5 +212,5 @@ Events: `update:modelValue`, `change`
 5. **`@source` 指令必不可少** — 没有它 Tailwind v4 不会扫描 src/ 目录，组件 class 不会生成 CSS
 6. **SVG 必须 currentColor** — 设计工具导出的 SVG 含硬编码 hex 色值，必须替换为 `currentColor`，否则 color prop 无效
 7. **`<script setup>` 不能 export** — 需要导出类型/常量时，加一个 `<script lang="ts">` 块（非 setup），示例见 RadioGroup.vue
-8. **所有 `<button>` 元素需 `h-btn` 类** — 否则 VitePress base.css 的 `button { padding: 0; border: 0; }` 会覆盖 Tailwind 工具类
+8. **组件 demo 用 `<DemoBox>` 包裹** — 在 `.demo-box-preview` 内做局部 `revert-layer`，隔离 VitePress 样式同时不影响 Markdown 排版
 9. **tailwind-merge 无需自定义色注册** — v3 按 `bg-*`/`text-*` 前缀归类，自动处理 `@theme` 自定义语义色

@@ -1,6 +1,6 @@
 <template>
-  <component :is="tag" :class="cn(classes, 'h-title')" :style="markStyle">
-    <span v-if="ellipsis" class="truncate"><slot /></span>
+  <component :is="tag" :class="classes" :style="markStyle">
+    <span v-if="ellipsis" class="block truncate"><slot /></span>
     <slot v-else />
   </component>
 </template>

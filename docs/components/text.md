@@ -6,14 +6,16 @@
 
 `type` 支持 6 种语义色。
 
-<div class="flex flex-wrap gap-3">
-  <Text>default 正文</Text>
-  <Text type="primary">primary 主色</Text>
-  <Text type="success">success 成功</Text>
-  <Text type="warning">warning 警告</Text>
-  <Text type="danger">danger 危险</Text>
-  <Text type="muted">muted 辅助</Text>
-</div>
+<DemoBox>
+  <div class="flex flex-wrap gap-3">
+    <Text>default 正文</Text>
+    <Text type="primary">primary 主色</Text>
+    <Text type="success">success 成功</Text>
+    <Text type="warning">warning 警告</Text>
+    <Text type="danger">danger 危险</Text>
+    <Text type="muted">muted 辅助</Text>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -30,24 +32,22 @@
 
 `strong`、`italic`、`underline`、`delete`、`code`、`mark`、`keyboard`，可自由组合。
 
-<div class="flex flex-wrap items-baseline gap-3">
+<DemoBox>
+  <div class="flex flex-wrap items-baseline gap-3">
+    <Text strong>strong 加粗</Text>
+    <Text italic>italic 斜体</Text>
+    <Text underline>underline 下划线</Text>
+    <Text delete>delete 删除线</Text>
+    <Text code>code 代码</Text>
+    <Text mark>mark 高亮</Text>
+    <Text keyboard>Ctrl + S</Text>
+  </div>
 
-<Text strong>strong 加粗</Text>
-<Text italic>italic 斜体</Text>
-<Text underline>underline 下划线</Text>
-<Text delete>delete 删除线</Text>
-<Text code>code 代码</Text>
-<Text mark>mark 高亮</Text>
-<Text keyboard>Ctrl + S</Text>
-
-</div>
-
-<div class="flex flex-wrap items-baseline gap-3" style="margin-top:12px;">
-
-<Text strong italic underline>组合：粗+斜+下划线</Text>
-<Text type="danger" delete strong>⚠ 重要通知已失效</Text>
-
-</div>
+  <div class="flex flex-wrap items-baseline gap-3" style="margin-top:12px;">
+    <Text strong italic underline>组合：粗+斜+下划线</Text>
+    <Text type="danger" delete strong>⚠ 重要通知已失效</Text>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -68,11 +68,13 @@
 
 `tag` 指定渲染的 HTML 标签。
 
-<div class="flex flex-wrap gap-3">
-  <Text tag="p">渲染为 &lt;p&gt; 标签</Text>
-  <Text tag="div">渲染为 &lt;div&gt; 标签</Text>
-  <Text tag="label">渲染为 &lt;label&gt; 标签</Text>
-</div>
+<DemoBox>
+  <div class="flex flex-wrap gap-3">
+    <Text tag="p">渲染为 &lt;p&gt; 标签</Text>
+    <Text tag="div">渲染为 &lt;div&gt; 标签</Text>
+    <Text tag="label">渲染为 &lt;label&gt; 标签</Text>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -86,10 +88,12 @@
 
 `disabled` 置灰并禁用交互。
 
-<div class="flex flex-wrap gap-3">
-  <Text disabled>禁用的文本</Text>
-  <Text type="danger" disabled>禁用的危险文本</Text>
-</div>
+<DemoBox>
+  <div class="flex flex-wrap gap-3">
+    <Text disabled>禁用的文本</Text>
+    <Text type="danger" disabled>禁用的危险文本</Text>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html

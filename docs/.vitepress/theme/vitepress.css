@@ -1,27 +1,46 @@
 /* ========== VitePress 适配样式 ========== */
 
-/* VitePress base.css 中对 button 的 reset 是未分层的，会覆盖 Tailwind @layer utilities。
-   只对 .h-btn 生效，避免影响 VitePress 自身的按钮。 */
-/* 重置 VitePress h2 默认分割线和间距 */
+/*
+  DemoBox 容器内 revert VitePress 非分层 reset，
+  确保组件 demo 区域内的 button / heading 不被 VitePress 样式覆盖。
+  不在 .vp-doc 全局做 revert，避免影响正常 Markdown 排版。
+*/
+.demo-box-preview button,
+.demo-box-preview h1,
+.demo-box-preview h2,
+.demo-box-preview h3,
+.demo-box-preview h4,
+.demo-box-preview h5,
+.demo-box-preview h6 {
+  all: revert-layer;
+}
+
+.demo-box-preview button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* VitePress h2 默认带分割线和间距，覆盖为更合理的值 */
 .vp-doc h2 {
   border-top: none;
   padding-top: 0;
   margin: 32px 0 12px;
 }
 
-.h-title {
-  all: revert-layer;
+/* ========== DemoBox 容器样式 ========== */
+
+.demo-box {
+  border: 1px solid var(--color-neutral-border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 16px 0;
 }
 
-.h-btn {
-  all: revert-layer;
+.demo-box-preview {
+  padding: 24px;
 }
 
-.h-btn:focus:not(:focus-visible) {
-  outline: none;
-}
+/* ========== 折叠代码块美化 ========== */
 
-/* 折叠代码块美化 */
 .vp-doc .custom-block.details {
   border: 1px solid var(--color-neutral-subtle);
   border-radius: 8px;

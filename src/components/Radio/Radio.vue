@@ -106,7 +106,6 @@ const buttonSizeMap: Record<string, string> = {
 
 const buttonClasses = computed(() =>
   cn(
-    'h-btn',
     'flex-1 inline-flex items-center justify-center font-medium whitespace-nowrap',
     'border-r border-neutral-border last:border-r-0',
     buttonSizeMap[groupSize.value],

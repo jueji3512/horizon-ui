@@ -6,12 +6,14 @@
 
 `level` 对应 `h1`~`h6`，字号参照 TDesign。
 
-<Title :level="1">一级标题 (36px / h1)</Title>
-<Title :level="2">二级标题 (28px / h2)</Title>
-<Title :level="3">三级标题 (24px / h3)</Title>
-<Title :level="4">四级标题 (20px / h4)</Title>
-<Title :level="5">五级标题 (18px / h5)</Title>
-<Title :level="6">六级标题 (16px / h6)</Title>
+<DemoBox>
+  <Title :level="1">一级标题 (36px / h1)</Title>
+  <Title :level="2">二级标题 (28px / h2)</Title>
+  <Title :level="3">三级标题 (24px / h3)</Title>
+  <Title :level="4">四级标题 (20px / h4)</Title>
+  <Title :level="5">五级标题 (18px / h5)</Title>
+  <Title :level="6">六级标题 (16px / h6)</Title>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -28,12 +30,14 @@
 
 `type` 支持 6 种语义色。
 
-<Title :level="1">default 默认标题</Title>
-<Title :level="2" type="primary">primary 主色标题</Title>
-<Title :level="3" type="success">success 成功标题</Title>
-<Title :level="4" type="warning">warning 警告标题</Title>
-<Title :level="5" type="danger">danger 危险标题</Title>
-<Title :level="6" type="muted">muted 辅助标题</Title>
+<DemoBox>
+  <Title :level="1">default 默认标题</Title>
+  <Title :level="2" type="primary">primary 主色标题</Title>
+  <Title :level="3" type="success">success 成功标题</Title>
+  <Title :level="4" type="warning">warning 警告标题</Title>
+  <Title :level="5" type="danger">danger 危险标题</Title>
+  <Title :level="6" type="muted">muted 辅助标题</Title>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -50,8 +54,10 @@
 
 `mark` 给标题加高亮背景，`true` 使用默认黄色，也可直接传颜色值。
 
-<Title :level="2" mark>高亮标题（默认色）</Title>
-<Title :level="2" mark="#a5d6ff">高亮标题（自定义色）</Title>
+<DemoBox>
+  <Title :level="2" mark>高亮标题（默认色）</Title>
+  <Title :level="2" mark="#a5d6ff">高亮标题（自定义色）</Title>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -64,9 +70,11 @@
 
 `ellipsis` 单行溢出显示省略号。
 
-<div style="max-width: 400px;">
-  <Title :level="3" ellipsis>这是一个非常长的标题会在容器宽度不够时自动截断显示省略号末尾表示溢出</Title>
-</div>
+<DemoBox>
+  <div style="max-width: 400px;">
+    <Title :level="3" ellipsis>这是一个非常长的标题会在容器宽度不够时自动截断显示省略号末尾表示溢出</Title>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html

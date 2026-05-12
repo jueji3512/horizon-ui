@@ -4,6 +4,7 @@ import { Button, Checkbox, CheckboxGroup, Icon, Callout, Divider, Radio, RadioGr
 import '@/styles/horizon.css'
 import './vitepress.css'
 import IconGrid from './components/IconGrid.vue'
+import DemoBox from './components/DemoBox.vue'
 
 export default {
   extends: DefaultTheme,
@@ -20,5 +21,6 @@ export default {
     app.component('Tooltip', Tooltip)
     app.component('Divider', Divider)
     app.component('IconGrid', IconGrid)
+    app.component('DemoBox', DemoBox)
   },
 } satisfies Theme

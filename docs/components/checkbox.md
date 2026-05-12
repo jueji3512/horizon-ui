@@ -43,7 +43,9 @@ const minmax = ref(['a', 'b'])
 
 ## 单独使用
 
-<Checkbox v-model:checked="single" label="同意服务条款" />
+<DemoBox>
+  <Checkbox v-model:checked="single" label="同意服务条款" />
+</DemoBox>
 
 <div class="mt-2 text-sm text-neutral-muted">checked: {{ single }}</div>
 
@@ -55,11 +57,13 @@ const minmax = ref(['a', 'b'])
 
 ## 多选组
 
-<CheckboxGroup v-model="checked">
-  <Checkbox value="a" label="选项 A" />
-  <Checkbox value="b" label="选项 B" />
-  <Checkbox value="c" label="选项 C" />
-</CheckboxGroup>
+<DemoBox>
+  <CheckboxGroup v-model="checked">
+    <Checkbox value="a" label="选项 A" />
+    <Checkbox value="b" label="选项 B" />
+    <Checkbox value="c" label="选项 C" />
+  </CheckboxGroup>
+</DemoBox>
 
 <div class="mt-2 text-sm text-neutral-muted">checked: {{ checked }}</div>
 
@@ -75,17 +79,19 @@ const minmax = ref(['a', 'b'])
 
 ## 排列方向 Direction
 
-<CheckboxGroup v-model="dirVert" direction="vertical">
-  <Checkbox value="a" label="垂直 A" />
-  <Checkbox value="b" label="垂直 B" />
-  <Checkbox value="c" label="垂直 C" />
-</CheckboxGroup>
+<DemoBox>
+  <CheckboxGroup v-model="dirVert" direction="vertical">
+    <Checkbox value="a" label="垂直 A" />
+    <Checkbox value="b" label="垂直 B" />
+    <Checkbox value="c" label="垂直 C" />
+  </CheckboxGroup>
 
-<CheckboxGroup v-model="dirHoriz" direction="horizontal" class="mt-3">
-  <Checkbox value="a" label="水平 A" />
-  <Checkbox value="b" label="水平 B" />
-  <Checkbox value="c" label="水平 C" />
-</CheckboxGroup>
+  <CheckboxGroup v-model="dirHoriz" direction="horizontal" class="mt-3">
+    <Checkbox value="a" label="水平 A" />
+    <Checkbox value="b" label="水平 B" />
+    <Checkbox value="c" label="水平 C" />
+  </CheckboxGroup>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -105,15 +111,17 @@ const minmax = ref(['a', 'b'])
 
 ## 半选态 Indeterminate
 
-<Checkbox v-model:checked="checkAll" :indeterminate="indeterminate1" label="全选" />
+<DemoBox>
+  <Checkbox v-model:checked="checkAll" :indeterminate="indeterminate1" label="全选" />
 
-<div class="ml-6 mt-2 flex flex-col gap-2">
-  <CheckboxGroup v-model="allChecked" @change="onGroupChange">
-    <Checkbox value="A" label="选项 A" />
-    <Checkbox value="B" label="选项 B" />
-    <Checkbox value="C" label="选项 C" />
-  </CheckboxGroup>
-</div>
+  <div class="ml-6 mt-2 flex flex-col gap-2">
+    <CheckboxGroup v-model="allChecked" @change="onGroupChange">
+      <Checkbox value="A" label="选项 A" />
+      <Checkbox value="B" label="选项 B" />
+      <Checkbox value="C" label="选项 C" />
+    </CheckboxGroup>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -128,11 +136,13 @@ const minmax = ref(['a', 'b'])
 
 ## min / max 限制
 
-<CheckboxGroup v-model="minmax" :min="1" :max="2">
-  <Checkbox value="a" label="选项 A" />
-  <Checkbox value="b" label="选项 B" />
-  <Checkbox value="c" label="选项 C" />
-</CheckboxGroup>
+<DemoBox>
+  <CheckboxGroup v-model="minmax" :min="1" :max="2">
+    <Checkbox value="a" label="选项 A" />
+    <Checkbox value="b" label="选项 B" />
+    <Checkbox value="c" label="选项 C" />
+  </CheckboxGroup>
+</DemoBox>
 
 <div class="mt-2 text-sm text-neutral-muted">至少选 1 项，最多选 2 项</div>
 
@@ -148,18 +158,20 @@ const minmax = ref(['a', 'b'])
 
 ## 禁用态 Disabled
 
-<Checkbox :checked="true" disabled label="禁用勾选" class="mr-4" />
-<Checkbox :checked="false" disabled label="禁用未勾选" />
+<DemoBox>
+  <Checkbox :checked="true" disabled label="禁用勾选" class="mr-4" />
+  <Checkbox :checked="false" disabled label="禁用未勾选" />
 
-<CheckboxGroup v-model="disabledDemo" class="mt-3">
-  <Checkbox value="a" label="可用" />
-  <Checkbox value="b" label="禁用" disabled />
-</CheckboxGroup>
+  <CheckboxGroup v-model="disabledDemo" class="mt-3">
+    <Checkbox value="a" label="可用" />
+    <Checkbox value="b" label="禁用" disabled />
+  </CheckboxGroup>
 
-<CheckboxGroup v-model="disabledGroup" disabled class="mt-3">
-  <Checkbox value="a" label="整组禁用 A" />
-  <Checkbox value="b" label="整组禁用 B" />
-</CheckboxGroup>
+  <CheckboxGroup v-model="disabledGroup" disabled class="mt-3">
+    <Checkbox value="a" label="整组禁用 A" />
+    <Checkbox value="b" label="整组禁用 B" />
+  </CheckboxGroup>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -185,34 +197,34 @@ const minmax = ref(['a', 'b'])
 
 设置 `type="button"` 切换为按钮组样式。
 
-<CheckboxGroup v-model="btnDemo" type="button" class="mt-2">
-  <Checkbox value="a" label="选项 A" />
-  <Checkbox value="b" label="选项 B" />
-  <Checkbox value="c" label="选项 C" />
-</CheckboxGroup>
+<DemoBox>
+  <CheckboxGroup v-model="btnDemo" type="button" class="mt-2">
+    <Checkbox value="a" label="选项 A" />
+    <Checkbox value="b" label="选项 B" />
+    <Checkbox value="c" label="选项 C" />
+  </CheckboxGroup>
 
-<div class="mt-4 flex flex-col gap-3 items-start">
+  <div class="mt-4 flex flex-col gap-3 items-start">
+    <CheckboxGroup v-model="btnSizeSm" type="button" size="sm">
+      <Checkbox value="a" label="小" />
+      <Checkbox value="b" label="小" />
+    </CheckboxGroup>
+    <CheckboxGroup v-model="btnSizeMd" type="button" size="md">
+      <Checkbox value="a" label="中" />
+      <Checkbox value="b" label="中" />
+    </CheckboxGroup>
+    <CheckboxGroup v-model="btnSizeLg" type="button" size="lg">
+      <Checkbox value="a" label="大" />
+      <Checkbox value="b" label="大" />
+    </CheckboxGroup>
+  </div>
 
-<CheckboxGroup v-model="btnSizeSm" type="button" size="sm">
-  <Checkbox value="a" label="小" />
-  <Checkbox value="b" label="小" />
-</CheckboxGroup>
-<CheckboxGroup v-model="btnSizeMd" type="button" size="md">
-  <Checkbox value="a" label="中" />
-  <Checkbox value="b" label="中" />
-</CheckboxGroup>
-<CheckboxGroup v-model="btnSizeLg" type="button" size="lg">
-  <Checkbox value="a" label="大" />
-  <Checkbox value="b" label="大" />
-</CheckboxGroup>
-
-</div>
-
-<CheckboxGroup v-model="btnDisabled" type="button" class="mt-4">
-  <Checkbox value="a" label="可用" />
-  <Checkbox value="b" label="禁用" disabled />
-  <Checkbox value="c" label="可用" />
-</CheckboxGroup>
+  <CheckboxGroup v-model="btnDisabled" type="button" class="mt-4">
+    <Checkbox value="a" label="可用" />
+    <Checkbox value="b" label="禁用" disabled />
+    <Checkbox value="c" label="可用" />
+  </CheckboxGroup>
+</DemoBox>
 
 ::: details 查看代码
 ```html

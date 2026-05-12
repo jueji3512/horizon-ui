@@ -6,15 +6,15 @@
 
 五种变体，除 `outline` 外均为 Fill 填充式：
 
-<div class="flex flex-wrap gap-3">
-
-<Button>Primary</Button>
-<Button type="outline">Outline</Button>
-<Button type="danger">Danger</Button>
-<Button type="ghost">Ghost</Button>
-<Button type="link">Link</Button>
-
-</div>
+<DemoBox>
+  <div class="flex flex-wrap gap-3">
+    <Button>Primary</Button>
+    <Button type="outline">Outline</Button>
+    <Button type="danger">Danger</Button>
+    <Button type="ghost">Ghost</Button>
+    <Button type="link">Link</Button>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -28,13 +28,13 @@
 
 ## 尺寸 Sizes
 
-<div class="flex flex-wrap items-end gap-3">
-
-<Button size="sm">Small</Button>
-<Button size="md">Medium</Button>
-<Button size="lg">Large</Button>
-
-</div>
+<DemoBox>
+  <div class="flex flex-wrap items-end gap-3">
+    <Button size="sm">Small</Button>
+    <Button size="md">Medium</Button>
+    <Button size="lg">Large</Button>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -46,13 +46,13 @@
 
 ## 图标 Icon
 
-<div class="flex flex-wrap items-center gap-3">
-
-<Button prefix-icon="plus">新增</Button>
-<Button suffix-icon="arrow-right">下一步</Button>
-<Button prefix-icon="delete" />
-
-</div>
+<DemoBox>
+  <div class="flex flex-wrap items-center gap-3">
+    <Button prefix-icon="plus">新增</Button>
+    <Button suffix-icon="arrow-right">下一步</Button>
+    <Button prefix-icon="delete" />
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -64,15 +64,15 @@
 
 ## 禁用态 Disabled
 
-<div class="flex flex-wrap gap-3">
-
-<Button disabled>Primary</Button>
-<Button type="outline" disabled>Outline</Button>
-<Button type="danger" disabled>Danger</Button>
-<Button type="ghost" disabled>Ghost</Button>
-<Button type="link" disabled>Link</Button>
-
-</div>
+<DemoBox>
+  <div class="flex flex-wrap gap-3">
+    <Button disabled>Primary</Button>
+    <Button type="outline" disabled>Outline</Button>
+    <Button type="danger" disabled>Danger</Button>
+    <Button type="ghost" disabled>Ghost</Button>
+    <Button type="link" disabled>Link</Button>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -86,12 +86,12 @@
 
 ## 加载态 Loading
 
-<div class="flex flex-wrap gap-3">
-
-<Button loading>保存中</Button>
-<Button type="outline" loading>提交</Button>
-
-</div>
+<DemoBox>
+  <div class="flex flex-wrap gap-3">
+    <Button loading>保存中</Button>
+    <Button type="outline" loading>提交</Button>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -102,14 +102,14 @@
 
 ## 胶囊形 Round
 
-<div class="flex flex-wrap items-center gap-3">
-
-<Button round>Pill</Button>
-<Button round prefix-icon="plus" />
-<Button round type="danger">Danger</Button>
-<Button round type="outline">Outline</Button>
-
-</div>
+<DemoBox>
+  <div class="flex flex-wrap items-center gap-3">
+    <Button round>Pill</Button>
+    <Button round prefix-icon="plus" />
+    <Button round type="danger">Danger</Button>
+    <Button round type="outline">Outline</Button>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html

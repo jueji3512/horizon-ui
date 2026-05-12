@@ -6,11 +6,13 @@
 
 横向分割线，默认实线。
 
-<div class="space-y-4">
-  <div>内容区域一</div>
-  <Divider />
-  <div>内容区域二</div>
-</div>
+<DemoBox>
+  <div class="space-y-4">
+    <div>内容区域一</div>
+    <Divider />
+    <div>内容区域二</div>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -24,11 +26,13 @@
 
 `type="dashed"` 设置虚线样式。
 
-<div class="space-y-4">
-  <div>内容区域一</div>
-  <Divider type="dashed" />
-  <div>内容区域二</div>
-</div>
+<DemoBox>
+  <div class="space-y-4">
+    <div>内容区域一</div>
+    <Divider type="dashed" />
+    <div>内容区域二</div>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -40,11 +44,13 @@
 
 默认插槽嵌入文字，`align` 控制文字位置。
 
-<div class="space-y-4">
-  <Divider>居中文字</Divider>
-  <Divider align="left">左对齐文字</Divider>
-  <Divider align="right">右对齐文字</Divider>
-</div>
+<DemoBox>
+  <div class="space-y-4">
+    <Divider>居中文字</Divider>
+    <Divider align="left">左对齐文字</Divider>
+    <Divider align="right">右对齐文字</Divider>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -58,10 +64,12 @@
 
 `plain` 使文字颜色更浅。
 
-<div class="space-y-4">
-  <Divider>普通文字</Divider>
-  <Divider plain>朴素文字</Divider>
-</div>
+<DemoBox>
+  <div class="space-y-4">
+    <Divider>普通文字</Divider>
+    <Divider plain>朴素文字</Divider>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -74,13 +82,15 @@
 
 `direction="vertical"` 生成纵向分割线，常用于行内元素分隔。
 
-<div class="flex items-center gap-1 h-8">
-  <span>文本</span>
-  <Divider direction="vertical" />
-  <a href="#">链接</a>
-  <Divider direction="vertical" />
-  <a href="#">链接</a>
-</div>
+<DemoBox>
+  <div class="flex items-center gap-1 h-8">
+    <span>文本</span>
+    <Divider direction="vertical" />
+    <a href="#">链接</a>
+    <Divider direction="vertical" />
+    <a href="#">链接</a>
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html

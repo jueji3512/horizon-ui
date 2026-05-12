@@ -20,11 +20,13 @@ const btnSizeLg = ref('daily')
 const btnDisabled = ref('daily')
 </script>
 
-<RadioGroup v-model="typeDemo" class="mt-2">
-  <Radio value="a" label="选项 A" />
-  <Radio value="b" label="选项 B" />
-  <Radio value="c" label="选项 C" />
-</RadioGroup>
+<DemoBox>
+  <RadioGroup v-model="typeDemo" class="mt-2">
+    <Radio value="a" label="选项 A" />
+    <Radio value="b" label="选项 B" />
+    <Radio value="c" label="选项 C" />
+  </RadioGroup>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -38,11 +40,13 @@ const btnDisabled = ref('daily')
 
 ## 排列方向 Direction
 
-<RadioGroup v-model="dirV" direction="vertical">
-  <Radio value="a" label="垂直 A" />
-  <Radio value="b" label="垂直 B" />
-  <Radio value="c" label="垂直 C" />
-</RadioGroup>
+<DemoBox>
+  <RadioGroup v-model="dirV" direction="vertical">
+    <Radio value="a" label="垂直 A" />
+    <Radio value="b" label="垂直 B" />
+    <Radio value="c" label="垂直 C" />
+  </RadioGroup>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -56,14 +60,16 @@ const btnDisabled = ref('daily')
 
 ## 禁用态 Disabled
 
-<RadioGroup v-model="disabledDemo">
-  <Radio value="a" label="可用" />
-  <Radio value="b" label="禁用" disabled />
-</RadioGroup>
-<RadioGroup v-model="disabledGroup" disabled class="mt-3">
-  <Radio value="a" label="整组禁用" />
-  <Radio value="b" label="全部不可用" />
-</RadioGroup>
+<DemoBox>
+  <RadioGroup v-model="disabledDemo">
+    <Radio value="a" label="可用" />
+    <Radio value="b" label="禁用" disabled />
+  </RadioGroup>
+  <RadioGroup v-model="disabledGroup" disabled class="mt-3">
+    <Radio value="a" label="整组禁用" />
+    <Radio value="b" label="全部不可用" />
+  </RadioGroup>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -85,34 +91,34 @@ const btnDisabled = ref('daily')
 
 设置 `type="button"` 切换为按钮组样式，支持 `size` 属性。
 
-<RadioGroup v-model="btnDemo" type="button" class="mt-2">
-  <Radio value="daily" label="每日" />
-  <Radio value="weekly" label="每周" />
-  <Radio value="monthly" label="每月" />
-</RadioGroup>
+<DemoBox>
+  <RadioGroup v-model="btnDemo" type="button" class="mt-2">
+    <Radio value="daily" label="每日" />
+    <Radio value="weekly" label="每周" />
+    <Radio value="monthly" label="每月" />
+  </RadioGroup>
 
-<div class="mt-4 flex flex-col gap-3 items-start">
+  <div class="mt-4 flex flex-col gap-3 items-start">
+    <RadioGroup v-model="btnSizeSm" type="button" size="sm">
+      <Radio value="daily" label="每日" />
+      <Radio value="weekly" label="每周" />
+    </RadioGroup>
+    <RadioGroup v-model="btnSizeMd" type="button" size="md">
+      <Radio value="daily" label="每日" />
+      <Radio value="weekly" label="每周" />
+    </RadioGroup>
+    <RadioGroup v-model="btnSizeLg" type="button" size="lg">
+      <Radio value="daily" label="每日" />
+      <Radio value="weekly" label="每周" />
+    </RadioGroup>
+  </div>
 
-<RadioGroup v-model="btnSizeSm" type="button" size="sm">
-  <Radio value="daily" label="每日" />
-  <Radio value="weekly" label="每周" />
-</RadioGroup>
-<RadioGroup v-model="btnSizeMd" type="button" size="md">
-  <Radio value="daily" label="每日" />
-  <Radio value="weekly" label="每周" />
-</RadioGroup>
-<RadioGroup v-model="btnSizeLg" type="button" size="lg">
-  <Radio value="daily" label="每日" />
-  <Radio value="weekly" label="每周" />
-</RadioGroup>
-
-</div>
-
-<RadioGroup v-model="btnDisabled" type="button" class="mt-4">
-  <Radio value="daily" label="每日" />
-  <Radio value="weekly" label="每周" disabled />
-  <Radio value="monthly" label="每月" />
-</RadioGroup>
+  <RadioGroup v-model="btnDisabled" type="button" class="mt-4">
+    <Radio value="daily" label="每日" />
+    <Radio value="weekly" label="每周" disabled />
+    <Radio value="monthly" label="每月" />
+  </RadioGroup>
+</DemoBox>
 
 ::: details 查看代码
 ```html

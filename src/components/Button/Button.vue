@@ -120,7 +120,6 @@ const disabledMap: Record<ButtonType, string> = {
 
 const classes = computed(() =>
   cn(
-    'h-btn',
     'inline-flex items-center justify-center font-medium transition-colors duration-200',
     sizeMap[props.size],
     (props.round || isIconOnly.value) && sizeMap[props.size].replace(/rounded\S*/, 'rounded-full'),

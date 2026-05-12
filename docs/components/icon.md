@@ -4,16 +4,16 @@
 
 ## 基本用法
 
-<div class="flex flex-wrap items-center gap-4">
-
-<Icon name="settings" />
-<Icon name="search" />
-<Icon name="edit" />
-<Icon name="delete" />
-<Icon name="plus" />
-<Icon name="check" />
-
-</div>
+<DemoBox>
+  <div class="flex flex-wrap items-center gap-4">
+    <Icon name="settings" />
+    <Icon name="search" />
+    <Icon name="edit" />
+    <Icon name="delete" />
+    <Icon name="plus" />
+    <Icon name="check" />
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -30,15 +30,15 @@
 
 预设五档或自定义像素值：
 
-<div class="flex flex-wrap items-end gap-4">
-
-<Icon name="star" size="xs" />
-<Icon name="star" size="sm" />
-<Icon name="star" size="md" />
-<Icon name="star" size="lg" />
-<Icon name="star" size="xl" />
-
-</div>
+<DemoBox>
+  <div class="flex flex-wrap items-end gap-4">
+    <Icon name="star" size="xs" />
+    <Icon name="star" size="sm" />
+    <Icon name="star" size="md" />
+    <Icon name="star" size="lg" />
+    <Icon name="star" size="xl" />
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html
@@ -54,15 +54,15 @@
 
 通过 `color` prop 或继承父级 CSS `color`：
 
-<div class="flex flex-wrap items-center gap-4">
-
-<Icon name="heart" />
-<Icon name="heart" color="#ef4444" />
-<Icon name="heart" color="#3b82f6" />
-<Icon name="heart" color="#10b981" />
-<Icon name="heart" color="#f59e0b" />
-
-</div>
+<DemoBox>
+  <div class="flex flex-wrap items-center gap-4">
+    <Icon name="heart" />
+    <Icon name="heart" color="#ef4444" />
+    <Icon name="heart" color="#3b82f6" />
+    <Icon name="heart" color="#10b981" />
+    <Icon name="heart" color="#f59e0b" />
+  </div>
+</DemoBox>
 
 ::: details 查看代码
 ```html

@@ -5,6 +5,9 @@
   确保组件 demo 区域内的 button / heading 不被 VitePress 样式覆盖。
   不在 .vp-doc 全局做 revert，避免影响正常 Markdown 排版。
 */
+.demo-box-preview a,
+.demo-box-preview a:hover,
+.demo-box-preview a:visited,
 .demo-box-preview button,
 .demo-box-preview h1,
 .demo-box-preview h2,

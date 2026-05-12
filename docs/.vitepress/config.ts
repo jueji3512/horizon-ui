@@ -29,6 +29,7 @@ export default defineConfig({
           items: [
             { text: 'Button 按钮', link: '/components/button' },
             { text: 'Icon 图标', link: '/components/icon' },
+            { text: 'Link 链接', link: '/components/link' },
             { text: 'Checkbox 多选框', link: '/components/checkbox' },
             { text: 'Radio 单选框', link: '/components/radio' },
             { text: 'Text 文本', link: '/components/text' },

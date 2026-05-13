@@ -27,7 +27,7 @@ docs/                          # VitePress 文档站点
 │   ├── config.ts              # 站点配置（nav, sidebar, @ alias, tailwindcss plugin）
 │   └── theme/
 │       ├── index.ts           # 自定义主题：注册全局组件，引入 horizon.css + vitepress.css
-│       ├── vitepress.css      # VitePress 适配样式（.h-btn revert-layer, 折叠代码块美化）
+│       ├── vitepress.css      # VitePress 适配样式（DemoBox revert-layer, 折叠代码块美化）
 │       └── components/
 │           └── IconGrid.vue   # 图标展示网格（搜索 + 点击复制）
 ├── index.md                   # 首页
@@ -41,7 +41,7 @@ docs/                          # VitePress 文档站点
 
 src/
 ├── components/
-│   ├── index.ts               # 组件库入口（export Button, Icon, Radio, RadioGroup）
+│   ├── index.ts               # 组件库入口（export Button, Icon, Link, Radio, RadioGroup）
 │   ├── Button/
 │   │   └── Button.vue         # 按钮组件（5 variants, 3 sizes, loading/round/icon）
 │   ├── Icon/
@@ -192,6 +192,39 @@ Events: `update:modelValue`, `change`
 - **独立使用**：无 CheckboxGroup 时用 `v-model:checked`，boolean 值
 - **min/max**：达到限制时自动禁用对应项（max 禁用未选中，min 禁用已选中）
 - button 类型键盘导航：Arrow 键切换
+
+### Link (`src/components/Link/Link.vue`)
+
+```typescript
+type LinkType = 'default' | 'primary' | 'danger' | 'warning' | 'success'
+type LinkUnderline = 'always' | 'hover' | 'never'
+type LinkSize = 'sm' | 'md' | 'lg'
+```
+
+Props: `type`, `underline`, `size`, `disabled`, `prefixIcon`, `suffixIcon`
+Events: `click`（disabled 时不触发）
+
+- 渲染 `<a>` 标签（无 href），`[text-decoration:none]` 屏蔽浏览器默认下划线
+- 下划线用 `border-bottom` + `border-current` 实现，无伪元素。`hover` 模式 `border-transparent` → `hover:border-current`
+- 尺寸：sm=12px(text-xs), md=14px(text-sm), lg=16px(text-base)，图标对应 12/14/16px
+- 默认类型 hover 不变色，仅下划线反馈；语义色 hover 变深色（如 primary → primary-hover）
+- disabled 各主题独立淡化色（如 primary → text-primary/50），保留语义色色相
+
+### Badge (`src/components/Badge/Badge.vue`)
+
+```typescript
+type BadgeType = 'default' | 'primary' | 'danger' | 'success' | 'warning'
+```
+
+Props: `value`, `dot`, `type`, `max`, `showZero`, `hidden`, `offset`, `color`
+
+- 包裹性组件，`<slot>` 子元素 + `<sup>` 标记 absolute 定位右上角
+- 渲染优先级：`hidden` > `dot` > 数字 0 且 `!showZero` > `max` 溢出 > 直接显示 value
+- dot 模式：6×6px 实心圆点（w-1.5 h-1.5 rounded-full）
+- count/text 模式：min-w[18px] h-[18px] text-[11px] rounded-full px-1.5
+- 5 种语义色（bg-primary / bg-danger / bg-success / bg-warning / bg-neutral-muted）+ white 文字
+- `color` prop 通过 inline style 覆盖背景色
+- `offset` prop 微调位置：transform: translate(calc(50%+Xpx), calc(-50%+Ypx))
 
 ## Styling Rules
 

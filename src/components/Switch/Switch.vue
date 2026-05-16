@@ -70,7 +70,7 @@ const switchClasses = computed(() =>
 
 const trackClasses = computed(() =>
   cn(
-    'rounded-full transition-colors duration-200 relative flex items-center focus-within:ring-2 focus-within:ring-primary/40',
+    'rounded-full transition-colors duration-200 relative flex items-center',
     sizeMap[props.size].track,
     props.modelValue ? 'bg-primary' : 'bg-neutral-border',
   ),

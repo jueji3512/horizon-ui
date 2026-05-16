@@ -37,6 +37,7 @@ export default defineConfig({
             { text: 'Callout 标注', link: '/components/callout' },
             { text: 'Divider 分割线', link: '/components/divider' },
             { text: 'Tooltip 文字提示', link: '/components/tooltip' },
+            { text: 'Switch 开关', link: '/components/switch' },
           ],
         },
       ],

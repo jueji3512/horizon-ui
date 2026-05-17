@@ -38,6 +38,7 @@ export default defineConfig({
             { text: 'Divider 分割线', link: '/components/divider' },
             { text: 'Tooltip 文字提示', link: '/components/tooltip' },
             { text: 'Switch 开关', link: '/components/switch' },
+            { text: 'Input 输入框', link: '/components/input' },
           ],
         },
       ],

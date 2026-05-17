@@ -12,5 +12,6 @@ import Badge from './Badge/Badge.vue'
 import Link from './Link/Link.vue'
 import Tooltip from './Tooltip/Tooltip.vue'
 import Switch from './Switch/Switch.vue'
+import Input from './Input/Input.vue'
 
-export { Badge, Button, Checkbox, CheckboxGroup, Icon, Callout, Divider, Link, Radio, RadioGroup, Switch, Text, Title, Tooltip }
+export { Badge, Button, Checkbox, CheckboxGroup, Icon, Input, Callout, Divider, Link, Radio, RadioGroup, Switch, Text, Title, Tooltip }

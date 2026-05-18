@@ -39,6 +39,7 @@ export default defineConfig({
             { text: 'Tooltip 文字提示', link: '/components/tooltip' },
             { text: 'Switch 开关', link: '/components/switch' },
             { text: 'Input 输入框', link: '/components/input' },
+            { text: 'Tag 标签', link: '/components/tag' },
           ],
         },
       ],

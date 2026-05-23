@@ -1,6 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
-import { Badge, Button, Checkbox, CheckboxGroup, Icon, Input, Callout, Divider, Link, Radio, RadioGroup, Switch, Tag, Text, Title, Tooltip } from '@/components'
+import { Badge, Button, Checkbox, CheckboxGroup, Icon, Input, Callout, Divider, Link, Popper, PopperArrow, PopperContent, PopperTrigger, Radio, RadioGroup, Switch, Tag, Text, Title, Tooltip } from '@/components'
 import '@/styles/horizon.css'
 import './vitepress.css'
 import IconGrid from './components/IconGrid.vue'
@@ -24,6 +24,10 @@ export default {
     app.component('Tag', Tag)
     app.component('Input', Input)
     app.component('Tooltip', Tooltip)
+    app.component('Popper', Popper)
+    app.component('PopperTrigger', PopperTrigger)
+    app.component('PopperContent', PopperContent)
+    app.component('PopperArrow', PopperArrow)
     app.component('Divider', Divider)
     app.component('IconGrid', IconGrid)
     app.component('DemoBox', DemoBox)

@@ -42,6 +42,12 @@ export default defineConfig({
             { text: 'Tag 标签', link: '/components/tag' },
           ],
         },
+        {
+          text: '底层组件',
+          items: [
+            { text: 'Popper 弹出定位引擎', link: '/components/popper' },
+          ],
+        },
       ],
     },
 

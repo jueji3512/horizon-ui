@@ -25,41 +25,46 @@ npm run format:check # Prettier 格式检查 (CI)
 docs/                          # VitePress 文档站点
 ├── .vitepress/
 │   ├── config.ts              # 站点配置（nav, sidebar, @ alias, tailwindcss plugin）
+│   │                          #   sidebar 拆分「组件」和「底层组件」两个分组
 │   └── theme/
 │       ├── index.ts           # 自定义主题：注册全局组件，引入 horizon.css + vitepress.css
 │       ├── vitepress.css      # VitePress 适配样式（DemoBox revert-layer, 折叠代码块美化）
 │       └── components/
+│           ├── DemoBox.vue    # demo 容器（revert-layer 隔离）
 │           └── IconGrid.vue   # 图标展示网格（搜索 + 点击复制）
-├── index.md                   # 首页
-├── guide/
-│   ├── colors.md              # 色彩系统文档
-│   └── typography.md          # 字体系统文档
-└── components/
-    ├── button.md              # Button 组件文档
-    ├── icon.md                # Icon 组件文档
-    └── radio.md               # Radio 组件文档
+├── guide/                     # 设计指南
+│   ├── colors.md
+│   └── typography.md
+└── components/                # 组件文档（每组件一个 .md）
+    ├── button.md / icon.md / link.md / checkbox.md / radio.md
+    ├── text.md / title.md / callout.md / divider.md
+    ├── badge.md / tooltip.md / switch.md / input.md / tag.md
+    └── popper.md              # Popper 底层组件验证页面（V-01~V-11）
 
 src/
 ├── components/
-│   ├── index.ts               # 组件库入口（export Button, Icon, Link, Radio, RadioGroup）
-│   ├── Button/
-│   │   └── Button.vue         # 按钮组件（5 variants, 3 sizes, loading/round/icon）
-│   ├── Icon/
-│   │   ├── Icon.vue           # SVG 图标组件（import.meta.glob 自动发现）
-│   │   └── icons/             # 47 个 SVG 图标（currentColor）
-│   └── Radio/
-│       ├── Radio.vue          # 单选项（default/button 双模式）
-│       └── RadioGroup.vue     # 容器组件（provide/inject, button 类型滑动指示器）
+│   ├── index.ts               # 组件库统一入口（import + export 所有组件）
+│   ├── Popper/                # 弹出定位引擎（底层组件）
+│   │   ├── types.ts           #   Placement, TriggerType, UsePopperOptions, UsePopperReturn
+│   │   ├── usePopper.ts       #   Composable — 封装 @floating-ui/vue useFloating
+│   │   ├── index.ts           #   barrel export + PopperContext 接口 + injection key
+│   │   ├── Popper.vue         #   Root — provide 上下文 + visible 状态 + 延时
+│   │   ├── PopperTrigger.vue  #   触发元素包裹（inline-flex）+ 事件委托
+│   │   ├── PopperContent.vue  #   浮层 — Teleport + clickOutside + Esc + 定位
+│   │   └── PopperArrow.vue    #   箭头 — floating-ui arrow middleware 定位
+│   ├── Tooltip/               # 文字提示（后续重构到 Popper 基座）
+│   ├── Button/ / Icon/ / Radio/ / Checkbox/ / Link/ / Badge/
+│   ├── Switch/ / Input/ / Tag/
+│   ├── Text/ / Title/ / Callout/ / Divider/
 ├── utils/
-│   ├── cn.ts                  # cn() = twMerge(clsx(inputs))，无需自定义色注册
-│   └── index.ts               # barrel export
+│   ├── cn.ts                  #   cn() = twMerge(clsx(inputs))
+│   ├── useZIndex.ts           #   全局 z-index 自增计数器（基准 2000）
+│   └── index.ts               #   barrel export
 ├── styles/
 │   └── horizon.css            # Tailwind v4 入口 + @theme 语义令牌 + @layer base
-└── shims-vue.d.ts             # Vue/Vite 模块声明
+└── shims-vue.d.ts
 
-.eslintrc 无（使用 eslint.config.js flat config）
-prettier.config.js             # Prettier 配置（semi: false, singleQuote: true, trailingComma: all）
-.vscode/settings.json          # formatOnSave + ESLint auto-fix
+.claude/skills/base-component-review/  # 底层组件审查 skill（三路并行 + 迭代修复）
 ```
 
 ## Design System
@@ -235,6 +240,41 @@ Props: `value`, `dot`, `type`, `max`, `showZero`, `hidden`, `offset`, `color`
 - **`DemoBox` 组件** — 所有组件 demo 必须用 `<DemoBox>` 包裹，该组件提供视觉卡片容器并在内部做 VitePress 样式隔离（`revert-layer`）
 - 文档代码块统一使用 `::: details 查看代码` 可折叠块
 - 文档中 `<script setup>` 只能有一个，所有 demo 的 `ref` 写在同一块中
+
+### Popper (`src/components/Popper/`)
+
+底层组件，为 Select、Dropdown、Menu、Popconfirm、DatePicker 等提供定位基础设施。
+
+复合组件架构：`<Popper>` → `<PopperTrigger>` + `<PopperContent>` + `<PopperArrow>`，通过 `provide/inject` 共享状态。`usePopper` composable 可独立使用。
+
+| Prop | 默认值 | 说明 |
+|------|--------|------|
+| `placement` | `'bottom'` | 12 种位置偏好 |
+| `trigger` | `'manual'` | hover / click / focus / manual |
+| `offset` | `8` | 距 trigger 间距 (px) |
+| `showDelay` / `hideDelay` | `0` | 显示/隐藏延时 (ms) |
+| `flip` | `true` | 空间不足时翻转方向 |
+| `shift` | `true` | 超出视口时推入视野 |
+| `matchWidth` | `false` | 浮层宽度匹配 trigger |
+| `autoUpdate` | `true` | 滚动时自动跟踪位置（容器滚动有 RAF 延迟） |
+| `strategy` | `'absolute'` | `fixed` 直接跟视口绑定 |
+| `zIndex` | 自动递增 | 手动指定或自动计算（基准 2000，SSR 安全） |
+| `to` | `'body'` | Teleport 目标 |
+| `disabled` | `false` | 禁用弹出 |
+
+**已知 deferred 问题**（详见 memory/popper_deferred.md）：
+- `offset`/`flip`/`shift` 在 usePopper 中不响应式（setup 时捕获初始值）
+- `disabled` 变为 true 时不会自动 hide 已打开弹层
+- `matchWidth` 不响应 trigger resize（需 ResizeObserver）
+- PopperTrigger 无 `as` prop（wrapper `<div>` 方案已选定）
+
+**审查要求**：底层组件实现完成后必须经过三路并行审查（性能/功能完整性/代码质量）+ 迭代修复，详见 `.claude/skills/base-component-review/SKILL.md`。
+
+**关键设计决策**：
+- PopperTrigger wrapper `<div class="inline-flex">` — 收缩包裹内容宽度，确保 matchWidth 精确
+- focus trigger 使用 `focusin`/`focusout`（冒泡），兼容 Input 等内部有 `<input>` 的组件
+- 箭头通过 `bg-inherit` 从父级继承背景色，无颜色 prop
+- `inject()` 使用 `!` + 守卫模式：需要模板访问 ctx 的组件（PopperTrigger/PopperContent）用 `!`，纯 script 访问的（PopperArrow）不用
 
 ## Known Pitfalls
 

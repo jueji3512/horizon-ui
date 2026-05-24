@@ -39,6 +39,7 @@ docs/                          # VitePress 文档站点
     ├── button.md / icon.md / link.md / checkbox.md / radio.md
     ├── text.md / title.md / callout.md / divider.md
     ├── badge.md / tooltip.md / switch.md / input.md / tag.md
+    ├── inputnumber.md
     └── popper.md              # Popper 底层组件验证页面（V-01~V-11）
 
 src/
@@ -54,7 +55,7 @@ src/
 │   │   └── PopperArrow.vue    #   箭头 — floating-ui arrow middleware 定位
 │   ├── Tooltip/               # 文字提示（后续重构到 Popper 基座）
 │   ├── Button/ / Icon/ / Radio/ / Checkbox/ / Link/ / Badge/
-│   ├── Switch/ / Input/ / Tag/
+│   ├── Switch/ / Input/ / InputNumber/ / Tag/
 │   ├── Text/ / Title/ / Callout/ / Divider/
 ├── utils/
 │   ├── cn.ts                  #   cn() = twMerge(clsx(inputs))
@@ -230,6 +231,27 @@ Props: `value`, `dot`, `type`, `max`, `showZero`, `hidden`, `offset`, `color`
 - 5 种语义色（bg-primary / bg-danger / bg-success / bg-warning / bg-neutral-muted）+ white 文字
 - `color` prop 通过 inline style 覆盖背景色
 - `offset` prop 微调位置：transform: translate(calc(50%+Xpx), calc(-50%+Ypx))
+
+### InputNumber (`src/components/InputNumber/InputNumber.vue`)
+
+```typescript
+type InputNumberSize = 'sm' | 'md' | 'lg'
+type InputNumberAlign = 'left' | 'center' | 'right'
+```
+
+Props: `modelValue`, `min`, `max`, `step`, `stepStrictly`, `precision`, `disabled`, `readonly`, `size`, `align`, `format`, `placeholder`, `name`
+Events: `update:modelValue`, `change`, `focus`, `blur`
+
+- TDesign 分离式风格：`<button> − </button>` + `<input>` + `<button> + </button>` 三块独立，`gap-1` 间距
+- 各自 `border border-neutral-border rounded-sm bg-white`
+- 尺寸：sm=24px(h-6), md=32px(h-8), lg=40px(h-10)，按钮正方形（width=height）
+- 步进：点击 ± 按 step 增减，长按连续触发（120ms 间隔）
+- 键盘：ArrowUp/ArrowDown ±step，Shift 加速 ×10
+- 范围：blur 时 clamp 到 min/max；`stepStrictly` 额外修约到 step 倍数；`precision` 控制小数位数
+- `align` 控制输入文本对齐（text-left/center/right），默认 center
+- `format` 函数控制显示格式（如千分位），聚焦时恢复原始数字供编辑，format 启用时 input type=text + inputmode=decimal
+- 禁用态：深灰暗色（bg-neutral-subtle + text-neutral-muted + border-neutral-border），非 opacity 淡化
+- readonly：input 只读，步进按钮仍可操作
 
 ## Styling Rules
 

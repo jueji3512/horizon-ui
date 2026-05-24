@@ -13,10 +13,11 @@ import Link from './Link/Link.vue'
 import Tooltip from './Tooltip/Tooltip.vue'
 import Switch from './Switch/Switch.vue'
 import Input from './Input/Input.vue'
+import InputNumber from './InputNumber/InputNumber.vue'
 import Tag from './Tag/Tag.vue'
 import Popper from './Popper/Popper.vue'
 import PopperTrigger from './Popper/PopperTrigger.vue'
 import PopperContent from './Popper/PopperContent.vue'
 import PopperArrow from './Popper/PopperArrow.vue'
 
-export { Badge, Button, Checkbox, CheckboxGroup, Icon, Input, Callout, Divider, Link, Popper, PopperArrow, PopperContent, PopperTrigger, Radio, RadioGroup, Switch, Tag, Text, Title, Tooltip }
+export { Badge, Button, Checkbox, CheckboxGroup, Icon, Input, InputNumber, Callout, Divider, Link, Popper, PopperArrow, PopperContent, PopperTrigger, Radio, RadioGroup, Switch, Tag, Text, Title, Tooltip }

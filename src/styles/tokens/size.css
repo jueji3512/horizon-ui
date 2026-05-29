@@ -1,0 +1,34 @@
+/* ========== 尺寸 @theme ========== */
+@theme {
+  /* 圆角 */
+  --radius-none: 0px;
+  --radius-sm: 2px;
+  --radius-def: 3px;
+  --radius-md: 6px;
+  --radius-lg: 9px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+  --radius-circle: 50%;
+
+  /* 间距 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+}
+
+/* ========== 组件尺寸 :root ========== */
+:root {
+  --comp-size-sm: 24px;
+  --comp-size-md: 32px;
+  --comp-size-lg: 40px;
+
+  --border-width: 1px;
+}

@@ -77,18 +77,32 @@ src/
 - **`@theme { }`** — 定义语义化设计令牌（CSS 变量），引向 Tailwind 原生 OKLCH 颜色
 - **`:root { }`** — 重复 @theme 变量作为 VitePress 构建时的 fallback
 
-### 语义色令牌（→ OKLCH 原生色）
+### 色彩系统
 
-| 语义色 | 映射 |
-|--------|------|
-| `primary` | `blue-600/700/800/100` |
-| `danger` | `red-500/600/700/100` |
-| `success` | `emerald-500/600/700/100` |
-| `warning` | `amber-500/600/700/100` |
-| `info` | `sky-500/600/700/100` |
-| `neutral` | `slate-50/100/200/400/600/800` |
+完整色表见 `docs/guide/colors.md`（含 Tailwind 全 22 族色表 + Horizon token 对照表）。
+修改色值时**必须同步更新** `src/styles/horizon.css` 和 `docs/guide/colors.md`。
 
-语义色用于组件样式：`bg-primary`, `text-neutral-heading`, `border-neutral-border` 等。
+命名规则：`<category>-color-<variant>`，`-` 仅分隔类型与状态，类型名不含 `-`。
+
+**功能色**（定义在 `:root`，不生成 Tailwind 工具类）：
+
+| 类别 | Token 前缀 | 色族 | 状态后缀 |
+|------|-----------|------|---------|
+| 文本 | `text-color-*` | gray / neutral | primary, secondary, placeholder, disabled, inverse |
+| 背景 | `bg-color-*` | neutral | 六层：page / container / secondarycontainer / component / secondarycomponent / inner，各带 hover/active(/disabled) |
+| 边框 | `border-color-*` | neutral | component, container, divider |
+
+**语义色**（定义在 `@theme`，可生成 `bg-*`/`text-*` 等 Tailwind 工具类）：
+
+| Token | Tailwind 色族 | 6 档状态 |
+|-------|-------------|---------|
+| `brand-color[-state]` | blue | light(50) / focus(100) / disabled(200) / base(700) / hover(500) / active(800) |
+| `error-color[-state]` | red | light(50) / focus(100) / disabled(200) / base(500) / hover(400) / active(700) |
+| `success-color[-state]` | emerald | light(50) / focus(100) / disabled(300) / base(500) / hover(400) / active(600) |
+| `warning-color[-state]` | amber | light(50) / focus(100) / disabled(200) / base(600) / hover(500) / active(700) |
+
+> 注意：语义色 hover 比 base **更亮**（与 TDesign 一致，hover 为发光效果），如 brand base=700 但 hover=500。
+> 所有色值取自 Tailwind CSS v4 OKLCH 原生色表（22 族 × 10 阶），参考 TDesign light 色值映射。
 
 ## Component Specs
 
@@ -302,10 +316,11 @@ Events: `update:modelValue`, `change`, `focus`, `blur`
 
 1. **import.meta.glob 只在 dev server 启动时扫描** — 新增 SVG 图标后需重启 `npm run dev`
 2. **VitePress 构建缓存** — 构建失败时尝试删除 `docs/.vitepress/cache` 和 `docs/.vitepress/dist`
-3. **@theme 变量在 VitePress 构建时可能不输出** — 需要在 `:root {}` 块中重复定义作为 fallback
+3. **@theme 变量在 VitePress 构建时可能不输出** — 功能色 token 定义在 `:root {}` 而非 `@theme` 中，语义色需在 `:root {}` 重复定义作为 fallback
 4. **node_modules 偶尔损坏** — 构建报错且原因不明时，删除 `node_modules` 重新 `npm install`
 5. **`@source` 指令必不可少** — 没有它 Tailwind v4 不会扫描 src/ 目录，组件 class 不会生成 CSS
 6. **SVG 必须 currentColor** — 设计工具导出的 SVG 含硬编码 hex 色值，必须替换为 `currentColor`，否则 color prop 无效
 7. **`<script setup>` 不能 export** — 需要导出类型/常量时，加一个 `<script lang="ts">` 块（非 setup），示例见 RadioGroup.vue
 8. **组件 demo 用 `<DemoBox>` 包裹** — 在 `.demo-box-preview` 内做局部 `revert-layer`，隔离 VitePress 样式同时不影响 Markdown 排版
 9. **tailwind-merge 无需自定义色注册** — v3 按 `bg-*`/`text-*` 前缀归类，自动处理 `@theme` 自定义语义色
+10. **改色值必须双文件同步** — 修改 `src/styles/horizon.css` 时，必须同步更新 `docs/guide/colors.md` 中对应表格

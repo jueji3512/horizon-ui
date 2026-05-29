@@ -1,148 +1,21 @@
 @import 'tailwindcss';
+
 @source "../../src";
 
-@theme {
-  /* ========== 主色 Primary → Blue ========== */
-  --color-primary: var(--color-blue-600);
-  --color-primary-hover: var(--color-blue-700);
-  --color-primary-active: var(--color-blue-800);
-  --color-primary-light: var(--color-blue-100);
-
-  /* ========== 危险 Danger → Red ========== */
-  --color-danger: var(--color-red-500);
-  --color-danger-hover: var(--color-red-600);
-  --color-danger-active: var(--color-red-700);
-  --color-danger-light: var(--color-red-100);
-
-  /* ========== 成功 Success → Emerald ========== */
-  --color-success: var(--color-emerald-500);
-  --color-success-hover: var(--color-emerald-600);
-  --color-success-active: var(--color-emerald-700);
-  --color-success-light: var(--color-emerald-100);
-
-  /* ========== 警告 Warning → Amber ========== */
-  --color-warning: var(--color-amber-500);
-  --color-warning-hover: var(--color-amber-600);
-  --color-warning-active: var(--color-amber-700);
-  --color-warning-light: var(--color-amber-100);
-
-  /* ========== 信息 Info → Sky ========== */
-  --color-info: var(--color-sky-500);
-  --color-info-hover: var(--color-sky-600);
-  --color-info-active: var(--color-sky-700);
-  --color-info-light: var(--color-sky-100);
-
-  /* ========== 中性色 Neutral → Slate ========== */
-  --color-neutral-surface: var(--color-slate-50);
-  --color-neutral-subtle: var(--color-slate-100);
-  --color-neutral-border: var(--color-slate-200);
-  --color-neutral-muted: var(--color-slate-400);
-  --color-neutral-text: var(--color-slate-600);
-  --color-neutral-heading: var(--color-slate-800);
-
-  /* ========== 字体 ========== */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'Fira Code', Consolas, monospace;
-
-  /* ========== 阴影 ========== */
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.04);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.06);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.04);
-  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.15);
-
-  /* ========== 间距 ========== */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-  --space-16: 64px;
-
-  /* ========== 圆角 ========== */
-  --radius-none: 0px;
-  --radius-sm: 2px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
-  --radius-full: 9999px;
-
-  /* ========== 字号 ========== */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-
-  /* ========== 字重 ========== */
-  --font-normal: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
-
-  /* ========== 动效 ========== */
-  --duration-fast: 150ms;
-  --duration-normal: 200ms;
-  --duration-slow: 300ms;
-  --duration-gentle: 500ms;
-
-  /* ========== 层级 ========== */
-  --z-base: 0;
-  --z-float: 10;
-  --z-dropdown: 20;
-  --z-sticky: 30;
-  --z-overlay: 40;
-  --z-modal: 50;
-  --z-notification: 60;
-  --z-top: 70;
-}
-
-/* VitePress 构建时 @theme 可能不输出 CSS 变量，显式定义在 :root 作为 fallback */
-:root {
-  --color-primary: var(--color-blue-600);
-  --color-primary-hover: var(--color-blue-700);
-  --color-primary-active: var(--color-blue-800);
-  --color-primary-light: var(--color-blue-100);
-  --color-danger: var(--color-red-500);
-  --color-danger-hover: var(--color-red-600);
-  --color-danger-active: var(--color-red-700);
-  --color-danger-light: var(--color-red-100);
-  --color-success: var(--color-emerald-500);
-  --color-success-hover: var(--color-emerald-600);
-  --color-success-active: var(--color-emerald-700);
-  --color-success-light: var(--color-emerald-100);
-  --color-warning: var(--color-amber-500);
-  --color-warning-hover: var(--color-amber-600);
-  --color-warning-active: var(--color-amber-700);
-  --color-warning-light: var(--color-amber-100);
-  --color-info: var(--color-sky-500);
-  --color-info-hover: var(--color-sky-600);
-  --color-info-active: var(--color-sky-700);
-  --color-info-light: var(--color-sky-100);
-  --color-neutral-surface: var(--color-slate-50);
-  --color-neutral-subtle: var(--color-slate-100);
-  --color-neutral-border: var(--color-slate-200);
-  --color-neutral-muted: var(--color-slate-400);
-  --color-neutral-text: var(--color-slate-600);
-  --color-neutral-heading: var(--color-slate-800);
-}
+/* ===== Design Tokens ===== */
+@import './tokens/color.css';
+@import './tokens/font.css';
+@import './tokens/size.css';
+@import './tokens/elevation.css';
 
 @layer base {
   body {
-    @apply font-sans text-neutral-text antialiased;
+    @apply font-sans antialiased;
+    color: var(--text-color-primary);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--color-brand);
     outline-offset: 2px;
     border-radius: var(--radius-lg, 0.5rem);
   }

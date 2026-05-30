@@ -1,15 +1,13 @@
 /* ========== 尺寸 @theme ========== */
 @theme {
   /* 圆角 */
-  --radius-none: 0px;
-  --radius-sm: 2px;
-  --radius-def: 3px;
-  --radius-md: 6px;
-  --radius-lg: 9px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
-  --radius-full: 9999px;
-  --radius-circle: 50%;
+  --round-none: 0px;
+  --round-default: 3px;
+  --round-1: 4px;
+  --round-2: 8px;
+  --round-3: 12px;
+  --round-full: 9999px;
+  --round-circle: 50%;
 
   /* 间距 */
   --space-1: 4px;
@@ -30,5 +28,26 @@
   --comp-size-md: 32px;
   --comp-size-lg: 40px;
 
+  /* 水平内边距（4~32px，4px 一档） */
+  --padding-x-1: 4px;
+  --padding-x-2: 8px;
+  --padding-x-3: 12px;
+  --padding-x-4: 16px;
+  --padding-x-5: 20px;
+  --padding-x-6: 24px;
+  --padding-x-7: 28px;
+  --padding-x-8: 32px;
+
+  /* 垂直内边距（4~32px，4px 一档） */
+  --padding-y-1: 4px;
+  --padding-y-2: 8px;
+  --padding-y-3: 12px;
+  --padding-y-4: 16px;
+  --padding-y-5: 20px;
+  --padding-y-6: 24px;
+  --padding-y-7: 28px;
+  --padding-y-8: 32px;
+
   --border-width: 1px;
 }
+

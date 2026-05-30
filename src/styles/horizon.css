@@ -10,14 +10,14 @@
 
 @layer base {
   body {
-    @apply font-sans antialiased;
+    @apply font-mono antialiased;
     color: var(--text-color-primary);
   }
 
   :focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 2px;
-    border-radius: var(--radius-lg, 0.5rem);
+    border-radius: var(--round-default);
   }
 
   @media (prefers-reduced-motion: reduce) {

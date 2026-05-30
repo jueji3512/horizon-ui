@@ -4,6 +4,7 @@ import CheckboxGroup from './Checkbox/CheckboxGroup.vue'
 import Icon from './Icon/Icon.vue'
 import Radio from './Radio/Radio.vue'
 import RadioGroup from './Radio/RadioGroup.vue'
+import Space from './Space/Space.vue'
 import Callout from './Callout/Callout.vue'
 import Divider from './Divider/Divider.vue'
 import Text from './Text/Text.vue'
@@ -20,4 +21,4 @@ import PopperTrigger from './Popper/PopperTrigger.vue'
 import PopperContent from './Popper/PopperContent.vue'
 import PopperArrow from './Popper/PopperArrow.vue'
 
-export { Badge, Button, Checkbox, CheckboxGroup, Icon, Input, InputNumber, Callout, Divider, Link, Popper, PopperArrow, PopperContent, PopperTrigger, Radio, RadioGroup, Switch, Tag, Text, Title, Tooltip }
+export { Badge, Button, Checkbox, CheckboxGroup, Icon, Input, InputNumber, Callout, Divider, Link, Popper, PopperArrow, PopperContent, PopperTrigger, Radio, RadioGroup, Space, Switch, Tag, Text, Title, Tooltip }

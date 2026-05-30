@@ -41,6 +41,7 @@ export default defineConfig({
             { text: 'Input 输入框', link: '/components/input' },
             { text: 'InputNumber 数字输入框', link: '/components/inputnumber' },
             { text: 'Tag 标签', link: '/components/tag' },
+            { text: 'Space 间距', link: '/components/space' },
           ],
         },
         {

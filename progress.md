@@ -1,66 +1,64 @@
-# Project Orientation Progress
+# 工作进度记录
 
 ## 2026-06-01
 
-- Started repository orientation at user request.
-- Invoked `superpowers:using-superpowers` and `planning-with-files`.
-- Checked root files, planning files, and git status.
-- Found no existing root `task_plan.md`, `findings.md`, or `progress.md` content.
-- Read top-level docs and package metadata.
-- Logged initial findings before continuing deeper inspection.
-- Inspected component exports, VitePress config, style token files, Popper files, Space implementation, and representative themed components.
-- Reviewed docs headings and prior `docs/superpowers` plan/spec artifacts.
-- Ran `npm run typecheck`: passed.
-- Ran `npm run build`: failed on VitePress dead links in `docs/superpowers/plans/2026-05-23-popper.md`.
-- Continued reading `docs/superpowers` at user request.
-- Extracted plan task headings and checkboxes; found plan checkboxes are not updated and cannot be trusted as status.
-- Cross-checked each planned component against source directory, docs page, library export, VitePress theme registration, and sidebar.
-- Found Badge is implemented and globally registered but missing from VitePress sidebar.
-- Found Paragraph plan is obsolete / not implemented, consistent with roadmap note that Paragraph was removed.
-- Ran `npm run lint`: passed with one `vue/no-v-html` warning in Icon.
-- User clarified current high-priority work: redefining the component-library spec and remigrating all components for new scale/color standards.
-- Inspected current token files and worktree diffs for the spec migration.
-- Scanned component source for old semantic/token classes; remaining clear source targets are Badge, Tag, and InputNumber.
-- Scanned component docs for old API/token usage; Badge, Tag, InputNumber, Popper, and several demo helper snippets need cleanup.
-- Resumed migration cleanup after context handoff.
-- Fixed a mechanical `InputNumber` template formatting issue around the minus button.
-- Replaced remaining source-level hardcoded white text/background utilities with functional tokens in Badge, Checkbox, Radio, Input, and Switch.
-- Replaced residual `text-neutral-500` in `docs/components/space.md` with `--text-color-secondary`.
-- Re-ran static scans for old `primary`/`danger` APIs, `neutral-*` utilities, and component-level `bg-white`/`text-white`; no matches in `src/components` or `docs/components` for the targeted patterns.
-- Ran targeted Prettier check for migration-touched source files; fixed formatting in Tag, InputNumber, Checkbox, Radio, Input, and Switch. Targeted check now passes.
-- Ran `npm run typecheck`: passed.
-- Ran `npm run lint`: passed with the existing `vue/no-v-html` warning in `src/components/Icon/Icon.vue`.
-- Ran `npm run build`: passed.
-- Ran full `npm run format:check`: still fails on 18 files outside the targeted cleanup set, including untracked `switch-mockups.html`.
-- Started a temporary VitePress dev server via PowerShell job, verified `/components/badge`, `/components/tag`, `/components/inputnumber`, and `/components/space` return HTTP 200, then stopped the job.
-- Tried persistent dev-server startup through `Start-Process`, detached Node spawn, and node_repl; those attempts did not leave a usable server in this sandboxed tool session.
-- Re-ran persistent dev-server startup with approved escalation. `http://localhost:5173/components/tag` returns HTTP 200 and netstat shows VitePress listening on `[::1]:5173` (node PID 33628).
-- User reported four UI issues: Input disabled colors, InputNumber disabled cursor, Tag round-checkable demo not visibly changing, and Input default width not filling parent.
-- Root cause review found Input disabled state lacked explicit disabled text color and native disabled text-fill pinning, still used `opacity-60`, and did not split root `class/style` attrs from native input attrs.
-- Added failing static regression checks for those conditions, then updated Input, InputNumber, and the Tag docs demo until checks passed.
-- Ran targeted Prettier check for `Input.vue` and `InputNumber.vue`: passed.
-- Ran `npm run typecheck`: passed.
-- Ran `npm run lint`: passed with the existing `vue/no-v-html` warning in `src/components/Icon/Icon.vue`.
-- Ran `npm run build`: passed.
-- Verified dev routes `/components/input`, `/components/inputnumber`, and `/components/tag` return HTTP 200.
-- Attempted Playwright computed-style verification using bundled runtime, but bundled `playwright` is missing `playwright-core`; kept verification to static checks plus VitePress build/HTTP route checks.
-- User asked to remove Input max-width styling. Removed all `max-width: 320px` inline styles from `docs/components/input.md` demos and removed `max-w-full` from `Input.vue` wrapper classes.
-- Verified no `max-width` / `max-w-full` remains in `docs/components/input.md` or `src/components/Input/Input.vue`.
-- Re-ran targeted Prettier check for `Input.vue`, `npm run typecheck`, `npm run lint`, `npm run build`, and `/components/input` HTTP check; all passed except the existing `Icon.vue` lint warning.
-- User requested Tag to keep only `sm` size and remove size configuration, with 8px spacing when icons are present.
-- Added failing static regression checks for Tag size API removal and `gap-2`, then updated `Tag.vue` and `docs/components/tag.md` until checks passed.
-- Ran targeted Prettier check for `Tag.vue`, `npm run typecheck`, `npm run lint`, `npm run build`, and `/components/tag` HTTP check; all passed except the existing `Icon.vue` lint warning.
-- User clarified Tag fixed dimensions: height should be 24px via `h-6`, horizontal padding should be 8px using the project padding token class.
-- Updated Tag base class to `h-6 px-[var(--padding-x-2)]` and re-ran sizing check, targeted Prettier, typecheck, lint, build, and `/components/tag` HTTP check; all passed except the existing `Icon.vue` lint warning.
-- User asked to correct Popper so it has no border color by default while still letting upper components set one when needed.
-- Confirmed `PopperContent` itself had no visual class, but because it renders through `Teleport`, incoming `class`/`style` attrs were not explicitly forwarded to the real floating DOM node.
-- Added a failing static regression check for PopperContent attr forwarding, then updated `PopperContent.vue` with `inheritAttrs: false` and `v-bind="$attrs"` on the teleported content node.
-- Removed default-looking border classes from white Popper docs floating panels and documented that PopperContent has no default background, border, or radius; upper layers can provide `class` / `style`.
-- Re-ran Popper static checks, targeted Prettier, `npm run typecheck`, `npm run lint`, `npm run build`, and `/components/popper` HTTP check; all passed except the existing `Icon.vue` lint warning.
-- User clarified Popper also should not present dark/light variants. Reviewed Popper source and confirmed there is no `theme`/`variant`/dark/light visual API; only demo-local styles exist.
-- Simplified Popper V-02 docs from two dark/light hover bubbles to one hover+arrow behavior verification, removing `v02Light` and dark/light wording.
-- Re-ran Popper dark/light static checks, `npm run typecheck`, `npm run lint`, `npm run build`, and `/components/popper` HTTP check; all passed except the existing `Icon.vue` lint warning.
-- Reviewed whether Popper source provides default box-shadow/elevation. Confirmed no `shadow`, `box-shadow`, `drop-shadow`, or `elevation` styles exist in `src/components/Popper`; remaining `shadow-*` usages are demo-local in `docs/components/popper.md`.
-- Prepared to split the workspace into commits after verification. Treat `switch-mockups.html` as a local visual prototype and added it to `.gitignore`.
-- Refreshed `task_plan.md` and `findings.md` so their current-state notes reflect completed Badge/Tag/InputNumber cleanup, Popper surface decisions, and remaining follow-ups.
-- User clarified commit messages should still follow commit convention. Record future convention as Conventional Commit format with Chinese subject text.
+### 项目理解
+
+- 阅读并整理 Horizon UI 项目结构、VitePress 文档、组件源码、样式 token 和历史计划文档。
+- 确认当前主线是组件库规范迁移：语义色、功能色、尺寸、圆角、字体、状态样式和 API 命名。
+- 确认 `docs/superpowers/**` 是历史计划资料，不能直接当作最新完成状态。
+
+### 组件迁移与修复
+
+- 清理 Badge、Tag、InputNumber 等组件的旧 token / 旧 API 残留。
+- Badge 改为 `theme="default|brand|success|warning|error"`。
+- Tag 改为 `theme` + `variant`，并移除 size 配置，仅保留 sm 尺寸。
+- Tag 默认高度改为 24px，左右 padding 使用项目 token，图标间距为 8px。
+- Input 默认占满父元素宽度。
+- Input disabled 状态修正为明确的 disabled bg/border/text token。
+- InputNumber disabled 输入框补充 `cursor-not-allowed`。
+- PopperContent 保持无视觉样式，并转发 attrs 到 Teleport 后的真实浮层 DOM。
+- Popper 文档去掉默认边框、深浅色主题暗示；确认 Popper 不提供 shadow/elevation。
+
+### 文档与配置
+
+- 更新组件文档示例，使其匹配新 API 和 token。
+- Badge 加入 VitePress sidebar。
+- `docs/superpowers/**` 加入 VitePress `srcExclude`，避免内部计划文档影响构建。
+- 新增 `.agents/skills/base-component-review`，记录底层组件审查流程。
+- 新增/维护根目录记忆文档：`AGENTS.md`、`TODO.md`、`task_plan.md`、`findings.md`、`progress.md`。
+
+### Git 与提交
+
+- 已将本轮工作拆成符合规范的中文说明 Conventional Commit：
+  - `refactor(components): 对齐组件设计令牌规范`
+  - `docs(components): 同步组件示例与迁移说明`
+  - `docs(project): 记录组件迁移进度`
+  - `style(format): 统一项目代码风格`
+- 这些提交已推送到 `origin/master`。
+- 后续继续使用 Conventional Commit 格式，并使用中文说明。
+
+### 清理
+
+- 将 `switch-mockups.html` 作为本地视觉原型加入 `.gitignore`。
+- 删除一个空的异常目录：名称类似被写坏的 `D:\project\ui\src\components\Space` 路径。
+- 暂未删除 `switch-mockups.html` 文件本体，等待用户确认。
+- 暂未删除 `docs/.vitepress/cache` / `docs/.vitepress/dist`，因为它们是构建/开发服务生成物，清理时机需要看 dev server 使用情况。
+
+### 验证
+
+- `npm run typecheck`：通过。
+- `npm run lint`：通过，但仍有 `Icon.vue` 的 `vue/no-v-html` warning。
+- `npm run format:check`：通过。
+- `npm run build`：通过。
+- `/components/popper` HTTP 检查：通过。
+
+### 待办
+
+详细待办见 `TODO.md`。优先项：
+
+- Popper deferred 行为。
+- Popper base-component review。
+- Icon `v-html` 安全策略。
+- 浏览器/截图级视觉验证。
+- 是否删除 `switch-mockups.html`。

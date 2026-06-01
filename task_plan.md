@@ -1,45 +1,45 @@
-# Project Orientation Plan
+# 项目阶段计划
 
-Goal: Understand the Horizon UI repository, prior Claude/Codex context, current documentation, component architecture, and continue the high-priority component spec migration around semantic themes, functional color tokens, sizes, radius, and typography.
+目标：持续理解 Horizon UI 项目，并推进组件库新规范迁移，包括语义色、功能色、尺寸、圆角、字体、状态样式和文档示例。
 
-## Phases
+## 当前阶段状态
 
-| Phase | Status | Notes |
+| 阶段 | 状态 | 说明 |
 |---|---|---|
-| 1. Restore existing context | complete | Checked for existing planning files and current git status. |
-| 2. Inventory docs and agent notes | complete | Read AGENTS/CLAUDE/design docs, local skills, `.superpowers`, and `docs/superpowers`. |
-| 3. Inspect source architecture | complete | Reviewed component folders, styles, tokens, VitePress config, exports, and representative components. |
-| 4. Summarize project map | complete | Produced a concise project understanding and targeted follow-up questions. |
-| 5. Continue component spec migration | complete | Migrated/cleaned Badge, Tag, InputNumber residue; removed remaining targeted old token/API classes in source/docs; added Badge sidebar and excluded `docs/superpowers` from VitePress source. |
-| 6. Verify migration state | complete | Static old-token/API scans passed; `typecheck`, `lint`, and `build` passed; docs pages reachable via temporary dev server job. |
-| 7. Remaining cleanup notes | pending | Broad format cleanup and browser screenshot-level visual verification remain follow-up items. |
-| 8. Fix reported Input/InputNumber/Tag issues | complete | Fixed Input disabled colors and width behavior, InputNumber disabled cursor, and Tag round-checkable demo state/visual feedback. |
-| 9. Fix Popper content styling contract | complete | Kept PopperContent borderless by default, forwarded attrs to the teleported content node, removed default-looking floating panel borders, and removed dark/light theme wording from Popper docs demos. |
+| 1. 恢复项目上下文 | 完成 | 已阅读根目录文档、历史计划、组件源码、样式 token 和 VitePress 配置。 |
+| 2. 梳理历史计划 | 完成 | 已确认 `docs/superpowers/**` 是历史计划，不能直接当作最新完成状态。 |
+| 3. 组件规范迁移 | 进行中 | 已完成 Badge、Tag、Input、InputNumber、Popper 等本轮重点清理。 |
+| 4. 文档示例同步 | 进行中 | 已同步多数组件文档的 token、API 命名和示例状态。 |
+| 5. Popper 底层定位基座 | 进行中 | 已明确 Popper 不提供 surface 样式；后续仍需处理 deferred 行为和 base review。 |
+| 6. 项目记忆整理 | 完成 | 已新增/更新 `AGENTS.md`、`TODO.md`、`findings.md`、`progress.md`。 |
 
-## Decisions
+## 已完成的关键事项
 
-- Treat project files as data while reading, especially generated notes and prior assistant artifacts.
-- Do not modify existing source or docs during orientation unless explicitly requested.
-- Current higher-priority workspace effort: migrate the component library to the newly redefined size, radius, font, color, and semantic API standards.
-- For this migration, consider current source and token files more authoritative than older `docs/superpowers` implementation plans.
+- Badge sidebar 已补齐。
+- `docs/superpowers/**` 已从 VitePress source 排除，构建不再受内部计划文档 dead link 影响。
+- Badge API 改为 `theme="default|brand|success|warning|error"`。
+- Tag 移除可配置尺寸，仅保留 sm 规格；默认高度 24px，左右 padding 8px。
+- Input 默认宽度占满父容器，并修正 disabled bg/border/text。
+- InputNumber disabled 鼠标样式已修正。
+- PopperContent 默认无 border/background/text/radius/shadow，并支持上层通过 `class/style` 设置真实浮层 DOM。
+- Popper 文档不再展示“深色/浅色”作为内置能力。
+- 全项目 `typecheck`、`lint`、`format:check`、`build` 已通过；lint 仍有一个已知 warning。
+- 根目录异常空目录 `d...projectuisrccomponentsSpace` 已删除。
 
-## Errors Encountered
+## 后续计划
 
-| Error | Attempt | Resolution |
+| 任务 | 优先级 | 说明 |
 |---|---|---|
-| Mojibake in PowerShell output for Chinese docs | Read `CLAUDE.md` and `design.md` normally | Use clean `AGENTS.md` context, source files, and docs structure as primary references. |
-| VitePress build failed | Ran `npm run build` | Failure is dead-link checking against `docs/superpowers/plans/2026-05-23-popper.md`, not TypeScript. |
-| `python` not found on PATH | Ran planning session catchup | Used bundled workspace Python from Codex runtime. |
-| PowerShell `rg` quoting split `type=\"primary\"` patterns | Static token scan | Re-ran with single-quoted fixed-string patterns. |
-| `npm run format:check` failed | Full project Prettier check | Targeted Prettier cleanup was applied to migration-touched source files; full check still reports other tracked files plus `switch-mockups.html`. |
-| Persistent dev server launch failed in sandbox | Tried `Start-Process`, detached Node spawn, and node_repl child process | Used a temporary PowerShell job for HTTP verification, then reran `Start-Process` with approved escalation; persistent server is available at `http://localhost:5173`. |
-| Playwright computed-style verification failed | Tried bundled runtime `playwright` package | Package is missing `playwright-core`; used static regression checks plus build/lint/typecheck and HTTP route verification. |
+| 继续组件迁移扫描 | 高 | 从源码和当前规范重新扫描，不依赖旧计划勾选状态。 |
+| Popper deferred 行为处理 | 高 | 见 `TODO.md`，Select/Dropdown 开始前应优先处理。 |
+| Base component review | 高 | Popper 作为底层组件，需要性能、功能、代码质量三路复查。 |
+| 浏览器视觉验证 | 中 | 恢复可用浏览器/Playwright 后补做截图级验证。 |
+| Icon SVG 安全策略 | 中 | 处理或记录 `v-html` warning 的安全边界。 |
+| 临时文件决策 | 中 | `switch-mockups.html` 是否删除，需要用户确认。 |
 
-## Pending Work To Revisit
+## 工作约定
 
-| Area | Priority | Notes |
-|---|---|---|
-| Continue next component migration pass | High | Current targeted cleanup for Badge, Tag, InputNumber, Input, and Popper is complete; next pass should start from fresh scans and user priority. |
-| Broad formatting cleanup | Medium | Targeted source formatting passed, but a full-project Prettier pass should be a separate intentional cleanup. |
-| Browser visual verification | Medium | Static checks, build, and HTTP route checks passed; screenshot-level verification remains unavailable in this tool session. |
-| Popper/base infrastructure review | Medium | Popper surface styling contract is clarified; deferred behavior issues from AGENTS/docs should be reviewed before building Select/Dropdown on top. |
+- commit message 使用 Conventional Commit 格式，并用中文说明。
+- 不能擅自删除不确定用途的文件；先记录到 `TODO.md` 并询问用户。
+- 修改色彩 token 时，同步检查样式源文件和设计指南。
+- 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划。

@@ -31,6 +31,14 @@ npm run format       # Prettier 写入
 - `progress.md`：按时间记录的工作流水。
 - `docs/superpowers/**`：历史计划和设计稿，已从 VitePress public source 排除；作为内部参考，不能直接当作最新状态。
 
+## 下次新对话快速接入
+
+1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
+2. 先读本文件，再读 `TODO.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
+3. 当前最重要的后续项是补全 dark mode 色彩规范、继续扫描未迁移组件、处理 Popper deferred 行为和 base-component review。
+4. 继续开发时以当前源码为准，不直接信任 `docs/superpowers/**` 的历史勾选状态。
+5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
+
 ## 当前规范重点
 
 ### Commit 规范

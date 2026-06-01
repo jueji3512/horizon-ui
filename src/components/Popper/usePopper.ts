@@ -21,24 +21,27 @@ export function usePopper(
     return m
   })
 
-  const whileElementsMounted =
-    options.autoUpdate !== false ? autoUpdate : undefined
+  const whileElementsMounted = options.autoUpdate !== false ? autoUpdate : undefined
 
-  const { floatingStyles, middlewareData, placement, update: floatingUpdate } = useFloating(
-    referenceEl,
-    floatingEl,
-    {
-      placement: options.placement,
-      strategy: options.strategy ?? 'absolute',
-      middleware,
-      whileElementsMounted,
-    },
-  )
+  const {
+    floatingStyles,
+    middlewareData,
+    placement,
+    update: floatingUpdate,
+  } = useFloating(referenceEl, floatingEl, {
+    placement: options.placement,
+    strategy: options.strategy ?? 'absolute',
+    middleware,
+    whileElementsMounted,
+  })
 
   return {
     floatingStyles: floatingStyles as unknown as ComputedRef<CSSProperties>,
     middlewareData,
     placement: placement as Ref<Placement>,
-    update: () => { floatingUpdate(); return Promise.resolve() },
+    update: () => {
+      floatingUpdate()
+      return Promise.resolve()
+    },
   }
 }

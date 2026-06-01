@@ -22,51 +22,51 @@
   --color-success-active: oklch(0.596 0.171 162.4);
   --color-success-focus: oklch(0.936 0.034 170.5);
   --color-success-disabled: oklch(0.806 0.113 166.9);
-  --color-success-light: oklch(0.969 0.015 170.0);
+  --color-success-light: oklch(0.969 0.015 170);
 
   /* Warning (Amber) */
-  --color-warning: oklch(0.737 0.178 59.0);
+  --color-warning: oklch(0.737 0.178 59);
   --color-warning-hover: oklch(0.769 0.188 70.08);
-  --color-warning-active: oklch(0.66 0.16 47.0);
+  --color-warning-active: oklch(0.66 0.16 47);
   --color-warning-focus: oklch(0.952 0.05 96.5);
-  --color-warning-disabled: oklch(0.91 0.105 88.0);
-  --color-warning-light: oklch(0.975 0.02 96.0);
+  --color-warning-disabled: oklch(0.91 0.105 88);
+  --color-warning-light: oklch(0.975 0.02 96);
 }
 
 /* ========== 功能色 :root（不生成 Tailwind 工具类） ========== */
 :root {
   /* 文本色 */
-  --text-color-primary: oklch(0.21 0.006 264.015);         /* gray-900 */
-  --text-color-secondary: oklch(0.704 0.016 256.798);       /* gray-500 */
-  --text-color-placeholder: oklch(0.792 0.013 257.518);     /* gray-400 */
-  --text-color-disabled: oklch(0.787 0 0);                  /* neutral-400 */
-  --text-color-inverse: oklch(1 0 0);                       /* white */
+  --text-color-primary: oklch(0.21 0.006 264.015); /* gray-900 */
+  --text-color-secondary: oklch(0.704 0.016 256.798); /* gray-500 */
+  --text-color-placeholder: oklch(0.792 0.013 257.518); /* gray-400 */
+  --text-color-disabled: oklch(0.787 0 0); /* neutral-400 */
+  --text-color-inverse: oklch(1 0 0); /* white */
 
   /* 背景色 */
-  --bg-color-page: oklch(0.92 0 0);                         /* neutral-200 */
-  --bg-color-container: oklch(1 0 0);                       /* white */
-  --bg-color-container-hover: oklch(0.964 0 0);             /* neutral-100 */
-  --bg-color-container-active: oklch(0.92 0 0);             /* neutral-200 */
-  --bg-color-secondarycontainer: oklch(0.964 0 0);          /* neutral-100 */
-  --bg-color-secondarycontainer-hover: oklch(0.92 0 0);     /* neutral-200 */
-  --bg-color-secondarycontainer-active: oklch(0.87 0 0);    /* neutral-300 */
-  --bg-color-component: oklch(0.92 0 0);                    /* neutral-200 */
-  --bg-color-component-hover: oklch(0.87 0 0);              /* neutral-300 */
-  --bg-color-component-active: oklch(0.704 0 0);            /* neutral-500 */
-  --bg-color-component-disabled: oklch(0.92 0 0);           /* neutral-200 */
-  --bg-color-secondarycomponent: oklch(0.87 0 0);           /* neutral-300 */
-  --bg-color-secondarycomponent-hover: oklch(0.787 0 0);    /* neutral-400 */
-  --bg-color-secondarycomponent-active: oklch(0.704 0 0);   /* neutral-500 */
-  --bg-color-secondarycomponent-disabled: oklch(0.92 0 0);  /* neutral-200 */
-  --bg-color-inner: oklch(1 0 0);                           /* white */
-  --bg-color-inner-hover: oklch(0.964 0 0);                 /* neutral-100 */
-  --bg-color-inner-active: oklch(0.92 0 0);                 /* neutral-200 */
-  --bg-color-inner-disabled: oklch(0.92 0 0);               /* neutral-200 */
+  --bg-color-page: oklch(0.92 0 0); /* neutral-200 */
+  --bg-color-container: oklch(1 0 0); /* white */
+  --bg-color-container-hover: oklch(0.964 0 0); /* neutral-100 */
+  --bg-color-container-active: oklch(0.92 0 0); /* neutral-200 */
+  --bg-color-secondarycontainer: oklch(0.964 0 0); /* neutral-100 */
+  --bg-color-secondarycontainer-hover: oklch(0.92 0 0); /* neutral-200 */
+  --bg-color-secondarycontainer-active: oklch(0.87 0 0); /* neutral-300 */
+  --bg-color-component: oklch(0.92 0 0); /* neutral-200 */
+  --bg-color-component-hover: oklch(0.87 0 0); /* neutral-300 */
+  --bg-color-component-active: oklch(0.704 0 0); /* neutral-500 */
+  --bg-color-component-disabled: oklch(0.92 0 0); /* neutral-200 */
+  --bg-color-secondarycomponent: oklch(0.87 0 0); /* neutral-300 */
+  --bg-color-secondarycomponent-hover: oklch(0.787 0 0); /* neutral-400 */
+  --bg-color-secondarycomponent-active: oklch(0.704 0 0); /* neutral-500 */
+  --bg-color-secondarycomponent-disabled: oklch(0.92 0 0); /* neutral-200 */
+  --bg-color-inner: oklch(1 0 0); /* white */
+  --bg-color-inner-hover: oklch(0.964 0 0); /* neutral-100 */
+  --bg-color-inner-active: oklch(0.92 0 0); /* neutral-200 */
+  --bg-color-inner-disabled: oklch(0.92 0 0); /* neutral-200 */
 
   /* 边框色 */
-  --border-color-component: oklch(0.87 0 0);                /* neutral-300 */
-  --border-color-container: oklch(0.87 0 0);                /* neutral-300 */
-  --border-color-divider: oklch(0.92 0 0);                  /* neutral-200 */
+  --border-color-component: oklch(0.87 0 0); /* neutral-300 */
+  --border-color-container: oklch(0.87 0 0); /* neutral-300 */
+  --border-color-divider: oklch(0.92 0 0); /* neutral-200 */
 
   /* 语义色 fallback（VitePress 构建时 @theme 变量可能不输出，:root 保证可用） */
   --color-brand: oklch(0.488 0.243 264.376);
@@ -86,11 +86,11 @@
   --color-success-active: oklch(0.596 0.171 162.4);
   --color-success-focus: oklch(0.936 0.034 170.5);
   --color-success-disabled: oklch(0.806 0.113 166.9);
-  --color-success-light: oklch(0.969 0.015 170.0);
-  --color-warning: oklch(0.737 0.178 59.0);
+  --color-success-light: oklch(0.969 0.015 170);
+  --color-warning: oklch(0.737 0.178 59);
   --color-warning-hover: oklch(0.769 0.188 70.08);
-  --color-warning-active: oklch(0.66 0.16 47.0);
+  --color-warning-active: oklch(0.66 0.16 47);
   --color-warning-focus: oklch(0.952 0.05 96.5);
-  --color-warning-disabled: oklch(0.91 0.105 88.0);
-  --color-warning-light: oklch(0.975 0.02 96.0);
+  --color-warning-disabled: oklch(0.91 0.105 88);
+  --color-warning-light: oklch(0.975 0.02 96);
 }

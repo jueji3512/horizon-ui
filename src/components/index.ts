@@ -21,4 +21,27 @@ import PopperTrigger from './Popper/PopperTrigger.vue'
 import PopperContent from './Popper/PopperContent.vue'
 import PopperArrow from './Popper/PopperArrow.vue'
 
-export { Badge, Button, Checkbox, CheckboxGroup, Icon, Input, InputNumber, Callout, Divider, Link, Popper, PopperArrow, PopperContent, PopperTrigger, Radio, RadioGroup, Space, Switch, Tag, Text, Title, Tooltip }
+export {
+  Badge,
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  Icon,
+  Input,
+  InputNumber,
+  Callout,
+  Divider,
+  Link,
+  Popper,
+  PopperArrow,
+  PopperContent,
+  PopperTrigger,
+  Radio,
+  RadioGroup,
+  Space,
+  Switch,
+  Tag,
+  Text,
+  Title,
+  Tooltip,
+}

@@ -58,13 +58,14 @@ docs(project): 更新项目上下文与待办
 - 圆角：`--round-default`、`--round-full`。
 - 间距：`--padding-x-*`、`--padding-y-*`。
 - 字体工具类：`font-body-*`、`font-title-*`。
+- 当前色彩规范主要完成 light mode；dark mode token、暗色状态映射、文档说明和组件适配仍是高优先级后续项。
 
 ## 当前组件状态
 
 - 已实现并纳入文档：Button、Icon、Link、Checkbox、Radio、Text、Title、Callout、Divider、Badge、Tooltip、Switch、Input、Tag、InputNumber、Space、Popper。
 - Badge 已加入 sidebar。
 - `docs/superpowers/**` 已通过 `srcExclude` 排除，避免内部计划文档影响 VitePress 构建。
-- `switch-mockups.html` 是本地视觉原型，已加入 `.gitignore`，是否删除见 `TODO.md`。
+- 本地 Switch 视觉原型 `switch-mockups.html` 已删除；后续不要提交临时原型文件。
 
 ## 近期已完成
 
@@ -77,7 +78,8 @@ docs(project): 更新项目上下文与待办
 - PopperContent 保持无视觉样式，默认不提供 border、background、text color、radius、shadow/elevation。
 - PopperContent 通过 `v-bind="$attrs"` 将上层 `class/style` 传给 Teleport 后的真实浮层 DOM。
 - Popper 文档去掉容易误解为内置主题的深色/浅色和默认边框表达。
-- 全项目 Prettier 检查已恢复通过。
+- `Icon.vue` 的 `v-html` 仅用于渲染打包期导入的本地图标 SVG，已补充安全边界说明并处理 lint warning。
+- 全项目 `lint`、`format:check`、`typecheck`、`build` 已通过。
 
 ## Popper 特别说明
 
@@ -95,5 +97,5 @@ Popper 是底层定位基座，不是最终视觉组件。
 - 不要把 `docs/superpowers/**` 当作最新完成状态；它们是历史计划。
 - 不要直接提交未核对的临时原型文件。
 - 运行清理命令前要确认路径在 `D:\project\ui` 内。
-- 当前 lint 仍有一个已知 warning：`src/components/Icon/Icon.vue` 使用 `v-html` 渲染 SVG。
+- 如果未来 `Icon` 支持外部 SVG 或运行时 SVG 文本，必须重新评估当前 `v-html` 策略。
 - 如果修改颜色 token，必须同步更新 `src/styles` 和设计指南文档。

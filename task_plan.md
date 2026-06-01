@@ -23,19 +23,21 @@
 - InputNumber disabled 鼠标样式已修正。
 - PopperContent 默认无 border/background/text/radius/shadow，并支持上层通过 `class/style` 设置真实浮层 DOM。
 - Popper 文档不再展示“深色/浅色”作为内置能力。
-- 全项目 `typecheck`、`lint`、`format:check`、`build` 已通过；lint 仍有一个已知 warning。
+- `Icon.vue` 的 raw SVG 渲染已补充本地图标安全边界说明，并关闭该处 `vue/no-v-html` 告警。
+- 全项目 `lint`、`format:check`、`typecheck`、`build` 已通过。
 - 根目录异常空目录 `d...projectuisrccomponentsSpace` 已删除。
+- 本地 Switch 视觉原型 `switch-mockups.html` 已删除。
 
 ## 后续计划
 
 | 任务 | 优先级 | 说明 |
 |---|---|---|
+| Dark mode 色彩规范 | 高 | 当前完成的是 light 规范；dark token、暗色状态映射、文档说明和组件适配尚未完成。 |
 | 继续组件迁移扫描 | 高 | 从源码和当前规范重新扫描，不依赖旧计划勾选状态。 |
 | Popper deferred 行为处理 | 高 | 见 `TODO.md`，Select/Dropdown 开始前应优先处理。 |
 | Base component review | 高 | Popper 作为底层组件，需要性能、功能、代码质量三路复查。 |
 | 浏览器视觉验证 | 中 | 恢复可用浏览器/Playwright 后补做截图级验证。 |
-| Icon SVG 安全策略 | 中 | 处理或记录 `v-html` warning 的安全边界。 |
-| 临时文件决策 | 中 | `switch-mockups.html` 是否删除，需要用户确认。 |
+| Icon 外部 SVG 安全策略 | 中 | 如果未来支持外部 SVG 输入，需要替换当前仅适用于本地白名单图标的策略。 |
 
 ## 工作约定
 

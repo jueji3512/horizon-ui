@@ -37,6 +37,11 @@
 
 ## 当前规范
 
+### 色彩模式
+
+- 当前主要完成的是 light 色彩规范。
+- Dark mode 尚未实现；后续需要补充 dark token、状态色映射、组件适配和文档说明。
+
 ### 语义命名
 
 - 使用 `theme` 表达语义色。
@@ -74,6 +79,8 @@ docs(project): 更新项目上下文与待办
 - Popper 文档去掉“深色/浅色”内置主题暗示。
 - 文档示例同步新 token 和新 API。
 - `.gitignore` 忽略本地 `switch-mockups.html`。
+- 删除本地 Switch 视觉原型 `switch-mockups.html`。
+- `Icon.vue` 继续使用本地 raw SVG 渲染，但已补充“仅来自打包期本地图标”的安全边界说明，并处理 lint warning。
 - 删除一个空的异常路径目录 `d...projectuisrccomponentsSpace`。
 - 新增 `TODO.md`，作为隐藏问题和未来任务索引。
 
@@ -82,17 +89,16 @@ docs(project): 更新项目上下文与待办
 最近一次完整验证：
 
 - `npm run typecheck`：通过。
-- `npm run lint`：通过，但仍有 `src/components/Icon/Icon.vue` 的 `vue/no-v-html` warning。
+- `npm run lint`：通过，无 `src/components/Icon/Icon.vue` 的 `vue/no-v-html` warning。
 - `npm run format:check`：通过。
 - `npm run build`：通过。
 - `/components/popper` HTTP 检查：通过。
 
 ## 已知风险
 
-- `Icon.vue` 通过 `v-html` 渲染 raw SVG，需要记录安全边界或换渲染方式。
+- `Icon.vue` 当前仅渲染打包期导入的本地图标 SVG；如果未来支持外部 SVG，需要重新设计安全策略。
 - Popper 仍有 deferred 行为问题，见 `TODO.md`。
 - 浏览器/截图级视觉验证尚未稳定恢复。
-- `switch-mockups.html` 仍留在本地，是否删除需要用户确认。
 - `docs/.vitepress/cache` 和 `docs/.vitepress/dist` 是忽略的生成物，当前未删除，以免影响正在运行的 dev server 或刚完成的构建。
 
 ## 后续入口

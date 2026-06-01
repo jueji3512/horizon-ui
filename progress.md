@@ -42,13 +42,18 @@
 
 - 将 `switch-mockups.html` 作为本地视觉原型加入 `.gitignore`。
 - 删除一个空的异常目录：名称类似被写坏的 `D:\project\ui\src\components\Space` 路径。
-- 暂未删除 `switch-mockups.html` 文件本体，等待用户确认。
+- 删除本地 Switch 视觉原型 `switch-mockups.html`。
 - 暂未删除 `docs/.vitepress/cache` / `docs/.vitepress/dist`，因为它们是构建/开发服务生成物，清理时机需要看 dev server 使用情况。
+
+### 小项处理
+
+- 补充 dark mode 未完成状态：当前主要完成 light 色彩规范，dark token、状态映射、文档说明和组件适配仍是高优先级后续项。
+- `Icon.vue` 的 raw SVG 渲染保留为本地图标白名单策略，并补充安全边界说明以处理 `vue/no-v-html` warning。
 
 ### 验证
 
 - `npm run typecheck`：通过。
-- `npm run lint`：通过，但仍有 `Icon.vue` 的 `vue/no-v-html` warning。
+- `npm run lint`：通过，无 `Icon.vue` 的 `vue/no-v-html` warning。
 - `npm run format:check`：通过。
 - `npm run build`：通过。
 - `/components/popper` HTTP 检查：通过。
@@ -59,6 +64,5 @@
 
 - Popper deferred 行为。
 - Popper base-component review。
-- Icon `v-html` 安全策略。
+- Icon 外部 SVG 安全策略：仅当未来支持外部 SVG 输入时需要重新设计。
 - 浏览器/截图级视觉验证。
-- 是否删除 `switch-mockups.html`。

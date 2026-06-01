@@ -1,3 +1,5 @@
+<!-- Local SVG icons are bundled from ./icons at build time; svgContent is never user input. -->
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <i
     class="h-icon"

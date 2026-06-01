@@ -6,7 +6,6 @@ export default defineConfig({
   title: 'Horizon UI',
   description: '简约现代企业级 Vue 3 组件库',
   lang: 'zh-CN',
-  srcExclude: ['superpowers/**'],
 
   themeConfig: {
     nav: [

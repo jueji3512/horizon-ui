@@ -1,6 +1,6 @@
 # AGENTS.md
 
-本文件是给 Codex / Claude 等代码代理使用的项目快速入口。新对话优先阅读本文件，然后阅读 `TODO.md`、`findings.md`、`task_plan.md`、`progress.md`。
+本文件是给 Codex / Claude 等代码代理使用的项目快速入口。新对话优先阅读本文件，然后阅读 `TODO.md`、`CODE_STYLE.md`、`findings.md`、`task_plan.md`、`progress.md`。
 
 ## 项目概览
 
@@ -19,24 +19,27 @@ npm run dev          # 启动 VitePress 文档开发服务器，默认 5173
 npm run build        # 构建 VitePress 文档
 npm run typecheck    # vue-tsc --noEmit
 npm run lint         # ESLint
+npm run lint:js      # ESLint
+npm run lint:style   # Stylelint
 npm run format:check # Prettier 检查
 npm run format       # Prettier 写入
+npm run check        # format:check + lint + typecheck + build
 ```
 
 ## 当前文档记忆
 
 - `TODO.md`：未来任务、隐藏问题、需要用户决策的事项。
+- `CODE_STYLE.md`：仓库级编辑器、格式化和检查规范。
 - `findings.md`：项目结构、当前规范、已完成迁移、风险与结论。
 - `task_plan.md`：阶段计划与后续工作。
 - `progress.md`：按时间记录的工作流水。
-- `docs/superpowers/**`：历史计划和设计稿，已从 VitePress public source 排除；作为内部参考，不能直接当作最新状态。
 
 ## 下次新对话快速接入
 
 1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
-2. 先读本文件，再读 `TODO.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
-3. 当前最重要的后续项是补全 dark mode 色彩规范、继续扫描未迁移组件、处理 Popper deferred 行为和 base-component review。
-4. 继续开发时以当前源码为准，不直接信任 `docs/superpowers/**` 的历史勾选状态。
+2. 先读本文件，再读 `TODO.md` 和 `CODE_STYLE.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
+3. 当前最重要的后续项是继续扫描未迁移组件、补充关键组件浏览器级视觉验证、统一文档示例；dark mode 已决定放到当前队列最后。
+4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 
 ## 当前规范重点
@@ -49,6 +52,14 @@ npm run format       # Prettier 写入
 refactor(components): 对齐组件设计令牌规范
 docs(project): 更新项目上下文与待办
 ```
+
+### 代码编辑器与格式规范
+
+- 仓库级规范见 `CODE_STYLE.md`。
+- 缩进使用 2 个空格，文本文件换行统一为 LF，编码为 UTF-8，文件末尾保留最终换行。
+- `.editorconfig` 负责编辑器基础行为；`.gitattributes` 固定文本文件 `eol=lf`。
+- Prettier 是格式化唯一来源，启用 Tailwind class sorting；ESLint 负责 JS/TS/Vue，Stylelint 负责 CSS/Vue style。
+- 修改格式、lint 或编辑器规则时，同步更新 `CODE_STYLE.md`、相关配置和常用命令说明。
 
 ### API 命名
 
@@ -72,7 +83,7 @@ docs(project): 更新项目上下文与待办
 
 - 已实现并纳入文档：Button、Icon、Link、Checkbox、Radio、Text、Title、Callout、Divider、Badge、Tooltip、Switch、Input、Tag、InputNumber、Space、Popper。
 - Badge 已加入 sidebar。
-- `docs/superpowers/**` 已通过 `srcExclude` 排除，避免内部计划文档影响 VitePress 构建。
+- 历史计划目录 `docs/superpowers/**` 已审计并删除；需要保留的路线和边界结论已沉淀到 `findings.md`。
 - 本地 Switch 视觉原型 `switch-mockups.html` 已删除；后续不要提交临时原型文件。
 
 ## 近期已完成
@@ -85,9 +96,11 @@ docs(project): 更新项目上下文与待办
 - InputNumber disabled 输入框补充 `cursor-not-allowed`。
 - PopperContent 保持无视觉样式，默认不提供 border、background、text color、radius、shadow/elevation。
 - PopperContent 通过 `v-bind="$attrs"` 将上层 `class/style` 传给 Teleport 后的真实浮层 DOM。
+- Popper 已完成 base-component review；`offset` / `flip` / `shift` / `matchWidth` / `autoUpdate` 改为响应式配置，`matchWidth` 改用 Floating UI `size` middleware，`disabled` 变 true 时会关闭已打开浮层。
 - Popper 文档去掉容易误解为内置主题的深色/浅色和默认边框表达。
 - `Icon.vue` 的 `v-html` 仅用于渲染打包期导入的本地图标 SVG，已补充安全边界说明并处理 lint warning。
 - 全项目 `lint`、`format:check`、`typecheck`、`build` 已通过。
+- `docs/superpowers/**` 历史计划资料已审计并删除，VitePress `srcExclude` 的过期配置已移除。
 
 ## Popper 特别说明
 
@@ -102,8 +115,9 @@ Popper 是底层定位基座，不是最终视觉组件。
 
 ## 注意事项
 
-- 不要把 `docs/superpowers/**` 当作最新完成状态；它们是历史计划。
+- 不要恢复或继续补充 `docs/superpowers/**`；历史计划资料已删除，后续以根目录记忆文档和当前源码为准。
 - 不要直接提交未核对的临时原型文件。
 - 运行清理命令前要确认路径在 `D:\project\ui` 内。
 - 如果未来 `Icon` 支持外部 SVG 或运行时 SVG 文本，必须重新评估当前 `v-html` 策略。
 - 如果修改颜色 token，必须同步更新 `src/styles` 和设计指南文档。
+- 如果修改代码风格或检查工具，必须同步更新 `CODE_STYLE.md` 和相关配置。

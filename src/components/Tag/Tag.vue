@@ -144,9 +144,9 @@ function buildColorStyle(c: string, variant: TagVariant): Record<string, string>
 
 const tagClasses = computed(() =>
   cn(
-    'inline-flex h-6 items-center gap-2 rounded-[var(--round-default)] px-[var(--padding-x-2)] font-body-sm font-medium transition-colors duration-150',
+    'font-body-sm inline-flex h-6 items-center gap-2 rounded-[var(--round-default)] px-[var(--padding-x-2)] font-medium transition-colors duration-150',
     props.disabled &&
-      'bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)] border border-[var(--border-color-component)] cursor-not-allowed',
+      'cursor-not-allowed border border-[var(--border-color-component)] bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)]',
     props.round && 'rounded-[var(--round-full)]',
     props.maxWidth && 'truncate',
     props.checkable && !props.disabled && 'cursor-pointer select-none',

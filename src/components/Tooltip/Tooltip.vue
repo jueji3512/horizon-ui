@@ -25,7 +25,7 @@
       <div
         v-if="showArrow"
         ref="arrowRef"
-        class="absolute w-2 h-2 rotate-45"
+        class="absolute h-2 w-2 rotate-45"
         :class="arrowClasses"
         :style="arrowStyle"
       />
@@ -100,7 +100,7 @@ let clickOutsideHandler: ((e: MouseEvent) => void) | null = null
 
 const computedVisible = computed({
   get: () => (props.visible !== undefined ? props.visible : internalVisible.value),
-  set: val => {
+  set: (val) => {
     internalVisible.value = val
     emit('update:visible', val)
   },
@@ -150,8 +150,8 @@ const themeMap: Record<TooltipTheme, { bubble: string; arrow: string }> = {
 
 const bubbleClasses = computed(() =>
   cn(
-    'absolute max-w-60 px-2.5 py-1.5 font-body-sm rounded-[var(--round-default)] select-none',
-    'shadow-lg break-words',
+    'font-body-sm absolute max-w-60 rounded-[var(--round-default)] px-2.5 py-1.5 select-none',
+    'break-words shadow-lg',
     themeMap[props.theme].bubble,
   ),
 )
@@ -248,7 +248,7 @@ function onBubbleLeave() {
   if (props.trigger === 'hover') doHide()
 }
 
-watch(computedVisible, val => {
+watch(computedVisible, (val) => {
   if (props.trigger === 'click') {
     if (val) {
       bindClickOutside()

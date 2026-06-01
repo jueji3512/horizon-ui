@@ -1,5 +1,5 @@
 <template>
-  <span class="inline-flex relative">
+  <span class="relative inline-flex">
     <slot />
     <sup
       v-if="showBadge"
@@ -67,8 +67,8 @@ const themeColorMap: Record<BadgeTheme, string> = {
 const badgeClasses = computed(() =>
   cn(
     props.dot
-      ? 'w-1.5 h-1.5 rounded-[var(--round-full)]'
-      : 'min-w-5 h-5 font-body-sm rounded-[var(--round-full)] px-1.5',
+      ? 'h-1.5 w-1.5 rounded-[var(--round-full)]'
+      : 'font-body-sm h-5 min-w-5 rounded-[var(--round-full)] px-1.5',
     !props.color && themeColorMap[props.theme],
   ),
 )

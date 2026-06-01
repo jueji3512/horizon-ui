@@ -1,5 +1,5 @@
 <template>
-  <div class="flex rounded-[var(--round-default)] overflow-hidden font-body-md my-2">
+  <div class="font-body-md my-2 flex overflow-hidden rounded-[var(--round-default)]">
     <div :class="calloutConfig.bar" class="w-1 flex-shrink-0" />
     <div :class="calloutConfig.bg" class="flex-1 px-[14px] py-[10px]">
       <Title v-if="hasTitle" :level="6" :style="titleColor" class="mb-1">

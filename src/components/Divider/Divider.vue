@@ -3,12 +3,12 @@
     v-if="direction === 'horizontal' && $slots.default"
     role="separator"
     aria-orientation="horizontal"
-    class="flex items-center my-4"
+    class="my-4 flex items-center"
   >
     <span :class="['border-t', lineClass, align === 'left' ? 'w-6 shrink-0' : 'flex-1']" />
     <span
       :class="[
-        'shrink-0 px-3 font-body-md',
+        'font-body-md shrink-0 px-3',
         plain ? 'text-[var(--text-color-secondary)]' : 'text-[var(--text-color-primary)]',
       ]"
     >
@@ -21,14 +21,14 @@
     v-else-if="direction === 'horizontal'"
     role="separator"
     aria-orientation="horizontal"
-    :class="['border-t my-4', lineClass]"
+    :class="['my-4 border-t', lineClass]"
   />
 
   <div
     v-else
     role="separator"
     aria-orientation="vertical"
-    :class="['inline-block align-middle mx-4 border-l h-[1em]', lineClass]"
+    :class="['mx-4 inline-block h-[1em] border-l align-middle', lineClass]"
   />
 </template>
 

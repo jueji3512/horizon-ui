@@ -117,7 +117,7 @@ const buttonSizeClassMap: Record<string, string> = {
 
 const buttonContainerClasses = computed(() =>
   cn(
-    'inline-flex border border-[var(--border-color-component)] overflow-hidden',
+    'inline-flex overflow-hidden border border-[var(--border-color-component)]',
     buttonSizeClassMap[props.size],
   ),
 )

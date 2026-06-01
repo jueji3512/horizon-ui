@@ -25,7 +25,7 @@
           :autocomplete="autocomplete || undefined"
           :aria-label="ariaLabel || undefined"
           :class="[
-            'input-core w-full h-full bg-transparent border-none outline-none px-3 min-w-0',
+            'input-core h-full w-full min-w-0 border-none bg-transparent px-3 outline-none',
             showWordLimit && maxlength ? 'pr-14' : '',
           ]"
           @input="handleInput"
@@ -39,7 +39,7 @@
         <button
           v-if="clearable"
           type="button"
-          class="input-clear mr-2 shrink-0 cursor-pointer text-[var(--text-color-secondary)] hover:text-[var(--text-color-primary)] transition-colors duration-100"
+          class="input-clear mr-2 shrink-0 cursor-pointer text-[var(--text-color-secondary)] transition-colors duration-100 hover:text-[var(--text-color-primary)]"
           :class="showClear ? '' : 'invisible'"
           :aria-label="showClear ? '清空' : undefined"
           :disabled="!showClear"
@@ -52,7 +52,7 @@
         <button
           v-if="type === 'password' && showPassword"
           type="button"
-          class="input-password-toggle mr-2 shrink-0 cursor-pointer text-[var(--text-color-secondary)] hover:text-[var(--text-color-primary)] transition-colors duration-100"
+          class="input-password-toggle mr-2 shrink-0 cursor-pointer text-[var(--text-color-secondary)] transition-colors duration-100 hover:text-[var(--text-color-primary)]"
           :aria-label="passwordVisible ? '隐藏密码' : '显示密码'"
           @click="togglePassword"
         >
@@ -70,7 +70,7 @@
         <!-- word count: absolute positioned, outside flex layout -->
         <span
           v-if="showWordLimit && maxlength"
-          class="absolute right-2 top-1/2 -translate-y-1/2 font-body-sm text-[var(--text-color-secondary)] tabular-nums select-none pointer-events-none"
+          class="font-body-sm pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-[var(--text-color-secondary)] tabular-nums select-none"
         >
           {{ String(modelValue).length }} / {{ maxlength }}
         </span>
@@ -234,10 +234,10 @@ const statusShadowMap: Record<InputStatus, string> = {
 
 const inputWrapperClasses = computed(() =>
   cn(
-    'relative flex items-center flex-1 rounded-[var(--round-default)] border transition-colors duration-150 bg-[var(--bg-color-container)] text-[var(--text-color-primary)] w-full',
+    'relative flex w-full flex-1 items-center rounded-[var(--round-default)] border bg-[var(--bg-color-container)] text-[var(--text-color-primary)] transition-colors duration-150',
     sizeMap[props.size],
     props.disabled &&
-      'bg-[var(--bg-color-component-disabled)] border-[var(--border-color-component)] text-[var(--text-color-disabled)] cursor-not-allowed',
+      'cursor-not-allowed border-[var(--border-color-component)] bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)]',
     props.readonly && 'cursor-pointer',
     props.status &&
       !props.disabled &&

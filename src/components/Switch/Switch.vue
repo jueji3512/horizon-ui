@@ -62,26 +62,33 @@ const sizeMap: Record<SwitchSize, { track: string; thumb: string; thumbActive: s
 }
 
 const iconSizeMap: Record<SwitchSize, number> = { sm: 8, md: 10, lg: 12 }
+const isDisabled = computed(() => props.disabled || props.loading)
 
 const switchClasses = computed(() =>
   cn(
     'inline-flex items-center align-middle select-none',
-    props.disabled || props.loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+    isDisabled.value ? 'cursor-not-allowed' : 'cursor-pointer',
   ),
 )
 
 const trackClasses = computed(() =>
   cn(
-    'rounded-[var(--round-full)] transition-colors duration-200 relative flex items-center',
+    'relative flex items-center rounded-[var(--round-full)] transition-colors duration-200',
     sizeMap[props.size].track,
-    props.modelValue ? 'bg-brand' : 'bg-[var(--bg-color-component)]',
+    props.modelValue && !isDisabled.value && 'bg-brand',
+    props.modelValue && isDisabled.value && 'bg-brand-disabled',
+    !props.modelValue &&
+      (isDisabled.value
+        ? 'bg-[var(--bg-color-component-disabled)]'
+        : 'bg-[var(--bg-color-component)]'),
   ),
 )
 
 const thumbClasses = computed(() =>
   cn(
-    'rounded-[var(--round-full)] bg-[var(--bg-color-container)] shadow-sm absolute left-[3px] top-[3px] flex items-center justify-center transition-transform duration-200 text-brand',
+    'absolute top-[3px] left-[3px] flex items-center justify-center rounded-[var(--round-full)] bg-[var(--bg-color-container)] text-brand shadow-sm transition-transform duration-200',
     sizeMap[props.size].thumb,
+    isDisabled.value && 'text-[var(--text-color-disabled)]',
     props.modelValue ? sizeMap[props.size].thumbActive : 'translate-x-0',
   ),
 )

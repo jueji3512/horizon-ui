@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@source "../../src";
+@source '../../src';
 
 /* ===== Design Tokens ===== */
 @import './tokens/color.css';

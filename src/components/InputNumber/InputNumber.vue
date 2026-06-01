@@ -106,7 +106,7 @@ const inputType = computed(() => (props.format ? 'text' : 'number'))
 
 watch(
   () => props.modelValue,
-  val => {
+  (val) => {
     if (!isFocused.value) {
       displayValue.value = getDisplayValue(val)
     }
@@ -232,7 +232,7 @@ const btnBaseClasses = computed(() =>
   cn(
     sizeCfg.value.btn,
     baseBorder,
-    'inline-flex items-center justify-center shrink-0',
+    'inline-flex shrink-0 items-center justify-center',
     'text-[var(--text-color-primary)] hover:bg-[var(--bg-color-container-hover)] active:bg-[var(--bg-color-container-active)]',
     'transition-colors duration-150',
     'cursor-pointer',
@@ -266,7 +266,7 @@ const inputClasses = computed(() =>
     'focus:border-brand',
     alignMap[props.align],
     props.disabled &&
-      'bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)] border-[var(--border-color-component)] cursor-not-allowed',
+      'cursor-not-allowed border-[var(--border-color-component)] bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)]',
   ),
 )
 </script>

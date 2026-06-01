@@ -1,0 +1,70 @@
+# 代码编辑器与格式规范
+
+本文记录 Horizon UI 的仓库级编辑器、格式化和检查规范。未来新增文件默认遵守本文件；如需调整，应同步更新 `.editorconfig`、`.gitattributes`、`prettier.config.js`、`stylelint.config.js`、`.vscode/settings.json` 和本文档。
+
+## 基础编辑器规范
+
+- 编码：UTF-8。
+- 缩进：2 个空格，不使用 Tab。
+- 换行符：LF。
+- 文件末尾：保留一个最终换行。
+- 尾随空格：默认清理；Markdown 例外，允许保留尾随空格以支持硬换行。
+- Git 换行：`.gitattributes` 使用 `* text=auto eol=lf` 固定文本文件换行，避免不同机器的 `core.autocrlf` 造成隐形差异。
+
+## Prettier
+
+Prettier 是格式化的唯一来源，VS Code 保存时使用 Prettier 格式化。
+
+- `semi: false`
+- `singleQuote: true`
+- `trailingComma: 'all'`
+- `printWidth: 100`
+- `tabWidth: 2`
+- `useTabs: false`
+- `arrowParens: 'always'`
+- `endOfLine: 'lf'`
+- `vueIndentScriptAndStyle: false`
+
+Tailwind class 顺序由 `prettier-plugin-tailwindcss` 自动整理，并通过 `tailwindStylesheet: './src/styles/horizon.css'` 读取 Tailwind v4 CSS-first 配置。`clsx` 和 `cn` 中的 class 字符串也纳入排序。
+
+## ESLint
+
+ESLint 负责 JavaScript、TypeScript 和 Vue SFC 的代码质量规则。
+
+- 使用 flat config。
+- TypeScript 保持 strict。
+- 类型导入使用 `import type`。
+- Vue 单文件组件块顺序为 `template`、`script`、`style`。
+- `vue/no-v-html` 默认告警；仅允许在已确认安全边界的本地图标 SVG 渲染场景中关闭。
+
+## Stylelint
+
+Stylelint 负责 CSS 和 Vue SFC 中的样式规则。
+
+- 基于 `stylelint-config-standard-vue`。
+- Tailwind v4 的 `@theme`、`@source`、`@apply` 等 at-rule 在配置中显式放行。
+- 表单控件兼容性需要的 `-webkit-appearance`、`-moz-appearance`、`-webkit-text-fill-color` 显式放行。
+
+## 常用命令
+
+```bash
+npm run format       # Prettier 写入
+npm run format:check # Prettier 检查
+npm run lint:js      # ESLint 检查
+npm run lint:style   # Stylelint 检查
+npm run lint         # JS/TS/Vue + CSS 检查
+npm run typecheck    # vue-tsc --noEmit
+npm run build        # VitePress 构建
+npm run check        # 格式、lint、typecheck、build 全量检查
+```
+
+## VS Code
+
+推荐安装 `.vscode/extensions.json` 中列出的扩展：
+
+- EditorConfig
+- Prettier
+- ESLint
+- Stylelint
+
+项目 `.vscode/settings.json` 已固定 2 空格、LF、保存时格式化、ESLint 保存时修复和 Stylelint 校验。

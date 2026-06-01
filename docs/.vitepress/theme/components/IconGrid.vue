@@ -33,13 +33,13 @@ const icons = import.meta.glob('../../../../src/components/Icon/icons/*.svg', {
   eager: true,
 })
 const iconNames = Object.keys(icons)
-  .map(k => k.replace(/.*\/|\.svg/g, ''))
+  .map((k) => k.replace(/.*\/|\.svg/g, ''))
   .sort()
 
 const filteredIcons = computed(() => {
   const q = search.value.toLowerCase()
   if (!q) return iconNames
-  return iconNames.filter(n => n.includes(q))
+  return iconNames.filter((n) => n.includes(q))
 })
 
 function copy(name: string) {

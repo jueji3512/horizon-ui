@@ -73,8 +73,8 @@ function handleSelect() {
 
 const circleClasses = computed(() =>
   cn(
-    'w-4 h-4',
-    'rounded-[var(--round-full)] border border-solid flex-shrink-0 flex items-center justify-center transition-colors duration-200',
+    'h-4 w-4',
+    'flex flex-shrink-0 items-center justify-center rounded-[var(--round-full)] border border-solid transition-colors duration-200',
     isDisabled.value &&
       'border-[var(--border-color-component)] bg-[var(--bg-color-component-disabled)]',
     !isDisabled.value && isChecked.value && 'border-brand',
@@ -86,7 +86,7 @@ const circleClasses = computed(() =>
 
 const dotClasses = computed(() =>
   cn(
-    'w-2 h-2',
+    'h-2 w-2',
     'rounded-[var(--round-full)] transition-all duration-200',
     isChecked.value ? 'scale-100 opacity-100' : 'scale-0 opacity-0',
     isDisabled.value && isChecked.value ? 'bg-[var(--text-color-disabled)]' : 'bg-brand',
@@ -95,8 +95,8 @@ const dotClasses = computed(() =>
 
 const defaultClasses = computed(() =>
   cn(
-    'inline-flex items-center gap-2 select-none font-body-md',
-    isDisabled.value ? 'cursor-not-allowed opacity-60' : 'cursor-pointer',
+    'font-body-md inline-flex items-center gap-2 select-none',
+    isDisabled.value ? 'cursor-not-allowed text-[var(--text-color-disabled)]' : 'cursor-pointer',
   ),
 )
 
@@ -111,7 +111,7 @@ const buttonSizeMap: Record<string, string> = {
 
 const buttonClasses = computed(() =>
   cn(
-    'flex-1 inline-flex items-center justify-center font-medium whitespace-nowrap',
+    'inline-flex flex-1 items-center justify-center font-medium whitespace-nowrap',
     'border-r border-[var(--border-color-component)] last:border-r-0',
     buttonSizeMap[groupSize.value],
     isChecked.value && !isDisabled.value && 'bg-brand text-[var(--text-color-inverse)]',
@@ -120,10 +120,10 @@ const buttonClasses = computed(() =>
       'bg-[var(--bg-color-container)] text-[var(--text-color-primary)] hover:text-brand',
     isDisabled.value &&
       isChecked.value &&
-      'bg-brand text-[var(--text-color-inverse)] opacity-60 cursor-not-allowed',
+      'cursor-not-allowed border-brand-disabled bg-brand-disabled text-[var(--text-color-inverse)]',
     isDisabled.value &&
       !isChecked.value &&
-      'bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)] cursor-not-allowed',
+      'cursor-not-allowed bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)]',
   ),
 )
 </script>

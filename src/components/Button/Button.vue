@@ -126,7 +126,7 @@ const disabledMap: Record<ButtonTheme, string> = {
 
 const classes = computed(() =>
   cn(
-    'inline-flex items-center justify-center font-medium border transition-colors duration-200',
+    'inline-flex items-center justify-center border font-medium transition-colors duration-200',
     sizeMap[props.size],
     (props.round || isIconOnly.value) &&
       sizeMap[props.size].replace(

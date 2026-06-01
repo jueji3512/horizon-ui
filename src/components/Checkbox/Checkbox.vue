@@ -124,23 +124,25 @@ function handleToggle() {
 
 const boxClasses = computed(() =>
   cn(
-    'w-4 h-4 rounded-[var(--round-default)] border border-solid flex-shrink-0 flex items-center justify-center transition-colors duration-200',
+    'flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-[var(--round-default)] border border-solid transition-colors duration-200',
     computedDisabled.value &&
-      'bg-[var(--bg-color-component-disabled)] border-[var(--border-color-component)] text-[var(--text-color-disabled)]',
+      'border-[var(--border-color-component)] bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)]',
     !computedDisabled.value &&
       (isChecked.value || isIndeterminate.value) &&
-      'bg-brand border-brand text-[var(--text-color-inverse)]',
+      'border-brand bg-brand text-[var(--text-color-inverse)]',
     !computedDisabled.value &&
       !isChecked.value &&
       !isIndeterminate.value &&
-      'bg-[var(--bg-color-container)] border-[var(--border-color-component)] hover:border-brand',
+      'border-[var(--border-color-component)] bg-[var(--bg-color-container)] hover:border-brand',
   ),
 )
 
 const defaultClasses = computed(() =>
   cn(
-    'inline-flex items-center gap-2 select-none font-body-md',
-    computedDisabled.value ? 'cursor-not-allowed opacity-60' : 'cursor-pointer',
+    'font-body-md inline-flex items-center gap-2 select-none',
+    computedDisabled.value
+      ? 'cursor-not-allowed text-[var(--text-color-disabled)]'
+      : 'cursor-pointer',
   ),
 )
 
@@ -154,7 +156,7 @@ const buttonSizeMap: Record<string, string> = {
 
 const buttonClasses = computed(() =>
   cn(
-    'flex-1 inline-flex items-center justify-center font-medium whitespace-nowrap',
+    'inline-flex flex-1 items-center justify-center font-medium whitespace-nowrap',
     'border-r border-[var(--border-color-component)] last:border-r-0',
     buttonSizeMap[groupSize.value],
     isChecked.value && !computedDisabled.value && 'bg-brand text-[var(--text-color-inverse)]',
@@ -163,10 +165,10 @@ const buttonClasses = computed(() =>
       'bg-[var(--bg-color-container)] text-[var(--text-color-primary)] hover:text-brand',
     computedDisabled.value &&
       isChecked.value &&
-      'bg-brand text-[var(--text-color-inverse)] opacity-60 cursor-not-allowed',
+      'cursor-not-allowed border-brand-disabled bg-brand-disabled text-[var(--text-color-inverse)]',
     computedDisabled.value &&
       !isChecked.value &&
-      'bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)] cursor-not-allowed',
+      'cursor-not-allowed bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)]',
   ),
 )
 </script>

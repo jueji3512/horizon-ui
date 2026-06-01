@@ -40,20 +40,28 @@ import type { Placement } from '@floating-ui/vue'
 import { cn } from '../../utils'
 
 type TooltipPlacement =
-  | 'top' | 'top-start' | 'top-end'
-  | 'bottom' | 'bottom-start' | 'bottom-end'
-  | 'left' | 'left-start' | 'left-end'
-  | 'right' | 'right-start' | 'right-end'
+  | 'top'
+  | 'top-start'
+  | 'top-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'left'
+  | 'left-start'
+  | 'left-end'
+  | 'right'
+  | 'right-start'
+  | 'right-end'
 
 type TooltipTrigger = 'hover' | 'click' | 'focus' | 'manual'
-type TooltipType = 'default' | 'light' | 'primary' | 'success' | 'danger' | 'warning'
+type TooltipTheme = 'default' | 'brand' | 'success' | 'warning' | 'error'
 
 const props = withDefaults(
   defineProps<{
     content?: string
     placement?: TooltipPlacement
     trigger?: TooltipTrigger
-    type?: TooltipType
+    theme?: TooltipTheme
     showArrow?: boolean
     offset?: number
     showDelay?: number
@@ -66,7 +74,7 @@ const props = withDefaults(
     content: '',
     placement: 'top',
     trigger: 'hover',
-    type: 'default',
+    theme: 'default',
     showArrow: true,
     offset: 10,
     showDelay: 0,
@@ -92,13 +100,17 @@ let clickOutsideHandler: ((e: MouseEvent) => void) | null = null
 
 const computedVisible = computed({
   get: () => (props.visible !== undefined ? props.visible : internalVisible.value),
-  set: (val) => {
+  set: val => {
     internalVisible.value = val
     emit('update:visible', val)
   },
 })
 
-const { floatingStyles, middlewareData, placement: currentPlacement } = useFloating(referenceRef, floatingRef, {
+const {
+  floatingStyles,
+  middlewareData,
+  placement: currentPlacement,
+} = useFloating(referenceRef, floatingRef, {
   placement: computed(() => props.placement as unknown as Placement),
   middleware: computed(() => [
     offsetMiddleware(props.offset),
@@ -125,35 +137,45 @@ const mergedStyles = computed(() => ({
   ...(props.zIndex != null ? { 'z-index': props.zIndex } : {}),
 }))
 
-const typeMap: Record<TooltipType, { bubble: string; arrow: string }> = {
-  default: { bubble: 'bg-neutral-heading text-white', arrow: 'bg-neutral-heading' },
-  light: { bubble: 'bg-white text-neutral-heading', arrow: 'bg-white' },
-  primary: { bubble: 'bg-primary-light text-primary-active', arrow: 'bg-primary-light' },
+const themeMap: Record<TooltipTheme, { bubble: string; arrow: string }> = {
+  default: {
+    bubble: 'bg-[var(--text-color-primary)] text-[var(--text-color-inverse)]',
+    arrow: 'bg-[var(--text-color-primary)]',
+  },
+  brand: { bubble: 'bg-brand-light text-brand-active', arrow: 'bg-brand-light' },
   success: { bubble: 'bg-success-light text-success-active', arrow: 'bg-success-light' },
-  danger: { bubble: 'bg-danger-light text-danger-active', arrow: 'bg-danger-light' },
   warning: { bubble: 'bg-warning-light text-warning-active', arrow: 'bg-warning-light' },
+  error: { bubble: 'bg-error-light text-error-active', arrow: 'bg-error-light' },
 }
 
 const bubbleClasses = computed(() =>
   cn(
-    'absolute max-w-60 px-2.5 py-1.5 text-xs rounded select-none',
+    'absolute max-w-60 px-2.5 py-1.5 font-body-sm rounded-[var(--round-default)] select-none',
     'shadow-lg break-words',
-    typeMap[props.type].bubble,
+    themeMap[props.theme].bubble,
   ),
 )
 
-const arrowClasses = computed(() => typeMap[props.type].arrow)
+const arrowClasses = computed(() => themeMap[props.theme].arrow)
 
 function clearTimers() {
-  if (showTimer) { clearTimeout(showTimer); showTimer = null }
-  if (hideTimer) { clearTimeout(hideTimer); hideTimer = null }
+  if (showTimer) {
+    clearTimeout(showTimer)
+    showTimer = null
+  }
+  if (hideTimer) {
+    clearTimeout(hideTimer)
+    hideTimer = null
+  }
 }
 
 function doShow() {
   if (props.disabled) return
   clearTimers()
   if (props.showDelay > 0) {
-    showTimer = setTimeout(() => { computedVisible.value = true }, props.showDelay)
+    showTimer = setTimeout(() => {
+      computedVisible.value = true
+    }, props.showDelay)
   } else {
     computedVisible.value = true
   }
@@ -162,14 +184,20 @@ function doShow() {
 function doHide() {
   clearTimers()
   if (props.hideDelay > 0) {
-    hideTimer = setTimeout(() => { computedVisible.value = false }, props.hideDelay)
+    hideTimer = setTimeout(() => {
+      computedVisible.value = false
+    }, props.hideDelay)
   } else {
     computedVisible.value = false
   }
 }
 
 function doToggle() {
-  if (computedVisible.value) { doHide() } else { doShow() }
+  if (computedVisible.value) {
+    doHide()
+  } else {
+    doShow()
+  }
 }
 
 function bindClickOutside() {
@@ -180,7 +208,8 @@ function bindClickOutside() {
       !(e.target instanceof Node) ||
       referenceRef.value?.contains(e.target) ||
       floatingRef.value?.contains(e.target)
-    ) return
+    )
+      return
     doHide()
   }
   document.addEventListener('click', clickOutsideHandler, true)
@@ -193,33 +222,53 @@ function unbindClickOutside() {
   }
 }
 
-function onMouseEnter() { if (props.trigger === 'hover') doShow() }
-function onMouseLeave() { if (props.trigger === 'hover') doHide() }
-function onTriggerClick() { if (props.trigger === 'click') doToggle() }
-function onFocus() { if (props.trigger === 'focus') doShow() }
-function onBlur() { if (props.trigger === 'focus') doHide() }
+function onMouseEnter() {
+  if (props.trigger === 'hover') doShow()
+}
+function onMouseLeave() {
+  if (props.trigger === 'hover') doHide()
+}
+function onTriggerClick() {
+  if (props.trigger === 'click') doToggle()
+}
+function onFocus() {
+  if (props.trigger === 'focus') doShow()
+}
+function onBlur() {
+  if (props.trigger === 'focus') doHide()
+}
 
 function onBubbleEnter() {
-  if (props.trigger === 'hover') { clearTimers(); computedVisible.value = true }
+  if (props.trigger === 'hover') {
+    clearTimers()
+    computedVisible.value = true
+  }
 }
-function onBubbleLeave() { if (props.trigger === 'hover') doHide() }
+function onBubbleLeave() {
+  if (props.trigger === 'hover') doHide()
+}
 
-watch(computedVisible, (val) => {
+watch(computedVisible, val => {
   if (props.trigger === 'click') {
-    if (val) { bindClickOutside() } else { unbindClickOutside() }
+    if (val) {
+      bindClickOutside()
+    } else {
+      unbindClickOutside()
+    }
   }
 })
 
-watch(() => props.trigger, (_, oldTrigger) => {
-  if (oldTrigger === 'click') {
-    unbindClickOutside()
-  }
-})
+watch(
+  () => props.trigger,
+  (_, oldTrigger) => {
+    if (oldTrigger === 'click') {
+      unbindClickOutside()
+    }
+  },
+)
 
 onBeforeUnmount(() => {
   clearTimers()
   unbindClickOutside()
 })
 </script>
-
-

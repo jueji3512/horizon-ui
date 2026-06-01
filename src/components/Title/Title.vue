@@ -10,18 +10,18 @@ import { computed } from 'vue'
 import { cn } from '../../utils'
 
 type TitleLevel = 1 | 2 | 3 | 4 | 5 | 6
-type TitleType = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'muted'
+type TitleTheme = 'default' | 'brand' | 'success' | 'warning' | 'error' | 'secondary'
 
 const props = withDefaults(
   defineProps<{
     level?: TitleLevel
-    type?: TitleType
+    theme?: TitleTheme
     mark?: boolean | string
     ellipsis?: boolean
   }>(),
   {
     level: 1,
-    type: 'default',
+    theme: 'default',
     mark: false,
     ellipsis: false,
   },
@@ -30,21 +30,21 @@ const props = withDefaults(
 const tag = computed(() => `h${props.level}`)
 
 const levelMap: Record<TitleLevel, string> = {
-  1: 'text-4xl font-semibold',
-  2: 'text-3xl font-semibold',
-  3: 'text-2xl font-semibold',
-  4: 'text-xl font-medium',
-  5: 'text-lg font-medium',
-  6: 'text-base font-medium',
+  1: 'font-title-1',
+  2: 'font-title-2',
+  3: 'font-title-3',
+  4: 'font-title-4',
+  5: 'font-title-5',
+  6: 'font-title-6',
 }
 
-const typeColorMap: Record<TitleType, string> = {
-  default: 'text-neutral-heading',
-  primary: 'text-primary',
+const themeColorMap: Record<TitleTheme, string> = {
+  default: 'text-[var(--text-color-primary)]',
+  brand: 'text-brand',
   success: 'text-success',
   warning: 'text-warning',
-  danger: 'text-danger',
-  muted: 'text-neutral-muted',
+  error: 'text-error',
+  secondary: 'text-[var(--text-color-secondary)]',
 }
 
 const markStyle = computed(() =>
@@ -54,8 +54,8 @@ const markStyle = computed(() =>
 const classes = computed(() =>
   cn(
     levelMap[props.level],
-    typeColorMap[props.type],
-    props.mark && typeof props.mark !== 'string' && 'bg-warning-light',
+    themeColorMap[props.theme],
+    props.mark && typeof props.mark !== 'string' && 'bg-yellow-300',
   ),
 )
 </script>

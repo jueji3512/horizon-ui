@@ -8,11 +8,11 @@
 import { computed } from 'vue'
 import { cn } from '../../utils'
 
-type TextType = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'muted'
+type TextTheme = 'default' | 'brand' | 'success' | 'warning' | 'error' | 'secondary'
 
 const props = withDefaults(
   defineProps<{
-    type?: TextType
+    theme?: TextTheme
     strong?: boolean
     italic?: boolean
     underline?: boolean
@@ -24,7 +24,7 @@ const props = withDefaults(
     tag?: string
   }>(),
   {
-    type: 'default',
+    theme: 'default',
     strong: false,
     italic: false,
     underline: false,
@@ -37,13 +37,22 @@ const props = withDefaults(
   },
 )
 
-const typeColorMap: Record<TextType, string> = {
-  default: 'text-neutral-heading',
-  primary: 'text-primary',
+const themeColorMap: Record<TextTheme, string> = {
+  default: 'text-[var(--text-color-primary)]',
+  brand: 'text-brand',
   success: 'text-success',
   warning: 'text-warning',
-  danger: 'text-danger',
-  muted: 'text-neutral-muted',
+  error: 'text-error',
+  secondary: 'text-[var(--text-color-secondary)]',
+}
+
+const disabledColorMap: Record<TextTheme, string> = {
+  default: 'text-[var(--text-color-disabled)]',
+  brand: 'text-brand-disabled',
+  success: 'text-success-disabled',
+  warning: 'text-warning-disabled',
+  error: 'text-error-disabled',
+  secondary: 'text-[var(--text-color-disabled)]',
 }
 
 const markStyle = computed(() =>
@@ -52,17 +61,20 @@ const markStyle = computed(() =>
 
 const classes = computed(() =>
   cn(
-    'text-sm',
-    !props.disabled && typeColorMap[props.type],
+    'font-body-md',
+    !props.disabled && themeColorMap[props.theme],
     props.strong && 'font-bold',
     props.italic && 'italic',
     props.delete && 'line-through',
     !props.delete && props.underline && 'underline',
-    props.code && 'font-mono bg-neutral-subtle px-1 py-0.5 rounded text-xs',
-    !props.code && props.mark && typeof props.mark !== 'string' && 'bg-warning-light',
-    !props.code && !props.mark && props.keyboard &&
-      'font-mono text-xs border border-neutral-border rounded px-1 py-0.5 bg-neutral-surface shadow-[inset_0_-1px_0_#e2e8f0]',
-    props.disabled && 'text-neutral-muted cursor-not-allowed select-none',
+    props.code &&
+      'bg-[var(--bg-color-secondarycontainer)] border border-[var(--border-color-component)] rounded-[var(--round-default)] font-body-sm px-[var(--padding-x-2)]',
+    !props.code && props.mark && typeof props.mark !== 'string' && 'bg-yellow-300',
+    !props.code &&
+      !props.mark &&
+      props.keyboard &&
+      'font-body-sm border border-[var(--border-color-component)] rounded-[var(--round-default)] px-[var(--padding-x-2)] py-0.5 bg-[var(--bg-color-inner)] shadow-[inset_0_-1px_0_#e2e8f0]',
+    props.disabled && cn(disabledColorMap[props.theme], 'cursor-not-allowed select-none'),
   ),
 )
 </script>

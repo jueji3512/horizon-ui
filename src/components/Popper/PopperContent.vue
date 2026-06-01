@@ -2,6 +2,7 @@
   <Teleport :to="ctx.to.value">
     <div
       v-if="ctx.visible.value"
+      v-bind="$attrs"
       :id="ctx.contentId"
       ref="contentEl"
       :style="mergedStyles"
@@ -14,6 +15,8 @@
 <script setup lang="ts">
 import { ref, computed, inject, onBeforeUnmount, watch, nextTick, type CSSProperties } from 'vue'
 import { popperContextKey } from './index'
+
+defineOptions({ inheritAttrs: false })
 
 const ctx = inject(popperContextKey)!
 if (!ctx) {

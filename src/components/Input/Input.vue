@@ -1,80 +1,86 @@
 <template>
-  <div>
+  <div v-bind="rootAttrs" class="w-full">
     <div :class="wrapperClasses">
       <span :class="inputWrapperClasses">
-      <!-- prefix icon -->
-      <Icon v-if="prefixIcon" :name="prefixIcon" :size="iconSizeValue" class="ml-2 shrink-0" />
+        <!-- prefix icon -->
+        <Icon v-if="prefixIcon" :name="prefixIcon" class="ml-2 shrink-0" />
 
-      <!-- prefix slot -->
-      <span v-if="$slots.prefix" class="ml-2 shrink-0">
-        <slot name="prefix" />
+        <!-- prefix slot -->
+        <span v-if="$slots.prefix" class="ml-2 shrink-0">
+          <slot name="prefix" />
+        </span>
+
+        <!-- core input -->
+        <input
+          ref="inputRef"
+          v-bind="inputAttrs"
+          :type="inputType"
+          :value="modelValue"
+          :placeholder="placeholder || undefined"
+          :disabled="disabled"
+          :readonly="readonly"
+          :maxlength="maxlength"
+          :name="name || undefined"
+          :autofocus="autofocus"
+          :autocomplete="autocomplete || undefined"
+          :aria-label="ariaLabel || undefined"
+          :class="[
+            'input-core w-full h-full bg-transparent border-none outline-none px-3 min-w-0',
+            showWordLimit && maxlength ? 'pr-14' : '',
+          ]"
+          @input="handleInput"
+          @change="handleChange"
+          @focus="handleFocus"
+          @blur="handleBlur"
+          @keydown.enter="handleEnter"
+        />
+
+        <!-- clear trigger: always rendered when clearable to prevent layout shift -->
+        <button
+          v-if="clearable"
+          type="button"
+          class="input-clear mr-2 shrink-0 cursor-pointer text-[var(--text-color-secondary)] hover:text-[var(--text-color-primary)] transition-colors duration-100"
+          :class="showClear ? '' : 'invisible'"
+          :aria-label="showClear ? '清空' : undefined"
+          :disabled="!showClear"
+          @click="handleClear"
+        >
+          <Icon name="close" />
+        </button>
+
+        <!-- password toggle -->
+        <button
+          v-if="type === 'password' && showPassword"
+          type="button"
+          class="input-password-toggle mr-2 shrink-0 cursor-pointer text-[var(--text-color-secondary)] hover:text-[var(--text-color-primary)] transition-colors duration-100"
+          :aria-label="passwordVisible ? '隐藏密码' : '显示密码'"
+          @click="togglePassword"
+        >
+          <Icon :name="passwordVisible ? 'eye' : 'eye-off'" />
+        </button>
+
+        <!-- suffix icon -->
+        <Icon v-if="suffixIcon" :name="suffixIcon" class="mr-2 shrink-0" />
+
+        <!-- suffix slot -->
+        <span v-if="$slots.suffix" class="mr-2 shrink-0">
+          <slot name="suffix" />
+        </span>
+
+        <!-- word count: absolute positioned, outside flex layout -->
+        <span
+          v-if="showWordLimit && maxlength"
+          class="absolute right-2 top-1/2 -translate-y-1/2 font-body-sm text-[var(--text-color-secondary)] tabular-nums select-none pointer-events-none"
+        >
+          {{ String(modelValue).length }} / {{ maxlength }}
+        </span>
       </span>
-
-      <!-- core input -->
-      <input
-        ref="inputRef"
-        v-bind="$attrs"
-        :type="inputType"
-        :value="modelValue"
-        :placeholder="placeholder || undefined"
-        :disabled="disabled"
-        :readonly="readonly"
-        :maxlength="maxlength"
-        :name="name || undefined"
-        :autofocus="autofocus"
-        :autocomplete="autocomplete || undefined"
-        :aria-label="ariaLabel || undefined"
-        :class="['input-core w-full h-full bg-transparent border-none outline-none px-3 min-w-0', showWordLimit && maxlength ? 'pr-14' : '']"
-        @input="handleInput"
-        @change="handleChange"
-        @focus="handleFocus"
-        @blur="handleBlur"
-        @keydown.enter="handleEnter"
-      />
-
-      <!-- clear trigger: always rendered when clearable to prevent layout shift -->
-      <button
-        v-if="clearable"
-        type="button"
-        class="input-clear mr-2 shrink-0 cursor-pointer text-neutral-muted hover:text-neutral-text transition-colors duration-100"
-        :class="showClear ? '' : 'invisible'"
-        :aria-label="showClear ? '清空' : undefined"
-        :disabled="!showClear"
-        @click="handleClear"
-      >
-        <Icon name="close" :size="iconSizeValue" />
-      </button>
-
-      <!-- password toggle -->
-      <button
-        v-if="type === 'password' && showPassword"
-        type="button"
-        class="input-password-toggle mr-2 shrink-0 cursor-pointer text-neutral-muted hover:text-neutral-text transition-colors duration-100"
-        :aria-label="passwordVisible ? '隐藏密码' : '显示密码'"
-        @click="togglePassword"
-      >
-        <Icon :name="passwordVisible ? 'eye' : 'eye-off'" :size="iconSizeValue" />
-      </button>
-
-      <!-- suffix icon -->
-      <Icon v-if="suffixIcon" :name="suffixIcon" :size="iconSizeValue" class="mr-2 shrink-0" />
-
-      <!-- suffix slot -->
-      <span v-if="$slots.suffix" class="mr-2 shrink-0">
-        <slot name="suffix" />
-      </span>
-
-      <!-- word count: absolute positioned, outside flex layout -->
-      <span v-if="showWordLimit && maxlength" class="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-neutral-muted tabular-nums select-none pointer-events-none">
-        {{ String(modelValue).length }} / {{ maxlength }}
-      </span>
-    </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, useAttrs } from 'vue'
 import Icon from '../Icon/Icon.vue'
 import { cn } from '../../utils'
 
@@ -138,6 +144,17 @@ const emit = defineEmits<{
 const inputRef = ref<HTMLInputElement | null>(null)
 const passwordVisible = ref(false)
 const isFocused = ref(false)
+const attrs = useAttrs()
+
+const rootAttrs = computed(() => {
+  const { class: className, style } = attrs
+  return { class: className, style }
+})
+
+const inputAttrs = computed(() => {
+  const { class: _class, style: _style, ...inputOnlyAttrs } = attrs
+  return inputOnlyAttrs
+})
 
 const showClear = computed(() => {
   if (!props.clearable || props.disabled || props.readonly) return false
@@ -188,38 +205,52 @@ function togglePassword() {
 
 // ---- sizes ----
 
-const sizeMap: Record<InputSize, { wrapper: string; iconSize: number }> = {
-  sm: { wrapper: 'h-6 text-xs', iconSize: 12 },
-  md: { wrapper: 'h-8 text-sm', iconSize: 14 },
-  lg: { wrapper: 'h-10 text-base', iconSize: 16 },
+const sizeMap: Record<InputSize, string> = {
+  sm: 'h-[var(--comp-size-sm)] font-body-sm',
+  md: 'h-[var(--comp-size-md)] font-body-md',
+  lg: 'h-[var(--comp-size-lg)] font-body-lg',
 }
-
-const iconSizeValue = computed(() => sizeMap[props.size].iconSize)
 
 // ---- classes ----
 
 const wrapperClasses = computed(() =>
   cn(
-    'inline-flex items-stretch rounded align-middle',
+    'inline-flex w-full items-stretch rounded-[var(--round-default)] align-middle',
     props.disabled && 'cursor-not-allowed',
   ),
 )
 
 const statusBorderMap: Record<InputStatus, string> = {
-  error: 'border-danger',
+  error: 'border-error',
   warning: 'border-warning',
   success: 'border-success',
 }
 
+const statusShadowMap: Record<InputStatus, string> = {
+  error: 'shadow-[0_0_0_2px_var(--color-error-focus)]',
+  warning: 'shadow-[0_0_0_2px_var(--color-warning-focus)]',
+  success: 'shadow-[0_0_0_2px_var(--color-success-focus)]',
+}
+
 const inputWrapperClasses = computed(() =>
   cn(
-    'relative flex items-center flex-1 rounded border transition-colors duration-150 bg-white w-full max-w-full',
-    sizeMap[props.size].wrapper,
-    props.disabled && 'bg-neutral-subtle border-neutral-border cursor-not-allowed opacity-60',
+    'relative flex items-center flex-1 rounded-[var(--round-default)] border transition-colors duration-150 bg-[var(--bg-color-container)] text-[var(--text-color-primary)] w-full',
+    sizeMap[props.size],
+    props.disabled &&
+      'bg-[var(--bg-color-component-disabled)] border-[var(--border-color-component)] text-[var(--text-color-disabled)] cursor-not-allowed',
     props.readonly && 'cursor-pointer',
-    props.status && !props.disabled && !props.readonly && statusBorderMap[props.status],
-    !props.status && !props.disabled && isFocused.value && 'border-primary',
-    !props.status && !props.disabled && !isFocused.value && 'border-neutral-border hover:border-neutral-muted',
+    props.status &&
+      !props.disabled &&
+      !props.readonly &&
+      cn(statusBorderMap[props.status], isFocused.value && statusShadowMap[props.status]),
+    !props.status &&
+      !props.disabled &&
+      isFocused.value &&
+      'border-brand shadow-[0_0_0_2px_var(--color-brand-focus)]',
+    !props.status &&
+      !props.disabled &&
+      !isFocused.value &&
+      'border-[var(--border-color-component)] hover:border-brand',
   ),
 )
 </script>
@@ -234,11 +265,14 @@ const inputWrapperClasses = computed(() =>
 }
 
 .input-core::placeholder {
-  color: var(--color-neutral-muted);
+  color: var(--text-color-placeholder);
 }
 
 .input-core:disabled {
   cursor: not-allowed;
+  color: var(--text-color-disabled);
+  -webkit-text-fill-color: var(--text-color-disabled);
+  opacity: 1;
 }
 
 .input-clear,

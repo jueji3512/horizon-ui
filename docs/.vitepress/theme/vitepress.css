@@ -5,18 +5,7 @@
   确保组件 demo 区域内的 button / heading 不被 VitePress 样式覆盖。
   不在 .vp-doc 全局做 revert，避免影响正常 Markdown 排版。
 */
-.demo-box-preview a,
-.demo-box-preview a:hover,
-.demo-box-preview a:visited,
-.demo-box-preview button,
-.demo-box-preview input,
-.demo-box-preview textarea,
-.demo-box-preview h1,
-.demo-box-preview h2,
-.demo-box-preview h3,
-.demo-box-preview h4,
-.demo-box-preview h5,
-.demo-box-preview h6 {
+.demo-box-preview :where(a, a:hover, a:visited, button, input, textarea, h1, h2, h3, h4, h5, h6) {
   all: revert-layer;
 }
 

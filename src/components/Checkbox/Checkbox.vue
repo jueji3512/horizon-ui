@@ -23,7 +23,7 @@
       </svg>
       <!-- checkmark -->
       <svg
-        v-else-if="isChecked"
+        v-else
         viewBox="0 0 12 12"
         class="checkbox-icon"
         fill="none"
@@ -31,11 +31,14 @@
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
+        :class="!isChecked && 'opacity-0'"
       >
         <path d="M2 6l3 3 5-6" />
       </svg>
     </span>
-    <slot>{{ label }}</slot>
+    <span
+      ><slot>{{ label }}</slot></span
+    >
   </label>
 
   <!-- button type -->
@@ -49,7 +52,7 @@
     :class="buttonClasses"
     @click="handleToggle"
   >
-    <Icon v-if="prefixIcon" :name="prefixIcon" :size="iconSizeValue" />
+    <Icon v-if="prefixIcon" :name="prefixIcon" />
     <slot>{{ label }}</slot>
   </button>
 </template>
@@ -61,21 +64,24 @@ import { cn } from '../../utils'
 import type { CheckboxGroupContext } from './CheckboxGroup.vue'
 import { checkboxGroupKey } from './CheckboxGroup.vue'
 
-const props = withDefaults(defineProps<{
-  value?: string | number
-  label?: string
-  checked?: boolean
-  disabled?: boolean
-  indeterminate?: boolean
-  prefixIcon?: string
-}>(), {
-  value: undefined,
-  label: '',
-  checked: false,
-  disabled: false,
-  indeterminate: false,
-  prefixIcon: '',
-})
+const props = withDefaults(
+  defineProps<{
+    value?: string | number
+    label?: string
+    checked?: boolean
+    disabled?: boolean
+    indeterminate?: boolean
+    prefixIcon?: string
+  }>(),
+  {
+    value: undefined,
+    label: '',
+    checked: false,
+    disabled: false,
+    indeterminate: false,
+    prefixIcon: '',
+  },
+)
 
 const emit = defineEmits<{
   'update:checked': [value: boolean]
@@ -99,12 +105,9 @@ const limitDisabled = computed(() => {
   return group.isLimitDisabled(props.value, isChecked.value)
 })
 
-const computedDisabled = computed(() =>
-  props.disabled || (group?.disabled ?? false) || limitDisabled.value,
+const computedDisabled = computed(
+  () => props.disabled || (group?.disabled ?? false) || limitDisabled.value,
 )
-
-const iconSizeMap: Record<string, number> = { sm: 12, md: 14, lg: 16 }
-const iconSizeValue = computed(() => iconSizeMap[groupSize.value])
 
 function handleToggle() {
   if (computedDisabled.value) return
@@ -121,17 +124,22 @@ function handleToggle() {
 
 const boxClasses = computed(() =>
   cn(
-    'w-4 h-4 rounded-sm border-2 flex-shrink-0 flex items-center justify-center transition-colors duration-200',
-    computedDisabled.value && !isIndeterminate.value && 'border-neutral-border bg-neutral-subtle text-neutral-muted',
-    !computedDisabled.value && isChecked.value && 'border-primary bg-primary text-white',
-    !computedDisabled.value && isIndeterminate.value && 'border-primary bg-primary text-white',
-    !computedDisabled.value && !isChecked.value && !isIndeterminate.value && 'border-neutral-border bg-white hover:border-primary',
+    'w-4 h-4 rounded-[var(--round-default)] border border-solid flex-shrink-0 flex items-center justify-center transition-colors duration-200',
+    computedDisabled.value &&
+      'bg-[var(--bg-color-component-disabled)] border-[var(--border-color-component)] text-[var(--text-color-disabled)]',
+    !computedDisabled.value &&
+      (isChecked.value || isIndeterminate.value) &&
+      'bg-brand border-brand text-[var(--text-color-inverse)]',
+    !computedDisabled.value &&
+      !isChecked.value &&
+      !isIndeterminate.value &&
+      'bg-[var(--bg-color-container)] border-[var(--border-color-component)] hover:border-brand',
   ),
 )
 
 const defaultClasses = computed(() =>
   cn(
-    'inline-flex items-center gap-2 select-none text-sm',
+    'inline-flex items-center gap-2 select-none font-body-md',
     computedDisabled.value ? 'cursor-not-allowed opacity-60' : 'cursor-pointer',
   ),
 )
@@ -139,19 +147,26 @@ const defaultClasses = computed(() =>
 // ===== button type classes =====
 
 const buttonSizeMap: Record<string, string> = {
-  sm: 'h-6 px-2 text-xs gap-1',
-  md: 'h-8 px-4 text-sm gap-1.5',
-  lg: 'h-10 px-4 text-base gap-2',
+  sm: 'h-[var(--comp-size-sm)] px-2 font-body-sm gap-1',
+  md: 'h-[var(--comp-size-md)] px-4 font-body-md gap-1.5',
+  lg: 'h-[var(--comp-size-lg)] px-4 font-body-lg gap-2',
 }
 
 const buttonClasses = computed(() =>
   cn(
     'flex-1 inline-flex items-center justify-center font-medium whitespace-nowrap',
-    'border-r border-neutral-border last:border-r-0',
+    'border-r border-[var(--border-color-component)] last:border-r-0',
     buttonSizeMap[groupSize.value],
-    isChecked.value && !computedDisabled.value && 'bg-primary text-white hover:bg-primary-700',
-    !isChecked.value && !computedDisabled.value && 'bg-white text-neutral-text hover:bg-neutral-subtle',
-    computedDisabled.value && 'bg-neutral-subtle text-neutral-muted opacity-60 cursor-not-allowed',
+    isChecked.value && !computedDisabled.value && 'bg-brand text-[var(--text-color-inverse)]',
+    !isChecked.value &&
+      !computedDisabled.value &&
+      'bg-[var(--bg-color-container)] text-[var(--text-color-primary)] hover:text-brand',
+    computedDisabled.value &&
+      isChecked.value &&
+      'bg-brand text-[var(--text-color-inverse)] opacity-60 cursor-not-allowed',
+    computedDisabled.value &&
+      !isChecked.value &&
+      'bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)] cursor-not-allowed',
   ),
 )
 </script>

@@ -8,7 +8,7 @@
       @mouseup="stopStep"
       @mouseleave="stopStep"
     >
-      <Icon name="minus" :size="iconSize" />
+      <Icon name="minus" />
     </button>
 
     <input
@@ -35,7 +35,7 @@
       @mouseup="stopStep"
       @mouseleave="stopStep"
     >
-      <Icon name="plus" :size="iconSize" />
+      <Icon name="plus" />
     </button>
   </div>
 </template>
@@ -106,7 +106,7 @@ const inputType = computed(() => (props.format ? 'text' : 'number'))
 
 watch(
   () => props.modelValue,
-  (val) => {
+  val => {
     if (!isFocused.value) {
       displayValue.value = getDisplayValue(val)
     }
@@ -200,44 +200,40 @@ function handleFocus(e: FocusEvent) {
 const isMinReached = computed(() => props.modelValue <= props.min)
 const isMaxReached = computed(() => props.modelValue >= props.max)
 
-type SizeConfig = { wrapper: string; btn: string; input: string; icon: number }
+type SizeConfig = { wrapper: string; btn: string; input: string }
 
 const sizeMap: Record<InputNumberSize, SizeConfig> = {
   sm: {
-    wrapper: 'h-6 text-xs',
-    btn: 'w-6 h-6 rounded-sm',
-    input: 'w-[72px] h-6 px-2 rounded-sm',
-    icon: 12,
+    wrapper: 'h-[var(--comp-size-sm)] font-body-sm',
+    btn: 'h-[var(--comp-size-sm)] w-[var(--comp-size-sm)] rounded-[var(--round-default)]',
+    input: 'w-[72px] h-[var(--comp-size-sm)] px-2 rounded-[var(--round-default)]',
   },
   md: {
-    wrapper: 'h-8 text-sm',
-    btn: 'w-8 h-8 rounded-sm',
-    input: 'w-[88px] h-8 px-3 rounded-sm',
-    icon: 14,
+    wrapper: 'h-[var(--comp-size-md)] font-body-md',
+    btn: 'h-[var(--comp-size-md)] w-[var(--comp-size-md)] rounded-[var(--round-default)]',
+    input: 'w-[88px] h-[var(--comp-size-md)] px-3 rounded-[var(--round-default)]',
   },
   lg: {
-    wrapper: 'h-10 text-base',
-    btn: 'w-10 h-10 rounded-sm',
-    input: 'w-[104px] h-10 px-3 rounded-sm',
-    icon: 16,
+    wrapper: 'h-[var(--comp-size-lg)] font-body-lg',
+    btn: 'h-[var(--comp-size-lg)] w-[var(--comp-size-lg)] rounded-[var(--round-default)]',
+    input: 'w-[104px] h-[var(--comp-size-lg)] px-3 rounded-[var(--round-default)]',
   },
 }
 
 const sizeCfg = computed(() => sizeMap[props.size])
-const iconSize = computed(() => sizeCfg.value.icon)
 
 const wrapperClasses = computed(() =>
   cn('inline-flex items-center gap-1', props.disabled && 'cursor-not-allowed'),
 )
 
-const baseBorder = 'border border-neutral-border bg-white'
+const baseBorder = 'border border-[var(--border-color-component)] bg-[var(--bg-color-container)]'
 
 const btnBaseClasses = computed(() =>
   cn(
     sizeCfg.value.btn,
     baseBorder,
     'inline-flex items-center justify-center shrink-0',
-    'text-neutral-text hover:bg-neutral-subtle active:bg-neutral-border',
+    'text-[var(--text-color-primary)] hover:bg-[var(--bg-color-container-hover)] active:bg-[var(--bg-color-container-active)]',
     'transition-colors duration-150',
     'cursor-pointer',
     'outline-none',
@@ -245,7 +241,7 @@ const btnBaseClasses = computed(() =>
 )
 
 const btnDisabledClasses =
-  'bg-neutral-subtle text-neutral-muted border-neutral-border cursor-not-allowed hover:bg-neutral-subtle active:bg-neutral-subtle'
+  'bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)] border-[var(--border-color-component)] cursor-not-allowed hover:bg-[var(--bg-color-component-disabled)] active:bg-[var(--bg-color-component-disabled)]'
 
 const decreaseBtnClasses = computed(() =>
   cn(btnBaseClasses.value, (isMinReached.value || props.disabled) && btnDisabledClasses),
@@ -265,11 +261,12 @@ const inputClasses = computed(() =>
   cn(
     sizeCfg.value.input,
     baseBorder,
-    'text-neutral-heading outline-none',
+    'text-[var(--text-color-primary)] outline-none',
     'transition-colors duration-150',
-    'focus:border-primary',
+    'focus:border-brand',
     alignMap[props.align],
-    props.disabled && 'bg-neutral-subtle text-neutral-muted border-neutral-border',
+    props.disabled &&
+      'bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)] border-[var(--border-color-component)] cursor-not-allowed',
   ),
 )
 </script>
@@ -283,5 +280,12 @@ input[type='number']::-webkit-inner-spin-button {
 
 input[type='number'] {
   -moz-appearance: textfield;
+}
+
+input:disabled {
+  cursor: not-allowed;
+  color: var(--text-color-disabled);
+  -webkit-text-fill-color: var(--text-color-disabled);
+  opacity: 1;
 }
 </style>

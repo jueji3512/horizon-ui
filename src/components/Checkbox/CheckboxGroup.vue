@@ -101,9 +101,7 @@ function handleKeydown(e: KeyboardEvent) {
   if (props.type !== 'button') return
 
   const container = e.currentTarget as HTMLElement
-  const checkboxes = container.querySelectorAll<HTMLElement>(
-    '[role="checkbox"]:not([disabled])',
-  )
+  const checkboxes = container.querySelectorAll<HTMLElement>('[role="checkbox"]:not([disabled])')
   if (!checkboxes?.length) return
 
   const currentIndex = Array.from(checkboxes).indexOf(document.activeElement as HTMLElement)
@@ -128,21 +126,18 @@ function handleKeydown(e: KeyboardEvent) {
 // ===== container classes =====
 
 const defaultContainerClasses = computed(() =>
-  cn(
-    'flex',
-    props.direction === 'horizontal' ? 'flex-row flex-wrap gap-4' : 'flex-col gap-2',
-  ),
+  cn('flex', props.direction === 'horizontal' ? 'flex-row flex-wrap gap-4' : 'flex-col gap-2'),
 )
 
 const buttonSizeClassMap: Record<string, string> = {
-  sm: 'rounded',
-  md: 'rounded',
-  lg: 'rounded',
+  sm: 'rounded-[var(--round-default)]',
+  md: 'rounded-[var(--round-default)]',
+  lg: 'rounded-[var(--round-default)]',
 }
 
 const buttonContainerClasses = computed(() =>
   cn(
-    'inline-flex border border-neutral-border overflow-hidden',
+    'inline-flex border border-[var(--border-color-component)] overflow-hidden',
     buttonSizeClassMap[props.size],
   ),
 )
@@ -154,6 +149,6 @@ const buttonContainerClasses = computed(() =>
 }
 
 .checkbox-group-button > :not(:last-child)[data-selected] {
-  border-right-color: var(--color-primary);
+  border-right-color: var(--color-brand);
 }
 </style>

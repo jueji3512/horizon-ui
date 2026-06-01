@@ -10,17 +10,17 @@
     :class="classes"
     @click="handleClick"
   >
-    <Icon v-if="loading" name="loading" :size="iconSize" class="btn-loading" />
+    <Icon v-if="loading" name="loading" class="btn-loading" />
     <template v-else>
       <span v-if="computedPrefixIcon || $slots['prefix-icon']" class="btn-icon">
         <slot name="prefix-icon">
-          <Icon :name="computedPrefixIcon" :size="iconSize" />
+          <Icon :name="computedPrefixIcon" />
         </slot>
       </span>
       <slot />
       <span v-if="suffixIcon || $slots['suffix-icon']" class="btn-icon">
         <slot name="suffix-icon">
-          <Icon :name="suffixIcon" :size="iconSize" />
+          <Icon :name="suffixIcon" />
         </slot>
       </span>
     </template>
@@ -32,12 +32,12 @@ import { computed, useSlots, useAttrs } from 'vue'
 import Icon from '../Icon/Icon.vue'
 import { cn } from '../../utils'
 
-type ButtonType = 'primary' | 'outline' | 'danger' | 'ghost' | 'link'
+type ButtonTheme = 'default' | 'brand' | 'success' | 'warning' | 'error'
 type ButtonSize = 'sm' | 'md' | 'lg'
 
 const props = withDefaults(
   defineProps<{
-    type?: ButtonType
+    theme?: ButtonTheme
     size?: ButtonSize
     disabled?: boolean
     loading?: boolean
@@ -50,7 +50,7 @@ const props = withDefaults(
     autofocus?: boolean
   }>(),
   {
-    type: 'primary',
+    theme: 'default',
     size: 'md',
     disabled: false,
     loading: false,
@@ -86,45 +86,55 @@ const computedAriaLabel = computed(() => {
   return undefined
 })
 
-const iconSizeMap: Record<ButtonSize, number> = { sm: 14, md: 16, lg: 18 }
-const iconSize = computed(() => iconSizeMap[props.size])
-
 const sizeMap: Record<ButtonSize, string> = {
-  sm: 'h-6 px-2 text-xs rounded gap-1',
-  md: 'h-8 px-4 text-sm rounded gap-1.5',
-  lg: 'h-10 px-4 text-base rounded gap-2',
+  sm: 'h-[var(--comp-size-sm)] px-[calc(var(--padding-x-2)-1px)] font-body-sm rounded-[var(--round-default)] gap-1',
+  md: 'h-[var(--comp-size-md)] px-[calc(var(--padding-x-4)-1px)] font-body-md rounded-[var(--round-default)] gap-1.5',
+  lg: 'h-[var(--comp-size-lg)] px-[calc(var(--padding-x-6)-1px)] font-body-lg rounded-[var(--round-default)] gap-2',
 }
 
 const roundSizeMap: Record<ButtonSize, string> = {
-  sm: 'rounded-full p-0 h-6 w-6',
-  md: 'rounded-full p-0 h-8 w-8',
-  lg: 'rounded-full p-0 h-10 w-10',
+  sm: 'rounded-[var(--round-full)] p-0 h-[var(--comp-size-sm)] w-[var(--comp-size-sm)]',
+  md: 'rounded-[var(--round-full)] p-0 h-[var(--comp-size-md)] w-[var(--comp-size-md)]',
+  lg: 'rounded-[var(--round-full)] p-0 h-[var(--comp-size-lg)] w-[var(--comp-size-lg)]',
 }
 
-const variantMap: Record<ButtonType, string> = {
-  primary: 'bg-primary text-white hover:bg-primary-hover active:bg-primary-active',
-  outline:
-    'bg-white border border-neutral-border text-neutral-heading hover:bg-neutral-surface hover:border-neutral-muted active:bg-neutral-subtle',
-  danger: 'bg-danger text-white hover:bg-danger-hover active:bg-danger-active',
-  ghost: 'text-neutral-text hover:bg-neutral-subtle active:bg-neutral-border',
-  link: 'text-primary hover:text-primary-hover hover:underline p-0 min-w-0',
+const variantMap: Record<ButtonTheme, string> = {
+  default:
+    'bg-[var(--bg-color-component)] border-[var(--border-color-component)] text-[var(--text-color-primary)] hover:bg-[var(--bg-color-component-hover)] active:bg-[var(--bg-color-component-active)]',
+  brand:
+    'bg-brand border-brand text-[var(--text-color-inverse)] hover:bg-brand-hover hover:border-brand-hover active:bg-brand-active active:border-brand-active',
+  success:
+    'bg-success border-success text-[var(--text-color-inverse)] hover:bg-success-hover hover:border-success-hover active:bg-success-active active:border-success-active',
+  warning:
+    'bg-warning border-warning text-[var(--text-color-inverse)] hover:bg-warning-hover hover:border-warning-hover active:bg-warning-active active:border-warning-active',
+  error:
+    'bg-error border-error text-[var(--text-color-inverse)] hover:bg-error-hover hover:border-error-hover active:bg-error-active active:border-error-active',
 }
 
-const disabledMap: Record<ButtonType, string> = {
-  primary: 'bg-primary/40 text-white/90 cursor-not-allowed',
-  outline: 'bg-white border border-neutral-border text-neutral-text/60 cursor-not-allowed',
-  danger: 'bg-danger/40 text-white/90 cursor-not-allowed',
-  ghost: 'text-neutral-muted cursor-not-allowed',
-  link: 'text-neutral-muted cursor-not-allowed',
+const disabledMap: Record<ButtonTheme, string> = {
+  default:
+    'bg-[var(--bg-color-component-disabled)] border-[var(--border-color-component)] text-[var(--text-color-disabled)] cursor-not-allowed',
+  brand:
+    'bg-brand-disabled border-brand-disabled text-[var(--text-color-inverse)] cursor-not-allowed',
+  success:
+    'bg-success-disabled border-success-disabled text-[var(--text-color-inverse)] cursor-not-allowed',
+  warning:
+    'bg-warning-disabled border-warning-disabled text-[var(--text-color-inverse)] cursor-not-allowed',
+  error:
+    'bg-error-disabled border-error-disabled text-[var(--text-color-inverse)] cursor-not-allowed',
 }
 
 const classes = computed(() =>
   cn(
-    'inline-flex items-center justify-center font-medium transition-colors duration-200',
+    'inline-flex items-center justify-center font-medium border transition-colors duration-200',
     sizeMap[props.size],
-    (props.round || isIconOnly.value) && sizeMap[props.size].replace(/rounded\S*/, 'rounded-full'),
+    (props.round || isIconOnly.value) &&
+      sizeMap[props.size].replace(
+        /rounded-\[var\(--round-default\)\]/,
+        'rounded-[var(--round-full)]',
+      ),
     isIconOnly.value && roundSizeMap[props.size],
-    props.disabled || props.loading ? disabledMap[props.type] : variantMap[props.type],
+    props.disabled || props.loading ? disabledMap[props.theme] : variantMap[props.theme],
     props.disabled || props.loading ? 'cursor-not-allowed' : 'cursor-pointer',
   ),
 )

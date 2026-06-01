@@ -14,17 +14,12 @@ import { computed } from 'vue'
 
 type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
-const props = withDefaults(
-  defineProps<{
-    name: string
-    size?: IconSize | number
-    color?: string
-    ariaLabel?: string
-  }>(),
-  {
-    size: 'md',
-  },
-)
+const props = defineProps<{
+  name: string
+  size?: IconSize | number
+  color?: string
+  ariaLabel?: string
+}>()
 
 const icons = import.meta.glob('./icons/*.svg', { query: '?raw', eager: true }) as Record<
   string,
@@ -66,6 +61,8 @@ const iconStyle = computed(() => {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  width: 1em;
+  height: 1em;
 }
 
 .h-icon :deep(svg) {

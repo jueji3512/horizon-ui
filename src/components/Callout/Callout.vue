@@ -1,13 +1,8 @@
 <template>
-  <div class="flex rounded overflow-hidden text-sm my-2">
+  <div class="flex rounded-[var(--round-default)] overflow-hidden font-body-md my-2">
     <div :class="calloutConfig.bar" class="w-1 flex-shrink-0" />
     <div :class="calloutConfig.bg" class="flex-1 px-[14px] py-[10px]">
-      <Title
-        v-if="hasTitle"
-        :level="6"
-        :style="titleColor"
-        class="mb-1"
-      >
+      <Title v-if="hasTitle" :level="6" :style="titleColor" class="mb-1">
         <slot name="title">{{ title }}</slot>
       </Title>
       <div :class="['leading-relaxed', calloutConfig.text]">
@@ -21,15 +16,15 @@
 import { computed, useSlots } from 'vue'
 import Title from '../Title/Title.vue'
 
-type CalloutType = 'note' | 'info' | 'success' | 'warning' | 'danger'
+type CalloutTheme = 'brand' | 'success' | 'warning' | 'error'
 
 const props = withDefaults(
   defineProps<{
-    type?: CalloutType
+    theme?: CalloutTheme
     title?: string
   }>(),
   {
-    type: 'note',
+    theme: 'brand',
     title: '',
   },
 )
@@ -44,23 +39,21 @@ interface CalloutConfig {
   text: string
 }
 
-const calloutMap: Record<CalloutType, CalloutConfig> = {
-  note:    { bar: 'bg-slate-500',   bg: 'bg-slate-50',    text: 'text-slate-700' },
-  info:    { bar: 'bg-sky-600',     bg: 'bg-sky-50',      text: 'text-sky-700' },
-  success: { bar: 'bg-emerald-600', bg: 'bg-emerald-50',  text: 'text-emerald-700' },
-  warning: { bar: 'bg-amber-600',   bg: 'bg-amber-50',    text: 'text-amber-800' },
-  danger:  { bar: 'bg-red-600',     bg: 'bg-red-50',      text: 'text-red-700' },
+const calloutMap: Record<CalloutTheme, CalloutConfig> = {
+  brand: { bar: 'bg-brand', bg: 'bg-brand-light', text: 'text-brand' },
+  success: { bar: 'bg-success', bg: 'bg-success-light', text: 'text-success' },
+  warning: { bar: 'bg-warning', bg: 'bg-warning-light', text: 'text-warning' },
+  error: { bar: 'bg-error', bg: 'bg-error-light', text: 'text-error' },
 }
 
-const calloutConfig = computed(() => calloutMap[props.type])
+const calloutConfig = computed(() => calloutMap[props.theme])
 
-const titleColorMap: Record<CalloutType, string> = {
-  note: '#334155',
-  info: '#0369a1',
-  success: '#047857',
-  warning: '#92400e',
-  danger: '#b91c1c',
+const titleColorMap: Record<CalloutTheme, string> = {
+  brand: 'var(--color-brand)',
+  success: 'var(--color-success)',
+  warning: 'var(--color-warning)',
+  error: 'var(--color-error)',
 }
 
-const titleColor = computed(() => ({ color: titleColorMap[props.type] }))
+const titleColor = computed(() => ({ color: titleColorMap[props.theme] }))
 </script>

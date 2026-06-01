@@ -11,7 +11,7 @@
     />
     <span :class="trackClasses">
       <span :class="thumbClasses">
-        <Icon v-if="loading" name="loading" :size="loadingIconSize" class="animate-spin" />
+        <Icon v-if="loading" name="loading" :size="iconSizeMap[props.size]" class="animate-spin" />
       </span>
     </span>
   </label>
@@ -55,11 +55,13 @@ function handleToggle() {
   emit('change', next)
 }
 
-const sizeMap: Record<SwitchSize, { track: string; thumb: string; thumbActive: string; iconSize: number }> = {
-  sm: { track: 'w-7 h-4', thumb: 'w-3 h-3', thumbActive: 'translate-x-3', iconSize: 10 },
-  md: { track: 'w-10 h-5', thumb: 'w-4 h-4', thumbActive: 'translate-x-5', iconSize: 12 },
-  lg: { track: 'w-[52px] h-6', thumb: 'w-5 h-5', thumbActive: 'translate-x-7', iconSize: 14 },
+const sizeMap: Record<SwitchSize, { track: string; thumb: string; thumbActive: string }> = {
+  sm: { track: 'w-[26px] h-4', thumb: 'w-[10px] h-[10px]', thumbActive: 'translate-x-[10px]' },
+  md: { track: 'w-8 h-5', thumb: 'w-[14px] h-[14px]', thumbActive: 'translate-x-3' },
+  lg: { track: 'w-[39px] h-6', thumb: 'w-[18px] h-[18px]', thumbActive: 'translate-x-[15px]' },
 }
+
+const iconSizeMap: Record<SwitchSize, number> = { sm: 8, md: 10, lg: 12 }
 
 const switchClasses = computed(() =>
   cn(
@@ -70,19 +72,17 @@ const switchClasses = computed(() =>
 
 const trackClasses = computed(() =>
   cn(
-    'rounded-full transition-colors duration-200 relative flex items-center',
+    'rounded-[var(--round-full)] transition-colors duration-200 relative flex items-center',
     sizeMap[props.size].track,
-    props.modelValue ? 'bg-primary' : 'bg-neutral-border',
+    props.modelValue ? 'bg-brand' : 'bg-[var(--bg-color-component)]',
   ),
 )
 
 const thumbClasses = computed(() =>
   cn(
-    'rounded-full bg-white shadow-sm absolute left-0.5 flex items-center justify-center transition-transform duration-200 text-primary',
+    'rounded-[var(--round-full)] bg-[var(--bg-color-container)] shadow-sm absolute left-[3px] top-[3px] flex items-center justify-center transition-transform duration-200 text-brand',
     sizeMap[props.size].thumb,
     props.modelValue ? sizeMap[props.size].thumbActive : 'translate-x-0',
   ),
 )
-
-const loadingIconSize = computed(() => sizeMap[props.size].iconSize)
 </script>

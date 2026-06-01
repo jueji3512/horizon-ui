@@ -6,7 +6,12 @@
     class="flex items-center my-4"
   >
     <span :class="['border-t', lineClass, align === 'left' ? 'w-6 shrink-0' : 'flex-1']" />
-    <span :class="['shrink-0 px-3 text-sm', plain ? 'text-neutral-muted' : 'text-neutral-text']">
+    <span
+      :class="[
+        'shrink-0 px-3 font-body-md',
+        plain ? 'text-[var(--text-color-secondary)]' : 'text-[var(--text-color-primary)]',
+      ]"
+    >
       <slot />
     </span>
     <span :class="['border-t', lineClass, align === 'right' ? 'w-6 shrink-0' : 'flex-1']" />
@@ -51,6 +56,6 @@ const props = withDefaults(
 )
 
 const lineClass = computed(() =>
-  cn('border-neutral-border', props.type === 'dashed' && 'border-dashed'),
+  cn('border-[var(--border-color-divider)]', props.type === 'dashed' && 'border-dashed'),
 )
 </script>

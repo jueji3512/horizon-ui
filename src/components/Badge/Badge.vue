@@ -3,7 +3,7 @@
     <slot />
     <sup
       v-if="showBadge"
-      class="absolute top-0 right-0 flex items-center justify-center font-semibold text-white leading-none"
+      class="absolute top-0 right-0 flex items-center justify-center font-semibold text-[var(--text-color-inverse)]"
       :class="badgeClasses"
       :style="badgeStyle"
     >
@@ -16,13 +16,13 @@
 import { computed } from 'vue'
 import { cn } from '../../utils'
 
-type BadgeType = 'default' | 'primary' | 'danger' | 'success' | 'warning'
+type BadgeTheme = 'default' | 'brand' | 'success' | 'warning' | 'error'
 
 const props = withDefaults(
   defineProps<{
     value?: string | number
     dot?: boolean
-    type?: BadgeType
+    theme?: BadgeTheme
     max?: number
     showZero?: boolean
     hidden?: boolean
@@ -32,7 +32,7 @@ const props = withDefaults(
   {
     value: '',
     dot: false,
-    type: 'danger',
+    theme: 'error',
     max: 99,
     showZero: false,
     hidden: false,
@@ -56,20 +56,20 @@ const displayValue = computed(() => {
   return String(props.value)
 })
 
-const typeColorMap: Record<BadgeType, string> = {
-  default: 'bg-neutral-muted',
-  primary: 'bg-primary',
-  danger: 'bg-danger',
+const themeColorMap: Record<BadgeTheme, string> = {
+  default: 'bg-[var(--bg-color-secondarycomponent-active)]',
+  brand: 'bg-brand',
   success: 'bg-success',
   warning: 'bg-warning',
+  error: 'bg-error',
 }
 
 const badgeClasses = computed(() =>
   cn(
     props.dot
-      ? 'w-1.5 h-1.5 rounded-full'
-      : 'min-w-[18px] h-[18px] text-[11px] rounded-full px-1.5',
-    !props.color && typeColorMap[props.type],
+      ? 'w-1.5 h-1.5 rounded-[var(--round-full)]'
+      : 'min-w-5 h-5 font-body-sm rounded-[var(--round-full)] px-1.5',
+    !props.color && themeColorMap[props.theme],
   ),
 )
 

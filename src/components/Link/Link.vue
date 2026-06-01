@@ -1,12 +1,8 @@
 <template>
-  <a
-    :aria-disabled="disabled || undefined"
-    :class="classes"
-    @click="handleClick"
-  >
-    <Icon v-if="prefixIcon" :name="prefixIcon" :size="iconSize" />
+  <a :aria-disabled="disabled || undefined" :class="classes" @click="handleClick">
+    <Icon v-if="prefixIcon" :name="prefixIcon" />
     <slot />
-    <Icon v-if="suffixIcon" :name="suffixIcon" :size="iconSize" />
+    <Icon v-if="suffixIcon" :name="suffixIcon" />
   </a>
 </template>
 
@@ -15,13 +11,13 @@ import { computed } from 'vue'
 import Icon from '../Icon/Icon.vue'
 import { cn } from '../../utils'
 
-type LinkType = 'default' | 'primary' | 'danger' | 'warning' | 'success'
+type LinkTheme = 'default' | 'brand' | 'success' | 'warning' | 'error'
 type LinkUnderline = 'always' | 'hover' | 'never'
 type LinkSize = 'sm' | 'md' | 'lg'
 
 const props = withDefaults(
   defineProps<{
-    type?: LinkType
+    theme?: LinkTheme
     underline?: LinkUnderline
     size?: LinkSize
     disabled?: boolean
@@ -29,7 +25,7 @@ const props = withDefaults(
     suffixIcon?: string
   }>(),
   {
-    type: 'default',
+    theme: 'default',
     underline: 'hover',
     size: 'md',
     disabled: false,
@@ -43,21 +39,17 @@ const emit = defineEmits<{
 }>()
 
 const sizeMap: Record<LinkSize, string> = {
-  sm: 'text-xs gap-1',
-  md: 'text-sm gap-1',
-  lg: 'text-base gap-1.5',
+  sm: 'font-body-sm gap-1',
+  md: 'font-body-md gap-1',
+  lg: 'font-body-lg gap-1.5',
 }
 
-const iconSizeMap: Record<LinkSize, number> = { sm: 12, md: 14, lg: 16 }
-
-const iconSize = computed(() => iconSizeMap[props.size])
-
-const typeColorMap: Record<LinkType, string> = {
-  default: 'text-neutral-heading',
-  primary: 'text-primary hover:text-primary-hover',
-  danger: 'text-danger hover:text-danger-hover',
-  warning: 'text-warning hover:text-warning-hover',
+const themeColorMap: Record<LinkTheme, string> = {
+  default: 'text-[var(--text-color-primary)]',
+  brand: 'text-brand hover:text-brand-hover',
   success: 'text-success hover:text-success-hover',
+  warning: 'text-warning hover:text-warning-hover',
+  error: 'text-error hover:text-error-hover',
 }
 
 const underlineMap: Record<LinkUnderline, string> = {
@@ -66,12 +58,12 @@ const underlineMap: Record<LinkUnderline, string> = {
   never: '',
 }
 
-const disabledColorMap: Record<LinkType, string> = {
-  default: 'text-neutral-muted/65',
-  primary: 'text-primary/50',
-  danger: 'text-danger/50',
-  warning: 'text-warning/50',
+const disabledColorMap: Record<LinkTheme, string> = {
+  default: 'text-[var(--text-color-disabled)]',
+  brand: 'text-brand/50',
   success: 'text-success/50',
+  warning: 'text-warning/50',
+  error: 'text-error/50',
 }
 
 function handleClick(e: MouseEvent) {
@@ -82,14 +74,11 @@ function handleClick(e: MouseEvent) {
 
 const classes = computed(() =>
   cn(
-    'inline-flex items-center transition-colors duration-150 cursor-pointer [text-decoration:none]',
+    'inline-flex items-center transition-colors duration-150 [text-decoration:none]',
     sizeMap[props.size],
     props.disabled
-      ? disabledColorMap[props.type]
-      : typeColorMap[props.type],
-    props.disabled
-      ? 'cursor-not-allowed border-transparent pointer-events-none'
-      : underlineMap[props.underline],
+      ? cn(disabledColorMap[props.theme], 'cursor-not-allowed border-transparent')
+      : cn(themeColorMap[props.theme], underlineMap[props.underline], 'cursor-pointer'),
   ),
 )
 </script>

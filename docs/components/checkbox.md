@@ -21,6 +21,7 @@ const btnSizeSm = ref(['a'])
 const btnSizeMd = ref(['a'])
 const btnSizeLg = ref(['a'])
 const btnDisabled = ref(['a'])
+const btnDisabledSelected = ref(['x'])
 
 const allChecked = ref([])
 const indeterminate1 = ref(false)
@@ -47,7 +48,7 @@ const minmax = ref(['a', 'b'])
   <Checkbox v-model:checked="single" label="同意服务条款" />
 </DemoBox>
 
-<div class="mt-2 text-sm text-neutral-muted">checked: {{ single }}</div>
+<div class="mt-2 text-sm text-[var(--text-color-secondary)]">checked: {{ single }}</div>
 
 ::: details 查看代码
 ```html
@@ -65,7 +66,7 @@ const minmax = ref(['a', 'b'])
   </CheckboxGroup>
 </DemoBox>
 
-<div class="mt-2 text-sm text-neutral-muted">checked: {{ checked }}</div>
+<div class="mt-2 text-sm text-[var(--text-color-secondary)]">checked: {{ checked }}</div>
 
 ::: details 查看代码
 ```html
@@ -144,7 +145,7 @@ const minmax = ref(['a', 'b'])
   </CheckboxGroup>
 </DemoBox>
 
-<div class="mt-2 text-sm text-neutral-muted">至少选 1 项，最多选 2 项</div>
+<div class="mt-2 text-sm text-[var(--text-color-secondary)]">至少选 1 项，最多选 2 项</div>
 
 ::: details 查看代码
 ```html
@@ -224,6 +225,13 @@ const minmax = ref(['a', 'b'])
     <Checkbox value="b" label="禁用" disabled />
     <Checkbox value="c" label="可用" />
   </CheckboxGroup>
+
+  <div class="mt-4">
+    <CheckboxGroup v-model="btnDisabledSelected" type="button">
+      <Checkbox value="x" disabled label="选中禁用" />
+      <Checkbox value="y" disabled label="未选禁用" />
+    </CheckboxGroup>
+  </div>
 </DemoBox>
 
 ::: details 查看代码
@@ -251,6 +259,11 @@ const minmax = ref(['a', 'b'])
   <Checkbox value="a" label="可用" />
   <Checkbox value="b" label="禁用" disabled />
   <Checkbox value="c" label="可用" />
+</CheckboxGroup>
+
+<CheckboxGroup v-model="btnDisabledSelected" type="button">
+  <Checkbox value="x" disabled label="选中禁用" />
+  <Checkbox value="y" disabled label="未选禁用" />
 </CheckboxGroup>
 ```
 :::

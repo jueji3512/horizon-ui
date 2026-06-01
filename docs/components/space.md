@@ -87,8 +87,8 @@
 <DemoBox>
   <div class="flex flex-col gap-4">
     <div class="flex items-center gap-2">
-      <span class="text-xs text-neutral-500 w-16">start</span>
-      <div class="bg-neutral-subtle p-2 rounded">
+      <span class="text-xs text-[var(--text-color-secondary)] w-16">start</span>
+      <div class="bg-[var(--bg-color-secondarycontainer)] p-2 rounded">
         <Space align="start">
           <Button size="sm">短</Button>
           <Button size="lg">高按钮</Button>
@@ -97,8 +97,8 @@
       </div>
     </div>
     <div class="flex items-center gap-2">
-      <span class="text-xs text-neutral-500 w-16">center</span>
-      <div class="bg-neutral-subtle p-2 rounded">
+      <span class="text-xs text-[var(--text-color-secondary)] w-16">center</span>
+      <div class="bg-[var(--bg-color-secondarycontainer)] p-2 rounded">
         <Space align="center">
           <Button size="sm">短</Button>
           <Button size="lg">高按钮</Button>
@@ -107,8 +107,8 @@
       </div>
     </div>
     <div class="flex items-center gap-2">
-      <span class="text-xs text-neutral-500 w-16">end</span>
-      <div class="bg-neutral-subtle p-2 rounded">
+      <span class="text-xs text-[var(--text-color-secondary)] w-16">end</span>
+      <div class="bg-[var(--bg-color-secondarycontainer)] p-2 rounded">
         <Space align="end">
           <Button size="sm">短</Button>
           <Button size="lg">高按钮</Button>
@@ -117,8 +117,8 @@
       </div>
     </div>
     <div class="flex items-center gap-2">
-      <span class="text-xs text-neutral-500 w-16">baseline</span>
-      <div class="bg-neutral-subtle p-2 rounded">
+      <span class="text-xs text-[var(--text-color-secondary)] w-16">baseline</span>
+      <div class="bg-[var(--bg-color-secondarycontainer)] p-2 rounded">
         <Space align="baseline">
           <Button size="sm">短</Button>
           <Button size="lg">高按钮</Button>

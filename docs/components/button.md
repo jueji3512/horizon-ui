@@ -2,27 +2,27 @@
 
 按钮用于触发用户操作，表达操作意图。
 
-## 变体 Types
+## 主题 Theme
 
-五种变体，除 `outline` 外均为 Fill 填充式：
+五种语义主题，`default` 为中性描边式，其余为 Fill 填充式：
 
 <DemoBox>
   <div class="flex flex-wrap gap-3">
-    <Button>Primary</Button>
-    <Button type="outline">Outline</Button>
-    <Button type="danger">Danger</Button>
-    <Button type="ghost">Ghost</Button>
-    <Button type="link">Link</Button>
+    <Button>Default</Button>
+    <Button theme="brand">Brand</Button>
+    <Button theme="success">Success</Button>
+    <Button theme="warning">Warning</Button>
+    <Button theme="error">Error</Button>
   </div>
 </DemoBox>
 
 ::: details 查看代码
 ```html
-<Button>Primary</Button>
-<Button type="outline">Outline</Button>
-<Button type="danger">Danger</Button>
-<Button type="ghost">Ghost</Button>
-<Button type="link">Link</Button>
+<Button>Default</Button>
+<Button theme="brand">Brand</Button>
+<Button theme="success">Success</Button>
+<Button theme="warning">Warning</Button>
+<Button theme="error">Error</Button>
 ```
 :::
 
@@ -66,21 +66,21 @@
 
 <DemoBox>
   <div class="flex flex-wrap gap-3">
-    <Button disabled>Primary</Button>
-    <Button type="outline" disabled>Outline</Button>
-    <Button type="danger" disabled>Danger</Button>
-    <Button type="ghost" disabled>Ghost</Button>
-    <Button type="link" disabled>Link</Button>
+    <Button disabled>Default</Button>
+    <Button theme="brand" disabled>Brand</Button>
+    <Button theme="success" disabled>Success</Button>
+    <Button theme="warning" disabled>Warning</Button>
+    <Button theme="error" disabled>Error</Button>
   </div>
 </DemoBox>
 
 ::: details 查看代码
 ```html
-<Button disabled>Primary</Button>
-<Button type="outline" disabled>Outline</Button>
-<Button type="danger" disabled>Danger</Button>
-<Button type="ghost" disabled>Ghost</Button>
-<Button type="link" disabled>Link</Button>
+<Button disabled>Default</Button>
+<Button theme="brand" disabled>Brand</Button>
+<Button theme="success" disabled>Success</Button>
+<Button theme="warning" disabled>Warning</Button>
+<Button theme="error" disabled>Error</Button>
 ```
 :::
 
@@ -89,14 +89,14 @@
 <DemoBox>
   <div class="flex flex-wrap gap-3">
     <Button loading>保存中</Button>
-    <Button type="outline" loading>提交</Button>
+    <Button theme="error" loading>删除中</Button>
   </div>
 </DemoBox>
 
 ::: details 查看代码
 ```html
 <Button loading>保存中</Button>
-<Button type="outline" loading>提交</Button>
+<Button theme="error" loading>删除中</Button>
 ```
 :::
 
@@ -106,8 +106,8 @@
   <div class="flex flex-wrap items-center gap-3">
     <Button round>Pill</Button>
     <Button round prefix-icon="plus" />
-    <Button round type="danger">Danger</Button>
-    <Button round type="outline">Outline</Button>
+    <Button round theme="success">Success</Button>
+    <Button round theme="error">Error</Button>
   </div>
 </DemoBox>
 
@@ -115,8 +115,8 @@
 ```html
 <Button round>Pill</Button>
 <Button round prefix-icon="plus" />
-<Button round type="danger">Danger</Button>
-<Button round type="outline">Outline</Button>
+<Button round theme="success">Success</Button>
+<Button round theme="error">Error</Button>
 ```
 :::
 
@@ -124,7 +124,7 @@
 
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `type` | `'primary' \| 'outline' \| 'danger' \| 'ghost' \| 'link'` | `'primary'` | 按钮变体 |
+| `theme` | `'default' \| 'brand' \| 'success' \| 'warning' \| 'error'` | `'default'` | 按钮语义主题 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸（24/32/40px） |
 | `disabled` | `boolean` | `false` | 禁用态 |
 | `loading` | `boolean` | `false` | 加载中，旋转动画 + 禁止交互 |

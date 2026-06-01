@@ -21,10 +21,10 @@ const wordLimited = ref('')
 `v-model` 绑定值。
 
 <DemoBox>
-  <Input v-model="text" placeholder="请输入内容" style="max-width: 320px" />
+  <Input v-model="text" placeholder="请输入内容" />
 </DemoBox>
 
-<div class="mt-2 text-sm text-neutral-muted">text: {{ text }}</div>
+<div class="mt-2 text-sm text-[var(--text-color-secondary)]">text: {{ text }}</div>
 
 ::: details 查看代码
 ```html
@@ -37,7 +37,7 @@ const wordLimited = ref('')
 设置 `type="password"` 并启用 `show-password` 显示密码切换按钮。
 
 <DemoBox>
-  <Input v-model="password" type="password" show-password placeholder="请输入密码" style="max-width: 320px" />
+  <Input v-model="password" type="password" show-password placeholder="请输入密码" />
 </DemoBox>
 
 ::: details 查看代码
@@ -51,7 +51,7 @@ const wordLimited = ref('')
 `sm` / `md` (默认) / `lg` 三档。
 
 <DemoBox>
-  <div class="flex flex-col gap-3" style="max-width: 320px">
+  <div class="flex flex-col gap-3">
     <Input v-model="text" size="sm" placeholder="小尺寸" />
     <Input v-model="text" size="md" placeholder="中尺寸（默认）" />
     <Input v-model="text" size="lg" placeholder="大尺寸" />
@@ -71,7 +71,7 @@ const wordLimited = ref('')
 设置 `clearable`，输入内容后显示清空按钮。
 
 <DemoBox>
-  <Input v-model="clearable" clearable placeholder="输入试试" style="max-width: 320px" />
+  <Input v-model="clearable" clearable placeholder="输入试试" />
 </DemoBox>
 
 ::: details 查看代码
@@ -83,7 +83,7 @@ const wordLimited = ref('')
 ## 禁用与只读
 
 <DemoBox>
-  <div class="flex flex-col gap-3" style="max-width: 320px">
+  <div class="flex flex-col gap-3">
     <Input v-model="disabled" disabled />
     <Input v-model="readonly" readonly />
   </div>
@@ -101,7 +101,7 @@ const wordLimited = ref('')
 `prefix-icon` 和 `suffix-icon` 设置前后图标。
 
 <DemoBox>
-  <div class="flex flex-col gap-3" style="max-width: 320px">
+  <div class="flex flex-col gap-3">
     <Input v-model="text" prefix-icon="search" placeholder="搜索" />
     <Input v-model="text" suffix-icon="search" placeholder="搜索" />
   </div>
@@ -119,7 +119,7 @@ const wordLimited = ref('')
 `status` 设置校验状态，影响边框颜色。
 
 <DemoBox>
-  <div class="flex flex-col gap-3" style="max-width: 320px">
+  <div class="flex flex-col gap-3">
     <Input v-model="statusError" status="error" placeholder="错误状态" />
     <Input v-model="statusWarning" status="warning" placeholder="警告状态" />
     <Input v-model="statusSuccess" status="success" placeholder="成功状态" />
@@ -139,7 +139,7 @@ const wordLimited = ref('')
 `maxlength` 限制最大字符数，`show-word-limit` 显示字数统计。
 
 <DemoBox>
-  <Input v-model="wordLimited" :maxlength="50" show-word-limit placeholder="最多输入 50 个字符" style="max-width: 320px" />
+  <Input v-model="wordLimited" :maxlength="50" show-word-limit placeholder="最多输入 50 个字符" />
 </DemoBox>
 
 ::: details 查看代码

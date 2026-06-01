@@ -6,6 +6,7 @@ export default defineConfig({
   title: 'Horizon UI',
   description: '简约现代企业级 Vue 3 组件库',
   lang: 'zh-CN',
+  srcExclude: ['superpowers/**'],
 
   themeConfig: {
     nav: [
@@ -30,6 +31,7 @@ export default defineConfig({
             { text: 'Button 按钮', link: '/components/button' },
             { text: 'Icon 图标', link: '/components/icon' },
             { text: 'Link 链接', link: '/components/link' },
+            { text: 'Badge 徽标', link: '/components/badge' },
             { text: 'Checkbox 多选框', link: '/components/checkbox' },
             { text: 'Radio 单选框', link: '/components/radio' },
             { text: 'Text 文本', link: '/components/text' },
@@ -46,9 +48,7 @@ export default defineConfig({
         },
         {
           text: '底层组件',
-          items: [
-            { text: 'Popper 弹出定位引擎', link: '/components/popper' },
-          ],
+          items: [{ text: 'Popper 弹出定位引擎', link: '/components/popper' }],
         },
       ],
     },

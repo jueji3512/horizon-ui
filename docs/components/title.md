@@ -10,9 +10,9 @@
   <Title :level="1">一级标题 (36px / h1)</Title>
   <Title :level="2">二级标题 (28px / h2)</Title>
   <Title :level="3">三级标题 (24px / h3)</Title>
-  <Title :level="4">四级标题 (20px / h4)</Title>
-  <Title :level="5">五级标题 (18px / h5)</Title>
-  <Title :level="6">六级标题 (16px / h6)</Title>
+  <Title :level="4">四级标题 (18px / h4)</Title>
+  <Title :level="5">五级标题 (16px / h5)</Title>
+  <Title :level="6">六级标题 (14px / h6)</Title>
 </DemoBox>
 
 ::: details 查看代码
@@ -20,33 +20,33 @@
 <Title :level="1">一级标题 (36px / h1)</Title>
 <Title :level="2">二级标题 (28px / h2)</Title>
 <Title :level="3">三级标题 (24px / h3)</Title>
-<Title :level="4">四级标题 (20px / h4)</Title>
-<Title :level="5">五级标题 (18px / h5)</Title>
-<Title :level="6">六级标题 (16px / h6)</Title>
+<Title :level="4">四级标题 (18px / h4)</Title>
+<Title :level="5">五级标题 (16px / h5)</Title>
+<Title :level="6">六级标题 (14px / h6)</Title>
 ```
 :::
 
 ## 语义色
 
-`type` 支持 6 种语义色。
+`theme` 支持 6 种语义色。
 
 <DemoBox>
   <Title :level="1">default 默认标题</Title>
-  <Title :level="2" type="primary">primary 主色标题</Title>
-  <Title :level="3" type="success">success 成功标题</Title>
-  <Title :level="4" type="warning">warning 警告标题</Title>
-  <Title :level="5" type="danger">danger 危险标题</Title>
-  <Title :level="6" type="muted">muted 辅助标题</Title>
+  <Title :level="2" theme="brand">brand 品牌标题</Title>
+  <Title :level="3" theme="success">success 成功标题</Title>
+  <Title :level="4" theme="warning">warning 警告标题</Title>
+  <Title :level="5" theme="error">error 错误标题</Title>
+  <Title :level="6" theme="secondary">secondary 辅助标题</Title>
 </DemoBox>
 
 ::: details 查看代码
 ```html
 <Title :level="1">default 默认标题</Title>
-<Title :level="2" type="primary">primary 主色标题</Title>
-<Title :level="3" type="success">success 成功标题</Title>
-<Title :level="4" type="warning">warning 警告标题</Title>
-<Title :level="5" type="danger">danger 危险标题</Title>
-<Title :level="6" type="muted">muted 辅助标题</Title>
+<Title :level="2" theme="brand">brand 品牌标题</Title>
+<Title :level="3" theme="success">success 成功标题</Title>
+<Title :level="4" theme="warning">warning 警告标题</Title>
+<Title :level="5" theme="error">error 错误标题</Title>
+<Title :level="6" theme="secondary">secondary 辅助标题</Title>
 ```
 :::
 
@@ -89,6 +89,6 @@
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | 标题等级 |
-| `type` | `'default' \| 'primary' \| 'success' \| 'warning' \| 'danger' \| 'muted'` | `'default'` | 语义色 |
+| `theme` | `'default' \| 'brand' \| 'success' \| 'warning' \| 'error' \| 'secondary'` | `'default'` | 语义主题 |
 | `mark` | `boolean \| string` | `false` | 高亮标记，为 `true` 时使用默认高亮色，也可直接传入颜色值 |
 | `ellipsis` | `boolean` | `false` | 单行溢出省略号 |

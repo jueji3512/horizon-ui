@@ -2,48 +2,27 @@
 
 文字链接组件，用于页面内导航或外部跳转。
 
-## 基本用法
+## 主题 Theme
+
+`theme` 支持 5 种语义色。
 
 <DemoBox>
   <div class="flex flex-wrap gap-4">
-    <Link>默认链接</Link>
-    <Link type="danger">危险链接</Link>
-    <Link type="warning">警告链接</Link>
-    <Link type="success">成功链接</Link>
+    <Link>default 默认</Link>
+    <Link theme="brand">brand 品牌</Link>
+    <Link theme="success">success 成功</Link>
+    <Link theme="warning">warning 警告</Link>
+    <Link theme="error">error 错误</Link>
   </div>
 </DemoBox>
 
 ::: details 查看代码
 ```html
-<Link>默认链接</Link>
-<Link type="default">灰色链接</Link>
-<Link type="danger">危险链接</Link>
-<Link type="warning">警告链接</Link>
-<Link type="success">成功链接</Link>
-```
-:::
-
-## 主题
-
-`type` 支持 5 种语义色。
-
-<DemoBox>
-  <div class="flex flex-wrap gap-4">
-    <Link type="default">default 默认</Link>
-    <Link type="primary">primary 主色</Link>
-    <Link type="success">success 成功</Link>
-    <Link type="warning">warning 警告</Link>
-    <Link type="danger">danger 危险</Link>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Link type="default">default 默认</Link>
-<Link type="primary">primary 主色</Link>
-<Link type="success">success 成功</Link>
-<Link type="warning">warning 警告</Link>
-<Link type="danger">danger 危险</Link>
+<Link>default 默认</Link>
+<Link theme="brand">brand 品牌</Link>
+<Link theme="success">success 成功</Link>
+<Link theme="warning">warning 警告</Link>
+<Link theme="error">error 错误</Link>
 ```
 :::
 
@@ -121,16 +100,16 @@
 <DemoBox>
   <div class="flex flex-wrap gap-4">
     <Link disabled>禁用链接</Link>
-    <Link type="primary" disabled>主色禁用</Link>
-    <Link type="danger" disabled>危险禁用</Link>
+    <Link theme="brand" disabled>品牌禁用</Link>
+    <Link theme="error" disabled>错误禁用</Link>
   </div>
 </DemoBox>
 
 ::: details 查看代码
 ```html
 <Link disabled>禁用链接</Link>
-<Link type="primary" disabled>主色禁用</Link>
-<Link type="danger" disabled>危险禁用</Link>
+<Link theme="brand" disabled>品牌禁用</Link>
+<Link theme="error" disabled>错误禁用</Link>
 ```
 :::
 
@@ -138,7 +117,7 @@
 
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `type` | `'default' \| 'primary' \| 'danger' \| 'warning' \| 'success'` | `'default'` | 语义色 |
+| `theme` | `'default' \| 'brand' \| 'success' \| 'warning' \| 'error'` | `'default'` | 语义主题 |
 | `underline` | `'always' \| 'hover' \| 'never'` | `'hover'` | 下划线行为 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
 | `disabled` | `boolean` | `false` | 禁用态 |

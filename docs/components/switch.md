@@ -23,7 +23,7 @@ const loadingOn = ref(true)
   </div>
 </DemoBox>
 
-<div class="mt-2 text-sm text-neutral-muted">active: {{ active }}, inactive: {{ inactive }}</div>
+<div class="mt-2 text-sm text-[var(--text-color-secondary)]">active: {{ active }}, inactive: {{ inactive }}</div>
 
 ::: details 查看代码
 ```html

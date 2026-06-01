@@ -8,7 +8,6 @@ const placements = ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bo
 const v01Click = ref(false)
 // V-02
 const v02Hover = ref(false)
-const v02Light = ref(false)
 // V-03
 const v03Focus = ref(false)
 // V-04
@@ -53,9 +52,9 @@ const v11Lg = ref(false)
       <Button>点击弹出</Button>
     </PopperTrigger>
     <PopperContent>
-      <div class="bg-white rounded-lg shadow-xl border border-neutral-border p-4 min-w-40">
-        <p class="text-sm text-neutral-heading font-medium">弹出内容</p>
-        <p class="text-xs text-neutral-muted mt-1">点击外部或 Esc 关闭</p>
+      <div class="bg-white rounded-lg shadow-xl p-4 min-w-40">
+        <p class="text-sm text-[var(--text-color-primary)] font-medium">弹出内容</p>
+        <p class="text-xs text-[var(--text-color-secondary)] mt-1">点击外部或 Esc 关闭</p>
       </div>
     </PopperContent>
   </Popper>
@@ -74,39 +73,27 @@ const v11Lg = ref(false)
 
 ### V-02 Hover 触发 + 延时 + 箭头 (`trigger="hover"`, `showDelay`, `hideDelay`)
 
-**验证**：悬停 200ms 弹出 / 离开 100ms 关闭 / 箭头在深色和浅色背景上均可见。
+**验证**：悬停 200ms 弹出 / 离开 100ms 关闭 / 箭头跟随浮层内容背景显示。
 
 <DemoBox>
-  <div class="flex gap-4">
-    <Popper v-model:visible="v02Hover" trigger="hover" placement="top" :show-delay="200" :hide-delay="100">
-      <PopperTrigger>
-        <span class="text-sm text-primary cursor-pointer border-b border-dotted border-primary">深色气泡</span>
-      </PopperTrigger>
-      <PopperContent>
-        <div class="bg-neutral-heading text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
-          提示信息 <PopperArrow />
-        </div>
-      </PopperContent>
-    </Popper>
-    <Popper v-model:visible="v02Light" trigger="hover" placement="top" :show-delay="200" :hide-delay="100">
-      <PopperTrigger>
-        <span class="text-sm text-primary cursor-pointer border-b border-dotted border-primary">浅色气泡</span>
-      </PopperTrigger>
-      <PopperContent>
-        <div class="bg-white text-neutral-heading px-3 py-1.5 rounded text-xs shadow-xl border border-neutral-border whitespace-nowrap">
-          提示信息 <PopperArrow />
-        </div>
-      </PopperContent>
-    </Popper>
-  </div>
+  <Popper v-model:visible="v02Hover" trigger="hover" placement="top" :show-delay="200" :hide-delay="100">
+    <PopperTrigger>
+      <span class="text-sm text-brand cursor-pointer border-b border-dotted border-brand">悬停提示</span>
+    </PopperTrigger>
+    <PopperContent>
+      <div class="bg-[var(--text-color-primary)] text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
+        提示信息 <PopperArrow />
+      </div>
+    </PopperContent>
+  </Popper>
 </DemoBox>
 
 ::: details 查看代码
 ```vue
 <Popper v-model:visible="visible" trigger="hover" placement="top" :show-delay="200" :hide-delay="100">
-  <PopperTrigger><span class="text-primary cursor-pointer">深色气泡</span></PopperTrigger>
+  <PopperTrigger><span class="text-brand cursor-pointer">悬停提示</span></PopperTrigger>
   <PopperContent>
-    <div class="bg-neutral-heading text-white ...">提示信息 <PopperArrow /></div>
+    <div class="bg-[var(--text-color-primary)] text-white ...">提示信息 <PopperArrow /></div>
   </PopperContent>
 </Popper>
 ```
@@ -124,8 +111,8 @@ const v11Lg = ref(false)
       <Input model-value="" placeholder="聚焦输入框" class="w-48" />
     </PopperTrigger>
     <PopperContent>
-      <div class="bg-white rounded-lg shadow-xl border border-neutral-border p-3 min-w-48">
-        <p class="text-xs text-neutral-muted">聚焦时显示，失焦关闭</p>
+      <div class="bg-white rounded-lg shadow-xl p-3 min-w-48">
+        <p class="text-xs text-[var(--text-color-secondary)]">聚焦时显示，失焦关闭</p>
       </div>
     </PopperContent>
   </Popper>
@@ -152,11 +139,11 @@ const v11Lg = ref(false)
       <Input :model-value="v04Selected" readonly class="w-48 cursor-pointer" @click="v04Manual = !v04Manual" />
     </PopperTrigger>
     <PopperContent>
-      <div class="bg-white rounded-lg shadow-xl border border-neutral-border py-1 max-h-48 overflow-auto">
+      <div class="bg-white rounded-lg shadow-xl py-1 max-h-48 overflow-auto">
         <div
           v-for="p in placements" :key="p"
-          class="px-3 py-1.5 text-sm cursor-pointer hover:bg-neutral-subtle transition-colors"
-          :class="{ 'text-primary font-medium': p === v04Selected }"
+          class="px-3 py-1.5 text-sm cursor-pointer hover:bg-[var(--bg-color-secondarycontainer)] transition-colors"
+          :class="{ 'text-brand font-medium': p === v04Selected }"
           @click="v04Selected = p; v04Manual = false"
         >{{ p }}</div>
       </div>
@@ -187,17 +174,17 @@ const v11Lg = ref(false)
   <div class="flex flex-wrap gap-1.5 mb-4">
     <span
       v-for="p in placements" :key="p"
-      class="inline-flex items-center justify-center w-20 h-7 text-xs border border-neutral-border rounded cursor-pointer hover:bg-neutral-subtle hover:border-primary"
-      :class="{ 'text-primary border-primary bg-primary-light': v05Placement === p && v05Visible }"
+      class="inline-flex items-center justify-center w-20 h-7 text-xs border border-[var(--border-color-component)] rounded cursor-pointer hover:bg-[var(--bg-color-secondarycontainer)] hover:border-brand"
+      :class="{ 'text-brand border-brand bg-brand-light': v05Placement === p && v05Visible }"
       @click.stop="if (v05Placement === p) v05Visible = !v05Visible; else { v05Placement = p; v05Visible = true }"
     >{{ p }}</span>
   </div>
   <Popper v-model:visible="v05Visible" trigger="manual" :placement="v05Placement" :offset="6">
     <PopperTrigger>
-      <span class="inline-flex items-center justify-center w-20 h-7 text-xs border border-primary rounded bg-primary-light text-primary">{{ v05Placement }}</span>
+      <span class="inline-flex items-center justify-center w-20 h-7 text-xs border border-brand rounded bg-brand-light text-brand">{{ v05Placement }}</span>
     </PopperTrigger>
     <PopperContent>
-      <div class="bg-neutral-heading text-white px-3 py-2 rounded text-xs shadow-lg w-36">
+      <div class="bg-[var(--text-color-primary)] text-white px-3 py-2 rounded text-xs shadow-lg w-36">
         <p class="font-medium">{{ v05Placement }}</p>
         <p class="mt-0.5 opacity-65">placement preview</p>
         <PopperArrow />
@@ -232,7 +219,7 @@ const v11Lg = ref(false)
         <Button size="sm" @click.stop="v06FlipOn = !v06FlipOn">flip="true"</Button>
       </PopperTrigger>
       <PopperContent>
-        <div class="bg-neutral-heading text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
+        <div class="bg-[var(--text-color-primary)] text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
           自动翻转 <PopperArrow />
         </div>
       </PopperContent>
@@ -242,13 +229,13 @@ const v11Lg = ref(false)
         <Button size="sm" @click.stop="v06FlipOff = !v06FlipOff">flip="false"</Button>
       </PopperTrigger>
       <PopperContent>
-        <div class="bg-neutral-heading text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
+        <div class="bg-[var(--text-color-primary)] text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
           保持 top <PopperArrow />
         </div>
       </PopperContent>
     </Popper>
   </div>
-  <p class="text-xs text-neutral-muted mt-2">将此区域滚至视口顶端后点击，flip="false" 的弹层会溢出上方。</p>
+  <p class="text-xs text-[var(--text-color-secondary)] mt-2">将此区域滚至视口顶端后点击，flip="false" 的弹层会溢出上方。</p>
 </DemoBox>
 
 ::: details 查看代码
@@ -277,7 +264,7 @@ const v11Lg = ref(false)
         <Button size="sm" @click.stop="v07ShiftOn = !v07ShiftOn">shift="true"</Button>
       </PopperTrigger>
       <PopperContent>
-        <div class="bg-neutral-heading text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
+        <div class="bg-[var(--text-color-primary)] text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
           被推入视野 <PopperArrow />
         </div>
       </PopperContent>
@@ -287,13 +274,13 @@ const v11Lg = ref(false)
         <Button size="sm" @click.stop="v07ShiftOff = !v07ShiftOff">shift="false"</Button>
       </PopperTrigger>
       <PopperContent>
-        <div class="bg-neutral-heading text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
+        <div class="bg-[var(--text-color-primary)] text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
           可能不可见 <PopperArrow />
         </div>
       </PopperContent>
     </Popper>
   </div>
-  <p class="text-xs text-neutral-muted mt-2">将此区域滚至视口顶端后点击按钮。shift="true" 弹层被推回可见；shift="false" 弹层溢出视口外不可见。</p>
+  <p class="text-xs text-[var(--text-color-secondary)] mt-2">将此区域滚至视口顶端后点击按钮。shift="true" 弹层被推回可见；shift="false" 弹层溢出视口外不可见。</p>
 </DemoBox>
 
 ::: details 查看代码
@@ -316,14 +303,14 @@ const v11Lg = ref(false)
 **验证**：可滚动容器内。弹出气泡后滚动容器，`autoUpdate="true"` 跟随 trigger，`autoUpdate="false"` 留在原地。
 
 <DemoBox>
-  <div class="overflow-auto h-48 border border-neutral-border rounded-lg">
+  <div class="overflow-auto h-48 border border-[var(--border-color-component)] rounded-lg">
     <div class="flex justify-center gap-8 items-start pt-40 pb-4" style="min-height: 460px">
       <Popper v-model:visible="v08AutoOn" trigger="manual" placement="bottom" :auto-update="true" :offset="6">
         <PopperTrigger>
           <Button size="sm" @click.stop="v08AutoOn = !v08AutoOn">autoUpdate="true"</Button>
         </PopperTrigger>
         <PopperContent>
-          <div class="bg-neutral-heading text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
+          <div class="bg-[var(--text-color-primary)] text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
             跟随滚动 <PopperArrow />
           </div>
         </PopperContent>
@@ -333,7 +320,7 @@ const v11Lg = ref(false)
           <Button size="sm" @click.stop="v08AutoOff = !v08AutoOff">autoUpdate="false"</Button>
         </PopperTrigger>
         <PopperContent>
-          <div class="bg-neutral-heading text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
+          <div class="bg-[var(--text-color-primary)] text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">
             留在原地 <PopperArrow />
           </div>
         </PopperContent>
@@ -371,8 +358,8 @@ const v11Lg = ref(false)
       <Button disabled>禁用状态</Button>
     </PopperTrigger>
     <PopperContent>
-      <div class="bg-white rounded-lg shadow-xl border border-neutral-border p-3">
-        <p class="text-sm text-neutral-heading">不应出现</p>
+      <div class="bg-white rounded-lg shadow-xl p-3">
+        <p class="text-sm text-[var(--text-color-primary)]">不应出现</p>
       </div>
     </PopperContent>
   </Popper>
@@ -423,7 +410,7 @@ const v11Lg = ref(false)
       </Popper>
     </div>
   </div>
-  <p class="text-xs text-neutral-muted mt-2">三个弹层同时出现，绿色覆盖蓝色、蓝色覆盖红色。</p>
+  <p class="text-xs text-[var(--text-color-secondary)] mt-2">三个弹层同时出现，绿色覆盖蓝色、蓝色覆盖红色。</p>
 </DemoBox>
 
 ::: details 查看代码
@@ -458,7 +445,7 @@ const v11Lg = ref(false)
         <Button size="sm" @click.stop="v11Sm = !v11Sm">offset=4</Button>
       </PopperTrigger>
       <PopperContent>
-        <div class="bg-neutral-heading text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">间距 4px <PopperArrow /></div>
+        <div class="bg-[var(--text-color-primary)] text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">间距 4px <PopperArrow /></div>
       </PopperContent>
     </Popper>
     <Popper v-model:visible="v11Lg" trigger="manual" placement="bottom" :offset="20">
@@ -466,7 +453,7 @@ const v11Lg = ref(false)
         <Button size="sm" @click.stop="v11Lg = !v11Lg">offset=20</Button>
       </PopperTrigger>
       <PopperContent>
-        <div class="bg-neutral-heading text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">间距 20px <PopperArrow /></div>
+        <div class="bg-[var(--text-color-primary)] text-white px-3 py-1.5 rounded text-xs shadow-lg whitespace-nowrap">间距 20px <PopperArrow /></div>
       </PopperContent>
     </Popper>
   </div>
@@ -520,7 +507,7 @@ const v11Lg = ref(false)
 
 ### PopperContent
 
-无 Props。z-index 由 Popper 管理，样式通过 `floatingStyles` 自动应用。
+无 Props。z-index 由 Popper 管理，样式通过 `floatingStyles` 自动应用。PopperContent 默认不提供背景、边框或圆角；需要视觉样式时由上层通过 `class` / `style` 设置。
 
 ### PopperArrow
 

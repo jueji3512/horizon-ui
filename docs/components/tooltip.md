@@ -9,7 +9,7 @@
 <DemoBox>
   <div class="flex flex-wrap gap-3">
     <Tooltip content="删除操作不可撤销">
-      <Button type="danger">删除</Button>
+      <Button theme="error">删除</Button>
     </Tooltip>
     <Tooltip content="点击保存">
       <Button>保存</Button>
@@ -20,7 +20,7 @@
 ::: details 查看代码
 ```html
 <Tooltip content="删除操作不可撤销">
-  <Button type="danger">删除</Button>
+  <Button theme="error">删除</Button>
 </Tooltip>
 <Tooltip content="点击保存">
   <Button>保存</Button>
@@ -35,13 +35,13 @@
 <DemoBox>
   <div class="flex flex-wrap gap-3 items-center">
     <Tooltip content="悬停触发" trigger="hover">
-      <Button type="outline">Hover</Button>
+      <Button theme="default">Hover</Button>
     </Tooltip>
     <Tooltip content="点击触发" trigger="click">
-      <Button type="outline">Click</Button>
+      <Button theme="default">Click</Button>
     </Tooltip>
     <Tooltip content="聚焦触发" trigger="focus">
-      <Button type="outline">Focus</Button>
+      <Button theme="default">Focus</Button>
     </Tooltip>
   </div>
 </DemoBox>
@@ -49,13 +49,13 @@
 ::: details 查看代码
 ```html
 <Tooltip content="悬停触发" trigger="hover">
-  <Button type="outline">Hover</Button>
+  <Button theme="default">Hover</Button>
 </Tooltip>
 <Tooltip content="点击触发" trigger="click">
-  <Button type="outline">Click</Button>
+  <Button theme="default">Click</Button>
 </Tooltip>
 <Tooltip content="聚焦触发" trigger="focus">
-  <Button type="outline">Focus</Button>
+  <Button theme="default">Focus</Button>
 </Tooltip>
 ```
 :::
@@ -67,50 +67,50 @@
 <DemoBox>
   <div class="flex flex-wrap justify-center gap-2" style="max-width:400px;margin:40px auto 20px;">
     <Tooltip content="top-start" placement="top-start">
-      <Button size="sm" type="outline">TS</Button>
+      <Button size="sm" theme="default">TS</Button>
     </Tooltip>
     <Tooltip content="top" placement="top">
-      <Button size="sm" type="outline">T</Button>
+      <Button size="sm" theme="default">T</Button>
     </Tooltip>
     <Tooltip content="top-end" placement="top-end">
-      <Button size="sm" type="outline">TE</Button>
+      <Button size="sm" theme="default">TE</Button>
     </Tooltip>
   </div>
 
   <div class="flex justify-between items-center" style="max-width:440px;margin:0 auto 20px;">
     <div class="flex flex-col gap-2">
       <Tooltip content="left-start" placement="left-start">
-        <Button size="sm" type="outline">LS</Button>
+        <Button size="sm" theme="default">LS</Button>
       </Tooltip>
       <Tooltip content="left" placement="left">
-        <Button size="sm" type="outline">L</Button>
+        <Button size="sm" theme="default">L</Button>
       </Tooltip>
       <Tooltip content="left-end" placement="left-end">
-        <Button size="sm" type="outline">LE</Button>
+        <Button size="sm" theme="default">LE</Button>
       </Tooltip>
     </div>
     <div class="flex flex-col gap-2">
       <Tooltip content="right-start" placement="right-start">
-        <Button size="sm" type="outline">RS</Button>
+        <Button size="sm" theme="default">RS</Button>
       </Tooltip>
       <Tooltip content="right" placement="right">
-        <Button size="sm" type="outline">R</Button>
+        <Button size="sm" theme="default">R</Button>
       </Tooltip>
       <Tooltip content="right-end" placement="right-end">
-        <Button size="sm" type="outline">RE</Button>
+        <Button size="sm" theme="default">RE</Button>
       </Tooltip>
     </div>
   </div>
 
   <div class="flex flex-wrap justify-center gap-2" style="max-width:400px;margin:0 auto;">
     <Tooltip content="bottom-start" placement="bottom-start">
-      <Button size="sm" type="outline">BS</Button>
+      <Button size="sm" theme="default">BS</Button>
     </Tooltip>
     <Tooltip content="bottom" placement="bottom">
-      <Button size="sm" type="outline">B</Button>
+      <Button size="sm" theme="default">B</Button>
     </Tooltip>
     <Tooltip content="bottom-end" placement="bottom-end">
-      <Button size="sm" type="outline">BE</Button>
+      <Button size="sm" theme="default">BE</Button>
     </Tooltip>
   </div>
 </DemoBox>
@@ -118,61 +118,55 @@
 ::: details 查看代码
 ```html
 <Tooltip content="top-start" placement="top-start">
-  <Button size="sm" type="outline">TS</Button>
+  <Button size="sm" theme="default">TS</Button>
 </Tooltip>
 <Tooltip content="top" placement="top">
-  <Button size="sm" type="outline">T</Button>
+  <Button size="sm" theme="default">T</Button>
 </Tooltip>
 <!-- ... 12 方位 -->
 ```
 :::
 
-## 类型
+## 主题 Theme
 
-`type` 支持 6 种：`default`（默认）、`light`、`primary`、`success`、`danger`、`warning`。
+`theme` 支持 5 种：`default`（默认深色）、`brand`、`success`、`warning`、`error`。
 
 <DemoBox>
   <div class="flex flex-wrap gap-3">
-    <Tooltip content="默认深色" type="default">
+    <Tooltip content="默认深色" theme="default">
       <Button>Default</Button>
     </Tooltip>
-    <Tooltip content="亮色" type="light">
-      <Button type="outline">Light</Button>
+    <Tooltip content="品牌信息" theme="brand">
+      <Button theme="default">Brand</Button>
     </Tooltip>
-    <Tooltip content="主要信息" type="primary">
-      <Button type="outline">Primary</Button>
+    <Tooltip content="成功信息" theme="success">
+      <Button theme="default">Success</Button>
     </Tooltip>
-    <Tooltip content="成功信息" type="success">
-      <Button type="outline">Success</Button>
+    <Tooltip content="警告信息" theme="warning">
+      <Button theme="default">Warning</Button>
     </Tooltip>
-    <Tooltip content="危险警告" type="danger">
-      <Button type="outline">Danger</Button>
-    </Tooltip>
-    <Tooltip content="警告信息" type="warning">
-      <Button type="outline">Warning</Button>
+    <Tooltip content="错误警告" theme="error">
+      <Button theme="default">Error</Button>
     </Tooltip>
   </div>
 </DemoBox>
 
 ::: details 查看代码
 ```html
-<Tooltip content="默认深色" type="default">
+<Tooltip content="默认深色" theme="default">
   <Button>Default</Button>
 </Tooltip>
-<Tooltip content="亮色" type="light">
-  <Button type="outline">Light</Button>
+<Tooltip content="品牌信息" theme="brand">
+  <Button theme="default">Brand</Button>
 </Tooltip>
-<Tooltip content="主要信息" type="primary">
-  <Button type="outline">Primary</Button>
+<Tooltip content="成功信息" theme="success">
+  <Button theme="default">Success</Button>
 </Tooltip>
-<Tooltip content="成功信息" type="success">
-  <Button type="outline">Success</Button>
+<Tooltip content="警告信息" theme="warning">
+  <Button theme="default">Warning</Button>
 </Tooltip>
-<Tooltip content="危险警告" type="danger">
-  <Button type="outline">Danger</Button>
-</Tooltip>
-<Tooltip content="警告信息" type="warning">
-  <Button type="outline">Warning</Button>
+<Tooltip content="错误警告" theme="error">
+  <Button theme="default">Error</Button>
 </Tooltip>
 ```
 :::
@@ -184,10 +178,10 @@
 <DemoBox>
   <div class="flex flex-wrap gap-3">
     <Tooltip>
-      <Button type="outline">富文本</Button>
+      <Button theme="default">富文本</Button>
       <template #content>
         <div>标题：操作说明</div>
-        <div class="text-neutral-muted">第二步：确认提交</div>
+        <div class="text-[var(--text-color-secondary)]">第二步：确认提交</div>
       </template>
     </Tooltip>
   </div>
@@ -196,10 +190,10 @@
 ::: details 查看代码
 ```html
 <Tooltip>
-  <Button type="outline">富文本</Button>
+  <Button theme="default">富文本</Button>
   <template #content>
     <div>标题：操作说明</div>
-    <div class="text-neutral-muted">第二步：确认提交</div>
+    <div class="text-[var(--text-color-secondary)]">第二步：确认提交</div>
   </template>
 </Tooltip>
 ```
@@ -212,10 +206,10 @@
 <DemoBox>
   <div class="flex flex-wrap gap-3">
     <Tooltip content="延迟 500ms 显示" :show-delay="500">
-      <Button type="outline">延迟显示</Button>
+      <Button theme="default">延迟显示</Button>
     </Tooltip>
     <Tooltip content="延迟 300ms 隐藏" :hide-delay="300">
-      <Button type="outline">延迟隐藏</Button>
+      <Button theme="default">延迟隐藏</Button>
     </Tooltip>
   </div>
 </DemoBox>
@@ -223,10 +217,10 @@
 ::: details 查看代码
 ```html
 <Tooltip content="延迟 500ms 显示" :show-delay="500">
-  <Button type="outline">延迟显示</Button>
+  <Button theme="default">延迟显示</Button>
 </Tooltip>
 <Tooltip content="延迟 300ms 隐藏" :hide-delay="300">
-  <Button type="outline">延迟隐藏</Button>
+  <Button theme="default">延迟隐藏</Button>
 </Tooltip>
 ```
 :::
@@ -245,7 +239,7 @@ const show = ref(false)
     <Tooltip v-model:visible="show" content="手动控制" trigger="manual">
       <Button @click="show = !show">点击切换</Button>
     </Tooltip>
-    <span class="text-sm text-neutral-muted">状态：{{ show ? '显示' : '隐藏' }}</span>
+    <span class="text-sm text-[var(--text-color-secondary)]">状态：{{ show ? '显示' : '隐藏' }}</span>
   </div>
 </DemoBox>
 
@@ -270,7 +264,7 @@ const show = ref(false)
 <DemoBox>
   <div class="flex flex-wrap gap-3">
     <Tooltip content="不会出现的提示" disabled>
-      <Button type="outline">Disabled Tooltip</Button>
+      <Button theme="default">Disabled Tooltip</Button>
     </Tooltip>
   </div>
 </DemoBox>
@@ -278,7 +272,7 @@ const show = ref(false)
 ::: details 查看代码
 ```html
 <Tooltip content="不会出现的提示" disabled>
-  <Button type="outline">Disabled Tooltip</Button>
+  <Button theme="default">Disabled Tooltip</Button>
 </Tooltip>
 ```
 :::
@@ -290,7 +284,7 @@ const show = ref(false)
 | `content` | `string` | `''` | 提示文本 |
 | `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'left' \| 'left-start' \| 'left-end' \| 'right' \| 'right-start' \| 'right-end'` | `'top'` | 12 方位，Floating UI 自动 flip |
 | `trigger` | `'hover' \| 'click' \| 'focus' \| 'manual'` | `'hover'` | 触发方式 |
-| `type` | `'default' \| 'light' \| 'primary' \| 'success' \| 'danger' \| 'warning'` | `'default'` | 主题类型 |
+| `theme` | `'default' \| 'brand' \| 'success' \| 'warning' \| 'error'` | `'default'` | 主题类型 |
 | `show-arrow` | `boolean` | `true` | 箭头 |
 | `offset` | `number` | `10` | 距触发元素的偏移 (px) |
 | `show-delay` | `number` | `0` | 显示延迟 (ms) |

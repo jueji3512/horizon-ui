@@ -27,7 +27,7 @@ function toYuan(v) { return '¥' + v.toLocaleString('en-US') }
   <InputNumber v-model="num" style="max-width: 320px" />
 </DemoBox>
 
-<div class="mt-2 text-sm text-neutral-muted">value: {{ num }}</div>
+<div class="mt-2 text-sm text-[var(--text-color-secondary)]">value: {{ num }}</div>
 
 ::: details 查看代码
 ```html
@@ -101,7 +101,7 @@ function toYuan(v) { return '¥' + v.toLocaleString('en-US') }
   <InputNumber v-model="numPrecision" :precision="2" :step="0.01" style="max-width: 320px" />
 </DemoBox>
 
-<div class="mt-2 text-sm text-neutral-muted">value: {{ numPrecision }}</div>
+<div class="mt-2 text-sm text-[var(--text-color-secondary)]">value: {{ numPrecision }}</div>
 
 ::: details 查看代码
 ```html
@@ -117,7 +117,7 @@ function toYuan(v) { return '¥' + v.toLocaleString('en-US') }
   <InputNumber v-model="numRange" :min="0" :max="100" style="max-width: 320px" />
 </DemoBox>
 
-<div class="mt-2 text-sm text-neutral-muted">value: {{ numRange }} (min=0, max=100)</div>
+<div class="mt-2 text-sm text-[var(--text-color-secondary)]">value: {{ numRange }} (min=0, max=100)</div>
 
 ::: details 查看代码
 ```html
@@ -133,7 +133,7 @@ function toYuan(v) { return '¥' + v.toLocaleString('en-US') }
   <InputNumber v-model="numStepStrictly" :step="5" step-strictly style="max-width: 320px" />
 </DemoBox>
 
-<div class="mt-2 text-sm text-neutral-muted">value: {{ numStepStrictly }} (step=5, stepStrictly)</div>
+<div class="mt-2 text-sm text-[var(--text-color-secondary)]">value: {{ numStepStrictly }} (step=5, stepStrictly)</div>
 
 ::: details 查看代码
 ```html
@@ -152,7 +152,7 @@ function toYuan(v) { return '¥' + v.toLocaleString('en-US') }
   </div>
 </DemoBox>
 
-<div class="mt-2 text-sm text-neutral-muted">actual value: {{ numFormat }}</div>
+<div class="mt-2 text-sm text-[var(--text-color-secondary)]">actual value: {{ numFormat }}</div>
 
 ::: details 查看代码
 ```html

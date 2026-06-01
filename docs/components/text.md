@@ -4,27 +4,27 @@
 
 ## 语义色
 
-`type` 支持 6 种语义色。
+`theme` 支持 6 种语义色。
 
 <DemoBox>
   <div class="flex flex-wrap gap-3">
     <Text>default 正文</Text>
-    <Text type="primary">primary 主色</Text>
-    <Text type="success">success 成功</Text>
-    <Text type="warning">warning 警告</Text>
-    <Text type="danger">danger 危险</Text>
-    <Text type="muted">muted 辅助</Text>
+    <Text theme="brand">brand 品牌</Text>
+    <Text theme="success">success 成功</Text>
+    <Text theme="warning">warning 警告</Text>
+    <Text theme="error">error 错误</Text>
+    <Text theme="secondary">secondary 辅助</Text>
   </div>
 </DemoBox>
 
 ::: details 查看代码
 ```html
 <Text>default 正文</Text>
-<Text type="primary">primary 主色</Text>
-<Text type="success">success 成功</Text>
-<Text type="warning">warning 警告</Text>
-<Text type="danger">danger 危险</Text>
-<Text type="muted">muted 辅助</Text>
+<Text theme="brand">brand 品牌</Text>
+<Text theme="success">success 成功</Text>
+<Text theme="warning">warning 警告</Text>
+<Text theme="error">error 错误</Text>
+<Text theme="secondary">secondary 辅助</Text>
 ```
 :::
 
@@ -45,7 +45,7 @@
 
   <div class="flex flex-wrap items-baseline gap-3" style="margin-top:12px;">
     <Text strong italic underline>组合：粗+斜+下划线</Text>
-    <Text type="danger" delete strong>⚠ 重要通知已失效</Text>
+    <Text theme="error" delete strong>⚠ 重要通知已失效</Text>
   </div>
 </DemoBox>
 
@@ -60,7 +60,7 @@
 <Text keyboard>Ctrl + S</Text>
 
 <Text strong italic underline>组合：粗+斜+下划线</Text>
-<Text type="danger" delete strong>⚠ 重要通知已失效</Text>
+<Text theme="error" delete strong>⚠ 重要通知已失效</Text>
 ```
 :::
 
@@ -91,14 +91,14 @@
 <DemoBox>
   <div class="flex flex-wrap gap-3">
     <Text disabled>禁用的文本</Text>
-    <Text type="danger" disabled>禁用的危险文本</Text>
+    <Text theme="error" disabled>禁用的错误文本</Text>
   </div>
 </DemoBox>
 
 ::: details 查看代码
 ```html
 <Text disabled>禁用的文本</Text>
-<Text type="danger" disabled>禁用的危险文本</Text>
+<Text theme="error" disabled>禁用的错误文本</Text>
 ```
 :::
 
@@ -106,7 +106,7 @@
 
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `type` | `'default' \| 'primary' \| 'success' \| 'warning' \| 'danger' \| 'muted'` | `'default'` | 语义色 |
+| `theme` | `'default' \| 'brand' \| 'success' \| 'warning' \| 'error' \| 'secondary'` | `'default'` | 语义主题 |
 | `strong` | `boolean` | `false` | 加粗 |
 | `italic` | `boolean` | `false` | 斜体 |
 | `underline` | `boolean` | `false` | 下划线 |

@@ -29,7 +29,7 @@ const mergedStyles = computed<CSSProperties>(() => {
   const s: CSSProperties = { ...ctx.floatingStyles.value }
   s.zIndex = ctx.zIndex.value
   if (ctx.matchWidth.value) {
-    s.width = `${ctx.triggerRef.value?.getBoundingClientRect().width ?? 0}px`
+    s.width = 'var(--h-popper-match-width)'
   }
   return s
 })

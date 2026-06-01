@@ -13,6 +13,7 @@ const v03Focus = ref(false)
 // V-04
 const v04Manual = ref(false)
 const v04Selected = ref('bottom')
+const v04Wide = ref(false)
 // V-05
 const v05Placement = ref('bottom')
 const v05Visible = ref(false)
@@ -26,6 +27,7 @@ const v07ShiftOff = ref(false)
 const v08AutoOn = ref(false)
 const v08AutoOff = ref(false)
 // V-09
+const v09Open = ref(false)
 const v09Disabled = ref(false)
 // V-10
 const v10All = ref(false)
@@ -131,15 +133,22 @@ const v11Lg = ref(false)
 
 ### V-04 手动控制 + 匹配宽度 (`trigger="manual"`, `matchWidth`)
 
-**验证**：外部逻辑控制显隐 / 弹层宽度精确等于 trigger 渲染宽度。
+**验证**：外部逻辑控制显隐 / 弹层宽度精确等于 trigger 渲染宽度 / 打开后 trigger 宽度变化时弹层同步更新。
 
 <DemoBox>
   <Popper v-model:visible="v04Manual" trigger="manual" placement="bottom-start" match-width>
     <PopperTrigger>
-      <Input :model-value="v04Selected" readonly class="w-48 cursor-pointer" @click="v04Manual = !v04Manual" />
+      <Input
+        :model-value="v04Selected"
+        readonly
+        class="cursor-pointer"
+        :style="{ width: v04Wide ? '18rem' : '12rem' }"
+        @click="v04Manual = !v04Manual"
+      />
     </PopperTrigger>
     <PopperContent>
       <div class="bg-white rounded-lg shadow-xl py-1 max-h-48 overflow-auto">
+        <Button size="sm" class="mx-2 my-1" @click="v04Wide = !v04Wide">{{ v04Wide ? '缩小 trigger' : '放大 trigger' }}</Button>
         <div
           v-for="p in placements" :key="p"
           class="px-3 py-1.5 text-sm cursor-pointer hover:bg-[var(--bg-color-secondarycontainer)] transition-colors"
@@ -155,9 +164,15 @@ const v11Lg = ref(false)
 ```vue
 <Popper v-model:visible="visible" trigger="manual" placement="bottom-start" match-width>
   <PopperTrigger>
-    <Input :model-value="selected" readonly class="w-48 cursor-pointer" @click="visible = !visible" />
+    <Input
+      :model-value="selected"
+      readonly
+      :style="{ width: wide ? '18rem' : '12rem' }"
+      @click="visible = !visible"
+    />
   </PopperTrigger>
   <PopperContent>
+    <Button size="sm" @click="wide = !wide">切换 trigger 宽度</Button>
     <div v-for="item in options" @click="selected = item; visible = false">{{ item }}</div>
   </PopperContent>
 </Popper>
@@ -350,26 +365,35 @@ const v11Lg = ref(false)
 
 ### V-09 禁用弹出 (`disabled`)
 
-**验证**：`disabled="true"` 按钮无法触发弹出。
+**验证**：`disabled="true"` 按钮无法触发弹出；浮层打开后切到 disabled 会立即关闭。
 
 <DemoBox>
-  <Popper v-model:visible="v09Disabled" trigger="click" placement="bottom" disabled>
-    <PopperTrigger>
-      <Button disabled>禁用状态</Button>
-    </PopperTrigger>
-    <PopperContent>
-      <div class="bg-white rounded-lg shadow-xl p-3">
-        <p class="text-sm text-[var(--text-color-primary)]">不应出现</p>
-      </div>
-    </PopperContent>
-  </Popper>
+  <div class="flex items-center gap-3">
+    <Button size="sm" @click="v09Disabled = false">启用</Button>
+    <span class="text-xs text-[var(--text-color-secondary)]">当前：{{ v09Disabled ? 'disabled' : 'enabled' }} / {{ v09Open ? 'open' : 'closed' }}</span>
+  </div>
+  <div class="mt-3">
+    <Popper v-model:visible="v09Open" trigger="click" placement="bottom" :disabled="v09Disabled">
+      <PopperTrigger>
+        <Button :disabled="v09Disabled">点击弹出</Button>
+      </PopperTrigger>
+      <PopperContent>
+        <div class="bg-white rounded-lg shadow-xl p-3 min-w-40">
+          <p class="text-sm text-[var(--text-color-primary)] mb-2">已打开浮层</p>
+          <Button size="sm" @click="v09Disabled = true">切到 disabled 并关闭</Button>
+        </div>
+      </PopperContent>
+    </Popper>
+  </div>
 </DemoBox>
 
 ::: details 查看代码
 ```vue
-<Popper v-model:visible="visible" trigger="click" placement="bottom" disabled>
-  <PopperTrigger><Button disabled>禁用状态</Button></PopperTrigger>
-  <PopperContent>不应出现</PopperContent>
+<Popper v-model:visible="visible" trigger="click" placement="bottom" :disabled="disabled">
+  <PopperTrigger><Button :disabled="disabled">点击弹出</Button></PopperTrigger>
+  <PopperContent>
+    <Button @click="disabled = true">切到 disabled 并关闭</Button>
+  </PopperContent>
 </Popper>
 ```
 :::

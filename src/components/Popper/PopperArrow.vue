@@ -1,5 +1,5 @@
 <template>
-  <div ref="arrowEl" class="absolute w-2 h-2 rotate-45 bg-inherit" :style="arrowStyle" />
+  <div ref="arrowEl" class="absolute h-2 w-2 rotate-45 bg-inherit" :style="arrowStyle" />
 </template>
 
 <script setup lang="ts">

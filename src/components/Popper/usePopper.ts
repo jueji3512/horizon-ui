@@ -1,6 +1,14 @@
-import { computed, type Ref, type ComputedRef, type CSSProperties } from 'vue'
-import { useFloating, flip, offset as offsetMiddleware, shift, arrow } from '@floating-ui/vue'
-import { autoUpdate, type Middleware } from '@floating-ui/vue'
+import { computed, toValue, watch, type Ref, type ComputedRef, type CSSProperties } from 'vue'
+import {
+  useFloating,
+  flip,
+  offset as offsetMiddleware,
+  shift,
+  arrow,
+  size,
+  autoUpdate,
+  type Middleware,
+} from '@floating-ui/vue'
 import type { UsePopperOptions, UsePopperReturn } from './types'
 import type { Placement } from './types'
 
@@ -11,17 +19,49 @@ export function usePopper(
 ): UsePopperReturn {
   const middleware = computed(() => {
     const m: Middleware[] = []
-    m.push(offsetMiddleware(options.offset ?? 8))
-    if (options.flip !== false) m.push(flip())
-    if (options.shift !== false) m.push(shift({ padding: 4 }))
-    // matchWidth is handled reactively in PopperContent
+    m.push(offsetMiddleware(toValue(options.offset) ?? 8))
+    if (toValue(options.flip) !== false) m.push(flip())
+    if (toValue(options.shift) !== false) m.push(shift({ padding: 4 }))
+    if (toValue(options.matchWidth)) {
+      m.push(
+        size({
+          apply({ rects, elements }) {
+            elements.floating.style.setProperty(
+              '--h-popper-match-width',
+              `${rects.reference.width}px`,
+            )
+          },
+        }),
+      )
+    }
     if (options.arrow?.value) {
       m.push(arrow({ element: options.arrow, padding: 4 }))
     }
     return m
   })
 
-  const whileElementsMounted = options.autoUpdate !== false ? autoUpdate : undefined
+  const whileElementsMounted = (
+    reference: HTMLElement,
+    floating: HTMLElement,
+    update: () => void,
+  ) => {
+    let cleanup: (() => void) | undefined
+
+    const stopAutoUpdateWatch = watch(
+      () => toValue(options.autoUpdate),
+      (enabled) => {
+        cleanup?.()
+        cleanup = enabled === false ? undefined : autoUpdate(reference, floating, update)
+        if (enabled === false) update()
+      },
+      { immediate: true },
+    )
+
+    return () => {
+      stopAutoUpdateWatch()
+      cleanup?.()
+    }
+  }
 
   const {
     floatingStyles,
@@ -30,7 +70,7 @@ export function usePopper(
     update: floatingUpdate,
   } = useFloating(referenceEl, floatingEl, {
     placement: options.placement,
-    strategy: options.strategy ?? 'absolute',
+    strategy: computed(() => toValue(options.strategy) ?? 'absolute'),
     middleware,
     whileElementsMounted,
   })

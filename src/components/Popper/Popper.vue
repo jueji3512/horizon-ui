@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, provide, onBeforeUnmount, useId } from 'vue'
+import { ref, computed, provide, onBeforeUnmount, useId, watch } from 'vue'
 import { usePopper } from './usePopper'
 import { popperContextKey } from './index'
 import { useZIndex } from '../../utils'
@@ -54,8 +54,8 @@ const arrowRef = ref<HTMLElement>()
 
 const internalVisible = ref(false)
 
-const visibleRef = computed(() =>
-  props.visible !== undefined ? props.visible : internalVisible.value,
+const visibleRef = computed(
+  () => !props.disabled && (props.visible !== undefined ? props.visible : internalVisible.value),
 )
 
 function setVisible(val: boolean) {
@@ -110,12 +110,12 @@ const {
   update,
 } = usePopper(triggerRef, contentRef, {
   placement: placementRef,
-  strategy: props.strategy,
-  offset: props.offset,
-  flip: props.flip,
-  shift: props.shift,
-  matchWidth: props.matchWidth,
-  autoUpdate: props.autoUpdate,
+  strategy: computed(() => props.strategy),
+  offset: computed(() => props.offset),
+  flip: computed(() => props.flip),
+  shift: computed(() => props.shift),
+  matchWidth: computed(() => props.matchWidth),
+  autoUpdate: computed(() => props.autoUpdate),
   arrow: arrowRef,
 })
 
@@ -142,6 +142,18 @@ provide(popperContextKey, {
   matchWidth: computed(() => props.matchWidth),
   contentId,
 })
+
+watch(
+  () => props.disabled,
+  (disabled) => {
+    if (disabled) {
+      clearTimers()
+      if (props.visible || internalVisible.value) {
+        setVisible(false)
+      }
+    }
+  },
+)
 
 onBeforeUnmount(() => {
   clearTimers()

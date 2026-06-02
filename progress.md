@@ -158,3 +158,10 @@
 - Tooltip 文档新增“尺寸规格”表，Popper 文档补充 PopperArrow 结构规格。
 - 验证时发现 Tooltip click 示例打开后 trigger 为 `aria-expanded="true"`，但 PopperContent Teleport DOM 未挂载；已将 PopperContent 的 visible 状态和 Teleport target 收束为顶层 computed，修复该边界。
 - 验证：`npm run check` 已通过；使用临时 5174 dev server 浏览器确认 Tooltip 文档规格表渲染正常，click 示例浮层为 28px 高、最大宽度 240px、左右 8px / 上下 4px padding，PopperArrow 布局尺寸为 8x8，旋转后包围盒约 11.31px。5173 原 dev server 在 in-app browser 中出现客户端未挂载，因此本轮浏览器验证改用 5174。
+
+### Checkbox / Radio 尺寸规范定稿
+
+- Checkbox default box / icon 几何收束到 `checkboxControlGeometryMap`，button variant 高度、padding、gap 收束到 `checkboxButtonGeometryMap`。
+- Radio default circle / inner dot 几何收束到 `radioControlGeometryMap`，button variant 高度、padding、gap 收束到 `radioButtonGeometryMap`。
+- Checkbox / Radio 文档新增“尺寸规格”表；Toggle / ToggleGroup 方向继续只记录，不在本轮实现。
+- 验证：`npm run check` 已通过；使用 5175 preview 浏览器确认 Checkbox box/icon 为 16x16 / 12x12，Radio circle/选中 dot 为 16x16 / 8x8，button sm/md/lg 为 24/32/40 高，padding/gap 与文档规格一致。

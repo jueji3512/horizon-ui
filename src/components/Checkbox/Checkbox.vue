@@ -13,7 +13,7 @@
       <svg
         v-if="isIndeterminate"
         viewBox="0 0 12 12"
-        class="checkbox-icon"
+        :class="['checkbox-icon', checkboxControlGeometryMap.icon]"
         fill="none"
         stroke="currentColor"
         stroke-width="2"
@@ -25,13 +25,12 @@
       <svg
         v-else
         viewBox="0 0 12 12"
-        class="checkbox-icon"
+        :class="['checkbox-icon', checkboxControlGeometryMap.icon, !isChecked && 'opacity-0']"
         fill="none"
         stroke="currentColor"
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        :class="!isChecked && 'opacity-0'"
       >
         <path d="M2 6l3 3 5-6" />
       </svg>
@@ -109,6 +108,17 @@ const computedDisabled = computed(
   () => props.disabled || (group?.disabled.value ?? false) || limitDisabled.value,
 )
 
+const checkboxControlGeometryMap = {
+  box: 'h-4 w-4',
+  icon: 'h-3 w-3',
+} as const
+
+const checkboxButtonGeometryMap: Record<string, string> = {
+  sm: 'h-[var(--comp-size-sm)] px-2 font-body-sm gap-1',
+  md: 'h-[var(--comp-size-md)] px-4 font-body-md gap-1.5',
+  lg: 'h-[var(--comp-size-lg)] px-4 font-body-lg gap-2',
+}
+
 function handleToggle() {
   if (computedDisabled.value) return
 
@@ -124,7 +134,8 @@ function handleToggle() {
 
 const boxClasses = computed(() =>
   cn(
-    'flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-[var(--round-default)] border border-solid transition-colors duration-200',
+    checkboxControlGeometryMap.box,
+    'flex flex-shrink-0 items-center justify-center rounded-[var(--round-default)] border border-solid transition-colors duration-200',
     computedDisabled.value &&
       'border-[var(--border-color-component)] bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)]',
     !computedDisabled.value &&
@@ -148,17 +159,11 @@ const defaultClasses = computed(() =>
 
 // ===== button variant classes =====
 
-const buttonSizeMap: Record<string, string> = {
-  sm: 'h-[var(--comp-size-sm)] px-2 font-body-sm gap-1',
-  md: 'h-[var(--comp-size-md)] px-4 font-body-md gap-1.5',
-  lg: 'h-[var(--comp-size-lg)] px-4 font-body-lg gap-2',
-}
-
 const buttonClasses = computed(() =>
   cn(
     'inline-flex flex-1 items-center justify-center font-medium whitespace-nowrap',
     'border-r border-[var(--border-color-component)] last:border-r-0',
-    buttonSizeMap[groupSize.value],
+    checkboxButtonGeometryMap[groupSize.value],
     isChecked.value && !computedDisabled.value && 'bg-brand text-[var(--text-color-inverse)]',
     !isChecked.value &&
       !computedDisabled.value &&
@@ -176,10 +181,5 @@ const buttonClasses = computed(() =>
 <style scoped>
 .checkbox-box {
   position: relative;
-}
-
-.checkbox-icon {
-  width: 75%;
-  height: 75%;
 }
 </style>

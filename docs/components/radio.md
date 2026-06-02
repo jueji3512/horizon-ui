@@ -38,6 +38,18 @@ const btnDisabled = ref('daily')
 ```
 :::
 
+## 尺寸规格
+
+Radio 使用自身的默认控件几何规格；button variant 当前仍作为 RadioGroup 的分段按钮形态保留，未来可迁移到 Toggle / ToggleGroup。
+
+| 形态 | 规格 | 说明 |
+|------|------|------|
+| default circle | `16 × 16px` | 使用 `round-full`，不直接映射为 `--comp-size-sm/md/lg` |
+| inner dot | `8 × 8px` | 居中绝对定位，选中时 scale / opacity 过渡 |
+| button sm | 高 `24px`、左右 `8px`、gap `4px` | 跟随 `--comp-size-sm` |
+| button md | 高 `32px`、左右 `16px`、gap `6px` | 跟随 `--comp-size-md` |
+| button lg | 高 `40px`、左右 `16px`、gap `8px` | 跟随 `--comp-size-lg` |
+
 ## 排列方向 Direction
 
 <DemoBox>

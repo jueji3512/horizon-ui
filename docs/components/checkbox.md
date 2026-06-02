@@ -56,6 +56,18 @@ const minmax = ref(['a', 'b'])
 ```
 :::
 
+## 尺寸规格
+
+Checkbox 使用自身的默认控件几何规格；button variant 当前仍作为 CheckboxGroup 的分段按钮形态保留，未来可迁移到 Toggle / ToggleGroup。
+
+| 形态 | 规格 | 说明 |
+|------|------|------|
+| default box | `16 × 16px` | 使用 `round-default`，不直接映射为 `--comp-size-sm/md/lg` |
+| check / indeterminate icon | `12 × 12px` | 基于 `12 × 12` viewBox 渲染勾选或半选短横 |
+| button sm | 高 `24px`、左右 `8px`、gap `4px` | 跟随 `--comp-size-sm` |
+| button md | 高 `32px`、左右 `16px`、gap `6px` | 跟随 `--comp-size-md` |
+| button lg | 高 `40px`、左右 `16px`、gap `8px` | 跟随 `--comp-size-lg` |
+
 ## 多选组
 
 <DemoBox>

@@ -152,9 +152,9 @@ docs(project): 更新项目上下文与待办
 - Badge：dot 为 6x6；计数徽标为 20px 高、最小宽 16px、左右 padding 6px、`round-full`；浏览器实测单数字宽约 19px，中文“新”宽 24px。该几何只服务 Badge，自成规格，已定稿为组件内部 `badgeGeometryMap`，不新增通用尺寸 token。
 - Switch：sm/md/lg 轨道为 26x16、32x20、40x24；滑块为 10x10、12x12、14x14；位移为 10/12/16px，loading 图标字号为 8/10/12px。Switch 的 track/thumb/offset 是强耦合几何矩阵，已定稿为组件内部 `switchGeometryMap`，不新增通用尺寸 token；文档已补充尺寸规格表。
 - Tooltip / PopperArrow：Tooltip surface 使用 `max-w-60`、`px-2 py-1`、`round-default`、`shadow-popper`；PopperArrow 结构为 8x8 旋转方块，浏览器旋转后包围盒约 11.3px。Tooltip surface 已定稿为组件内部 `tooltipSurfaceGeometryMap`，PopperArrow 视觉尺寸和静态边偏移已定稿为组件内部 `popperArrowGeometry`；箭头尺寸属于 Popper 结构默认值，不是业务主题样式。
-- Checkbox / Radio 控件几何：默认 checkbox box 为 16x16；radio 外圈 16x16、内点 8x8；button variant 高度跟 `--comp-size-sm/md/lg`，padding 自维护。未来 Toggle / ToggleGroup 可重新承接 button variant，但需要保留 Checkbox / Radio 的选择语义。
+- Checkbox / Radio 控件几何：默认 checkbox box 为 16x16，check / indeterminate icon 为 12x12；radio 外圈 16x16、内点 8x8；button variant 高度跟 `--comp-size-sm/md/lg`，padding / gap 自维护。默认控件和 button variant 几何已分别收束到 Checkbox / Radio 内部 geometry map；未来 Toggle / ToggleGroup 可重新承接 button variant，但需要保留 Checkbox / Radio 的选择语义。
 - FieldAction 是 20x20 的输入域内部动作位；InputNumber 中间输入段宽度是 72/88/104px；Callout 左侧色条 4px；Divider 标签两侧短线 24px；PopperArrow 8x8。这些都属于组件内部结构尺寸候选，优先级低于 Badge / Switch / Tooltip。
-- 初步结论：当前不建议新增一组全局尺寸 token 来覆盖所有固有几何；先保留组件内部 size map / 常量，并在后续逐个组件定稿时再决定是否新增组件级 token。Switch、Badge、Tooltip / PopperArrow 已优先定稿，后续优先级建议：Checkbox/Radio ToggleGroup 方向 > FieldAction / InputNumber 输入段宽度 > 其他结构尺寸。
+- 初步结论：当前不建议新增一组全局尺寸 token 来覆盖所有固有几何；先保留组件内部 size map / 常量，并在后续逐个组件定稿时再决定是否新增组件级 token。Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio 已优先定稿，后续优先级建议：FieldAction / InputNumber 输入段宽度 > 其他结构尺寸。
 
 ## 2026-06-03 Switch 尺寸规范定稿
 
@@ -177,6 +177,13 @@ docs(project): 更新项目上下文与待办
 - Tooltip 文档新增“尺寸规格”表；Popper 文档补充 PopperArrow 的 8x8 与 -4px 结构说明。
 - 验证 Tooltip click 示例时发现 `PopperTrigger` 已为 `aria-expanded="true"` 但 `PopperContent` 的 Teleport DOM 未挂载；修复为在 `PopperContent` 内使用顶层 `isVisible` / `teleportTarget` computed 承接注入 ref，避免模板中嵌套 ref 访问在 Teleport/v-if 场景下不稳定。
 - 本地 base-component review 结论：本次 PopperArrow / PopperContent 改动无 forced layout、无新增全局事件监听或 timer、无 `any` / console 残留；`arrowRef` 生命周期、Floating UI arrow middleware 和 `bg-inherit` 继承边界保持不变。
+
+## 2026-06-03 Checkbox / Radio 尺寸规范定稿
+
+- Checkbox 源码将 default box 和 check / indeterminate icon 收束到 `checkboxControlGeometryMap`：box 为 16x16，图标为 12x12；button variant 高度、padding、gap 收束到 `checkboxButtonGeometryMap`。
+- Radio 源码将 default circle 和 inner dot 收束到 `radioControlGeometryMap`：外圈为 16x16，内点为 8x8；button variant 高度、padding、gap 收束到 `radioButtonGeometryMap`。
+- Checkbox / Radio default 控件不直接用 `--comp-size-sm/md/lg` 表达；button variant 仍跟随 `--comp-size-sm/md/lg` 的 24/32/40 高度，未来若迁移到 Toggle / ToggleGroup，再重新设计承接。
+- Checkbox / Radio 文档均新增“尺寸规格”表，说明 default 控件几何和 button sm/md/lg 的高度、padding、gap。
 
 ## 后续入口
 

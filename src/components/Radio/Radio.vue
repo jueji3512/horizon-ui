@@ -63,6 +63,17 @@ const groupVariant = computed(() => group?.variant.value ?? 'default')
 const groupSize = computed(() => group?.size.value ?? 'md')
 const groupName = computed(() => group?.name ?? '')
 
+const radioControlGeometryMap = {
+  circle: 'h-4 w-4',
+  dot: 'h-2 w-2',
+} as const
+
+const radioButtonGeometryMap: Record<string, string> = {
+  sm: 'h-[var(--comp-size-sm)] px-2 font-body-sm gap-1',
+  md: 'h-[var(--comp-size-md)] px-4 font-body-md gap-1.5',
+  lg: 'h-[var(--comp-size-lg)] px-4 font-body-lg gap-2',
+}
+
 function handleSelect() {
   if (!isDisabled.value && group) {
     group.select(props.value)
@@ -73,7 +84,7 @@ function handleSelect() {
 
 const circleClasses = computed(() =>
   cn(
-    'h-4 w-4',
+    radioControlGeometryMap.circle,
     'flex flex-shrink-0 items-center justify-center rounded-[var(--round-full)] border border-solid transition-colors duration-200',
     isDisabled.value &&
       'border-[var(--border-color-component)] bg-[var(--bg-color-component-disabled)]',
@@ -86,7 +97,7 @@ const circleClasses = computed(() =>
 
 const dotClasses = computed(() =>
   cn(
-    'h-2 w-2',
+    radioControlGeometryMap.dot,
     'rounded-[var(--round-full)] transition-all duration-200',
     isChecked.value ? 'scale-100 opacity-100' : 'scale-0 opacity-0',
     isDisabled.value && isChecked.value ? 'bg-[var(--text-color-disabled)]' : 'bg-brand',
@@ -103,17 +114,11 @@ const defaultClasses = computed(() =>
 // ===== button variant classes =====
 // Heights and padding aligned with Button component.
 
-const buttonSizeMap: Record<string, string> = {
-  sm: 'h-[var(--comp-size-sm)] px-2 font-body-sm gap-1',
-  md: 'h-[var(--comp-size-md)] px-4 font-body-md gap-1.5',
-  lg: 'h-[var(--comp-size-lg)] px-4 font-body-lg gap-2',
-}
-
 const buttonClasses = computed(() =>
   cn(
     'inline-flex flex-1 items-center justify-center font-medium whitespace-nowrap',
     'border-r border-[var(--border-color-component)] last:border-r-0',
-    buttonSizeMap[groupSize.value],
+    radioButtonGeometryMap[groupSize.value],
     isChecked.value && !isDisabled.value && 'bg-brand text-[var(--text-color-inverse)]',
     !isChecked.value &&
       !isDisabled.value &&

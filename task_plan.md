@@ -13,7 +13,7 @@
 | 5. Popper 底层定位基座 | 完成 | 已明确 Popper 不提供 surface 样式，并完成 deferred 行为处理与 base-component review。 |
 | 6. 项目记忆整理 | 完成 | 已新增/更新 `AGENTS.md`、`TODO.md`、`findings.md`、`progress.md`。 |
 | 7. 代码编辑器与检查工具规范 | 完成 | 已新增 `CODE_STYLE.md`、`.editorconfig`、`.gitattributes`、Stylelint 和 Tailwind class sorting。 |
-| 8. Field 输入域体系 | 规划中 | 已确认 Field 作为公开底层组件暴露，计划位于 `src/components/Field/`，用于统一 Input、InputNumber、Select、DatePicker 等 field-like 组件的输入域基座。 |
+| 8. Field 输入域体系 | 进行中 | Field 首版公开 primitives 已落地并迁移 Input；后续继续用 InputNumber、Select 多选和 DatePicker range 验证边界。 |
 
 ## 已完成的关键事项
 

@@ -16,16 +16,35 @@ import Switch from './Switch/Switch.vue'
 import Input from './Input/Input.vue'
 import InputNumber from './InputNumber/InputNumber.vue'
 import Tag from './Tag/Tag.vue'
+import FieldRoot from './Field/FieldRoot.vue'
+import FieldContent from './Field/FieldContent.vue'
+import FieldNativeInput from './Field/FieldNativeInput.vue'
+import FieldPrefix from './Field/FieldPrefix.vue'
+import FieldSuffix from './Field/FieldSuffix.vue'
+import FieldAction from './Field/FieldAction.vue'
+import FieldGroup from './Field/FieldGroup.vue'
+import FieldSegment from './Field/FieldSegment.vue'
 import Popper from './Popper/Popper.vue'
 import PopperTrigger from './Popper/PopperTrigger.vue'
 import PopperContent from './Popper/PopperContent.vue'
 import PopperArrow from './Popper/PopperArrow.vue'
+
+export type { FieldContext, FieldSize, FieldStatus } from './Field'
+export { fieldContextKey, useFieldContext } from './Field'
 
 export {
   Badge,
   Button,
   Checkbox,
   CheckboxGroup,
+  FieldAction,
+  FieldContent,
+  FieldGroup,
+  FieldNativeInput,
+  FieldPrefix,
+  FieldRoot,
+  FieldSegment,
+  FieldSuffix,
   Icon,
   Input,
   InputNumber,

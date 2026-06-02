@@ -38,7 +38,7 @@ npm run check        # format:check + lint + typecheck + build
 
 1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
 2. 先读本文件，再读 `TODO.md` 和 `CODE_STYLE.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
-3. 当前最重要的后续项是继续扫描未迁移组件、补充关键组件浏览器级视觉验证、统一文档示例；dark mode 已决定放到当前队列最后。
+3. 当前最重要的后续项是继续验证 Field 在 InputNumber、Select 多选、DatePicker range 等场景的边界，并继续扫描未迁移组件、补充关键组件浏览器级视觉验证；dark mode 已决定放到当前队列最后。
 4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 
@@ -84,7 +84,7 @@ docs(project): 更新项目上下文与待办
 
 ## 当前组件状态
 
-- 已实现并纳入文档：Button、Icon、Link、Checkbox、Radio、Text、Title、Callout、Divider、Badge、Tooltip、Switch、Input、Tag、InputNumber、Space、Popper。
+- 已实现并纳入文档：Button、Icon、Link、Checkbox、Radio、Text、Title、Callout、Divider、Badge、Tooltip、Switch、Input、Tag、InputNumber、Space、Field、Popper。
 - Badge 已加入 sidebar。
 - 历史计划目录 `docs/superpowers/**` 已审计并删除；需要保留的路线和边界结论已沉淀到 `findings.md`。
 - 本地 Switch 视觉原型 `switch-mockups.html` 已删除；后续不要提交临时原型文件。
@@ -99,7 +99,7 @@ docs(project): 更新项目上下文与待办
 - InputNumber disabled 输入框补充 `cursor-not-allowed`。
 - PopperContent 保持无视觉样式，默认不提供 border、background、text color、radius、shadow/elevation。
 - PopperContent 通过 `v-bind="$attrs"` 将上层 `class/style` 传给 Teleport 后的真实浮层 DOM。
-- Field 已规划为公开底层输入域组件，未来源码位置为 `src/components/Field/`，不是 `_internal`；它用于统一 Input、InputNumber、Select、DatePicker 等 field-like 组件的 surface、状态、尺寸和组合布局。
+- Field 已作为公开底层输入域组件落地到 `src/components/Field/`，不是 `_internal`；它用于统一 Input、InputNumber、Select、DatePicker 等 field-like 组件的 surface、状态、尺寸和组合布局。Input 已先迁移到 Field 验证首版边界。
 - Popper 已完成 base-component review；`offset` / `flip` / `shift` / `matchWidth` / `autoUpdate` 改为响应式配置，`matchWidth` 改用 Floating UI `size` middleware，`disabled` 变 true 时会关闭已打开浮层。
 - Popper 文档去掉容易误解为内置主题的深色/浅色和默认边框表达。
 - `Icon.vue` 的 `v-html` 仅用于渲染打包期导入的本地图标 SVG，已补充安全边界说明并处理 lint warning。

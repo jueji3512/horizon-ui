@@ -1,21 +1,23 @@
 <template>
   <div v-bind="rootAttrs" class="w-full">
     <div :class="wrapperClasses">
-      <span :class="inputWrapperClasses">
-        <!-- prefix icon -->
-        <Icon v-if="prefixIcon" :name="prefixIcon" class="ml-2 shrink-0" />
+      <FieldRoot
+        :size="size"
+        :status="status"
+        :disabled="disabled"
+        :readonly="readonly"
+        :focused="isFocused"
+      >
+        <FieldPrefix v-if="prefixIcon || $slots.prefix" class="gap-1">
+          <Icon v-if="prefixIcon" :name="prefixIcon" />
+          <slot v-if="$slots.prefix" name="prefix" />
+        </FieldPrefix>
 
-        <!-- prefix slot -->
-        <span v-if="$slots.prefix" class="ml-2 shrink-0">
-          <slot name="prefix" />
-        </span>
-
-        <!-- core input -->
-        <input
+        <FieldNativeInput
           ref="inputRef"
           v-bind="inputAttrs"
           :type="inputType"
-          :value="modelValue"
+          :model-value="modelValue"
           :placeholder="placeholder || undefined"
           :disabled="disabled"
           :readonly="readonly"
@@ -24,48 +26,40 @@
           :autofocus="autofocus"
           :autocomplete="autocomplete || undefined"
           :aria-label="ariaLabel || undefined"
-          :class="[
-            'input-core h-full w-full min-w-0 border-none bg-transparent px-3 outline-none',
-            showWordLimit && maxlength ? 'pr-14' : '',
-          ]"
+          :class="showWordLimit && maxlength ? 'pr-14' : ''"
           @input="handleInput"
           @change="handleChange"
           @focus="handleFocus"
           @blur="handleBlur"
-          @keydown.enter="handleEnter"
+          @enter="handleEnter"
         />
 
-        <!-- clear trigger: always rendered when clearable to prevent layout shift -->
-        <button
-          v-if="clearable"
-          type="button"
-          class="input-clear mr-2 shrink-0 cursor-pointer text-[var(--text-color-secondary)] transition-colors duration-100 hover:text-[var(--text-color-primary)]"
-          :class="showClear ? '' : 'invisible'"
-          :aria-label="showClear ? '清空' : undefined"
-          :disabled="!showClear"
-          @click="handleClear"
+        <FieldSuffix
+          v-if="clearable || (type === 'password' && showPassword) || suffixIcon || $slots.suffix"
+          class="gap-1"
         >
-          <Icon name="close" />
-        </button>
+          <!-- clear trigger: always rendered when clearable to prevent layout shift -->
+          <FieldAction
+            v-if="clearable"
+            :class="showClear ? '' : 'invisible'"
+            :aria-label="showClear ? '清空' : undefined"
+            :disabled="!showClear"
+            @click="handleClear"
+          >
+            <Icon name="close" />
+          </FieldAction>
 
-        <!-- password toggle -->
-        <button
-          v-if="type === 'password' && showPassword"
-          type="button"
-          class="input-password-toggle mr-2 shrink-0 cursor-pointer text-[var(--text-color-secondary)] transition-colors duration-100 hover:text-[var(--text-color-primary)]"
-          :aria-label="passwordVisible ? '隐藏密码' : '显示密码'"
-          @click="togglePassword"
-        >
-          <Icon :name="passwordVisible ? 'eye' : 'eye-off'" />
-        </button>
+          <FieldAction
+            v-if="type === 'password' && showPassword"
+            :aria-label="passwordVisible ? '隐藏密码' : '显示密码'"
+            @click="togglePassword"
+          >
+            <Icon :name="passwordVisible ? 'eye' : 'eye-off'" />
+          </FieldAction>
 
-        <!-- suffix icon -->
-        <Icon v-if="suffixIcon" :name="suffixIcon" class="mr-2 shrink-0" />
-
-        <!-- suffix slot -->
-        <span v-if="$slots.suffix" class="mr-2 shrink-0">
-          <slot name="suffix" />
-        </span>
+          <Icon v-if="suffixIcon" :name="suffixIcon" />
+          <slot v-if="$slots.suffix" name="suffix" />
+        </FieldSuffix>
 
         <!-- word count: absolute positioned, outside flex layout -->
         <span
@@ -74,19 +68,25 @@
         >
           {{ String(modelValue).length }} / {{ maxlength }}
         </span>
-      </span>
+      </FieldRoot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, useAttrs } from 'vue'
+import FieldAction from '../Field/FieldAction.vue'
+import FieldNativeInput from '../Field/FieldNativeInput.vue'
+import FieldPrefix from '../Field/FieldPrefix.vue'
+import FieldRoot from '../Field/FieldRoot.vue'
+import FieldSuffix from '../Field/FieldSuffix.vue'
 import Icon from '../Icon/Icon.vue'
 import { cn } from '../../utils'
 
 type InputSize = 'sm' | 'md' | 'lg'
 type InputType = 'text' | 'password' | 'number'
 type InputStatus = 'error' | 'warning' | 'success'
+type FieldNativeInputExpose = { focus: () => void }
 
 defineOptions({ inheritAttrs: false })
 
@@ -141,7 +141,7 @@ const emit = defineEmits<{
   enter: [e: KeyboardEvent]
 }>()
 
-const inputRef = ref<HTMLInputElement | null>(null)
+const inputRef = ref<FieldNativeInputExpose | null>(null)
 const passwordVisible = ref(false)
 const isFocused = ref(false)
 const attrs = useAttrs()
@@ -203,14 +203,6 @@ function togglePassword() {
   inputRef.value?.focus()
 }
 
-// ---- sizes ----
-
-const sizeMap: Record<InputSize, string> = {
-  sm: 'h-[var(--comp-size-sm)] font-body-sm',
-  md: 'h-[var(--comp-size-md)] font-body-md',
-  lg: 'h-[var(--comp-size-lg)] font-body-lg',
-}
-
 // ---- classes ----
 
 const wrapperClasses = computed(() =>
@@ -219,64 +211,4 @@ const wrapperClasses = computed(() =>
     props.disabled && 'cursor-not-allowed',
   ),
 )
-
-const statusBorderMap: Record<InputStatus, string> = {
-  error: 'border-error',
-  warning: 'border-warning',
-  success: 'border-success',
-}
-
-const statusRingMap: Record<InputStatus, string> = {
-  error: 'ring-2 ring-error-focus',
-  warning: 'ring-2 ring-warning-focus',
-  success: 'ring-2 ring-success-focus',
-}
-
-const inputWrapperClasses = computed(() =>
-  cn(
-    'relative flex w-full flex-1 items-center rounded-[var(--round-default)] border bg-[var(--bg-color-container)] text-[var(--text-color-primary)] transition-colors duration-150',
-    sizeMap[props.size],
-    props.disabled &&
-      'cursor-not-allowed border-[var(--border-color-component)] bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)]',
-    props.readonly && 'cursor-pointer',
-    props.status &&
-      !props.disabled &&
-      !props.readonly &&
-      cn(statusBorderMap[props.status], isFocused.value && statusRingMap[props.status]),
-    !props.status && !props.disabled && isFocused.value && 'border-brand ring-2 ring-brand-focus',
-    !props.status &&
-      !props.disabled &&
-      !isFocused.value &&
-      'border-[var(--border-color-component)] hover:border-brand',
-  ),
-)
 </script>
-
-<style scoped>
-/* Only what Tailwind can't express */
-
-.input-core {
-  color: inherit;
-  font-size: inherit;
-  line-height: inherit;
-}
-
-.input-core::placeholder {
-  color: var(--text-color-placeholder);
-}
-
-.input-core:disabled {
-  cursor: not-allowed;
-  color: var(--text-color-disabled);
-  -webkit-text-fill-color: var(--text-color-disabled);
-  opacity: 1;
-}
-
-.input-clear,
-.input-password-toggle {
-  background: none;
-  border: none;
-  padding: 0;
-  line-height: 0;
-}
-</style>

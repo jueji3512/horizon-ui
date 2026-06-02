@@ -20,6 +20,7 @@
 - Tooltip 已迁移到 Popper 基座：Tooltip 继续负责语义 API、延迟与主题视觉，Popper 负责定位、Teleport、arrow、outside click、Esc 和 z-index。
 - Tooltip 浮层阴影已沉淀为 `--shadow-popper` / `shadow-popper`，参考 TDesign 中层浮层多层投影并叠加 inset 边界，增强浅色主题气泡与页面背景的分离度。
 - 用户确认 Field 不应隐藏在 `_internal`，而应作为类似 Popper 的公开底层组件放在 `src/components/Field/`；已新增 `docs/guide/field-system.md` 记录 Field 输入域体系的目标、组件草案、状态模型、布局模式、未来组件适配、性能和可访问性原则。
+- 已新增公开 `src/components/Field/` primitives：Root、Content、NativeInput、Prefix、Suffix、Action、Group、Segment；新增 `docs/components/field.md` 并加入底层组件导航，Input 已迁移到 FieldRoot/FieldNativeInput/FieldAction 以验证首版边界。
 
 ### 代码编辑器与检查工具规范
 

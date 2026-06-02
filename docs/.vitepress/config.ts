@@ -48,7 +48,10 @@ export default defineConfig({
         },
         {
           text: '底层组件',
-          items: [{ text: 'Popper 弹出定位引擎', link: '/components/popper' }],
+          items: [
+            { text: 'Field 输入域', link: '/components/field' },
+            { text: 'Popper 弹出定位引擎', link: '/components/popper' },
+          ],
         },
       ],
     },

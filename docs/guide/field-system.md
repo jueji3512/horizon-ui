@@ -2,7 +2,7 @@
 
 Field 是 Horizon UI 面向输入、选择、日期、范围、搜索等组件的公开底层组合基座。它的定位类似 Popper：不是单一业务组件，而是一组可复用的基础能力，既服务组件库内部实现，也允许使用者自行组合更复杂的输入控件。
 
-计划源码位置为 `src/components/Field/`，与 `Button`、`Input`、`Popper` 等组件同级。Field 不放在 `_internal`，因为它需要作为公开底层组件暴露。
+源码位置为 `src/components/Field/`，与 `Button`、`Input`、`Popper` 等组件同级。Field 不放在 `_internal`，因为它需要作为公开底层组件暴露。
 
 ## 目标
 
@@ -18,13 +18,13 @@ Field 是 Horizon UI 面向输入、选择、日期、范围、搜索等组件�
 - Field 不内置业务值模型，不假设中间一定是一个原生 `<input>`。
 - Field 不替代 `Input`；`Input` 是面向最终用户的输入组件，Field 是更底层的组合基座。
 
-## 组件草案
+## 组件结构
 
 ### FieldRoot
 
 统一输入域外壳。
 
-- props：`size`、`status`、`disabled`、`readonly`、`focused`、`active`、`multiline`、`invalid` 等。
+- props：`size`、`status`、`disabled`、`readonly`、`focused`、`active`、`multiline`。
 - 负责：surface 样式、状态样式、focus ring、hover、disabled、readonly、ARIA 容器属性透传。
 - 不负责：role 语义。`Input`、`Select`、`DatePicker` 等上层组件自行决定 `textbox`、`combobox` 等语义。
 

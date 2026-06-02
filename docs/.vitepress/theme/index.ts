@@ -5,6 +5,14 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
+  FieldAction,
+  FieldContent,
+  FieldGroup,
+  FieldNativeInput,
+  FieldPrefix,
+  FieldRoot,
+  FieldSegment,
+  FieldSuffix,
   Icon,
   Input,
   InputNumber,
@@ -37,6 +45,14 @@ export default {
     app.component('Icon', Icon)
     app.component('Checkbox', Checkbox)
     app.component('CheckboxGroup', CheckboxGroup)
+    app.component('FieldRoot', FieldRoot)
+    app.component('FieldContent', FieldContent)
+    app.component('FieldNativeInput', FieldNativeInput)
+    app.component('FieldPrefix', FieldPrefix)
+    app.component('FieldSuffix', FieldSuffix)
+    app.component('FieldAction', FieldAction)
+    app.component('FieldGroup', FieldGroup)
+    app.component('FieldSegment', FieldSegment)
     app.component('Radio', Radio)
     app.component('RadioGroup', RadioGroup)
     app.component('Text', Text)

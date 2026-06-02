@@ -8,7 +8,7 @@
 
 ## 近期开发计划
 
-- [ ] 设计并实现公开底层组件 Field，源码位置为 `src/components/Field/`；Field 作为输入域组合基座，服务 Input、InputNumber、Select、DatePicker 等 field-like 组件和用户自定义组合。
+- [ ] 继续完善公开底层组件 Field：首版 `src/components/Field/` primitives 已落地并迁移 Input；后续需要用 InputNumber、Select 多选、DatePicker range 等场景继续验证 FieldGroup、multiline 和 FieldSegment 边界。
 - [ ] 继续下一轮组件迁移扫描，以当前源码为准，不直接信任旧计划文档。
 - [ ] 后续扫描时只把组件源码内部实现作为规范约束对象；文档示例可保留外部使用者风格，不强制迁移到 Horizon token。
 - [ ] 为关键组件补充更稳定的浏览器级视觉验证，尤其是 Input、Tag、Popper、InputNumber。
@@ -17,7 +17,7 @@
 
 ## 隐藏问题
 
-- [ ] Field 一旦公开，API 需要谨慎收敛：优先暴露结构、状态和样式基座，不提前承载 Select/DatePicker 等业务行为；多选 Select 的 Tag wrap / searchable / maxTagCount 是后续关键压力测试。
+- [ ] Field 一旦公开，API 需要谨慎收敛：首版只暴露结构、状态和样式基座，不承载 Select/DatePicker 等业务行为；多选 Select 的 Tag wrap / searchable / maxTagCount 是后续关键压力测试。
 - [ ] 组件级固有尺寸尚未统一规范，例如 Badge 点/计数尺寸、Switch 轨道与滑块、Tooltip 箭头等；后续需要逐项确认是新增组件级 token、改为现有尺寸 token，还是作为特殊几何尺寸保留。
 - [ ] Popper 未来可按上层组件需要继续扩展边界能力，例如嵌套弹出层协调、boundary 自定义、crossAxis offset 或 fallback placement；当前 Select/Dropdown 前置的响应式配置、disabled 自动关闭、matchWidth trigger resize 和 base-component review 已完成。
 - [ ] 如未来 `Icon` 支持外部 SVG 或运行时 SVG 文本，必须重新评估当前 `v-html` 本地图标白名单策略，加入 sanitizer 或改为更安全的渲染路径。

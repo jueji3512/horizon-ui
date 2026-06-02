@@ -8,7 +8,7 @@
     <span :class="['border-t', lineClass, align === 'left' ? 'w-6 shrink-0' : 'flex-1']" />
     <span
       :class="[
-        'font-body-md shrink-0 px-3',
+        'font-body-md shrink-0 px-[var(--padding-x-3)]',
         plain ? 'text-[var(--text-color-secondary)]' : 'text-[var(--text-color-primary)]',
       ]"
     >

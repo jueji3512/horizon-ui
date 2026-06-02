@@ -14,6 +14,9 @@
 - 验证通过：`npm run format:check`、`npm run lint`、`npm run typecheck`、`npm run build`。
 - 用户确认 `Tag` / `Badge` / `Icon` / `Title mark` 等对外自定义色 API 可以保留，用户传入色值不受内部 token 规范约束。
 - 用户确认 `CheckboxGroup` / `RadioGroup` 的按钮形态 API 应迁移到 `variant`；已将源码、provide/inject 上下文和组件文档中的 `type="button"` 更新为 `variant="button"`，并顺手让 group 注入给子项的 `variant` / `size` / `disabled` 保持响应式。
+- 继续做组件源码内部间距扫描；将 `Input`、`InputNumber`、`Checkbox`、`Radio` 中可等值替换的水平 padding 迁移到 `--padding-x-*` token。
+- 用户确认 gap 不需要 token 化，`--space-*` 不再作为 Horizon 规范 token；已移除 `src/styles/tokens/size.css` 中的 `--space-*` 定义，并恢复组件内部普通 Tailwind `gap-*` 写法。
+- 继续扫描剩余组件内部尺寸与间距；已将 `Divider` 文本两侧等值的 `px-3` 改为 `--padding-x-3`。Badge、Icon、Switch、Tooltip、Callout 中存在组件固有尺寸或非 4px 步进内边距，暂不强行改动，已记录为后续组件级尺寸规范待确认。
 
 ### 代码编辑器与检查工具规范
 

@@ -132,6 +132,9 @@ docs(project): 更新项目上下文与待办
 - `Tag` 的自定义 `color` API 为保证深色底可读性，原先内部用 `#1e293b` / `#ffffff` 作为动态前景色。本轮已改为 `--text-color-primary` / `--text-color-inverse`；如果规范要求自定义色 API 也完全 token 化，仍需重新设计 API。
 - `Badge`、`Icon`、`Tag`、`Title` 文档中存在 `color="#..."` / `mark="#..."` 示例，属于当前组件自定义色 API 的展示，不宜在未确认前直接删除。
 - `Popper` 文档验证示例中使用 `bg-white`、`text-white`、`rounded` 和 Tailwind 原生色阶是允许的，因为它们代表使用者给 PopperContent 传入的外部 surface 样式，不是 Popper 内置视觉能力。
+- 本轮继续扫描组件源码内部间距后，已将等值替换且不改变像素值的 `Input`、`InputNumber`、`Checkbox`、`Radio` 水平 padding 迁移到 `--padding-x-*` token。
+- 用户确认 gap 不需要 token 化，`--space-*` 不再作为 Horizon 规范 token；本轮已移除 `--space-*` 定义，并恢复组件内部普通 Tailwind `gap-*` 写法。
+- 后续扫描发现 `Divider` 文本两侧 `px-3` 可等值迁移为 `--padding-x-3`，已处理。Badge 点/计数、Icon 预设、Switch 轨道/滑块、Tooltip 箭头/紧凑 surface、Callout 14/10px padding 等属于组件固有尺寸或现有 token 无法等值表达的规格，本轮暂不硬改，后续需要确认是否新增组件级 token 或规范例外。
 
 ## 后续入口
 

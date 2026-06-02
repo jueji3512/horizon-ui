@@ -16,6 +16,7 @@
 
 ## 隐藏问题
 
+- [ ] 组件级固有尺寸尚未统一规范，例如 Badge 点/计数尺寸、Icon 预设尺寸、Switch 轨道与滑块、Tooltip 箭头和紧凑内边距、Callout 非 4px 步进内边距；后续需要确认是新增组件级 token/例外规范，还是按现有 `--comp-size-*`、`--padding-*` 收敛。
 - [ ] Popper 未来可按上层组件需要继续扩展边界能力，例如嵌套弹出层协调、boundary 自定义、crossAxis offset 或 fallback placement；当前 Select/Dropdown 前置的响应式配置、disabled 自动关闭、matchWidth trigger resize 和 base-component review 已完成。
 - [ ] 如未来 `Icon` 支持外部 SVG 或运行时 SVG 文本，必须重新评估当前 `v-html` 本地图标白名单策略，加入 sanitizer 或改为更安全的渲染路径。
 - [ ] 当前浏览器/Playwright 能力不稳定，之前无法做截图级验证；后续可恢复后补做视觉回归。

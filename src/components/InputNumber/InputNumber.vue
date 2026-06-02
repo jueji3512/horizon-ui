@@ -206,17 +206,20 @@ const sizeMap: Record<InputNumberSize, SizeConfig> = {
   sm: {
     wrapper: 'h-[var(--comp-size-sm)] font-body-sm',
     btn: 'h-[var(--comp-size-sm)] w-[var(--comp-size-sm)] rounded-[var(--round-default)]',
-    input: 'w-[72px] h-[var(--comp-size-sm)] px-2 rounded-[var(--round-default)]',
+    input:
+      'w-[72px] h-[var(--comp-size-sm)] px-[var(--padding-x-2)] rounded-[var(--round-default)]',
   },
   md: {
     wrapper: 'h-[var(--comp-size-md)] font-body-md',
     btn: 'h-[var(--comp-size-md)] w-[var(--comp-size-md)] rounded-[var(--round-default)]',
-    input: 'w-[88px] h-[var(--comp-size-md)] px-3 rounded-[var(--round-default)]',
+    input:
+      'w-[88px] h-[var(--comp-size-md)] px-[var(--padding-x-3)] rounded-[var(--round-default)]',
   },
   lg: {
     wrapper: 'h-[var(--comp-size-lg)] font-body-lg',
     btn: 'h-[var(--comp-size-lg)] w-[var(--comp-size-lg)] rounded-[var(--round-default)]',
-    input: 'w-[104px] h-[var(--comp-size-lg)] px-3 rounded-[var(--round-default)]',
+    input:
+      'w-[104px] h-[var(--comp-size-lg)] px-[var(--padding-x-3)] rounded-[var(--round-default)]',
   },
 }
 

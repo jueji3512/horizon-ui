@@ -172,3 +172,10 @@
 - InputNumber 的中间输入段宽度和输入 padding 收束到 `inputNumberGeometryMap`，保留 sm/md/lg 的 72/88/104px 中间段宽度；步进按钮继续复用 Button square 的 24/32/40 尺寸。
 - Field 文档新增 FieldAction 固有尺寸说明，InputNumber 文档新增整体高度、中间输入段、输入 padding 和步进按钮规格表。
 - 验证：`npm run check` 已通过；5175 preview 浏览器确认 FieldAction 实际为 20x20，构建产物确认 InputNumber 的 72/88/104px 输入段宽度和组件尺寸 token 已进入 CSS。
+
+### Callout / Divider 尺寸规范定稿
+
+- Callout 的外层布局、4px 左侧色条和内容 padding 收束到 `calloutGeometryMap`，主题色配置独立为 `calloutThemeMap`。
+- Divider 的横向布局、标签 padding、24px 靠边短线、纵向 1em 高度收束到 `dividerGeometryMap`。
+- Callout / Divider 文档新增“尺寸规格”表；项目记忆将组件级固有尺寸首轮扫描调整为已完成，后续转为持续守护规则。
+- 验证：`npm run check` 已通过；构建产物确认 Callout 左侧色条、Divider 靠边短线、标签 padding 和纵向高度对应 class 已进入 CSS。

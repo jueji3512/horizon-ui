@@ -153,8 +153,8 @@ docs(project): 更新项目上下文与待办
 - Switch：sm/md/lg 轨道为 26x16、32x20、40x24；滑块为 10x10、12x12、14x14；位移为 10/12/16px，loading 图标字号为 8/10/12px。Switch 的 track/thumb/offset 是强耦合几何矩阵，已定稿为组件内部 `switchGeometryMap`，不新增通用尺寸 token；文档已补充尺寸规格表。
 - Tooltip / PopperArrow：Tooltip surface 使用 `max-w-60`、`px-2 py-1`、`round-default`、`shadow-popper`；PopperArrow 结构为 8x8 旋转方块，浏览器旋转后包围盒约 11.3px。Tooltip surface 已定稿为组件内部 `tooltipSurfaceGeometryMap`，PopperArrow 视觉尺寸和静态边偏移已定稿为组件内部 `popperArrowGeometry`；箭头尺寸属于 Popper 结构默认值，不是业务主题样式。
 - Checkbox / Radio 控件几何：默认 checkbox box 为 16x16，check / indeterminate icon 为 12x12；radio 外圈 16x16、内点 8x8；button variant 高度跟 `--comp-size-sm/md/lg`，padding / gap 自维护。默认控件和 button variant 几何已分别收束到 Checkbox / Radio 内部 geometry map；未来 Toggle / ToggleGroup 可重新承接 button variant，但需要保留 Checkbox / Radio 的选择语义。
-- FieldAction 是 20x20 的输入域内部动作位；InputNumber 中间输入段宽度是 72/88/104px；Callout 左侧色条 4px；Divider 标签两侧短线 24px；PopperArrow 8x8。这些都属于组件内部结构尺寸候选，优先级低于 Badge / Switch / Tooltip。
-- 初步结论：当前不建议新增一组全局尺寸 token 来覆盖所有固有几何；先保留组件内部 size map / 常量，并在后续逐个组件定稿时再决定是否新增组件级 token。Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber 输入段宽度已优先定稿，后续优先级建议：Callout 左侧色条 / Divider 标签线 > 其他结构尺寸。
+- FieldAction 是 20x20 的输入域内部动作位；InputNumber 中间输入段宽度是 72/88/104px；Callout 左侧色条是 4px；Divider 左 / 右对齐文字的靠边短线是 24px，纵向分割高度为 1em；PopperArrow 是 8x8。这些均属于组件内部结构尺寸。
+- 初步结论：当前不建议新增一组全局尺寸 token 来覆盖所有固有几何；首轮已将 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider 定稿为组件内部 geometry map / 常量策略。后续新增组件时继续逐项判断，不把强耦合结构尺寸默认沉淀为通用 token。
 
 ## 2026-06-03 Switch 尺寸规范定稿
 
@@ -191,6 +191,13 @@ docs(project): 更新项目上下文与待办
 - InputNumber 源码将中间输入段宽度和输入 padding 收束到 `inputNumberGeometryMap`：sm 为 72px / px-2，md 为 88px / px-3，lg 为 104px / px-3。
 - InputNumber 整体高度仍由 FieldRoot 和 Button 的 `--comp-size-sm/md/lg` 共同控制，步进按钮复用 Button `shape="square"`，即 24/32/40 方形按钮。
 - Field 文档新增 FieldAction 固有尺寸说明；InputNumber 文档新增中间输入段、输入 padding 和步进按钮尺寸规格表。
+
+## 2026-06-03 Callout / Divider 尺寸规范定稿
+
+- Callout 源码将外层布局、4px 左侧色条和内容 padding 收束到 `calloutGeometryMap`；主题色仍由 `calloutThemeMap` 独立维护。
+- Divider 源码将横向布局、标签 padding、24px 靠边短线、纵向 1em 高度收束到 `dividerGeometryMap`；线型和颜色仍由 `lineClass` 负责。
+- Callout 左侧色条用于语义提示结构，Divider 标签短线和纵向高度依赖分割线场景，均不直接映射 `--comp-size-sm/md/lg`。
+- Callout / Divider 文档均新增“尺寸规格”表。
 
 ## 后续入口
 

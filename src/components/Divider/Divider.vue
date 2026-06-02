@@ -3,32 +3,44 @@
     v-if="direction === 'horizontal' && $slots.default"
     role="separator"
     aria-orientation="horizontal"
-    class="my-4 flex items-center"
+    :class="dividerGeometryMap.labeledRoot"
   >
-    <span :class="['border-t', lineClass, align === 'left' ? 'w-6 shrink-0' : 'flex-1']" />
     <span
       :class="[
-        'font-body-md shrink-0 px-3',
+        dividerGeometryMap.line,
+        lineClass,
+        align === 'left' ? dividerGeometryMap.edgeLine : 'flex-1',
+      ]"
+    />
+    <span
+      :class="[
+        dividerGeometryMap.label,
         plain ? 'text-[var(--text-color-secondary)]' : 'text-[var(--text-color-primary)]',
       ]"
     >
       <slot />
     </span>
-    <span :class="['border-t', lineClass, align === 'right' ? 'w-6 shrink-0' : 'flex-1']" />
+    <span
+      :class="[
+        dividerGeometryMap.line,
+        lineClass,
+        align === 'right' ? dividerGeometryMap.edgeLine : 'flex-1',
+      ]"
+    />
   </div>
 
   <div
     v-else-if="direction === 'horizontal'"
     role="separator"
     aria-orientation="horizontal"
-    :class="['my-4 border-t', lineClass]"
+    :class="[dividerGeometryMap.horizontalRoot, lineClass]"
   />
 
   <div
     v-else
     role="separator"
     aria-orientation="vertical"
-    :class="['mx-4 inline-block h-[1em] border-l align-middle', lineClass]"
+    :class="[dividerGeometryMap.verticalRoot, lineClass]"
   />
 </template>
 
@@ -54,6 +66,15 @@ const props = withDefaults(
     plain: false,
   },
 )
+
+const dividerGeometryMap = {
+  labeledRoot: 'my-4 flex items-center',
+  horizontalRoot: 'my-4 border-t',
+  verticalRoot: 'mx-4 inline-block h-[1em] border-l align-middle',
+  line: 'border-t',
+  edgeLine: 'w-6 shrink-0',
+  label: 'font-body-md shrink-0 px-3',
+} as const
 
 const lineClass = computed(() =>
   cn('border-[var(--border-color-divider)]', props.type === 'dashed' && 'border-dashed'),

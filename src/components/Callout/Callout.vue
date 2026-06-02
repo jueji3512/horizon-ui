@@ -1,11 +1,11 @@
 <template>
-  <div class="font-body-md my-2 flex overflow-hidden rounded-[var(--round-default)]">
-    <div :class="calloutConfig.bar" class="w-1 flex-shrink-0" />
-    <div :class="calloutConfig.bg" class="flex-1 px-4 py-3">
+  <div :class="calloutGeometryMap.root">
+    <div :class="[calloutGeometryMap.bar, calloutTheme.bar]" />
+    <div :class="[calloutGeometryMap.content, calloutTheme.bg]">
       <Title v-if="hasTitle" :level="6" :style="titleColor" class="mb-1">
         <slot name="title">{{ title }}</slot>
       </Title>
-      <div :class="['leading-relaxed', calloutConfig.text]">
+      <div :class="['leading-relaxed', calloutTheme.text]">
         <slot />
       </div>
     </div>
@@ -39,14 +39,20 @@ interface CalloutConfig {
   text: string
 }
 
-const calloutMap: Record<CalloutTheme, CalloutConfig> = {
+const calloutThemeMap: Record<CalloutTheme, CalloutConfig> = {
   brand: { bar: 'bg-brand', bg: 'bg-brand-light', text: 'text-brand' },
   success: { bar: 'bg-success', bg: 'bg-success-light', text: 'text-success' },
   warning: { bar: 'bg-warning', bg: 'bg-warning-light', text: 'text-warning' },
   error: { bar: 'bg-error', bg: 'bg-error-light', text: 'text-error' },
 }
 
-const calloutConfig = computed(() => calloutMap[props.theme])
+const calloutGeometryMap = {
+  root: 'font-body-md my-2 flex overflow-hidden rounded-[var(--round-default)]',
+  bar: 'w-1 flex-shrink-0',
+  content: 'flex-1 px-4 py-3',
+} as const
+
+const calloutTheme = computed(() => calloutThemeMap[props.theme])
 
 const titleColorMap: Record<CalloutTheme, string> = {
   brand: 'var(--color-brand)',

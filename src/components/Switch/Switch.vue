@@ -55,10 +55,28 @@ function handleToggle() {
   emit('change', next)
 }
 
-const sizeMap: Record<SwitchSize, { track: string; thumb: string; thumbActive: string }> = {
-  sm: { track: 'w-[26px] h-4', thumb: 'w-[10px] h-[10px]', thumbActive: 'translate-x-[10px]' },
-  md: { track: 'w-8 h-5', thumb: 'w-[14px] h-[14px]', thumbActive: 'translate-x-3' },
-  lg: { track: 'w-[39px] h-6', thumb: 'w-[18px] h-[18px]', thumbActive: 'translate-x-[15px]' },
+const sizeMap: Record<
+  SwitchSize,
+  { track: string; thumb: string; thumbPosition: string; thumbActive: string }
+> = {
+  sm: {
+    track: 'w-[26px] h-4',
+    thumb: 'w-[10px] h-[10px]',
+    thumbPosition: 'top-[3px] left-[3px]',
+    thumbActive: 'translate-x-[10px]',
+  },
+  md: {
+    track: 'w-8 h-5',
+    thumb: 'w-3 h-3',
+    thumbPosition: 'top-1 left-1',
+    thumbActive: 'translate-x-3',
+  },
+  lg: {
+    track: 'w-10 h-6',
+    thumb: 'w-3.5 h-3.5',
+    thumbPosition: 'top-[5px] left-[5px]',
+    thumbActive: 'translate-x-4',
+  },
 }
 
 const iconClassMap: Record<SwitchSize, string> = {
@@ -90,8 +108,9 @@ const trackClasses = computed(() =>
 
 const thumbClasses = computed(() =>
   cn(
-    'absolute top-[3px] left-[3px] flex items-center justify-center rounded-[var(--round-full)] bg-[var(--bg-color-container)] text-brand shadow-sm transition-transform duration-200',
+    'absolute flex items-center justify-center rounded-[var(--round-full)] bg-[var(--bg-color-container)] text-brand shadow-sm transition-transform duration-200',
     sizeMap[props.size].thumb,
+    sizeMap[props.size].thumbPosition,
     isDisabled.value && 'text-[var(--text-color-disabled)]',
     props.modelValue ? sizeMap[props.size].thumbActive : 'translate-x-0',
   ),

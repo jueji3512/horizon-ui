@@ -150,3 +150,11 @@
 - Badge 的 dot 和 content 尺寸统一收束到 `badgeGeometryMap`，作为组件内部几何规格维护，不新增通用尺寸 token。
 - Badge 文档新增“尺寸规格”表，说明 dot 为 6x6，数字/文本胶囊为 20px 高、16px 最小宽度、左右 6px 内边距，并记录默认右上角锚点和 `offset` 微调语义。
 - 验证：`npm run check` 已通过；浏览器确认 dot 为 6x6，数字/文本胶囊为 20px 高、16px 最小宽度、左右 6px 内边距，文档规格表渲染正常。
+
+### Tooltip / PopperArrow 尺寸规范定稿
+
+- Tooltip 的 surface 几何规格统一收束到 `tooltipSurfaceGeometryMap`，保留最大宽度 240px、左右 8px、上下 4px、`font-body-sm`、`round-default`。
+- PopperArrow 的 8x8 箭头尺寸与 -4px 静态边偏移统一收束到 `popperArrowGeometry`，不新增尺寸 API，仍由父级背景继承颜色。
+- Tooltip 文档新增“尺寸规格”表，Popper 文档补充 PopperArrow 结构规格。
+- 验证时发现 Tooltip click 示例打开后 trigger 为 `aria-expanded="true"`，但 PopperContent Teleport DOM 未挂载；已将 PopperContent 的 visible 状态和 Teleport target 收束为顶层 computed，修复该边界。
+- 验证：`npm run check` 已通过；使用临时 5174 dev server 浏览器确认 Tooltip 文档规格表渲染正常，click 示例浮层为 28px 高、最大宽度 240px、左右 8px / 上下 4px padding，PopperArrow 布局尺寸为 8x8，旋转后包围盒约 11.31px。5173 原 dev server 在 in-app browser 中出现客户端未挂载，因此本轮浏览器验证改用 5174。

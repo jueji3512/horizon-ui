@@ -1,12 +1,6 @@
 <template>
-  <Teleport :to="ctx.to.value">
-    <div
-      v-if="ctx.visible.value"
-      v-bind="$attrs"
-      :id="ctx.contentId"
-      ref="contentEl"
-      :style="mergedStyles"
-    >
+  <Teleport :to="teleportTarget">
+    <div v-if="isVisible" v-bind="$attrs" :id="ctx.contentId" ref="contentEl" :style="mergedStyles">
       <slot />
     </div>
   </Teleport>
@@ -24,6 +18,8 @@ if (!ctx) {
 }
 
 const contentEl = ref<HTMLElement>()
+const isVisible = computed(() => ctx.visible.value)
+const teleportTarget = computed(() => ctx.to.value)
 
 const mergedStyles = computed<CSSProperties>(() => {
   const s: CSSProperties = { ...ctx.floatingStyles.value }

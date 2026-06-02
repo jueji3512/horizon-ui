@@ -108,10 +108,14 @@ const themeMap: Record<TooltipTheme, { bubble: string; arrow: string }> = {
   error: { bubble: 'bg-error-light text-error-active', arrow: 'bg-error-light' },
 }
 
+const tooltipSurfaceGeometryMap = {
+  bubble: 'font-body-sm max-w-60 rounded-[var(--round-default)] px-2 py-1',
+} as const
+
 const bubbleClasses = computed(() =>
   cn(
-    'font-body-sm max-w-60 rounded-[var(--round-default)] px-2 py-1 select-none',
-    'break-words shadow-popper',
+    tooltipSurfaceGeometryMap.bubble,
+    'break-words shadow-popper select-none',
     themeMap[props.theme].bubble,
   ),
 )

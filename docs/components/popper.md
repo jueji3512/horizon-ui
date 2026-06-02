@@ -535,7 +535,9 @@ const v11Lg = ref(false)
 
 ### PopperArrow
 
-无 Props。背景色通过 `bg-inherit` 从父级继承。
+无 Props。默认使用 `8 × 8px` 的旋转方块，静态边偏移为 `-4px`，背景色通过 `bg-inherit` 从父级继承。
+
+PopperArrow 的尺寸属于 Popper 的结构定位规格，不提供主题或尺寸 API；Tooltip、Dropdown、Popconfirm 等上层组件只负责传入背景色和 surface 样式。
 
 ### Placement 可选值
 

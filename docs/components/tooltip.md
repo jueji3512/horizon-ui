@@ -28,6 +28,16 @@
 ```
 :::
 
+## 尺寸规格
+
+Tooltip 使用自身的浮层 surface 和箭头几何规格，不直接映射为 `--comp-size-sm/md/lg`。
+
+| 部位 | 规格 | 说明 |
+|------|------|------|
+| 浮层 | 最大宽度 `240px`、左右 `8px`、上下 `4px` | 使用 `font-body-sm`、`round-default` 和 `shadow-popper` |
+| 箭头 | `8 × 8px` 旋转方块 | 由 `PopperArrow` 提供，背景色跟随 Tooltip 主题 |
+| 间距 | 默认 `10px` | 通过 `offset` 控制浮层与触发元素距离 |
+
 ## 触发方式
 
 `trigger` 支持 `hover`（默认）、`click`、`focus`、`manual`。

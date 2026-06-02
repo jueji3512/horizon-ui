@@ -137,3 +137,10 @@
 - 按源码扫描 Badge、Switch、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider 等固定尺寸候选。
 - 浏览器实测：Badge dot 为 6x6，计数徽标为 20px 高、最小宽 16px、左右 padding 6px；Switch sm/md/lg 轨道为 26x16、32x20、40x24，滑块为 10/12/14px；Tooltip surface 为 28px 高、`px-2 py-1`，PopperArrow 源尺寸为 8x8，旋转后包围盒约 11.3px。
 - 初步结论：不急于新增全局尺寸 token；Badge、Switch、Tooltip/PopperArrow 等先保留组件内部几何常量或 size map，后续按组件逐项确认是否沉淀组件级 token。已更新 `TODO.md`、`findings.md`、`task_plan.md`、`AGENTS.md`。
+
+### Switch 尺寸规范定稿
+
+- Switch 的 track、thumb、thumb 位置、激活位移和 loading 图标字号统一收束到 `switchGeometryMap`，作为组件内部几何矩阵维护，不新增通用尺寸 token。
+- Switch 文档新增“尺寸规格”表，说明 sm/md/lg 的轨道、滑块、位移和 loading 图标尺寸；`size` prop 说明改为“组件几何尺寸”。
+- Switch 输入补充 `role="switch"` 和 `aria-checked`，隐藏 input 聚焦时 track 使用 brand focus ring。
+- 验证：`npm run check` 已通过；浏览器确认 sm/md/lg 尺寸、`role="switch"`、`aria-checked` 和文档规格表渲染正常。自动化运行时无法可靠触发隐藏 input 的 `:focus` 匹配，但 scoped focus CSS 已注入到页面。

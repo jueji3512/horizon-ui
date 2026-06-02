@@ -52,6 +52,16 @@ const loadingOn = ref(true)
 ```
 :::
 
+## 尺寸规格
+
+Switch 使用组件自身的轨道、滑块、位移几何矩阵，不直接映射为 `--comp-size-sm/md/lg` 的整体高度。
+
+| Size | 轨道 | 滑块 | 激活位移 | Loading 图标 |
+|------|------|------|----------|--------------|
+| `sm` | `26 × 16px` | `10 × 10px` | `10px` | `8px` |
+| `md` | `32 × 20px` | `12 × 12px` | `12px` | `10px` |
+| `lg` | `40 × 24px` | `14 × 14px` | `16px` | `12px` |
+
 ## 禁用态 Disabled
 
 <DemoBox>
@@ -87,7 +97,7 @@ const loadingOn = ref(true)
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `model-value` | `boolean` | `false` | v-model 绑定值 |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 组件几何尺寸 |
 | `disabled` | `boolean` | `false` | 禁用 |
 | `loading` | `boolean` | `false` | 加载中 |
 | `name` | `string` | `''` | 原生 name 属性 |

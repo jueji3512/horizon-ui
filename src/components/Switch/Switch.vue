@@ -2,16 +2,22 @@
   <label :class="switchClasses">
     <input
       type="checkbox"
-      class="sr-only"
+      role="switch"
+      class="switch-input sr-only"
       :checked="modelValue"
       :disabled="disabled || loading"
       :name="name"
       :aria-label="ariaLabel || undefined"
+      :aria-checked="modelValue"
       @change="handleToggle"
     />
     <span :class="trackClasses">
       <span :class="thumbClasses">
-        <Icon v-if="loading" name="loading" :class="['animate-spin', iconClassMap[props.size]]" />
+        <Icon
+          v-if="loading"
+          name="loading"
+          :class="['animate-spin', switchGeometryMap[props.size].loadingIcon]"
+        />
       </span>
     </span>
   </label>
@@ -55,35 +61,38 @@ function handleToggle() {
   emit('change', next)
 }
 
-const sizeMap: Record<
-  SwitchSize,
-  { track: string; thumb: string; thumbPosition: string; thumbActive: string }
-> = {
+type SwitchGeometry = {
+  track: string
+  thumb: string
+  thumbPosition: string
+  checkedTranslate: string
+  loadingIcon: string
+}
+
+const switchGeometryMap: Record<SwitchSize, SwitchGeometry> = {
   sm: {
-    track: 'w-[26px] h-4',
-    thumb: 'w-[10px] h-[10px]',
+    track: 'h-4 w-[26px]',
+    thumb: 'h-[10px] w-[10px]',
     thumbPosition: 'top-[3px] left-[3px]',
-    thumbActive: 'translate-x-[10px]',
+    checkedTranslate: 'translate-x-[10px]',
+    loadingIcon: 'text-[8px]',
   },
   md: {
-    track: 'w-8 h-5',
-    thumb: 'w-3 h-3',
+    track: 'h-5 w-8',
+    thumb: 'h-3 w-3',
     thumbPosition: 'top-1 left-1',
-    thumbActive: 'translate-x-3',
+    checkedTranslate: 'translate-x-3',
+    loadingIcon: 'text-[10px]',
   },
   lg: {
-    track: 'w-10 h-6',
-    thumb: 'w-3.5 h-3.5',
+    track: 'h-6 w-10',
+    thumb: 'h-3.5 w-3.5',
     thumbPosition: 'top-[5px] left-[5px]',
-    thumbActive: 'translate-x-4',
+    checkedTranslate: 'translate-x-4',
+    loadingIcon: 'text-xs',
   },
 }
 
-const iconClassMap: Record<SwitchSize, string> = {
-  sm: 'text-[8px]',
-  md: 'text-[10px]',
-  lg: 'text-xs',
-}
 const isDisabled = computed(() => props.disabled || props.loading)
 
 const switchClasses = computed(() =>
@@ -95,8 +104,8 @@ const switchClasses = computed(() =>
 
 const trackClasses = computed(() =>
   cn(
-    'relative flex items-center rounded-[var(--round-full)] transition-colors duration-200',
-    sizeMap[props.size].track,
+    'switch-track relative flex items-center rounded-[var(--round-full)] transition-colors duration-200',
+    switchGeometryMap[props.size].track,
     props.modelValue && !isDisabled.value && 'bg-brand',
     props.modelValue && isDisabled.value && 'bg-brand-disabled',
     !props.modelValue &&
@@ -109,10 +118,16 @@ const trackClasses = computed(() =>
 const thumbClasses = computed(() =>
   cn(
     'absolute flex items-center justify-center rounded-[var(--round-full)] bg-[var(--bg-color-container)] text-brand shadow-sm transition-transform duration-200',
-    sizeMap[props.size].thumb,
-    sizeMap[props.size].thumbPosition,
+    switchGeometryMap[props.size].thumb,
+    switchGeometryMap[props.size].thumbPosition,
     isDisabled.value && 'text-[var(--text-color-disabled)]',
-    props.modelValue ? sizeMap[props.size].thumbActive : 'translate-x-0',
+    props.modelValue ? switchGeometryMap[props.size].checkedTranslate : 'translate-x-0',
   ),
 )
 </script>
+
+<style scoped>
+.switch-input:focus + .switch-track {
+  box-shadow: 0 0 0 2px var(--color-brand-focus);
+}
+</style>

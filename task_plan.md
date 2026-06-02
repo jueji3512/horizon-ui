@@ -41,7 +41,7 @@
 | 任务 | 优先级 | 说明 |
 |---|---|---|
 | 继续组件迁移扫描 | 高 | 从源码和当前规范重新扫描，不依赖旧计划勾选状态。 |
-| 组件级固有尺寸规范 | 高 | 首轮已扫描 Badge、Switch、Tooltip / PopperArrow、Checkbox / Radio 控件几何、FieldAction、InputNumber 输入段宽度等候选项；下一步逐项决定保留内部常量还是沉淀组件级 token。 |
+| 组件级固有尺寸规范 | 高 | Switch 已定稿为组件内部几何矩阵；Badge、Tooltip / PopperArrow、Checkbox / Radio 控件几何、FieldAction、InputNumber 输入段宽度等候选项下一步逐项决定保留内部常量还是沉淀组件级 token。 |
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
 | 浏览器视觉验证 | 中 | 恢复可用浏览器/Playwright 后补做截图级验证。 |
 | Field 底层组件 | 中 | Input / InputNumber 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |

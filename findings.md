@@ -150,11 +150,18 @@ docs(project): 更新项目上下文与待办
 
 - 扫描范围：`src/components/**` 中的固定 `h-*` / `w-*` / `min-w-*` / `translate-*` / `max-w-*` / icon 几何，以及 Badge、Switch、Tooltip 文档页的浏览器实际尺寸。
 - Badge：dot 为 6x6；计数徽标为 20px 高、最小宽 16px、左右 padding 6px、`round-full`；浏览器实测单数字宽约 19px，中文“新”宽 24px。该几何只服务 Badge，自成规格，暂不适合直接映射到 `--comp-size-sm/md/lg`。
-- Switch：sm/md/lg 轨道为 26x16、32x20、40x24；滑块为 10x10、12x12、14x14；位移为 10/12/16px，loading 图标字号为 8/10/12px。Switch 的 track/thumb/offset 是强耦合几何矩阵，应优先保留为组件内部 size map，是否沉淀 token 需等 Switch 规范稳定。
+- Switch：sm/md/lg 轨道为 26x16、32x20、40x24；滑块为 10x10、12x12、14x14；位移为 10/12/16px，loading 图标字号为 8/10/12px。Switch 的 track/thumb/offset 是强耦合几何矩阵，已定稿为组件内部 `switchGeometryMap`，不新增通用尺寸 token；文档已补充尺寸规格表。
 - Tooltip / PopperArrow：Tooltip surface 使用 `max-w-60`、`px-2 py-1`、`round-default`、`shadow-popper`；PopperArrow 结构为 8x8 旋转方块，浏览器旋转后包围盒约 11.3px。箭头尺寸属于 Popper 结构默认值，不是业务主题样式。
 - Checkbox / Radio 控件几何：默认 checkbox box 为 16x16；radio 外圈 16x16、内点 8x8；button variant 高度跟 `--comp-size-sm/md/lg`，padding 自维护。未来 Toggle / ToggleGroup 可重新承接 button variant，但需要保留 Checkbox / Radio 的选择语义。
 - FieldAction 是 20x20 的输入域内部动作位；InputNumber 中间输入段宽度是 72/88/104px；Callout 左侧色条 4px；Divider 标签两侧短线 24px；PopperArrow 8x8。这些都属于组件内部结构尺寸候选，优先级低于 Badge / Switch / Tooltip。
-- 初步结论：当前不建议新增一组全局尺寸 token 来覆盖所有固有几何；先保留组件内部 size map / 常量，并在后续逐个组件定稿时再决定是否新增组件级 token。优先级建议：Switch 几何矩阵 > Badge dot/count > PopperArrow / Tooltip arrow > Checkbox/Radio ToggleGroup 方向 > 其他结构尺寸。
+- 初步结论：当前不建议新增一组全局尺寸 token 来覆盖所有固有几何；先保留组件内部 size map / 常量，并在后续逐个组件定稿时再决定是否新增组件级 token。Switch 已优先定稿，后续优先级建议：Badge dot/count > PopperArrow / Tooltip arrow > Checkbox/Radio ToggleGroup 方向 > 其他结构尺寸。
+
+## 2026-06-03 Switch 尺寸规范定稿
+
+- Switch 源码将 track、thumb、thumb 初始位置、激活位移和 loading 图标字号统一收束到 `switchGeometryMap`，作为组件内部几何规格维护。
+- Switch 不直接用 `--comp-size-sm/md/lg` 表达整体高度，因为开关轨道、滑块、内边距和位移必须成组匹配；`size` 仍保留 `sm|md|lg` 的公开 API。
+- Switch 文档新增“尺寸规格”表：sm 为 26x16 / 10x10 / 10px / 8px，md 为 32x20 / 12x12 / 12px / 10px，lg 为 40x24 / 14x14 / 16px / 12px。
+- Switch 输入增加 `role="switch"` / `aria-checked`，并为隐藏 input 聚焦时的 track 增加 brand focus ring；该 ring 不改变布局尺寸。
 
 ## 后续入口
 

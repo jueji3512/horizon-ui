@@ -6,6 +6,10 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.04);
   --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+  /* 浮层 surface：参考 TDesign 中层浮层阴影，并叠加 inset 边界增强浅色主题分离度。 */
+  --shadow-popper:
+    0 3px 14px 2px rgb(0 0 0 / 0.05), 0 8px 10px 1px rgb(0 0 0 / 0.06),
+    0 5px 5px -3px rgb(0 0 0 / 0.1), inset 0 0 0 1px rgb(0 0 0 / 0.06);
 }
 
 /* ========== 动效 + 层级 :root ========== */

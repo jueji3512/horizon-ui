@@ -1,43 +1,39 @@
 <template>
-  <div
-    ref="referenceRef"
-    class="inline-flex"
-    @mouseenter="onMouseEnter"
-    @mouseleave="onMouseLeave"
-    @click="onTriggerClick"
-    @focus="onFocus"
-    @blur="onBlur"
+  <Popper
+    trigger="manual"
+    :visible="computedVisible"
+    :placement="placement"
+    :offset="offset"
+    :disabled="disabled"
+    :z-index="zIndex"
+    @update:visible="onPopperVisibleUpdate"
   >
-    <slot />
-  </div>
+    <PopperTrigger
+      @mouseenter="onMouseEnter"
+      @mouseleave="onMouseLeave"
+      @click="onTriggerClick"
+      @focusin="onFocus"
+      @focusout="onBlur"
+    >
+      <slot />
+    </PopperTrigger>
 
-  <Teleport to="body">
-    <div
-      v-if="computedVisible"
-      ref="floatingRef"
+    <PopperContent
       role="tooltip"
       :class="bubbleClasses"
-      :style="mergedStyles"
       @mouseenter="onBubbleEnter"
       @mouseleave="onBubbleLeave"
     >
       <slot name="content">{{ content }}</slot>
-      <div
-        v-if="showArrow"
-        ref="arrowRef"
-        class="absolute h-2 w-2 rotate-45"
-        :class="arrowClasses"
-        :style="arrowStyle"
-      />
-    </div>
-  </Teleport>
+      <PopperArrow v-if="showArrow" :class="arrowClasses" />
+    </PopperContent>
+  </Popper>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onBeforeUnmount } from 'vue'
-import { useFloating, arrow, flip, offset as offsetMiddleware, shift } from '@floating-ui/vue'
-import type { Placement } from '@floating-ui/vue'
 import { cn } from '../../utils'
+import { Popper, PopperTrigger, PopperContent, PopperArrow } from '../Popper'
 
 type TooltipPlacement =
   | 'top'
@@ -89,14 +85,9 @@ const emit = defineEmits<{
   'update:visible': [value: boolean]
 }>()
 
-const referenceRef = ref<HTMLElement>()
-const floatingRef = ref<HTMLElement>()
-const arrowRef = ref<HTMLElement>()
-
 const internalVisible = ref(false)
 let showTimer: ReturnType<typeof setTimeout> | null = null
 let hideTimer: ReturnType<typeof setTimeout> | null = null
-let clickOutsideHandler: ((e: MouseEvent) => void) | null = null
 
 const computedVisible = computed({
   get: () => (props.visible !== undefined ? props.visible : internalVisible.value),
@@ -105,37 +96,6 @@ const computedVisible = computed({
     emit('update:visible', val)
   },
 })
-
-const {
-  floatingStyles,
-  middlewareData,
-  placement: currentPlacement,
-} = useFloating(referenceRef, floatingRef, {
-  placement: computed(() => props.placement as unknown as Placement),
-  middleware: computed(() => [
-    offsetMiddleware(props.offset),
-    flip(),
-    shift({ padding: 4 }),
-    ...(props.showArrow ? [arrow({ element: arrowRef, padding: 4 })] : []),
-  ]),
-})
-
-const arrowStyle = computed(() => {
-  const data = middlewareData.value?.arrow
-  if (!data) return {}
-  const side = currentPlacement.value.split('-')[0]
-  const staticSide = { top: 'bottom', right: 'left', bottom: 'top', left: 'right' }[side] || 'top'
-  return {
-    left: data.x != null ? `${data.x}px` : '',
-    top: data.y != null ? `${data.y}px` : '',
-    [staticSide]: '-4px',
-  }
-})
-
-const mergedStyles = computed(() => ({
-  ...floatingStyles.value,
-  ...(props.zIndex != null ? { 'z-index': props.zIndex } : {}),
-}))
 
 const themeMap: Record<TooltipTheme, { bubble: string; arrow: string }> = {
   default: {
@@ -150,8 +110,8 @@ const themeMap: Record<TooltipTheme, { bubble: string; arrow: string }> = {
 
 const bubbleClasses = computed(() =>
   cn(
-    'font-body-sm absolute max-w-60 rounded-[var(--round-default)] px-2.5 py-1.5 select-none',
-    'break-words shadow-lg',
+    'font-body-sm max-w-60 rounded-[var(--round-default)] px-2 py-1 select-none',
+    'break-words shadow-popper',
     themeMap[props.theme].bubble,
   ),
 )
@@ -174,7 +134,9 @@ function doShow() {
   clearTimers()
   if (props.showDelay > 0) {
     showTimer = setTimeout(() => {
-      computedVisible.value = true
+      if (!props.disabled) {
+        computedVisible.value = true
+      }
     }, props.showDelay)
   } else {
     computedVisible.value = true
@@ -200,26 +162,9 @@ function doToggle() {
   }
 }
 
-function bindClickOutside() {
-  if (clickOutsideHandler) return
-  clickOutsideHandler = (e: MouseEvent) => {
-    if (!computedVisible.value) return
-    if (
-      !(e.target instanceof Node) ||
-      referenceRef.value?.contains(e.target) ||
-      floatingRef.value?.contains(e.target)
-    )
-      return
-    doHide()
-  }
-  document.addEventListener('click', clickOutsideHandler, true)
-}
-
-function unbindClickOutside() {
-  if (clickOutsideHandler) {
-    document.removeEventListener('click', clickOutsideHandler, true)
-    clickOutsideHandler = null
-  }
+function onPopperVisibleUpdate(val: boolean) {
+  if (!val) clearTimers()
+  computedVisible.value = val
 }
 
 function onMouseEnter() {
@@ -248,27 +193,17 @@ function onBubbleLeave() {
   if (props.trigger === 'hover') doHide()
 }
 
-watch(computedVisible, (val) => {
-  if (props.trigger === 'click') {
-    if (val) {
-      bindClickOutside()
-    } else {
-      unbindClickOutside()
-    }
-  }
-})
-
 watch(
-  () => props.trigger,
-  (_, oldTrigger) => {
-    if (oldTrigger === 'click') {
-      unbindClickOutside()
+  () => props.disabled,
+  (disabled) => {
+    if (disabled) {
+      clearTimers()
+      computedVisible.value = false
     }
   },
 )
 
 onBeforeUnmount(() => {
   clearTimers()
-  unbindClickOutside()
 })
 </script>

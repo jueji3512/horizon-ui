@@ -17,6 +17,8 @@
 - 用户确认 gap 不需要 token 化，`--space-*` 不再作为 Horizon 规范 token；已移除 `src/styles/tokens/size.css` 中的 `--space-*` 定义，并恢复组件内部普通 Tailwind `gap-*` 写法。
 - 用户进一步确认 padding 也不需要 token 化；已移除 `src/styles/tokens/size.css` 中的 `--padding-x-*` / `--padding-y-*` 定义，并将组件内部已使用 padding token 的地方恢复为等值 Tailwind spacing class。
 - `Icon` 已移除固定尺寸预设和 `size` prop，默认宽高为 `1em`，由字号或外部 class/style 控制；`Switch` loading 图标改为通过字号 class 适配。
+- Tooltip 已迁移到 Popper 基座：Tooltip 继续负责语义 API、延迟与主题视觉，Popper 负责定位、Teleport、arrow、outside click、Esc 和 z-index。
+- Tooltip 浮层阴影已沉淀为 `--shadow-popper` / `shadow-popper`，参考 TDesign 中层浮层多层投影并叠加 inset 边界，增强浅色主题气泡与页面背景的分离度。
 
 ### 代码编辑器与检查工具规范
 
@@ -101,7 +103,7 @@
 
 - 审计 `docs/superpowers/plans` 和 `docs/superpowers/specs` 下的历史计划与设计稿。
 - 确认多数内容是早期实施草案，当前源码、组件文档和根目录记忆文件已覆盖，不再需要继续保存。
-- 提取并保留有效结论到 `findings.md`：Popper 的上层依赖链、Paragraph 旧计划过时、Tooltip 后续可评估迁移到 Popper、早期 `type` → `theme` 和禁用态 token 方向已被当前规范吸收。
+- 提取并保留有效结论到 `findings.md`：Popper 的上层依赖链、Paragraph 旧计划过时、Tooltip 后续可评估迁移到 Popper、早期 `type` → `theme` 和禁用态 token 方向已被当前规范吸收；其中 Tooltip 迁移后续已于 2026-06-02 落实。
 - 用户已决定 dark mode 放到当前队列最后，优先处理 Popper、组件迁移扫描和浏览器级视觉验证。
 - 删除 `docs/superpowers/**`，并移除 VitePress `srcExclude: ['superpowers/**']` 过期配置。
 

@@ -41,7 +41,7 @@
 特别说明：
 
 - Paragraph 旧计划已过时，目前没有实现。
-- Tooltip 目前仍是独立 Floating UI 实现，后续可以考虑迁移到 Popper 基座。
+- Tooltip 已迁移到 Popper 基座；Tooltip 保留 theme、delay、trigger/manual 等语义和视觉 API，定位、Teleport、arrow、outside click、Esc 与 z-index 交给 Popper。
 - Popper 是底层定位基座，不提供业务 surface 样式；已完成 base-component review，可作为 Select/Dropdown 等上层组件的当前基座。
 
 ## 历史计划资料处置
@@ -50,7 +50,7 @@
 - 该目录内大多数内容是早期实施草案，已经被当前源码、组件文档和根目录记忆文件覆盖；历史勾选状态不再作为依据。
 - 保留下来的有效结论是：Popper 是 Select、Dropdown、Popconfirm、DatePicker、TimePicker、ColorPicker、Menu 等弹出类组件的前置基座；Select 依赖 Input、Tag、Popper；Dropdown 依赖 Button、Popper。
 - Paragraph 旧计划已明确过时，当前不实现；如未来需要大段文本编排，重新按当前 API/token 规范设计。
-- Tooltip 当前仍是独立 Floating UI 实现，后续可在 Popper 稳定后评估是否迁移到 Popper 基座。
+- Tooltip 当前已迁移到 Popper 基座；历史上“后续评估迁移”的结论已落实。
 - 早期交互规范里 `type` 迁移到 `theme`、禁用态不用 opacity、统一 token 的方向已被当前规范吸收；旧 token 名称和值不再直接沿用。
 - 历史路线图只保留为方向参考：完成 Popper 能力后优先考虑 Select/Dropdown/Popconfirm 等依赖链组件，再进入 Form、反馈、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
 
@@ -75,6 +75,7 @@
 - 边框：`--border-color-*`。
 - 尺寸：`--comp-size-sm/md/lg`。
 - 圆角：`--round-default`、`--round-full`。
+- 阴影：常规层级使用 `--shadow-*`；上层浮层 surface 使用 `--shadow-popper` / `shadow-popper`，Popper 底层本身不内置阴影。
 - padding / gap 不再作为 Horizon token 规范；组件内部直接使用 Tailwind spacing class。只有当某类结构尺寸形成稳定组件规格时，再逐项确认是否新增组件级 token。
 - 字体：`font-body-*`、`font-title-*`。
 
@@ -135,6 +136,7 @@ docs(project): 更新项目上下文与待办
 - 用户确认 gap 不需要 token 化，`--space-*` 不再作为 Horizon 规范 token；本轮已移除 `--space-*` 定义，并恢复组件内部普通 Tailwind `gap-*` 写法。
 - 用户进一步确认 padding 也不再作为 Horizon token 规范；本轮已移除 `--padding-x-*` / `--padding-y-*` 定义，并将组件内部已使用 padding token 的地方恢复为等值 Tailwind spacing class。
 - `Icon` 不再提供固定尺寸预设或 `size` prop；默认宽高为 `1em`，可随字号继承，用户需要自定义尺寸时通过外部 class/style 控制。`Switch` loading 图标已改为通过字号 class 适配这一 API 变化。
+- `Tooltip` 浮层阴影已沉淀为 `--shadow-popper` / `shadow-popper`，参考 TDesign 中层浮层的多层投影，并叠加 inset 边界以增强浅色主题 surface 与页面背景的分离度。
 
 ## 后续入口
 

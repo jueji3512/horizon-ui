@@ -1,6 +1,6 @@
 # Tooltip 文字提示
 
-鼠标悬停、聚焦或点击时显示的文本提示浮层。
+鼠标悬停、聚焦或点击时显示的文本提示浮层，基于 Popper 定位基座实现。
 
 ## 基础用法
 
@@ -62,7 +62,7 @@
 
 ## 方位
 
-`placement` 支持 12 个方向，Floating UI 自动 flip 防溢出。
+`placement` 支持 12 个方向，Popper 自动 flip 防溢出。
 
 <DemoBox>
   <div class="flex flex-wrap justify-center gap-2" style="max-width:400px;margin:40px auto 20px;">
@@ -282,7 +282,7 @@ const show = ref(false)
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `content` | `string` | `''` | 提示文本 |
-| `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'left' \| 'left-start' \| 'left-end' \| 'right' \| 'right-start' \| 'right-end'` | `'top'` | 12 方位，Floating UI 自动 flip |
+| `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'left' \| 'left-start' \| 'left-end' \| 'right' \| 'right-start' \| 'right-end'` | `'top'` | 12 方位，Popper 自动 flip |
 | `trigger` | `'hover' \| 'click' \| 'focus' \| 'manual'` | `'hover'` | 触发方式 |
 | `theme` | `'default' \| 'brand' \| 'success' \| 'warning' \| 'error'` | `'default'` | 主题类型 |
 | `show-arrow` | `boolean` | `true` | 箭头 |

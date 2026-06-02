@@ -7,7 +7,7 @@
 Horizon UI 是一个简约现代的企业级 Vue 3 组件库。
 
 - 技术栈：Vue 3、TypeScript strict、Tailwind CSS v4、VitePress。
-- 样式体系：CSS-first Tailwind v4 token，使用语义色、功能色、尺寸、圆角、字体 token。
+- 样式体系：CSS-first Tailwind v4 token，使用语义色、功能色、尺寸、圆角、字体、阴影 token。
 - 文档站点：`docs/`，组件文档在 `docs/components/`。
 - 组件源码：`src/components/`。
 - 当前主线：重新定义组件库规范，并迁移所有组件的尺寸、颜色、圆角、字体、状态样式与 API 命名。
@@ -75,6 +75,7 @@ docs(project): 更新项目上下文与待办
 - 边框：`--border-color-*`。
 - 尺寸：`--comp-size-sm`、`--comp-size-md`、`--comp-size-lg`。
 - 圆角：`--round-default`、`--round-full`。
+- 阴影：常规层级使用 `--shadow-*`；上层浮层 surface 使用 `--shadow-popper` / `shadow-popper`，Popper 底层本身不内置阴影。
 - padding / gap 不再作为 Horizon token 规范；组件内部直接使用 Tailwind spacing class，只有颜色、字体、圆角、组件高度等仍按 token 规范收敛。
 - 字体工具类：`font-body-*`、`font-title-*`。
 - 当前色彩规范主要完成 light mode；dark mode token、暗色状态映射、文档说明和组件适配仍是高优先级后续项。

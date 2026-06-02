@@ -144,6 +144,17 @@ docs(project): 更新项目上下文与待办
 - Field 输入域体系设计已沉淀到 `docs/guide/field-system.md`，并新增 `docs/components/field.md`：Field 作为公开底层组件，统一 field-like 组件的 surface、状态、尺寸、focus ring、slot/action/group/segment 布局，但不承载输入值解析、Popper、日期面板、选择面板等业务行为；Input 与 InputNumber 已迁移到 Field 验证首批边界。
 - Field primitives 已调整为外部 `class` 后置合并，公开组合时可以稳定覆盖内部默认 spacing / width 等 class；FieldRoot 增加 `focus-within` 默认 ring，FieldSegment 增加 `focus-within:text-brand`，用于 range segment 的无 JS 聚焦视觉。
 - InputNumber 已复用 FieldRoot / FieldNativeInput / FieldGroup 作为中间输入域基座，步进按钮复用 Button 的 `variant="outline"` + `shape="square"`；迁移后保留 sm/md/lg 的 24/32/40 规范高度，并修复聚焦时键盘/按钮步进后展示值不同步的问题。`readonly` 按“不允许编辑”理解，输入和步进都不可改值，但步进按钮不呈现 disabled 视觉。
+- Checkbox / Radio 当前的 `variant="button"` 是分段切换形态，自维护样式而不是直接复用 Button。用户建议未来单独设计 Toggle / ToggleGroup 来承接这类形态；当前暂不实现，只记录为后续 API 方向。
+
+## 2026-06-02 组件级固有尺寸扫描
+
+- 扫描范围：`src/components/**` 中的固定 `h-*` / `w-*` / `min-w-*` / `translate-*` / `max-w-*` / icon 几何，以及 Badge、Switch、Tooltip 文档页的浏览器实际尺寸。
+- Badge：dot 为 6x6；计数徽标为 20px 高、最小宽 16px、左右 padding 6px、`round-full`；浏览器实测单数字宽约 19px，中文“新”宽 24px。该几何只服务 Badge，自成规格，暂不适合直接映射到 `--comp-size-sm/md/lg`。
+- Switch：sm/md/lg 轨道为 26x16、32x20、40x24；滑块为 10x10、12x12、14x14；位移为 10/12/16px，loading 图标字号为 8/10/12px。Switch 的 track/thumb/offset 是强耦合几何矩阵，应优先保留为组件内部 size map，是否沉淀 token 需等 Switch 规范稳定。
+- Tooltip / PopperArrow：Tooltip surface 使用 `max-w-60`、`px-2 py-1`、`round-default`、`shadow-popper`；PopperArrow 结构为 8x8 旋转方块，浏览器旋转后包围盒约 11.3px。箭头尺寸属于 Popper 结构默认值，不是业务主题样式。
+- Checkbox / Radio 控件几何：默认 checkbox box 为 16x16；radio 外圈 16x16、内点 8x8；button variant 高度跟 `--comp-size-sm/md/lg`，padding 自维护。未来 Toggle / ToggleGroup 可重新承接 button variant，但需要保留 Checkbox / Radio 的选择语义。
+- FieldAction 是 20x20 的输入域内部动作位；InputNumber 中间输入段宽度是 72/88/104px；Callout 左侧色条 4px；Divider 标签两侧短线 24px；PopperArrow 8x8。这些都属于组件内部结构尺寸候选，优先级低于 Badge / Switch / Tooltip。
+- 初步结论：当前不建议新增一组全局尺寸 token 来覆盖所有固有几何；先保留组件内部 size map / 常量，并在后续逐个组件定稿时再决定是否新增组件级 token。优先级建议：Switch 几何矩阵 > Badge dot/count > PopperArrow / Tooltip arrow > Checkbox/Radio ToggleGroup 方向 > 其他结构尺寸。
 
 ## 后续入口
 

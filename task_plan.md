@@ -41,8 +41,10 @@
 | 任务 | 优先级 | 说明 |
 |---|---|---|
 | 继续组件迁移扫描 | 高 | 从源码和当前规范重新扫描，不依赖旧计划勾选状态。 |
-| Field 底层组件 | 高 | Input / InputNumber 已完成迁移；继续用 Select 多选、DatePicker range 等复杂场景验证边界，并为未来 field-like 组件做准备。 |
+| 组件级固有尺寸规范 | 高 | 首轮已扫描 Badge、Switch、Tooltip / PopperArrow、Checkbox / Radio 控件几何、FieldAction、InputNumber 输入段宽度等候选项；下一步逐项决定保留内部常量还是沉淀组件级 token。 |
+| Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
 | 浏览器视觉验证 | 中 | 恢复可用浏览器/Playwright 后补做截图级验证。 |
+| Field 底层组件 | 中 | Input / InputNumber 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |
 | Dark mode 色彩规范 | 后置 | 用户已决定 dark mode 放到当前队列最后；当前完成的是 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。 |
 | Icon 外部 SVG 安全策略 | 中 | 如果未来支持外部 SVG 输入，需要替换当前仅适用于本地白名单图标的策略。 |
 

@@ -130,3 +130,10 @@
 - InputNumber 两侧步进按钮改为复用 Button 的 `variant="outline"` + `shape="square"`，删除组件内部重复的按钮视觉 class；`readonly` 仍按“不允许改值但不呈现 disabled 视觉”处理。
 - `docs/components/button.md` 已同步新的 Button API 和示例。
 - 验证通过：`npm run check`；浏览器确认 `/components/button` 的 outline 与 shape 渲染正常，`/components/inputnumber` 的 stepper 尺寸为 24/32/40、点击步进同步、disabled/readonly 状态符合预期。
+
+### 组件级固有尺寸扫描
+
+- 用户建议 Checkbox / Radio 当前 `variant="button"` 的分段切换形态，未来可单独抽为 Toggle / ToggleGroup；本轮只记录计划，不实现。
+- 按源码扫描 Badge、Switch、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider 等固定尺寸候选。
+- 浏览器实测：Badge dot 为 6x6，计数徽标为 20px 高、最小宽 16px、左右 padding 6px；Switch sm/md/lg 轨道为 26x16、32x20、40x24，滑块为 10/12/14px；Tooltip surface 为 28px 高、`px-2 py-1`，PopperArrow 源尺寸为 8x8，旋转后包围盒约 11.3px。
+- 初步结论：不急于新增全局尺寸 token；Badge、Switch、Tooltip/PopperArrow 等先保留组件内部几何常量或 size map，后续按组件逐项确认是否沉淀组件级 token。已更新 `TODO.md`、`findings.md`、`task_plan.md`、`AGENTS.md`。

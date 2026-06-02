@@ -38,7 +38,7 @@ npm run check        # format:check + lint + typecheck + build
 
 1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
 2. 先读本文件，再读 `TODO.md` 和 `CODE_STYLE.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
-3. 当前最重要的后续项是继续验证 Field 在 Select 多选、DatePicker range 等场景的边界，并继续扫描未迁移组件、补充关键组件浏览器级视觉验证；dark mode 已决定放到当前队列最后。
+3. 当前更靠前的后续项是组件级固有尺寸规范扫描与决策、继续扫描未迁移组件、补充关键组件浏览器级视觉验证；Field 在 Select 多选、DatePicker range 等复杂场景的压力验证已决定先滞后，dark mode 放到当前队列最后。
 4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 
@@ -103,6 +103,8 @@ docs(project): 更新项目上下文与待办
 - Field 已作为公开底层输入域组件落地到 `src/components/Field/`，不是 `_internal`；它用于统一 Input、InputNumber、Select、DatePicker 等 field-like 组件的 surface、状态、尺寸和组合布局。Input / InputNumber 已迁移到 Field 验证首版边界。
 - Field primitives 支持外部 `class` 后置覆盖；FieldRoot 具备 `focus-within` 默认 ring，FieldSegment 具备 `focus-within:text-brand` 分段聚焦视觉。
 - InputNumber 已复用 FieldRoot / FieldNativeInput / FieldGroup，步进按钮复用 Button 的 `variant="outline"` + `shape="square"`，保留 sm/md/lg 的 24/32/40 尺寸，并修复聚焦时键盘/按钮步进后的展示值同步。
+- Checkbox / Radio 的 `variant="button"` 未来可考虑抽到 Toggle / ToggleGroup；当前只记录方向，不实现。
+- 组件级固有尺寸已完成首轮扫描：Badge dot/count、Switch track/thumb、Tooltip / PopperArrow、Checkbox / Radio 控件几何、FieldAction、InputNumber 输入段宽度等是候选项；当前倾向先保留组件内部 size map / 常量，逐项确认后再决定是否新增组件级 token。
 - Popper 已完成 base-component review；`offset` / `flip` / `shift` / `matchWidth` / `autoUpdate` 改为响应式配置，`matchWidth` 改用 Floating UI `size` middleware，`disabled` 变 true 时会关闭已打开浮层。
 - Popper 文档去掉容易误解为内置主题的深色/浅色和默认边框表达。
 - `Icon.vue` 的 `v-html` 仅用于渲染打包期导入的本地图标 SVG，已补充安全边界说明并处理 lint warning。

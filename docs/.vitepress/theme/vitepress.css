@@ -2,14 +2,17 @@
 
 /*
   DemoBox 容器内 revert VitePress 非分层 reset，
-  确保组件 demo 区域内的 button / heading 不被 VitePress 样式覆盖。
+  确保组件 demo 区域内的 a / button / heading 不被 VitePress 样式覆盖。
   不在 .vp-doc 全局做 revert，避免影响正常 Markdown 排版。
+  如果文档站样式影响组件 demo，应在这里继续隔离，不要把 VitePress 适配写进组件源码。
 */
-.demo-box-preview :where(a, a:hover, a:visited, button, input, textarea, h1, h2, h3, h4, h5, h6) {
+.vp-doc
+  .demo-box-preview
+  :is(a, a:hover, a:visited, button, input, textarea, h1, h2, h3, h4, h5, h6) {
   all: revert-layer;
 }
 
-.demo-box-preview button:focus:not(:focus-visible) {
+.vp-doc .demo-box-preview button:focus:not(:focus-visible) {
   outline: none;
 }
 

@@ -1,5 +1,12 @@
 <template>
-  <a :aria-disabled="disabled || undefined" :class="classes" @click="handleClick">
+  <a
+    :href="resolvedHref"
+    :target="target || undefined"
+    :rel="resolvedRel"
+    :aria-disabled="disabled || undefined"
+    :class="classes"
+    @click="handleClick"
+  >
     <Icon v-if="prefixIcon" :name="prefixIcon" />
     <slot />
     <Icon v-if="suffixIcon" :name="suffixIcon" />
@@ -21,6 +28,9 @@ const props = withDefaults(
     underline?: LinkUnderline
     size?: LinkSize
     disabled?: boolean
+    href?: string
+    target?: string
+    rel?: string
     prefixIcon?: string
     suffixIcon?: string
   }>(),
@@ -29,6 +39,9 @@ const props = withDefaults(
     underline: 'hover',
     size: 'md',
     disabled: false,
+    href: '',
+    target: '',
+    rel: '',
     prefixIcon: '',
     suffixIcon: '',
   },
@@ -38,13 +51,13 @@ const emit = defineEmits<{
   click: [e: MouseEvent]
 }>()
 
-const sizeMap: Record<LinkSize, string> = {
+const linkSizeMap: Record<LinkSize, string> = {
   sm: 'font-body-sm gap-1',
   md: 'font-body-md gap-1',
   lg: 'font-body-lg gap-1.5',
 }
 
-const themeColorMap: Record<LinkTheme, string> = {
+const linkThemeColorMap: Record<LinkTheme, string> = {
   default: 'text-[var(--text-color-primary)]',
   brand: 'text-brand hover:text-brand-hover',
   success: 'text-success hover:text-success-hover',
@@ -52,33 +65,43 @@ const themeColorMap: Record<LinkTheme, string> = {
   error: 'text-error hover:text-error-hover',
 }
 
-const underlineMap: Record<LinkUnderline, string> = {
+const linkUnderlineMap: Record<LinkUnderline, string> = {
   always: 'border-b border-current',
   hover: 'border-b border-transparent hover:border-current',
   never: '',
 }
 
-const disabledColorMap: Record<LinkTheme, string> = {
+const linkDisabledColorMap: Record<LinkTheme, string> = {
   default: 'text-[var(--text-color-disabled)]',
-  brand: 'text-brand/50',
-  success: 'text-success/50',
-  warning: 'text-warning/50',
-  error: 'text-error/50',
+  brand: 'text-brand-disabled',
+  success: 'text-success-disabled',
+  warning: 'text-warning-disabled',
+  error: 'text-error-disabled',
 }
 
+const resolvedHref = computed(() => (props.disabled ? undefined : props.href || undefined))
+
+const resolvedRel = computed(
+  () => props.rel || (props.target === '_blank' ? 'noopener noreferrer' : undefined),
+)
+
 function handleClick(e: MouseEvent) {
-  if (!props.disabled) {
-    emit('click', e)
+  if (props.disabled) {
+    e.preventDefault()
+    e.stopImmediatePropagation()
+    return
   }
+
+  emit('click', e)
 }
 
 const classes = computed(() =>
   cn(
     'inline-flex items-center transition-colors duration-150 [text-decoration:none]',
-    sizeMap[props.size],
+    linkSizeMap[props.size],
     props.disabled
-      ? cn(disabledColorMap[props.theme], 'cursor-not-allowed border-transparent')
-      : cn(themeColorMap[props.theme], underlineMap[props.underline], 'cursor-pointer'),
+      ? cn(linkDisabledColorMap[props.theme], 'cursor-not-allowed border-transparent')
+      : cn(linkThemeColorMap[props.theme], linkUnderlineMap[props.underline], 'cursor-pointer'),
   ),
 )
 </script>

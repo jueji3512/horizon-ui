@@ -199,6 +199,14 @@ docs(project): 更新项目上下文与待办
 - Callout 左侧色条用于语义提示结构，Divider 标签短线和纵向高度依赖分割线场景，均不直接映射 `--comp-size-sm/md/lg`。
 - Callout / Divider 文档均新增“尺寸规格”表。
 
+## 2026-06-03 Link 行为规范收敛
+
+- Link 源码补齐正式 `href` / `target` / `rel` props；`target="_blank"` 且未显式传 `rel` 时默认补 `noopener noreferrer`。
+- Link disabled 状态不再使用 `text-brand/50` 等透明语义色，而是按 theme 映射 `text-brand-disabled` / `text-success-disabled` / `text-warning-disabled` / `text-error-disabled`；default 使用 `--text-color-disabled`。
+- Link disabled 状态会移除可跳转 `href`，并在点击时 `preventDefault` / `stopImmediatePropagation`，避免外部传入 href 时仍发生原生跳转。
+- Link 文档新增“链接目标”示例和 props 说明，并明确 disabled 会阻止原生跳转和 `click` 事件派发。
+- VitePress 文档站对 `<a>` 的全局样式影响应继续在 `docs/.vitepress/theme/vitepress.css` 的 DemoBox 隔离层处理，不应把 `!important`、文档专用 class 或特殊覆盖写进组件源码。
+
 ## 后续入口
 
 - 任务清单：`TODO.md`。

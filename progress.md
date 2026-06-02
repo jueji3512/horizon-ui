@@ -179,3 +179,13 @@
 - Divider 的横向布局、标签 padding、24px 靠边短线、纵向 1em 高度收束到 `dividerGeometryMap`。
 - Callout / Divider 文档新增“尺寸规格”表；项目记忆将组件级固有尺寸首轮扫描调整为已完成，后续转为持续守护规则。
 - 验证：`npm run check` 已通过；构建产物确认 Callout 左侧色条、Divider 靠边短线、标签 padding 和纵向高度对应 class 已进入 CSS。
+
+### Link 行为规范收敛
+
+- 组件迁移扫描转向基础组件行为；Link 是本轮第一项，问题点是 disabled 仍使用透明语义色，且外部传入 href 时 disabled 可能无法阻止原生跳转。
+- Link 补齐正式 `href` / `target` / `rel` props；`target="_blank"` 默认补 `noopener noreferrer`。
+- Link disabled 状态按 theme 使用对应 disabled token，移除可跳转 href，并阻止原生点击默认行为和事件继续传播。
+- Link 文档新增“链接目标”示例和 props 说明。
+- 用户确认：不要为了 VitePress 表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖；文档站样式污染应在 `docs/.vitepress/theme/vitepress.css` 隔离处理。
+- 定位 Link 文档页样式问题：`.vp-doc a` specificity 高于原 `.demo-box-preview :where(a, ...)` 隔离规则，导致 demo 内 Link 被 VitePress 链接色、字重和下划线覆盖；已将隔离选择器提高为 `.vp-doc .demo-box-preview :is(...)`。
+- 验证：5173 dev server 截图和 computed style 已确认 Link theme / disabled theme / underline 恢复为组件自身样式。

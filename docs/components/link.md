@@ -26,6 +26,24 @@
 ```
 :::
 
+## 链接目标
+
+`href` 设置跳转地址；`target="_blank"` 时如果未显式传入 `rel`，组件会默认使用 `noopener noreferrer`。
+
+<DemoBox>
+  <div class="flex flex-wrap gap-4">
+    <Link href="/components/button.html">组件内链接</Link>
+    <Link href="https://developer.mozilla.org/" target="_blank">外部链接</Link>
+  </div>
+</DemoBox>
+
+::: details 查看代码
+```html
+<Link href="/components/button.html">组件内链接</Link>
+<Link href="https://developer.mozilla.org/" target="_blank">外部链接</Link>
+```
+:::
+
 ## 下划线
 
 `underline` 控制下划线行为：`always` 始终显示，`hover` 悬浮显示（默认），`never` 从不显示。
@@ -95,12 +113,14 @@
 
 ## 禁用态
 
-`disabled` 使链接变为不可交互的灰色。
+`disabled` 使链接变为不可交互状态，颜色使用对应主题的 disabled token，并阻止原生跳转和 `click` 事件派发。
 
 <DemoBox>
   <div class="flex flex-wrap gap-4">
     <Link disabled>禁用链接</Link>
     <Link theme="brand" disabled>品牌禁用</Link>
+    <Link theme="success" disabled>成功禁用</Link>
+    <Link theme="warning" disabled>警告禁用</Link>
     <Link theme="error" disabled>错误禁用</Link>
   </div>
 </DemoBox>
@@ -109,6 +129,8 @@
 ```html
 <Link disabled>禁用链接</Link>
 <Link theme="brand" disabled>品牌禁用</Link>
+<Link theme="success" disabled>成功禁用</Link>
+<Link theme="warning" disabled>警告禁用</Link>
 <Link theme="error" disabled>错误禁用</Link>
 ```
 :::
@@ -121,6 +143,9 @@
 | `underline` | `'always' \| 'hover' \| 'never'` | `'hover'` | 下划线行为 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
 | `disabled` | `boolean` | `false` | 禁用态 |
+| `href` | `string` | — | 链接地址 |
+| `target` | `string` | — | 链接打开目标 |
+| `rel` | `string` | — | 链接关系；`target="_blank"` 时默认补 `noopener noreferrer` |
 | `prefix-icon` | `string` | — | 前置图标名 |
 | `suffix-icon` | `string` | — | 后置图标名 |
 

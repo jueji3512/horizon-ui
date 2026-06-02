@@ -97,6 +97,7 @@ docs(project): 更新项目上下文与待办
 - Tag 默认高度为 `h-6`，左右 padding 使用 `px-2`，图标间距使用 `gap-2`。
 - Input 默认占满父元素宽度，移除 max-width 相关样式。
 - Input disabled 状态使用明确的 bg/border/text disabled token，不再依赖 opacity。
+- Link 已补正式 `href` / `target` / `rel` API；disabled 状态会移除可跳转 href、阻止原生点击，并按 theme 使用对应 disabled token。
 - InputNumber disabled 输入框补充 `cursor-not-allowed`。
 - PopperContent 保持无视觉样式，默认不提供 border、background、text color、radius、shadow/elevation。
 - PopperContent 通过 `v-bind="$attrs"` 将上层 `class/style` 传给 Teleport 后的真实浮层 DOM。
@@ -131,3 +132,4 @@ Popper 是底层定位基座，不是最终视觉组件。
 - 如果未来 `Icon` 支持外部 SVG 或运行时 SVG 文本，必须重新评估当前 `v-html` 策略。
 - 如果修改颜色 token，必须同步更新 `src/styles` 和设计指南文档。
 - 如果修改代码风格或检查工具，必须同步更新 `CODE_STYLE.md` 和相关配置。
+- 文档站 VitePress 全局样式影响组件 demo 时，应在 `docs/.vitepress/theme/vitepress.css` 做样式隔离；不要为了 VitePress 表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖。

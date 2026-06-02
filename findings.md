@@ -154,7 +154,7 @@ docs(project): 更新项目上下文与待办
 - Tooltip / PopperArrow：Tooltip surface 使用 `max-w-60`、`px-2 py-1`、`round-default`、`shadow-popper`；PopperArrow 结构为 8x8 旋转方块，浏览器旋转后包围盒约 11.3px。Tooltip surface 已定稿为组件内部 `tooltipSurfaceGeometryMap`，PopperArrow 视觉尺寸和静态边偏移已定稿为组件内部 `popperArrowGeometry`；箭头尺寸属于 Popper 结构默认值，不是业务主题样式。
 - Checkbox / Radio 控件几何：默认 checkbox box 为 16x16，check / indeterminate icon 为 12x12；radio 外圈 16x16、内点 8x8；button variant 高度跟 `--comp-size-sm/md/lg`，padding / gap 自维护。默认控件和 button variant 几何已分别收束到 Checkbox / Radio 内部 geometry map；未来 Toggle / ToggleGroup 可重新承接 button variant，但需要保留 Checkbox / Radio 的选择语义。
 - FieldAction 是 20x20 的输入域内部动作位；InputNumber 中间输入段宽度是 72/88/104px；Callout 左侧色条 4px；Divider 标签两侧短线 24px；PopperArrow 8x8。这些都属于组件内部结构尺寸候选，优先级低于 Badge / Switch / Tooltip。
-- 初步结论：当前不建议新增一组全局尺寸 token 来覆盖所有固有几何；先保留组件内部 size map / 常量，并在后续逐个组件定稿时再决定是否新增组件级 token。Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio 已优先定稿，后续优先级建议：FieldAction / InputNumber 输入段宽度 > 其他结构尺寸。
+- 初步结论：当前不建议新增一组全局尺寸 token 来覆盖所有固有几何；先保留组件内部 size map / 常量，并在后续逐个组件定稿时再决定是否新增组件级 token。Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber 输入段宽度已优先定稿，后续优先级建议：Callout 左侧色条 / Divider 标签线 > 其他结构尺寸。
 
 ## 2026-06-03 Switch 尺寸规范定稿
 
@@ -184,6 +184,13 @@ docs(project): 更新项目上下文与待办
 - Radio 源码将 default circle 和 inner dot 收束到 `radioControlGeometryMap`：外圈为 16x16，内点为 8x8；button variant 高度、padding、gap 收束到 `radioButtonGeometryMap`。
 - Checkbox / Radio default 控件不直接用 `--comp-size-sm/md/lg` 表达；button variant 仍跟随 `--comp-size-sm/md/lg` 的 24/32/40 高度，未来若迁移到 Toggle / ToggleGroup，再重新设计承接。
 - Checkbox / Radio 文档均新增“尺寸规格”表，说明 default 控件几何和 button sm/md/lg 的高度、padding、gap。
+
+## 2026-06-03 FieldAction / InputNumber 尺寸规范定稿
+
+- FieldAction 源码将 20x20 输入域内部动作位收束到 `fieldActionGeometryMap`；该尺寸服务于清空、展开、密码显隐等动作，不直接映射为 FieldRoot 整体高度。
+- InputNumber 源码将中间输入段宽度和输入 padding 收束到 `inputNumberGeometryMap`：sm 为 72px / px-2，md 为 88px / px-3，lg 为 104px / px-3。
+- InputNumber 整体高度仍由 FieldRoot 和 Button 的 `--comp-size-sm/md/lg` 共同控制，步进按钮复用 Button `shape="square"`，即 24/32/40 方形按钮。
+- Field 文档新增 FieldAction 固有尺寸说明；InputNumber 文档新增中间输入段、输入 padding 和步进按钮尺寸规格表。
 
 ## 后续入口
 

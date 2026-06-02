@@ -55,6 +55,16 @@ function toYuan(v) { return '¥' + v.toLocaleString('en-US') }
 ```
 :::
 
+## 尺寸规格
+
+InputNumber 使用 FieldRoot + Button 组合几何。整体高度跟随 `--comp-size-sm/md/lg`，中间输入段宽度作为 InputNumber 自身规格维护。
+
+| Size | 整体高度 | 中间输入段 | 输入 padding | 步进按钮 |
+|------|----------|------------|--------------|----------|
+| `sm` | `24px` | `72px` | 左右 `8px` | `24 × 24px` |
+| `md` | `32px` | `88px` | 左右 `12px` | `32 × 32px` |
+| `lg` | `40px` | `104px` | 左右 `12px` | `40 × 40px` |
+
 ## 对齐 Align
 
 `left` / `center`（默认）/ `right` 控制输入文本对齐。

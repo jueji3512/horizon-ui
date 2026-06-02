@@ -223,9 +223,12 @@ function handleFocus(e: FocusEvent) {
 const isMinReached = computed(() => props.modelValue <= props.min)
 const isMaxReached = computed(() => props.modelValue >= props.max)
 
-type SizeConfig = { field: string; input: string }
+type InputNumberGeometry = {
+  field: string
+  input: string
+}
 
-const sizeMap: Record<InputNumberSize, SizeConfig> = {
+const inputNumberGeometryMap: Record<InputNumberSize, InputNumberGeometry> = {
   sm: {
     field: 'w-[72px] shrink-0',
     input: 'px-2',
@@ -240,7 +243,7 @@ const sizeMap: Record<InputNumberSize, SizeConfig> = {
   },
 }
 
-const sizeCfg = computed(() => sizeMap[props.size])
+const geometry = computed(() => inputNumberGeometryMap[props.size])
 
 const wrapperClasses = computed(() =>
   cn('items-center gap-1', props.disabled && 'cursor-not-allowed'),
@@ -252,9 +255,9 @@ const alignMap: Record<InputNumberAlign, string> = {
   right: 'text-right',
 }
 
-const inputFieldClasses = computed(() => sizeCfg.value.field)
+const inputFieldClasses = computed(() => geometry.value.field)
 
-const inputClasses = computed(() => cn(sizeCfg.value.input, alignMap[props.align]))
+const inputClasses = computed(() => cn(geometry.value.input, alignMap[props.align]))
 </script>
 
 <style scoped>

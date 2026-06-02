@@ -120,6 +120,15 @@ Field 使用组件尺寸 token 和功能色 ring，状态由上层组件传入�
 ```
 :::
 
+## 固有尺寸
+
+FieldRoot 的高度跟随 `--comp-size-sm/md/lg`；FieldAction 使用输入域内部动作位规格，不直接映射为输入域整体高度。
+
+| 部位 | 规格 | 说明 |
+|------|------|------|
+| FieldRoot sm / md / lg | `24px` / `32px` / `40px` | 通过组件尺寸 token 控制整体输入域高度 |
+| FieldAction | `20 × 20px` | 用于清空、展开、密码显隐等输入域内部动作 |
+
 ## 多值输入
 
 多选 Select、TreeSelect 和 TagInput 可以用 `multiline` + `FieldContent` 承载 Tag wrap，搜索输入框仍由上层控制。

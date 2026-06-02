@@ -165,3 +165,10 @@
 - Radio default circle / inner dot 几何收束到 `radioControlGeometryMap`，button variant 高度、padding、gap 收束到 `radioButtonGeometryMap`。
 - Checkbox / Radio 文档新增“尺寸规格”表；Toggle / ToggleGroup 方向继续只记录，不在本轮实现。
 - 验证：`npm run check` 已通过；使用 5175 preview 浏览器确认 Checkbox box/icon 为 16x16 / 12x12，Radio circle/选中 dot 为 16x16 / 8x8，button sm/md/lg 为 24/32/40 高，padding/gap 与文档规格一致。
+
+### FieldAction / InputNumber 尺寸规范定稿
+
+- FieldAction 的 20x20 动作位收束到 `fieldActionGeometryMap`，作为输入域内部动作几何维护。
+- InputNumber 的中间输入段宽度和输入 padding 收束到 `inputNumberGeometryMap`，保留 sm/md/lg 的 72/88/104px 中间段宽度；步进按钮继续复用 Button square 的 24/32/40 尺寸。
+- Field 文档新增 FieldAction 固有尺寸说明，InputNumber 文档新增整体高度、中间输入段、输入 padding 和步进按钮规格表。
+- 验证：`npm run check` 已通过；5175 preview 浏览器确认 FieldAction 实际为 20x20，构建产物确认 InputNumber 的 72/88/104px 输入段宽度和组件尺寸 token 已进入 CSS。

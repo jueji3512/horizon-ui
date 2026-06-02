@@ -1,10 +1,10 @@
 <template>
-  <!-- default type -->
-  <div v-if="type === 'default'" role="group" :class="defaultContainerClasses">
+  <!-- default variant -->
+  <div v-if="variant === 'default'" role="group" :class="defaultContainerClasses">
     <slot />
   </div>
 
-  <!-- button type -->
+  <!-- button variant -->
   <div
     v-else
     role="group"
@@ -21,16 +21,19 @@ import type { ComputedRef, InjectionKey } from 'vue'
 
 export interface CheckboxGroupContext {
   modelValue: ComputedRef<(string | number)[]>
-  type: string
-  size: string
-  disabled: boolean
-  min: number | undefined
-  max: number | undefined
+  variant: ComputedRef<CheckboxGroupVariant>
+  size: ComputedRef<CheckboxGroupSize>
+  disabled: ComputedRef<boolean>
+  min: ComputedRef<number | undefined>
+  max: ComputedRef<number | undefined>
   toggle: (value: string | number) => void
   isLimitDisabled: (value: string | number, checked: boolean) => boolean
 }
 
 export const checkboxGroupKey: InjectionKey<CheckboxGroupContext> = Symbol('checkboxGroup')
+
+type CheckboxGroupVariant = 'default' | 'button'
+type CheckboxGroupSize = 'sm' | 'md' | 'lg'
 </script>
 
 <script setup lang="ts">
@@ -40,8 +43,8 @@ import { cn } from '../../utils'
 const props = withDefaults(
   defineProps<{
     modelValue?: (string | number)[]
-    type?: 'default' | 'button'
-    size?: 'sm' | 'md' | 'lg'
+    variant?: CheckboxGroupVariant
+    size?: CheckboxGroupSize
     disabled?: boolean
     direction?: 'horizontal' | 'vertical'
     min?: number
@@ -49,7 +52,7 @@ const props = withDefaults(
   }>(),
   {
     modelValue: () => [],
-    type: 'default',
+    variant: 'default',
     size: 'md',
     disabled: false,
     direction: 'vertical',
@@ -86,11 +89,11 @@ function isLimitDisabled(value: string | number, checked: boolean): boolean {
 
 provide(checkboxGroupKey, {
   modelValue: groupModelValue,
-  type: props.type,
-  size: props.size,
-  disabled: props.disabled,
-  min: props.min,
-  max: props.max,
+  variant: computed(() => props.variant),
+  size: computed(() => props.size),
+  disabled: computed(() => props.disabled),
+  min: computed(() => props.min),
+  max: computed(() => props.max),
   toggle,
   isLimitDisabled,
 })
@@ -98,7 +101,7 @@ provide(checkboxGroupKey, {
 // ===== keyboard nav =====
 
 function handleKeydown(e: KeyboardEvent) {
-  if (props.type !== 'button') return
+  if (props.variant !== 'button') return
 
   const container = e.currentTarget as HTMLElement
   const checkboxes = container.querySelectorAll<HTMLElement>('[role="checkbox"]:not([disabled])')

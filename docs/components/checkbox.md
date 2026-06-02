@@ -15,7 +15,7 @@ const dirHoriz = ref(['a'])
 const disabledDemo = ref(['a'])
 const disabledGroup = ref(['a'])
 
-// button type demos
+// button variant demos
 const btnDemo = ref(['a', 'b'])
 const btnSizeSm = ref(['a'])
 const btnSizeMd = ref(['a'])
@@ -194,40 +194,40 @@ const minmax = ref(['a', 'b'])
 ```
 :::
 
-## 按钮组 Button Type
+## 按钮组 Button Variant
 
-设置 `type="button"` 切换为按钮组样式。
+设置 `variant="button"` 切换为按钮组样式。
 
 <DemoBox>
-  <CheckboxGroup v-model="btnDemo" type="button" class="mt-2">
+  <CheckboxGroup v-model="btnDemo" variant="button" class="mt-2">
     <Checkbox value="a" label="选项 A" />
     <Checkbox value="b" label="选项 B" />
     <Checkbox value="c" label="选项 C" />
   </CheckboxGroup>
 
   <div class="mt-4 flex flex-col gap-3 items-start">
-    <CheckboxGroup v-model="btnSizeSm" type="button" size="sm">
+    <CheckboxGroup v-model="btnSizeSm" variant="button" size="sm">
       <Checkbox value="a" label="小" />
       <Checkbox value="b" label="小" />
     </CheckboxGroup>
-    <CheckboxGroup v-model="btnSizeMd" type="button" size="md">
+    <CheckboxGroup v-model="btnSizeMd" variant="button" size="md">
       <Checkbox value="a" label="中" />
       <Checkbox value="b" label="中" />
     </CheckboxGroup>
-    <CheckboxGroup v-model="btnSizeLg" type="button" size="lg">
+    <CheckboxGroup v-model="btnSizeLg" variant="button" size="lg">
       <Checkbox value="a" label="大" />
       <Checkbox value="b" label="大" />
     </CheckboxGroup>
   </div>
 
-  <CheckboxGroup v-model="btnDisabled" type="button" class="mt-4">
+  <CheckboxGroup v-model="btnDisabled" variant="button" class="mt-4">
     <Checkbox value="a" label="可用" />
     <Checkbox value="b" label="禁用" disabled />
     <Checkbox value="c" label="可用" />
   </CheckboxGroup>
 
   <div class="mt-4">
-    <CheckboxGroup v-model="btnDisabledSelected" type="button">
+    <CheckboxGroup v-model="btnDisabledSelected" variant="button">
       <Checkbox value="x" disabled label="选中禁用" />
       <Checkbox value="y" disabled label="未选禁用" />
     </CheckboxGroup>
@@ -236,32 +236,32 @@ const minmax = ref(['a', 'b'])
 
 ::: details 查看代码
 ```html
-<CheckboxGroup v-model="btnDemo" type="button">
+<CheckboxGroup v-model="btnDemo" variant="button">
   <Checkbox value="a" label="选项 A" />
   <Checkbox value="b" label="选项 B" />
   <Checkbox value="c" label="选项 C" />
 </CheckboxGroup>
 
-<CheckboxGroup v-model="btnSizeSm" type="button" size="sm">
+<CheckboxGroup v-model="btnSizeSm" variant="button" size="sm">
   <Checkbox value="a" label="小" />
   <Checkbox value="b" label="小" />
 </CheckboxGroup>
-<CheckboxGroup v-model="btnSizeMd" type="button" size="md">
+<CheckboxGroup v-model="btnSizeMd" variant="button" size="md">
   <Checkbox value="a" label="中" />
   <Checkbox value="b" label="中" />
 </CheckboxGroup>
-<CheckboxGroup v-model="btnSizeLg" type="button" size="lg">
+<CheckboxGroup v-model="btnSizeLg" variant="button" size="lg">
   <Checkbox value="a" label="大" />
   <Checkbox value="b" label="大" />
 </CheckboxGroup>
 
-<CheckboxGroup v-model="btnDisabled" type="button">
+<CheckboxGroup v-model="btnDisabled" variant="button">
   <Checkbox value="a" label="可用" />
   <Checkbox value="b" label="禁用" disabled />
   <Checkbox value="c" label="可用" />
 </CheckboxGroup>
 
-<CheckboxGroup v-model="btnDisabledSelected" type="button">
+<CheckboxGroup v-model="btnDisabledSelected" variant="button">
   <Checkbox value="x" disabled label="选中禁用" />
   <Checkbox value="y" disabled label="未选禁用" />
 </CheckboxGroup>
@@ -275,8 +275,8 @@ const minmax = ref(['a', 'b'])
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `model-value` | `(string \| number)[]` | `[]` | 选中值数组 |
-| `type` | `'default' \| 'button'` | `'default'` | 显示样式 |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸（仅 button 类型） |
+| `variant` | `'default' \| 'button'` | `'default'` | 视觉形态 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸（仅 button 形态） |
 | `disabled` | `boolean` | `false` | 整组禁用 |
 | `direction` | `'horizontal' \| 'vertical'` | `'vertical'` | 排列方向（default 类型） |
 | `min` | `number` | — | 最少选中项数 |
@@ -291,7 +291,7 @@ const minmax = ref(['a', 'b'])
 | `checked` | `boolean` | `false` | 独立使用时的 v-model |
 | `disabled` | `boolean` | `false` | 禁用 |
 | `indeterminate` | `boolean` | `false` | 半选态 |
-| `prefix-icon` | `string` | `''` | 前缀图标名（button 类型可用） |
+| `prefix-icon` | `string` | `''` | 前缀图标名（button 形态可用） |
 
 ## Events
 

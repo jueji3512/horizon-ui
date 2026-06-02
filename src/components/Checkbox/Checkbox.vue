@@ -1,6 +1,6 @@
 <template>
-  <!-- default type -->
-  <label v-if="groupType === 'default'" :class="defaultClasses">
+  <!-- default variant -->
+  <label v-if="groupVariant === 'default'" :class="defaultClasses">
     <input
       type="checkbox"
       class="sr-only"
@@ -41,7 +41,7 @@
     >
   </label>
 
-  <!-- button type -->
+  <!-- button variant -->
   <button
     v-else
     type="button"
@@ -90,8 +90,8 @@ const emit = defineEmits<{
 
 const group = inject<CheckboxGroupContext | null>(checkboxGroupKey, null)
 
-const groupType = computed(() => group?.type ?? 'default')
-const groupSize = computed(() => group?.size ?? 'md')
+const groupVariant = computed(() => group?.variant.value ?? 'default')
+const groupSize = computed(() => group?.size.value ?? 'md')
 
 const isChecked = computed(() => {
   if (group && props.value !== undefined) return group.modelValue.value.includes(props.value)
@@ -106,7 +106,7 @@ const limitDisabled = computed(() => {
 })
 
 const computedDisabled = computed(
-  () => props.disabled || (group?.disabled ?? false) || limitDisabled.value,
+  () => props.disabled || (group?.disabled.value ?? false) || limitDisabled.value,
 )
 
 function handleToggle() {
@@ -120,7 +120,7 @@ function handleToggle() {
   }
 }
 
-// ===== default type classes =====
+// ===== default variant classes =====
 
 const boxClasses = computed(() =>
   cn(
@@ -146,7 +146,7 @@ const defaultClasses = computed(() =>
   ),
 )
 
-// ===== button type classes =====
+// ===== button variant classes =====
 
 const buttonSizeMap: Record<string, string> = {
   sm: 'h-[var(--comp-size-sm)] px-2 font-body-sm gap-1',

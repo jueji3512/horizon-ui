@@ -1,6 +1,6 @@
 <template>
-  <!-- default type — hidden native input + custom circle -->
-  <label v-if="groupType === 'default'" :class="defaultClasses">
+  <!-- default variant — hidden native input + custom circle -->
+  <label v-if="groupVariant === 'default'" :class="defaultClasses">
     <input
       type="radio"
       class="sr-only"
@@ -18,7 +18,7 @@
     >
   </label>
 
-  <!-- button type — self-maintained button, no Button component to avoid transition conflicts -->
+  <!-- button variant — self-maintained button, no Button component to avoid transition conflicts -->
   <button
     v-else
     type="button"
@@ -58,9 +58,9 @@ const props = withDefaults(
 const group = inject<RadioGroupContext | null>(radioGroupKey, null)
 
 const isChecked = computed(() => group?.modelValue.value === props.value)
-const isDisabled = computed(() => props.disabled || (group?.disabled ?? false))
-const groupType = computed(() => group?.type ?? 'default')
-const groupSize = computed(() => group?.size ?? 'md')
+const isDisabled = computed(() => props.disabled || (group?.disabled.value ?? false))
+const groupVariant = computed(() => group?.variant.value ?? 'default')
+const groupSize = computed(() => group?.size.value ?? 'md')
 const groupName = computed(() => group?.name ?? '')
 
 function handleSelect() {
@@ -69,7 +69,7 @@ function handleSelect() {
   }
 }
 
-// ===== default type classes =====
+// ===== default variant classes =====
 
 const circleClasses = computed(() =>
   cn(
@@ -100,7 +100,7 @@ const defaultClasses = computed(() =>
   ),
 )
 
-// ===== button type classes =====
+// ===== button variant classes =====
 // Heights and padding aligned with Button component.
 
 const buttonSizeMap: Record<string, string> = {

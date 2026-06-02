@@ -1,10 +1,10 @@
 <template>
-  <!-- default type -->
-  <div v-if="type === 'default'" role="radiogroup" :class="defaultContainerClasses">
+  <!-- default variant -->
+  <div v-if="variant === 'default'" role="radiogroup" :class="defaultContainerClasses">
     <slot />
   </div>
 
-  <!-- button type -->
+  <!-- button variant -->
   <div
     v-else
     role="radiogroup"
@@ -21,14 +21,17 @@ import type { ComputedRef, InjectionKey } from 'vue'
 
 export interface RadioGroupContext {
   modelValue: ComputedRef<string | number | undefined>
-  type: string
-  size: string
-  disabled: boolean
+  variant: ComputedRef<RadioGroupVariant>
+  size: ComputedRef<RadioGroupSize>
+  disabled: ComputedRef<boolean>
   name: string
   select: (value: string | number) => void
 }
 
 export const radioGroupKey: InjectionKey<RadioGroupContext> = Symbol('radioGroup')
+
+type RadioGroupVariant = 'default' | 'button'
+type RadioGroupSize = 'sm' | 'md' | 'lg'
 </script>
 
 <script setup lang="ts">
@@ -38,14 +41,14 @@ import { cn } from '../../utils'
 const props = withDefaults(
   defineProps<{
     modelValue?: string | number
-    type?: 'default' | 'button'
-    size?: 'sm' | 'md' | 'lg'
+    variant?: RadioGroupVariant
+    size?: RadioGroupSize
     disabled?: boolean
     direction?: 'horizontal' | 'vertical'
   }>(),
   {
     modelValue: undefined,
-    type: 'default',
+    variant: 'default',
     size: 'md',
     disabled: false,
     direction: 'horizontal',
@@ -68,17 +71,17 @@ function select(value: string | number) {
 
 provide(radioGroupKey, {
   modelValue: groupModelValue,
-  type: props.type,
-  size: props.size,
-  disabled: props.disabled,
+  variant: computed(() => props.variant),
+  size: computed(() => props.size),
+  disabled: computed(() => props.disabled),
   name,
   select,
 })
 
-// ===== button type: keyboard nav =====
+// ===== button variant: keyboard nav =====
 
 function handleKeydown(e: KeyboardEvent) {
-  if (props.type !== 'button') return
+  if (props.variant !== 'button') return
 
   const container = e.currentTarget as HTMLElement
   const radios = container.querySelectorAll<HTMLElement>('[role="radio"]:not([disabled])')

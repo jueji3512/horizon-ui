@@ -137,7 +137,10 @@ function buildColorStyle(c: string, variant: TagVariant): Record<string, string>
     return { backgroundColor: c + '1A', color: c }
   }
   if (variant === 'dark') {
-    return { backgroundColor: c, color: isLightColor(c) ? '#1e293b' : '#ffffff' }
+    return {
+      backgroundColor: c,
+      color: isLightColor(c) ? 'var(--text-color-primary)' : 'var(--text-color-inverse)',
+    }
   }
   return { backgroundColor: 'transparent', border: `1px solid ${c}`, color: c }
 }

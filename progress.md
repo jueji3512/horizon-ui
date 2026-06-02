@@ -2,6 +2,19 @@
 
 ## 2026-06-02
 
+### 组件迁移扫描
+
+- 启动新一轮源码与文档扫描，范围包括 `src/components/**`、`docs/components/**` 和样式 token。
+- 已扫描旧语义 API、`primary` / `danger` 残留、`type` 用法、禁用态 opacity、硬编码颜色、Tailwind 原生色阶和圆角/字体/间距 token 使用。
+- 扫描命令中有两次 PowerShell 引号/参数解析错误，已改用单引号和 `rg --` 重新执行，后续避免让以 `--` 开头的搜索模式被解析为命令参数。
+- 初步发现：`CheckboxGroup` / `RadioGroup` 的 `type="button"` 可能需要未来迁移为 `variant`；`Text` / `Title` 的 `mark` 与 `Text` 的 `keyboard` 存在可直接 token 化的小偏差；文档中的自定义 hex 色多为现有 API 示例，先记录不直接删除。
+- 用户确认规范边界：组件源码内部实现需要遵守 Horizon 规范；文档示例属于抛给使用者看的外部代码，可以自由使用非 token 颜色、尺寸、圆角和业务样式。
+- 已修复第一批低风险组件内部偏差：`Text` / `Title` 默认高亮改为 `bg-warning-light`，`Text` keyboard 阴影改为 `--border-color-divider`，`Tag` 自定义暗色前景改为文本 token。
+- 已退回 `Space` 与 `Popper` 文档示例的 token 化改动，保留示例作为外部使用场景的自由样式。
+- 验证通过：`npm run format:check`、`npm run lint`、`npm run typecheck`、`npm run build`。
+- 用户确认 `Tag` / `Badge` / `Icon` / `Title mark` 等对外自定义色 API 可以保留，用户传入色值不受内部 token 规范约束。
+- 用户确认 `CheckboxGroup` / `RadioGroup` 的按钮形态 API 应迁移到 `variant`；已将源码、provide/inject 上下文和组件文档中的 `type="button"` 更新为 `variant="button"`，并顺手让 group 注入给子项的 `variant` / `size` / `disabled` 保持响应式。
+
 ### 代码编辑器与检查工具规范
 
 - 采用稳健现代路线：保留 Prettier + ESLint，并补充 EditorConfig、Gitattributes、Stylelint 与 Tailwind class sorting。
@@ -35,7 +48,7 @@
 
 ### 文档与配置
 
-- 更新组件文档示例，使其匹配新 API 和 token。
+- 更新组件文档示例，使其匹配新 API 和组件状态说明；示例外部样式不强制 token 化。
 - Badge 加入 VitePress sidebar。
 - `docs/superpowers/**` 加入 VitePress `srcExclude`，避免内部计划文档影响构建。
 - 新增 `.agents/skills/base-component-review`，记录底层组件审查流程。

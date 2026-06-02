@@ -5,14 +5,14 @@
 <script setup>
 import { ref } from 'vue'
 
-const typeDemo = ref('a')
+const basicDemo = ref('a')
 
 const dirV = ref('a')
 
 const disabledDemo = ref('a')
 const disabledGroup = ref('a')
 
-// button type demos
+// button variant demos
 const btnDemo = ref('weekly')
 const btnSizeSm = ref('daily')
 const btnSizeMd = ref('daily')
@@ -21,7 +21,7 @@ const btnDisabled = ref('daily')
 </script>
 
 <DemoBox>
-  <RadioGroup v-model="typeDemo" class="mt-2">
+  <RadioGroup v-model="basicDemo" class="mt-2">
     <Radio value="a" label="选项 A" />
     <Radio value="b" label="选项 B" />
     <Radio value="c" label="选项 C" />
@@ -30,7 +30,7 @@ const btnDisabled = ref('daily')
 
 ::: details 查看代码
 ```html
-<RadioGroup v-model="typeDemo">
+<RadioGroup v-model="basicDemo">
   <Radio value="a" label="选项 A" />
   <Radio value="b" label="选项 B" />
   <Radio value="c" label="选项 C" />
@@ -87,33 +87,33 @@ const btnDisabled = ref('daily')
 ```
 :::
 
-## 按钮组 Button Type
+## 按钮组 Button Variant
 
-设置 `type="button"` 切换为按钮组样式，支持 `size` 属性。
+设置 `variant="button"` 切换为按钮组样式，支持 `size` 属性。
 
 <DemoBox>
-  <RadioGroup v-model="btnDemo" type="button" class="mt-2">
+  <RadioGroup v-model="btnDemo" variant="button" class="mt-2">
     <Radio value="daily" label="每日" />
     <Radio value="weekly" label="每周" />
     <Radio value="monthly" label="每月" />
   </RadioGroup>
 
   <div class="mt-4 flex flex-col gap-3 items-start">
-    <RadioGroup v-model="btnSizeSm" type="button" size="sm">
+    <RadioGroup v-model="btnSizeSm" variant="button" size="sm">
       <Radio value="daily" label="每日" />
       <Radio value="weekly" label="每周" />
     </RadioGroup>
-    <RadioGroup v-model="btnSizeMd" type="button" size="md">
+    <RadioGroup v-model="btnSizeMd" variant="button" size="md">
       <Radio value="daily" label="每日" />
       <Radio value="weekly" label="每周" />
     </RadioGroup>
-    <RadioGroup v-model="btnSizeLg" type="button" size="lg">
+    <RadioGroup v-model="btnSizeLg" variant="button" size="lg">
       <Radio value="daily" label="每日" />
       <Radio value="weekly" label="每周" />
     </RadioGroup>
   </div>
 
-  <RadioGroup v-model="btnDisabled" type="button" class="mt-4">
+  <RadioGroup v-model="btnDisabled" variant="button" class="mt-4">
     <Radio value="daily" label="每日" />
     <Radio value="weekly" label="每周" disabled />
     <Radio value="monthly" label="每月" />
@@ -122,26 +122,26 @@ const btnDisabled = ref('daily')
 
 ::: details 查看代码
 ```html
-<RadioGroup v-model="btnDemo" type="button">
+<RadioGroup v-model="btnDemo" variant="button">
   <Radio value="daily" label="每日" />
   <Radio value="weekly" label="每周" />
   <Radio value="monthly" label="每月" />
 </RadioGroup>
 
-<RadioGroup v-model="btnSizeSm" type="button" size="sm">
+<RadioGroup v-model="btnSizeSm" variant="button" size="sm">
   <Radio value="daily" label="每日" />
   <Radio value="weekly" label="每周" />
 </RadioGroup>
-<RadioGroup v-model="btnSizeMd" type="button" size="md">
+<RadioGroup v-model="btnSizeMd" variant="button" size="md">
   <Radio value="daily" label="每日" />
   <Radio value="weekly" label="每周" />
 </RadioGroup>
-<RadioGroup v-model="btnSizeLg" type="button" size="lg">
+<RadioGroup v-model="btnSizeLg" variant="button" size="lg">
   <Radio value="daily" label="每日" />
   <Radio value="weekly" label="每周" />
 </RadioGroup>
 
-<RadioGroup v-model="btnDisabled" type="button">
+<RadioGroup v-model="btnDisabled" variant="button">
   <Radio value="daily" label="每日" />
   <Radio value="weekly" label="每周" disabled />
   <Radio value="monthly" label="每月" />
@@ -156,8 +156,8 @@ const btnDisabled = ref('daily')
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `model-value` | `string \| number` | — | 选中值 |
-| `type` | `'default' \| 'button'` | `'default'` | 显示样式 |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸（仅 button 类型） |
+| `variant` | `'default' \| 'button'` | `'default'` | 视觉形态 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸（仅 button 形态） |
 | `disabled` | `boolean` | `false` | 整组禁用 |
 | `direction` | `'horizontal' \| 'vertical'` | `'horizontal'` | 排列方向 |
 
@@ -168,7 +168,7 @@ const btnDisabled = ref('daily')
 | `value` | `string \| number` | — | 该选项的值 |
 | `label` | `string` | `''` | 标签文本 |
 | `disabled` | `boolean` | `false` | 禁用 |
-| `prefix-icon` | `string` | `''` | 前缀图标名（button 类型可用） |
+| `prefix-icon` | `string` | `''` | 前缀图标名（button 形态可用） |
 
 ## Events
 

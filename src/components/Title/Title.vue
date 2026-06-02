@@ -55,7 +55,7 @@ const classes = computed(() =>
   cn(
     levelMap[props.level],
     themeColorMap[props.theme],
-    props.mark && typeof props.mark !== 'string' && 'bg-yellow-300',
+    props.mark && typeof props.mark !== 'string' && 'bg-warning-light',
   ),
 )
 </script>

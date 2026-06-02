@@ -78,6 +78,8 @@ docs(project): 更新项目上下文与待办
 - 间距：`--padding-x-*`、`--padding-y-*`。
 - 字体工具类：`font-body-*`、`font-title-*`。
 - 当前色彩规范主要完成 light mode；dark mode token、暗色状态映射、文档说明和组件适配仍是高优先级后续项。
+- 规范约束重点是组件源码内部实现；`docs/components/**` 中的示例代码视为使用者外部代码，可以自由展示自定义颜色、尺寸、圆角和业务样式，不要求完全使用 Horizon token。
+- `Text` / `Title` 的 `mark`、`Text` 的 `keyboard` 这类固定装饰样式可以作为组件内部特例使用明确色值，但如果有合适 token，优先使用 token 表达。
 
 ## 当前组件状态
 

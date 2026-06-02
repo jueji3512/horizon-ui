@@ -99,7 +99,7 @@ docs(project): 更新项目上下文与待办
 - Popper base-component review 结论：Critical 0；Important 4 项已修复；Minor/Deferred 为未来上层组件可能需要的嵌套弹出层协调、boundary 自定义、crossAxis offset / fallback placement 等扩展。
 - Popper 文档去掉“深色/浅色”内置主题暗示。
 - `docs/superpowers/**` 历史计划资料已审计并删除，VitePress 过期 `srcExclude` 配置已移除。
-- 文档示例同步新 token 和新 API。
+- 文档示例同步新 API 和状态说明；示例外部样式不强制 token 化。
 - `.gitignore` 忽略本地 `switch-mockups.html`。
 - 删除本地 Switch 视觉原型 `switch-mockups.html`。
 - `Icon.vue` 继续使用本地 raw SVG 渲染，但已补充“仅来自打包期本地图标”的安全边界说明，并处理 lint warning。
@@ -122,6 +122,16 @@ docs(project): 更新项目上下文与待办
 - Popper 当前基座能力已通过本轮 review；未来复杂上层组件可能继续推动嵌套弹出层、boundary 和 fallback placement 等扩展。
 - 浏览器/截图级视觉验证尚未稳定恢复。
 - `docs/.vitepress/cache` 和 `docs/.vitepress/dist` 是忽略的生成物，当前未删除，以免影响正在运行的 dev server 或刚完成的构建。
+
+## 2026-06-02 组件迁移扫描发现
+
+- 用户确认：Horizon token / API / 状态规范主要约束组件源码内部实现；`docs/components/**` 的示例代码视为使用者外部代码，可以自由使用自定义颜色、尺寸、圆角和业务样式，不应仅因未使用 token 而修改。
+- 用户确认：`mark`、`keyboard` 这类固定装饰样式如果确有设计语义，可以允许组件内部使用明确固定色；也可以将其沉淀为规范特例或 token。当前本轮已改为 token 表达，仍符合内部规范。
+- `CheckboxGroup` / `RadioGroup` 原先使用 `type="default|button"` 表达默认形态和按钮形态。用户确认后，本轮已迁移为 `variant="default|button"`，以对齐“视觉形态使用 `variant`”的命名方向；同时 group 注入给子项的 `variant` / `size` / `disabled` 已改为响应式 `ComputedRef`。
+- `Text` / `Title` 的布尔 `mark` 原先使用 Tailwind 原生 `bg-yellow-300`；`Text` 的 `keyboard` 样式原先包含硬编码 inset shadow 色值 `#e2e8f0`。本轮已改为 `bg-warning-light` 和 `--border-color-divider`。
+- `Tag` 的自定义 `color` API 为保证深色底可读性，原先内部用 `#1e293b` / `#ffffff` 作为动态前景色。本轮已改为 `--text-color-primary` / `--text-color-inverse`；如果规范要求自定义色 API 也完全 token 化，仍需重新设计 API。
+- `Badge`、`Icon`、`Tag`、`Title` 文档中存在 `color="#..."` / `mark="#..."` 示例，属于当前组件自定义色 API 的展示，不宜在未确认前直接删除。
+- `Popper` 文档验证示例中使用 `bg-white`、`text-white`、`rounded` 和 Tailwind 原生色阶是允许的，因为它们代表使用者给 PopperContent 传入的外部 surface 样式，不是 Popper 内置视觉能力。
 
 ## 后续入口
 

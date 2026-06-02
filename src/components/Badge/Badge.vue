@@ -64,11 +64,14 @@ const themeColorMap: Record<BadgeTheme, string> = {
   error: 'bg-error',
 }
 
+const badgeGeometryMap = {
+  dot: 'h-1.5 w-1.5 rounded-[var(--round-full)]',
+  content: 'font-body-sm h-5 min-w-4 rounded-[var(--round-full)] px-1.5',
+} as const
+
 const badgeClasses = computed(() =>
   cn(
-    props.dot
-      ? 'h-1.5 w-1.5 rounded-[var(--round-full)]'
-      : 'font-body-sm h-5 min-w-4 rounded-[var(--round-full)] px-1.5',
+    props.dot ? badgeGeometryMap.dot : badgeGeometryMap.content,
     !props.color && themeColorMap[props.theme],
   ),
 )

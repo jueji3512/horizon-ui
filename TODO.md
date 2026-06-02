@@ -14,13 +14,13 @@
 - [ ] 为关键组件补充更稳定的浏览器级视觉验证，尤其是 Input、Tag、Popper、InputNumber。
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。
 - [ ] 后续评估新增 Toggle / ToggleGroup，用于承接 CheckboxGroup / RadioGroup 当前 `variant="button"` 这类分段切换形态；暂时不实现，现有 Checkbox / Radio button variant 先保持。
-- [ ] 继续整理组件级固有尺寸规范：Switch 已定稿为组件内部几何矩阵；Badge、Tooltip / PopperArrow、Checkbox / Radio 控件几何、FieldAction、InputNumber 输入段宽度等仍需逐项确认保留内部常量还是沉淀组件级 token。
+- [ ] 继续整理组件级固有尺寸规范：Switch 和 Badge 已定稿为组件内部几何规格；Tooltip / PopperArrow、Checkbox / Radio 控件几何、FieldAction、InputNumber 输入段宽度等仍需逐项确认保留内部常量还是沉淀组件级 token。
 - [ ] 最后补全 dark mode 色彩规范。当前颜色体系主要完成 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。
 
 ## 隐藏问题
 
 - [ ] Field 一旦公开，API 需要谨慎收敛：首版只暴露结构、状态和样式基座，不承载 Select/DatePicker 等业务行为；多选 Select 的 Tag wrap / searchable / maxTagCount 是后续关键压力测试。
-- [ ] 组件级固有尺寸尚未统一规范，例如 Badge 点/计数尺寸、Tooltip 箭头等；Switch 轨道与滑块已先定为组件内部几何矩阵，不新增通用 token。
+- [ ] 组件级固有尺寸尚未统一规范，例如 Tooltip 箭头、Checkbox / Radio 控件几何等；Switch 轨道与滑块、Badge 点/计数尺寸已先定为组件内部几何规格，不新增通用 token。
 - [ ] Checkbox / Radio 的 button variant 未来可迁移或抽象到 Toggle / ToggleGroup；迁移前需确认是否保持多选/单选语义差异，避免只为了视觉复用而损失表单语义。
 - [ ] Popper 未来可按上层组件需要继续扩展边界能力，例如嵌套弹出层协调、boundary 自定义、crossAxis offset 或 fallback placement；当前 Select/Dropdown 前置的响应式配置、disabled 自动关闭、matchWidth trigger resize 和 base-component review 已完成。
 - [ ] 如未来 `Icon` 支持外部 SVG 或运行时 SVG 文本，必须重新评估当前 `v-html` 本地图标白名单策略，加入 sanitizer 或改为更安全的渲染路径。

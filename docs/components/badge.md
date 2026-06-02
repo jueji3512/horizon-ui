@@ -26,6 +26,16 @@
 ```
 :::
 
+## 尺寸规格
+
+Badge 使用组件自身的圆点、胶囊和定位几何规格，不直接映射为 `--comp-size-sm/md/lg`。
+
+| 类型 | 尺寸 | 说明 |
+|------|------|------|
+| 圆点 | `6 × 6px` | `dot` 模式，使用 `round-full` |
+| 数字 / 文本 | `20px` 高、`16px` 最小宽度、左右 `6px` 内边距 | 使用 `font-body-sm` 和 `round-full` |
+| 默认锚点 | 子元素右上角中心 | 可通过 `offset` 按 px 微调 |
+
 ## 主题
 
 `theme` 支持 `default`、`brand`、`success`、`warning`、`error`。

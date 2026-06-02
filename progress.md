@@ -144,3 +144,9 @@
 - Switch 文档新增“尺寸规格”表，说明 sm/md/lg 的轨道、滑块、位移和 loading 图标尺寸；`size` prop 说明改为“组件几何尺寸”。
 - Switch 输入补充 `role="switch"` 和 `aria-checked`，隐藏 input 聚焦时 track 使用 brand focus ring。
 - 验证：`npm run check` 已通过；浏览器确认 sm/md/lg 尺寸、`role="switch"`、`aria-checked` 和文档规格表渲染正常。自动化运行时无法可靠触发隐藏 input 的 `:focus` 匹配，但 scoped focus CSS 已注入到页面。
+
+### Badge 尺寸规范定稿
+
+- Badge 的 dot 和 content 尺寸统一收束到 `badgeGeometryMap`，作为组件内部几何规格维护，不新增通用尺寸 token。
+- Badge 文档新增“尺寸规格”表，说明 dot 为 6x6，数字/文本胶囊为 20px 高、16px 最小宽度、左右 6px 内边距，并记录默认右上角锚点和 `offset` 微调语义。
+- 验证：`npm run check` 已通过；浏览器确认 dot 为 6x6，数字/文本胶囊为 20px 高、16px 最小宽度、左右 6px 内边距，文档规格表渲染正常。

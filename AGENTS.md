@@ -99,6 +99,7 @@ docs(project): 更新项目上下文与待办
 - InputNumber disabled 输入框补充 `cursor-not-allowed`。
 - PopperContent 保持无视觉样式，默认不提供 border、background、text color、radius、shadow/elevation。
 - PopperContent 通过 `v-bind="$attrs"` 将上层 `class/style` 传给 Teleport 后的真实浮层 DOM。
+- Field 已规划为公开底层输入域组件，未来源码位置为 `src/components/Field/`，不是 `_internal`；它用于统一 Input、InputNumber、Select、DatePicker 等 field-like 组件的 surface、状态、尺寸和组合布局。
 - Popper 已完成 base-component review；`offset` / `flip` / `shift` / `matchWidth` / `autoUpdate` 改为响应式配置，`matchWidth` 改用 Floating UI `size` middleware，`disabled` 变 true 时会关闭已打开浮层。
 - Popper 文档去掉容易误解为内置主题的深色/浅色和默认边框表达。
 - `Icon.vue` 的 `v-html` 仅用于渲染打包期导入的本地图标 SVG，已补充安全边界说明并处理 lint warning。

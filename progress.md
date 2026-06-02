@@ -19,6 +19,7 @@
 - `Icon` 已移除固定尺寸预设和 `size` prop，默认宽高为 `1em`，由字号或外部 class/style 控制；`Switch` loading 图标改为通过字号 class 适配。
 - Tooltip 已迁移到 Popper 基座：Tooltip 继续负责语义 API、延迟与主题视觉，Popper 负责定位、Teleport、arrow、outside click、Esc 和 z-index。
 - Tooltip 浮层阴影已沉淀为 `--shadow-popper` / `shadow-popper`，参考 TDesign 中层浮层多层投影并叠加 inset 边界，增强浅色主题气泡与页面背景的分离度。
+- 用户确认 Field 不应隐藏在 `_internal`，而应作为类似 Popper 的公开底层组件放在 `src/components/Field/`；已新增 `docs/guide/field-system.md` 记录 Field 输入域体系的目标、组件草案、状态模型、布局模式、未来组件适配、性能和可访问性原则。
 
 ### 代码编辑器与检查工具规范
 

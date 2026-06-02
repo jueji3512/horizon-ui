@@ -13,6 +13,7 @@
 | 5. Popper 底层定位基座 | 完成 | 已明确 Popper 不提供 surface 样式，并完成 deferred 行为处理与 base-component review。 |
 | 6. 项目记忆整理 | 完成 | 已新增/更新 `AGENTS.md`、`TODO.md`、`findings.md`、`progress.md`。 |
 | 7. 代码编辑器与检查工具规范 | 完成 | 已新增 `CODE_STYLE.md`、`.editorconfig`、`.gitattributes`、Stylelint 和 Tailwind class sorting。 |
+| 8. Field 输入域体系 | 规划中 | 已确认 Field 作为公开底层组件暴露，计划位于 `src/components/Field/`，用于统一 Input、InputNumber、Select、DatePicker 等 field-like 组件的输入域基座。 |
 
 ## 已完成的关键事项
 
@@ -37,6 +38,7 @@
 | 任务 | 优先级 | 说明 |
 |---|---|---|
 | 继续组件迁移扫描 | 高 | 从源码和当前规范重新扫描，不依赖旧计划勾选状态。 |
+| Field 底层组件 | 高 | 先完成公开 Field primitives 设计与实现，再迁移 Input / InputNumber 验证边界，并为 Select 多选场景做准备。 |
 | 浏览器视觉验证 | 中 | 恢复可用浏览器/Playwright 后补做截图级验证。 |
 | Dark mode 色彩规范 | 后置 | 用户已决定 dark mode 放到当前队列最后；当前完成的是 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。 |
 | Icon 外部 SVG 安全策略 | 中 | 如果未来支持外部 SVG 输入，需要替换当前仅适用于本地白名单图标的策略。 |

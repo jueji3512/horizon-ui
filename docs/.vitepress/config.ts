@@ -20,6 +20,7 @@ export default defineConfig({
           items: [
             { text: '色彩系统', link: '/guide/colors' },
             { text: '字体系统', link: '/guide/typography' },
+            { text: 'Field 输入域体系', link: '/guide/field-system' },
           ],
         },
       ],

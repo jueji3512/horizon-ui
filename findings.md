@@ -43,6 +43,7 @@
 - Paragraph 旧计划已过时，目前没有实现。
 - Tooltip 已迁移到 Popper 基座；Tooltip 保留 theme、delay、trigger/manual 等语义和视觉 API，定位、Teleport、arrow、outside click、Esc 与 z-index 交给 Popper。
 - Popper 是底层定位基座，不提供业务 surface 样式；已完成 base-component review，可作为 Select/Dropdown 等上层组件的当前基座。
+- Field 已确认作为公开底层输入域基座规划，源码位置为 `src/components/Field/`；它应像 Popper 一样允许用户组合使用，不放在 `_internal`。
 
 ## 历史计划资料处置
 
@@ -137,6 +138,7 @@ docs(project): 更新项目上下文与待办
 - 用户进一步确认 padding 也不再作为 Horizon token 规范；本轮已移除 `--padding-x-*` / `--padding-y-*` 定义，并将组件内部已使用 padding token 的地方恢复为等值 Tailwind spacing class。
 - `Icon` 不再提供固定尺寸预设或 `size` prop；默认宽高为 `1em`，可随字号继承，用户需要自定义尺寸时通过外部 class/style 控制。`Switch` loading 图标已改为通过字号 class 适配这一 API 变化。
 - `Tooltip` 浮层阴影已沉淀为 `--shadow-popper` / `shadow-popper`，参考 TDesign 中层浮层的多层投影，并叠加 inset 边界以增强浅色主题 surface 与页面背景的分离度。
+- Field 输入域体系设计草案已沉淀到 `docs/guide/field-system.md`：Field 作为公开底层组件，统一 field-like 组件的 surface、状态、尺寸、focus ring、slot/action/group/segment 布局，但不承载输入值解析、Popper、日期面板、选择面板等业务行为。
 
 ## 后续入口
 

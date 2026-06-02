@@ -93,6 +93,7 @@ docs(project): 更新项目上下文与待办
 
 - Badge 改为 `theme` API，并补齐 sidebar。
 - Tag 改为 `theme` + `variant`，移除 size 配置，只保留 sm 规格。
+- Button 已拆分语义主题与视觉形态：`theme="default|brand|success|warning|error"`，`variant="solid|outline"`；形状统一使用 `shape="rectangle|round|circle|square"`，默认 `rectangle`，icon-only 不再自动变圆。
 - Input 修复 disabled 状态颜色，默认宽度改为占满父容器。
 - InputNumber 修复 disabled 光标样式。
 - PopperContent 转发 `class/style` 到 Teleport 后真实 DOM。
@@ -118,6 +119,7 @@ docs(project): 更新项目上下文与待办
 - `npm run build`：通过。
 - `/components/popper` HTTP 检查：通过。
 - 浏览器验证：`/components/field` 的尺寸、multi-value 清空按钮居中、range segment 聚焦视觉和 group 布局通过；`/components/input` 焦点 ring 通过；`/components/inputnumber` 尺寸、焦点 ring、键盘步进和按钮步进展示同步通过。
+- 浏览器验证：`/components/button` 的 `solid/outline`、`rectangle/round/square/circle` 渲染通过；`/components/inputnumber` 的 Button stepper 尺寸、disabled/readonly 状态和点击步进通过。
 
 ## 已知风险
 
@@ -141,7 +143,7 @@ docs(project): 更新项目上下文与待办
 - `Tooltip` 浮层阴影已沉淀为 `--shadow-popper` / `shadow-popper`，参考 TDesign 中层浮层的多层投影，并叠加 inset 边界以增强浅色主题 surface 与页面背景的分离度。
 - Field 输入域体系设计已沉淀到 `docs/guide/field-system.md`，并新增 `docs/components/field.md`：Field 作为公开底层组件，统一 field-like 组件的 surface、状态、尺寸、focus ring、slot/action/group/segment 布局，但不承载输入值解析、Popper、日期面板、选择面板等业务行为；Input 与 InputNumber 已迁移到 Field 验证首批边界。
 - Field primitives 已调整为外部 `class` 后置合并，公开组合时可以稳定覆盖内部默认 spacing / width 等 class；FieldRoot 增加 `focus-within` 默认 ring，FieldSegment 增加 `focus-within:text-brand`，用于 range segment 的无 JS 聚焦视觉。
-- InputNumber 已复用 FieldRoot / FieldNativeInput / FieldGroup 作为中间输入域基座，步进按钮仍保持组件自身控制；迁移后保留 sm/md/lg 的 24/32/40 规范高度，并修复聚焦时键盘/按钮步进后展示值不同步的问题。`readonly` 按“不允许编辑”理解，输入和步进都不可改值，但步进按钮不呈现 disabled 视觉。
+- InputNumber 已复用 FieldRoot / FieldNativeInput / FieldGroup 作为中间输入域基座，步进按钮复用 Button 的 `variant="outline"` + `shape="square"`；迁移后保留 sm/md/lg 的 24/32/40 规范高度，并修复聚焦时键盘/按钮步进后展示值不同步的问题。`readonly` 按“不允许编辑”理解，输入和步进都不可改值，但步进按钮不呈现 disabled 视觉。
 
 ## 后续入口
 

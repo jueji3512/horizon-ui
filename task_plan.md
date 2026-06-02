@@ -22,6 +22,7 @@
 - Badge API 改为 `theme="default|brand|success|warning|error"`。
 - Tag 移除可配置尺寸，仅保留 sm 规格；默认高度 24px，左右 padding 8px。
 - Input 默认宽度占满父容器，并修正 disabled bg/border/text。
+- Button 已拆分 `variant="solid|outline"` 与 `shape="rectangle|round|circle|square"`，icon-only 不再自动变圆。
 - InputNumber disabled 鼠标样式已修正。
 - PopperContent 默认无 border/background/text/radius/shadow，并支持上层通过 `class/style` 设置真实浮层 DOM。
 - Popper deferred 行为已处理：响应式 `offset` / `flip` / `shift` / `matchWidth` / `autoUpdate`，`disabled` 自动关闭已打开浮层，`matchWidth` 响应 trigger resize。
@@ -29,7 +30,7 @@
 - Popper 文档不再展示“深色/浅色”作为内置能力。
 - `Icon.vue` 的 raw SVG 渲染已补充本地图标安全边界说明，并关闭该处 `vue/no-v-html` 告警。
 - Field 输入域基座已落地为公开 primitives，Input / InputNumber 已完成迁移；Field 支持外部 class 后置覆盖、FieldRoot focus-within ring、FieldSegment focus-within active 视觉。
-- InputNumber 复用 Field 后保留 24/32/40 规范尺寸，并补齐聚焦状态下键盘/按钮步进后的展示值同步。
+- InputNumber 复用 Field 后保留 24/32/40 规范尺寸，步进按钮已改为复用 Button 的 outline square 形态，并补齐聚焦状态下键盘/按钮步进后的展示值同步。
 - 全项目 `lint`、`format:check`、`typecheck`、`build` 已通过。
 - 根目录异常空目录 `d...projectuisrccomponentsSpace` 已删除。
 - 本地 Switch 视觉原型 `switch-mockups.html` 已删除。

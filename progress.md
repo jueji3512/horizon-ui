@@ -121,3 +121,12 @@
 - Iteration 2：Critical 0，Important 0，Minor/Deferred 3；保留给未来上层组件驱动的扩展包括嵌套弹出层协调、boundary 自定义、crossAxis offset / fallback placement。
 - 使用一次性 Node 断言脚本先观察 RED，再修复并验证 GREEN；项目当前没有正式测试框架。
 - 浏览器验证 `/components/popper`：V-04 打开态 trigger 宽度从 192px 切到 288px 时浮层同步变宽；V-09 打开后切换 disabled 会关闭浮层。
+
+### Button / InputNumber 形态整理
+
+- 用户确认当前开发阶段不需要为旧写法保守兼容，优先以最终好用的 API 和视觉为准。
+- Button 新增 `variant="solid|outline"`，将视觉形态从 `theme` 中拆出；新增 `shape="rectangle|round|circle|square"`，默认 `rectangle`。
+- Button 删除 icon-only 自动圆形推断，图标按钮需要显式使用 `shape="square"` 或 `shape="circle"`。
+- InputNumber 两侧步进按钮改为复用 Button 的 `variant="outline"` + `shape="square"`，删除组件内部重复的按钮视觉 class；`readonly` 仍按“不允许改值但不呈现 disabled 视觉”处理。
+- `docs/components/button.md` 已同步新的 Button API 和示例。
+- 验证通过：`npm run check`；浏览器确认 `/components/button` 的 outline 与 shape 渲染正常，`/components/inputnumber` 的 stepper 尺寸为 24/32/40、点击步进同步、disabled/readonly 状态符合预期。

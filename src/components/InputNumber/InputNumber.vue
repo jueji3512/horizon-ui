@@ -1,16 +1,17 @@
 <template>
   <FieldGroup :class="wrapperClasses" :disabled="disabled">
-    <button
-      type="button"
+    <Button
+      variant="outline"
+      shape="square"
+      :size="size"
+      icon="minus"
       aria-label="减少"
-      :class="decreaseBtnClasses"
+      class="shrink-0"
       :disabled="isMinReached || disabled || undefined"
       @mousedown.prevent="startStep(-1)"
       @mouseup="stopStep"
       @mouseleave="stopStep"
-    >
-      <Icon name="minus" />
-    </button>
+    />
 
     <FieldRoot
       :size="size"
@@ -35,26 +36,27 @@
       />
     </FieldRoot>
 
-    <button
-      type="button"
+    <Button
+      variant="outline"
+      shape="square"
+      :size="size"
+      icon="plus"
       aria-label="增加"
-      :class="increaseBtnClasses"
+      class="shrink-0"
       :disabled="isMaxReached || disabled || undefined"
       @mousedown.prevent="startStep(1)"
       @mouseup="stopStep"
       @mouseleave="stopStep"
-    >
-      <Icon name="plus" />
-    </button>
+    />
   </FieldGroup>
 </template>
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import Button from '../Button/Button.vue'
 import FieldGroup from '../Field/FieldGroup.vue'
 import FieldNativeInput from '../Field/FieldNativeInput.vue'
 import FieldRoot from '../Field/FieldRoot.vue'
-import Icon from '../Icon/Icon.vue'
 import { cn } from '../../utils'
 
 type InputNumberSize = 'sm' | 'md' | 'lg'
@@ -221,21 +223,18 @@ function handleFocus(e: FocusEvent) {
 const isMinReached = computed(() => props.modelValue <= props.min)
 const isMaxReached = computed(() => props.modelValue >= props.max)
 
-type SizeConfig = { btn: string; field: string; input: string }
+type SizeConfig = { field: string; input: string }
 
 const sizeMap: Record<InputNumberSize, SizeConfig> = {
   sm: {
-    btn: 'h-[var(--comp-size-sm)] w-[var(--comp-size-sm)] rounded-[var(--round-default)]',
     field: 'w-[72px] shrink-0',
     input: 'px-2',
   },
   md: {
-    btn: 'h-[var(--comp-size-md)] w-[var(--comp-size-md)] rounded-[var(--round-default)]',
     field: 'w-[88px] shrink-0',
     input: 'px-3',
   },
   lg: {
-    btn: 'h-[var(--comp-size-lg)] w-[var(--comp-size-lg)] rounded-[var(--round-default)]',
     field: 'w-[104px] shrink-0',
     input: 'px-3',
   },
@@ -245,31 +244,6 @@ const sizeCfg = computed(() => sizeMap[props.size])
 
 const wrapperClasses = computed(() =>
   cn('items-center gap-1', props.disabled && 'cursor-not-allowed'),
-)
-
-const baseBorder = 'border border-[var(--border-color-component)] bg-[var(--bg-color-container)]'
-
-const btnBaseClasses = computed(() =>
-  cn(
-    sizeCfg.value.btn,
-    baseBorder,
-    'inline-flex shrink-0 items-center justify-center',
-    'text-[var(--text-color-primary)] hover:bg-[var(--bg-color-container-hover)] active:bg-[var(--bg-color-container-active)]',
-    'transition-colors duration-150',
-    'cursor-pointer',
-    'focus-visible:ring-2 focus-visible:ring-brand-focus focus-visible:outline-none',
-  ),
-)
-
-const btnDisabledClasses =
-  'bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)] border-[var(--border-color-component)] cursor-not-allowed hover:bg-[var(--bg-color-component-disabled)] active:bg-[var(--bg-color-component-disabled)]'
-
-const decreaseBtnClasses = computed(() =>
-  cn(btnBaseClasses.value, (isMinReached.value || props.disabled) && btnDisabledClasses),
-)
-
-const increaseBtnClasses = computed(() =>
-  cn(btnBaseClasses.value, (isMaxReached.value || props.disabled) && btnDisabledClasses),
 )
 
 const alignMap: Record<InputNumberAlign, string> = {

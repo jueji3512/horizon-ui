@@ -66,6 +66,7 @@ docs(project): 更新项目上下文与待办
 - 语义色统一使用 `theme`，常见取值为 `default`、`brand`、`success`、`warning`、`error`。
 - 旧的 `primary` / `danger` 命名正在迁移到 `brand` / `error`。
 - 视觉形态如果需要，应使用单独的 `variant`，不要混入 `theme`。
+- Button 已拆分 `theme` 与 `variant`，当前 `variant` 为 `solid|outline`；形状使用 `shape="rectangle|round|circle|square"`，默认 `rectangle`，icon-only 不再自动变圆。
 - 底层组件不应该提供业务视觉主题。
 
 ### 设计 token
@@ -101,7 +102,7 @@ docs(project): 更新项目上下文与待办
 - PopperContent 通过 `v-bind="$attrs"` 将上层 `class/style` 传给 Teleport 后的真实浮层 DOM。
 - Field 已作为公开底层输入域组件落地到 `src/components/Field/`，不是 `_internal`；它用于统一 Input、InputNumber、Select、DatePicker 等 field-like 组件的 surface、状态、尺寸和组合布局。Input / InputNumber 已迁移到 Field 验证首版边界。
 - Field primitives 支持外部 `class` 后置覆盖；FieldRoot 具备 `focus-within` 默认 ring，FieldSegment 具备 `focus-within:text-brand` 分段聚焦视觉。
-- InputNumber 已复用 FieldRoot / FieldNativeInput / FieldGroup，保留 sm/md/lg 的 24/32/40 尺寸，并修复聚焦时键盘/按钮步进后的展示值同步。
+- InputNumber 已复用 FieldRoot / FieldNativeInput / FieldGroup，步进按钮复用 Button 的 `variant="outline"` + `shape="square"`，保留 sm/md/lg 的 24/32/40 尺寸，并修复聚焦时键盘/按钮步进后的展示值同步。
 - Popper 已完成 base-component review；`offset` / `flip` / `shift` / `matchWidth` / `autoUpdate` 改为响应式配置，`matchWidth` 改用 Floating UI `size` middleware，`disabled` 变 true 时会关闭已打开浮层。
 - Popper 文档去掉容易误解为内置主题的深色/浅色和默认边框表达。
 - `Icon.vue` 的 `v-html` 仅用于渲染打包期导入的本地图标 SVG，已补充安全边界说明并处理 lint warning。

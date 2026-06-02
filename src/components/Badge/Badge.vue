@@ -3,7 +3,7 @@
     <slot />
     <sup
       v-if="showBadge"
-      class="absolute top-0 right-0 flex items-center justify-center font-semibold text-[var(--text-color-inverse)]"
+      class="absolute top-0 right-0 flex items-center justify-center text-[var(--text-color-inverse)]"
       :class="badgeClasses"
       :style="badgeStyle"
     >
@@ -68,7 +68,7 @@ const badgeClasses = computed(() =>
   cn(
     props.dot
       ? 'h-1.5 w-1.5 rounded-[var(--round-full)]'
-      : 'font-body-sm h-5 min-w-5 rounded-[var(--round-full)] px-1.5',
+      : 'font-body-sm h-5 min-w-4 rounded-[var(--round-full)] px-1.5',
     !props.color && themeColorMap[props.theme],
   ),
 )

@@ -87,9 +87,9 @@ const computedAriaLabel = computed(() => {
 })
 
 const sizeMap: Record<ButtonSize, string> = {
-  sm: 'h-[var(--comp-size-sm)] px-[calc(var(--padding-x-2)-1px)] font-body-sm rounded-[var(--round-default)] gap-1',
-  md: 'h-[var(--comp-size-md)] px-[calc(var(--padding-x-4)-1px)] font-body-md rounded-[var(--round-default)] gap-1.5',
-  lg: 'h-[var(--comp-size-lg)] px-[calc(var(--padding-x-6)-1px)] font-body-lg rounded-[var(--round-default)] gap-2',
+  sm: 'h-[var(--comp-size-sm)] px-[7px] font-body-sm rounded-[var(--round-default)] gap-1',
+  md: 'h-[var(--comp-size-md)] px-[15px] font-body-md rounded-[var(--round-default)] gap-1.5',
+  lg: 'h-[var(--comp-size-lg)] px-[23px] font-body-lg rounded-[var(--round-default)] gap-2',
 }
 
 const roundSizeMap: Record<ButtonSize, string> = {

@@ -3,10 +3,10 @@
     <div :class="wrapperClasses">
       <span :class="inputWrapperClasses">
         <!-- prefix icon -->
-        <Icon v-if="prefixIcon" :name="prefixIcon" class="ml-[var(--padding-x-2)] shrink-0" />
+        <Icon v-if="prefixIcon" :name="prefixIcon" class="ml-2 shrink-0" />
 
         <!-- prefix slot -->
-        <span v-if="$slots.prefix" class="ml-[var(--padding-x-2)] shrink-0">
+        <span v-if="$slots.prefix" class="ml-2 shrink-0">
           <slot name="prefix" />
         </span>
 
@@ -25,7 +25,7 @@
           :autocomplete="autocomplete || undefined"
           :aria-label="ariaLabel || undefined"
           :class="[
-            'input-core h-full w-full min-w-0 border-none bg-transparent px-[var(--padding-x-3)] outline-none',
+            'input-core h-full w-full min-w-0 border-none bg-transparent px-3 outline-none',
             showWordLimit && maxlength ? 'pr-14' : '',
           ]"
           @input="handleInput"
@@ -39,7 +39,7 @@
         <button
           v-if="clearable"
           type="button"
-          class="input-clear mr-[var(--padding-x-2)] shrink-0 cursor-pointer text-[var(--text-color-secondary)] transition-colors duration-100 hover:text-[var(--text-color-primary)]"
+          class="input-clear mr-2 shrink-0 cursor-pointer text-[var(--text-color-secondary)] transition-colors duration-100 hover:text-[var(--text-color-primary)]"
           :class="showClear ? '' : 'invisible'"
           :aria-label="showClear ? '清空' : undefined"
           :disabled="!showClear"
@@ -52,7 +52,7 @@
         <button
           v-if="type === 'password' && showPassword"
           type="button"
-          class="input-password-toggle mr-[var(--padding-x-2)] shrink-0 cursor-pointer text-[var(--text-color-secondary)] transition-colors duration-100 hover:text-[var(--text-color-primary)]"
+          class="input-password-toggle mr-2 shrink-0 cursor-pointer text-[var(--text-color-secondary)] transition-colors duration-100 hover:text-[var(--text-color-primary)]"
           :aria-label="passwordVisible ? '隐藏密码' : '显示密码'"
           @click="togglePassword"
         >
@@ -60,17 +60,17 @@
         </button>
 
         <!-- suffix icon -->
-        <Icon v-if="suffixIcon" :name="suffixIcon" class="mr-[var(--padding-x-2)] shrink-0" />
+        <Icon v-if="suffixIcon" :name="suffixIcon" class="mr-2 shrink-0" />
 
         <!-- suffix slot -->
-        <span v-if="$slots.suffix" class="mr-[var(--padding-x-2)] shrink-0">
+        <span v-if="$slots.suffix" class="mr-2 shrink-0">
           <slot name="suffix" />
         </span>
 
         <!-- word count: absolute positioned, outside flex layout -->
         <span
           v-if="showWordLimit && maxlength"
-          class="font-body-sm pointer-events-none absolute top-1/2 right-[var(--padding-x-2)] -translate-y-1/2 text-[var(--text-color-secondary)] tabular-nums select-none"
+          class="font-body-sm pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-[var(--text-color-secondary)] tabular-nums select-none"
         >
           {{ String(modelValue).length }} / {{ maxlength }}
         </span>

@@ -11,7 +11,7 @@
     />
     <span :class="trackClasses">
       <span :class="thumbClasses">
-        <Icon v-if="loading" name="loading" :size="iconSizeMap[props.size]" class="animate-spin" />
+        <Icon v-if="loading" name="loading" :class="['animate-spin', iconClassMap[props.size]]" />
       </span>
     </span>
   </label>
@@ -61,7 +61,11 @@ const sizeMap: Record<SwitchSize, { track: string; thumb: string; thumbActive: s
   lg: { track: 'w-[39px] h-6', thumb: 'w-[18px] h-[18px]', thumbActive: 'translate-x-[15px]' },
 }
 
-const iconSizeMap: Record<SwitchSize, number> = { sm: 8, md: 10, lg: 12 }
+const iconClassMap: Record<SwitchSize, string> = {
+  sm: 'text-[8px]',
+  md: 'text-[10px]',
+  lg: 'text-xs',
+}
 const isDisabled = computed(() => props.disabled || props.loading)
 
 const switchClasses = computed(() =>

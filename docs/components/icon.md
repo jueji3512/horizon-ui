@@ -1,6 +1,6 @@
 # Icon 图标
 
-基于 SVG 的图标组件，支持尺寸、颜色自定义。共 46 个常用图标，点击卡片即可复制图标名。
+基于 SVG 的图标组件，默认尺寸为 `1em`，可跟随当前字号变化。共 46 个常用图标，点击卡片即可复制图标名。
 
 ## 基本用法
 
@@ -26,27 +26,25 @@
 ```
 :::
 
-## 尺寸 Sizes
+## 尺寸
 
-预设五档或自定义像素值：
+图标默认宽高为 `1em`，可通过父级字号或外部 class / style 调整。
 
 <DemoBox>
   <div class="flex flex-wrap items-end gap-4">
-    <Icon name="star" size="xs" />
-    <Icon name="star" size="sm" />
-    <Icon name="star" size="md" />
-    <Icon name="star" size="lg" />
-    <Icon name="star" size="xl" />
+    <Icon name="star" class="text-sm" />
+    <Icon name="star" class="text-base" />
+    <Icon name="star" class="text-xl" />
+    <Icon name="star" style="font-size: 28px" />
   </div>
 </DemoBox>
 
 ::: details 查看代码
 ```html
-<Icon name="star" size="xs" />     <!-- 14px -->
-<Icon name="star" size="sm" />     <!-- 16px -->
-<Icon name="star" size="md" />     <!-- 20px -->
-<Icon name="star" size="lg" />     <!-- 24px -->
-<Icon name="star" size="xl" />     <!-- 28px -->
+<Icon name="star" class="text-sm" />
+<Icon name="star" class="text-base" />
+<Icon name="star" class="text-xl" />
+<Icon name="star" style="font-size: 28px" />
 ```
 :::
 
@@ -83,6 +81,5 @@
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `name` | `string` | — | 图标名（对应 SVG 文件名） |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'` | 尺寸（预设 14~28px，或自定义像素值） |
 | `color` | `string` | — | 覆盖颜色 |
 | `aria-label` | `string` | — | 无障碍标签 |

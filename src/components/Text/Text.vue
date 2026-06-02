@@ -68,12 +68,12 @@ const classes = computed(() =>
     props.delete && 'line-through',
     !props.delete && props.underline && 'underline',
     props.code &&
-      'font-body-sm rounded-[var(--round-default)] border border-[var(--border-color-component)] bg-[var(--bg-color-secondarycontainer)] px-[var(--padding-x-2)]',
+      'font-body-sm rounded-[var(--round-default)] border border-[var(--border-color-component)] bg-[var(--bg-color-secondarycontainer)] px-2',
     !props.code && props.mark && typeof props.mark !== 'string' && 'bg-warning-light',
     !props.code &&
       !props.mark &&
       props.keyboard &&
-      'font-body-sm rounded-[var(--round-default)] border border-[var(--border-color-component)] bg-[var(--bg-color-inner)] px-[var(--padding-x-2)] py-0.5 shadow-[inset_0_-1px_0_var(--border-color-divider)]',
+      'font-body-sm rounded-[var(--round-default)] border border-[var(--border-color-component)] bg-[var(--bg-color-inner)] px-2 py-0.5 shadow-[inset_0_-1px_0_var(--border-color-divider)]',
     props.disabled && cn(disabledColorMap[props.theme], 'cursor-not-allowed select-none'),
   ),
 )

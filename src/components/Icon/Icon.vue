@@ -3,7 +3,6 @@
 <template>
   <i
     class="h-icon"
-    :class="sizeClass"
     :style="iconStyle"
     :aria-hidden="!ariaLabel || undefined"
     :aria-label="ariaLabel || undefined"
@@ -14,11 +13,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-
 const props = defineProps<{
   name: string
-  size?: IconSize | number
   color?: string
   ariaLabel?: string
 }>()
@@ -33,26 +29,9 @@ const svgContent = computed(() => {
   return icons[key]?.default ?? ''
 })
 
-const sizeMap: Record<IconSize, string> = {
-  xs: 'w-3.5 h-3.5',
-  sm: 'w-4 h-4',
-  md: 'w-5 h-5',
-  lg: 'w-6 h-6',
-  xl: 'w-7 h-7',
-}
-
-const sizeClass = computed(() => {
-  if (typeof props.size === 'string') return sizeMap[props.size]
-  return ''
-})
-
 const iconStyle = computed(() => {
   const s: Record<string, string> = {}
   if (props.color) s.color = props.color
-  if (typeof props.size === 'number') {
-    s.width = `${props.size}px`
-    s.height = `${props.size}px`
-  }
   return Object.keys(s).length ? s : undefined
 })
 </script>

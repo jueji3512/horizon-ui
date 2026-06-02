@@ -104,9 +104,9 @@ const defaultClasses = computed(() =>
 // Heights and padding aligned with Button component.
 
 const buttonSizeMap: Record<string, string> = {
-  sm: 'h-[var(--comp-size-sm)] px-[var(--padding-x-2)] font-body-sm gap-1',
-  md: 'h-[var(--comp-size-md)] px-[var(--padding-x-4)] font-body-md gap-1.5',
-  lg: 'h-[var(--comp-size-lg)] px-[var(--padding-x-4)] font-body-lg gap-2',
+  sm: 'h-[var(--comp-size-sm)] px-2 font-body-sm gap-1',
+  md: 'h-[var(--comp-size-md)] px-4 font-body-md gap-1.5',
+  lg: 'h-[var(--comp-size-lg)] px-4 font-body-lg gap-2',
 }
 
 const buttonClasses = computed(() =>

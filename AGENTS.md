@@ -75,7 +75,7 @@ docs(project): 更新项目上下文与待办
 - 边框：`--border-color-*`。
 - 尺寸：`--comp-size-sm`、`--comp-size-md`、`--comp-size-lg`。
 - 圆角：`--round-default`、`--round-full`。
-- 间距：`--padding-x-*`、`--padding-y-*`。
+- padding / gap 不再作为 Horizon token 规范；组件内部直接使用 Tailwind spacing class，只有颜色、字体、圆角、组件高度等仍按 token 规范收敛。
 - 字体工具类：`font-body-*`、`font-title-*`。
 - 当前色彩规范主要完成 light mode；dark mode token、暗色状态映射、文档说明和组件适配仍是高优先级后续项。
 - 规范约束重点是组件源码内部实现；`docs/components/**` 中的示例代码视为使用者外部代码，可以自由展示自定义颜色、尺寸、圆角和业务样式，不要求完全使用 Horizon token。
@@ -92,7 +92,7 @@ docs(project): 更新项目上下文与待办
 
 - Badge 改为 `theme="default|brand|success|warning|error"`。
 - Tag 改为 `theme` + `variant`，并固定为 sm 尺寸，不再暴露 `size` 配置。
-- Tag 默认高度为 `h-6`，左右 padding 使用 `px-[var(--padding-x-2)]`，图标间距使用 `gap-2`。
+- Tag 默认高度为 `h-6`，左右 padding 使用 `px-2`，图标间距使用 `gap-2`。
 - Input 默认占满父元素宽度，移除 max-width 相关样式。
 - Input disabled 状态使用明确的 bg/border/text disabled token，不再依赖 opacity。
 - InputNumber disabled 输入框补充 `cursor-not-allowed`。

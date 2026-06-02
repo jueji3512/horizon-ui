@@ -196,7 +196,7 @@ function toYuan(v) { return '¥' + v.toLocaleString('en-US') }
 | `step-strictly` | `boolean` | `false` | 严格步进，blur 时修正为 step 倍数 |
 | `precision` | `number` | `0` | 小数位数 |
 | `disabled` | `boolean` | `false` | 禁用 |
-| `readonly` | `boolean` | `false` | 只读（步进按钮仍可用） |
+| `readonly` | `boolean` | `false` | 只读，不允许输入或通过步进改值 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
 | `format` | `(value: number) => string` | — | 显示格式化函数，聚焦时恢复原始数字 |
 | `align` | `'left' \| 'center' \| 'right'` | `'center'` | 输入文本对齐 |

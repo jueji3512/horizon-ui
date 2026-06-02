@@ -1,6 +1,6 @@
 <template>
   <button
-    v-bind="$attrs"
+    v-bind="actionAttrs"
     :type="type"
     :disabled="effectiveDisabled || undefined"
     :data-active="active || undefined"
@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useAttrs } from 'vue'
 import { cn } from '../../utils'
 import { useFieldContext } from './context'
 
@@ -31,7 +31,13 @@ const props = withDefaults(
 )
 
 const field = useFieldContext()
+const attrs = useAttrs()
 const effectiveDisabled = computed(() => props.disabled || Boolean(field?.disabled.value))
+
+const actionAttrs = computed(() => {
+  const { class: _class, ...rest } = attrs
+  return rest
+})
 
 const actionClasses = computed(() =>
   cn(
@@ -39,6 +45,7 @@ const actionClasses = computed(() =>
     'hover:text-[var(--text-color-primary)] focus-visible:ring-2 focus-visible:ring-brand-focus focus-visible:outline-none',
     'disabled:cursor-not-allowed disabled:text-[var(--text-color-disabled)]',
     props.active && !effectiveDisabled.value && 'text-[var(--text-color-primary)]',
+    attrs.class as Parameters<typeof cn>[number],
   ),
 )
 </script>

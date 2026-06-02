@@ -1,7 +1,7 @@
 <template>
   <input
     ref="inputRef"
-    v-bind="$attrs"
+    v-bind="inputAttrs"
     :type="type"
     :value="modelValue"
     :placeholder="placeholder || undefined"
@@ -14,15 +14,12 @@
     :aria-label="ariaLabel || undefined"
     :class="inputClasses"
     @input="handleInput"
-    @change="handleChange"
-    @focus="handleFocus"
-    @blur="handleBlur"
     @keydown="handleKeydown"
   />
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, useAttrs } from 'vue'
 import { cn } from '../../utils'
 import { useFieldContext } from './context'
 
@@ -57,44 +54,34 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
-  input: [e: Event]
-  change: [e: Event]
-  focus: [e: FocusEvent]
-  blur: [e: FocusEvent]
-  keydown: [e: KeyboardEvent]
   enter: [e: KeyboardEvent]
 }>()
 
 const field = useFieldContext()
+const attrs = useAttrs()
 const inputRef = ref<HTMLInputElement | null>(null)
 
 const effectiveDisabled = computed(() => props.disabled || Boolean(field?.disabled.value))
 const effectiveReadonly = computed(() => props.readonly || Boolean(field?.readonly.value))
 
+const inputAttrs = computed(() => {
+  const { class: _class, ...rest } = attrs
+  return rest
+})
+
 const inputClasses = computed(() =>
-  cn('field-native-input h-full w-full min-w-0 border-none bg-transparent px-3 outline-none'),
+  cn(
+    'field-native-input h-full w-full min-w-0 border-none bg-transparent px-3 outline-none',
+    attrs.class as Parameters<typeof cn>[number],
+  ),
 )
 
 function handleInput(e: Event) {
   const target = e.target as HTMLInputElement
   emit('update:modelValue', target.value)
-  emit('input', e)
-}
-
-function handleChange(e: Event) {
-  emit('change', e)
-}
-
-function handleFocus(e: FocusEvent) {
-  emit('focus', e)
-}
-
-function handleBlur(e: FocusEvent) {
-  emit('blur', e)
 }
 
 function handleKeydown(e: KeyboardEvent) {
-  emit('keydown', e)
   if (e.key === 'Enter') emit('enter', e)
 }
 

@@ -8,21 +8,16 @@ Field 不替代 Input，也不处理业务值模型、弹出层、选项渲染�
 import { ref } from 'vue'
 
 const basic = ref('')
-const basicFocused = ref(false)
 
 const search = ref('Horizon')
-const searchFocused = ref(false)
 
 const tagInput = ref('')
 const tags = ref(['Vue', 'Token', 'Form'])
-const tagFocused = ref(false)
 
 const rangeStart = ref('2026-06-02')
 const rangeEnd = ref('2026-06-30')
-const activeSegment = ref('')
 
 const grouped = ref('')
-const groupedFocused = ref(false)
 
 function addTag() {
   const value = tagInput.value.trim()
@@ -41,25 +36,15 @@ function removeTag(index) {
 `FieldRoot` 承载输入域 surface，`FieldNativeInput` 只包装原生输入框的基础样式和事件。
 
 <DemoBox>
-  <FieldRoot :focused="basicFocused">
-    <FieldNativeInput
-      v-model="basic"
-      placeholder="请输入内容"
-      @focus="basicFocused = true"
-      @blur="basicFocused = false"
-    />
+  <FieldRoot>
+    <FieldNativeInput v-model="basic" placeholder="请输入内容" />
   </FieldRoot>
 </DemoBox>
 
 ::: details 查看代码
 ```vue
-<FieldRoot :focused="focused">
-  <FieldNativeInput
-    v-model="value"
-    placeholder="请输入内容"
-    @focus="focused = true"
-    @blur="focused = false"
-  />
+<FieldRoot>
+  <FieldNativeInput v-model="value" placeholder="请输入内容" />
 </FieldRoot>
 ```
 :::
@@ -104,16 +89,11 @@ Field 使用组件尺寸 token 和功能色 ring，状态由上层组件传入�
 `FieldPrefix` / `FieldSuffix` 负责稳定的辅助区布局，`FieldAction` 用于清空、展开、密码显隐等可点击动作。
 
 <DemoBox>
-  <FieldRoot :focused="searchFocused">
+  <FieldRoot>
     <FieldPrefix>
       <Icon name="search" />
     </FieldPrefix>
-    <FieldNativeInput
-      v-model="search"
-      placeholder="搜索"
-      @focus="searchFocused = true"
-      @blur="searchFocused = false"
-    />
+    <FieldNativeInput v-model="search" placeholder="搜索" />
     <FieldSuffix class="gap-1">
       <FieldAction :class="search ? '' : 'invisible'" aria-label="清空" @click="search = ''">
         <Icon name="close" />
@@ -125,7 +105,7 @@ Field 使用组件尺寸 token 和功能色 ring，状态由上层组件传入�
 
 ::: details 查看代码
 ```vue
-<FieldRoot :focused="focused">
+<FieldRoot>
   <FieldPrefix>
     <Icon name="search" />
   </FieldPrefix>
@@ -145,7 +125,7 @@ Field 使用组件尺寸 token 和功能色 ring，状态由上层组件传入�
 多选 Select、TreeSelect 和 TagInput 可以用 `multiline` + `FieldContent` 承载 Tag wrap，搜索输入框仍由上层控制。
 
 <DemoBox>
-  <FieldRoot multiline :focused="tagFocused">
+  <FieldRoot multiline>
     <FieldContent multiline class="px-2">
       <Tag v-for="(tag, index) in tags" :key="tag" closable @close="removeTag(index)">
         {{ tag }}
@@ -154,8 +134,6 @@ Field 使用组件尺寸 token 和功能色 ring，状态由上层组件传入�
         v-model="tagInput"
         class="h-6 min-w-24 flex-1 px-0"
         placeholder="添加标签"
-        @focus="tagFocused = true"
-        @blur="tagFocused = false"
         @enter="addTag"
       />
     </FieldContent>
@@ -174,7 +152,7 @@ Field 使用组件尺寸 token 和功能色 ring，状态由上层组件传入�
 
 ::: details 查看代码
 ```vue
-<FieldRoot multiline :focused="focused">
+<FieldRoot multiline>
   <FieldContent multiline class="px-2">
     <Tag v-for="tag in tags" :key="tag" closable>{{ tag }}</Tag>
     <FieldNativeInput v-model="keyword" class="h-6 min-w-24 flex-1 px-0" />
@@ -190,38 +168,28 @@ Field 使用组件尺寸 token 和功能色 ring，状态由上层组件传入�
 
 ## 范围分段
 
-`FieldSegment` 用于 DateRangePicker、TimeRangePicker、范围数值输入等场景。外层 FieldRoot 仍负责整体边框和 ring。
+`FieldSegment` 用于 DateRangePicker、TimeRangePicker、范围数值输入等场景。外层 FieldRoot 仍负责整体边框和 ring；分段在内部输入聚焦时会显示 active 视觉，上层也可以在弹层打开等受控场景传入 `active`。
 
 <DemoBox>
-  <FieldRoot :focused="Boolean(activeSegment)">
-    <FieldSegment :active="activeSegment === 'start'">
-      <FieldNativeInput
-        v-model="rangeStart"
-        class="px-0 text-center"
-        @focus="activeSegment = 'start'"
-        @blur="activeSegment = ''"
-      />
+  <FieldRoot>
+    <FieldSegment>
+      <FieldNativeInput v-model="rangeStart" class="px-0 text-center" />
     </FieldSegment>
     <span class="shrink-0 text-[var(--text-color-secondary)]">至</span>
-    <FieldSegment :active="activeSegment === 'end'">
-      <FieldNativeInput
-        v-model="rangeEnd"
-        class="px-0 text-center"
-        @focus="activeSegment = 'end'"
-        @blur="activeSegment = ''"
-      />
+    <FieldSegment>
+      <FieldNativeInput v-model="rangeEnd" class="px-0 text-center" />
     </FieldSegment>
   </FieldRoot>
 </DemoBox>
 
 ::: details 查看代码
 ```vue
-<FieldRoot :focused="Boolean(activeSegment)">
-  <FieldSegment :active="activeSegment === 'start'">
+<FieldRoot>
+  <FieldSegment>
     <FieldNativeInput v-model="start" class="px-0 text-center" />
   </FieldSegment>
   <span>至</span>
-  <FieldSegment :active="activeSegment === 'end'">
+  <FieldSegment>
     <FieldNativeInput v-model="end" class="px-0 text-center" />
   </FieldSegment>
 </FieldRoot>
@@ -234,13 +202,8 @@ Field 使用组件尺寸 token 和功能色 ring，状态由上层组件传入�
 
 <DemoBox>
   <FieldGroup class="w-full gap-1">
-    <FieldRoot class="flex-1" :focused="groupedFocused">
-      <FieldNativeInput
-        v-model="grouped"
-        placeholder="搜索关键词"
-        @focus="groupedFocused = true"
-        @blur="groupedFocused = false"
-      />
+    <FieldRoot class="flex-1">
+      <FieldNativeInput v-model="grouped" placeholder="搜索关键词" />
     </FieldRoot>
     <Button class="shrink-0" theme="brand">搜索</Button>
   </FieldGroup>
@@ -249,7 +212,7 @@ Field 使用组件尺寸 token 和功能色 ring，状态由上层组件传入�
 ::: details 查看代码
 ```vue
 <FieldGroup class="w-full gap-1">
-  <FieldRoot class="flex-1" :focused="focused">
+  <FieldRoot class="flex-1">
     <FieldNativeInput v-model="keyword" placeholder="搜索关键词" />
   </FieldRoot>
   <Button class="shrink-0" theme="brand">搜索</Button>
@@ -301,12 +264,10 @@ Field 使用组件尺寸 token 和功能色 ring，状态由上层组件传入�
 
 ### FieldNativeInput
 
+`FieldNativeInput` 会把未声明的属性和原生事件透传到内部 `input`，因此可以直接监听
+`@input`、`@change`、`@focus`、`@blur`、`@keydown` 等原生事件。
+
 | 事件 | 参数 | 说明 |
 |------|------|------|
 | `update:model-value` | `string` | v-model 更新 |
-| `input` | `Event` | 输入事件 |
-| `change` | `Event` | change 事件 |
-| `focus` | `FocusEvent` | 聚焦事件 |
-| `blur` | `FocusEvent` | 失焦事件 |
-| `keydown` | `KeyboardEvent` | 按键事件 |
-| `enter` | `KeyboardEvent` | 按下 Enter 时触发 |
+| `enter` | `KeyboardEvent` | 按下 Enter 时额外触发 |

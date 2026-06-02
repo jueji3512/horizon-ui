@@ -178,11 +178,14 @@ function handleChange(e: Event) {
 }
 
 function handleFocus(e: FocusEvent) {
+  if (isFocused.value) return
   isFocused.value = true
   emit('focus', e)
 }
 
 function handleBlur(e: FocusEvent) {
+  const nextTarget = e.relatedTarget as Node | null
+  if (nextTarget && (e.currentTarget as HTMLElement).contains(nextTarget)) return
   isFocused.value = false
   emit('blur', e)
 }

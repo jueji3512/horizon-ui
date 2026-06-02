@@ -13,7 +13,7 @@
 | 5. Popper 底层定位基座 | 完成 | 已明确 Popper 不提供 surface 样式，并完成 deferred 行为处理与 base-component review。 |
 | 6. 项目记忆整理 | 完成 | 已新增/更新 `AGENTS.md`、`TODO.md`、`findings.md`、`progress.md`。 |
 | 7. 代码编辑器与检查工具规范 | 完成 | 已新增 `CODE_STYLE.md`、`.editorconfig`、`.gitattributes`、Stylelint 和 Tailwind class sorting。 |
-| 8. Field 输入域体系 | 进行中 | Field 首版公开 primitives 已落地并迁移 Input；后续继续用 InputNumber、Select 多选和 DatePicker range 验证边界。 |
+| 8. Field 输入域体系 | 进行中 | Field 首版公开 primitives 已落地并迁移 Input / InputNumber；后续继续用 Select 多选和 DatePicker range 验证边界。 |
 
 ## 已完成的关键事项
 
@@ -28,6 +28,8 @@
 - Popper base-component review 已完成，Critical/Important 问题已修复；剩余边界能力按上层组件需求后续扩展。
 - Popper 文档不再展示“深色/浅色”作为内置能力。
 - `Icon.vue` 的 raw SVG 渲染已补充本地图标安全边界说明，并关闭该处 `vue/no-v-html` 告警。
+- Field 输入域基座已落地为公开 primitives，Input / InputNumber 已完成迁移；Field 支持外部 class 后置覆盖、FieldRoot focus-within ring、FieldSegment focus-within active 视觉。
+- InputNumber 复用 Field 后保留 24/32/40 规范尺寸，并补齐聚焦状态下键盘/按钮步进后的展示值同步。
 - 全项目 `lint`、`format:check`、`typecheck`、`build` 已通过。
 - 根目录异常空目录 `d...projectuisrccomponentsSpace` 已删除。
 - 本地 Switch 视觉原型 `switch-mockups.html` 已删除。
@@ -38,7 +40,7 @@
 | 任务 | 优先级 | 说明 |
 |---|---|---|
 | 继续组件迁移扫描 | 高 | 从源码和当前规范重新扫描，不依赖旧计划勾选状态。 |
-| Field 底层组件 | 高 | 先完成公开 Field primitives 设计与实现，再迁移 Input / InputNumber 验证边界，并为 Select 多选场景做准备。 |
+| Field 底层组件 | 高 | Input / InputNumber 已完成迁移；继续用 Select 多选、DatePicker range 等复杂场景验证边界，并为未来 field-like 组件做准备。 |
 | 浏览器视觉验证 | 中 | 恢复可用浏览器/Playwright 后补做截图级验证。 |
 | Dark mode 色彩规范 | 后置 | 用户已决定 dark mode 放到当前队列最后；当前完成的是 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。 |
 | Icon 外部 SVG 安全策略 | 中 | 如果未来支持外部 SVG 输入，需要替换当前仅适用于本地白名单图标的策略。 |

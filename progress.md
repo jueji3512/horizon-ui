@@ -21,6 +21,11 @@
 - Tooltip 浮层阴影已沉淀为 `--shadow-popper` / `shadow-popper`，参考 TDesign 中层浮层多层投影并叠加 inset 边界，增强浅色主题气泡与页面背景的分离度。
 - 用户确认 Field 不应隐藏在 `_internal`，而应作为类似 Popper 的公开底层组件放在 `src/components/Field/`；已新增 `docs/guide/field-system.md` 记录 Field 输入域体系的目标、组件草案、状态模型、布局模式、未来组件适配、性能和可访问性原则。
 - 已新增公开 `src/components/Field/` primitives：Root、Content、NativeInput、Prefix、Suffix、Action、Group、Segment；新增 `docs/components/field.md` 并加入底层组件导航，Input 已迁移到 FieldRoot/FieldNativeInput/FieldAction 以验证首版边界。
+- Field primitives 已补充公开组合所需的 class 合并顺序：内部默认 class 在前，外部 `class` 后置合并，避免用户传入 `px-0`、`flex-1` 等覆盖类失效。
+- FieldRoot 增加 `focus-within` 默认焦点 ring；FieldSegment 增加 `focus-within:text-brand`，让 range segment 在内部输入聚焦时无需手写 JS 也能呈现 active 视觉。
+- InputNumber 已迁移为复用 FieldRoot / FieldNativeInput / FieldGroup 的中间输入域基座，步进按钮仍由 InputNumber 自身控制；同时修复聚焦时 ArrowUp / 步进按钮更新值后展示不同步的问题。
+- 浏览器验证通过：Field sm/md/lg 尺寸为 24/32/40，多值输入清空按钮居中，range segment 聚焦后分段变 brand 色；Input 焦点 ring 正常；InputNumber sm/md/lg 尺寸为 24/32/40，焦点 ring、键盘步进和按钮步进正常。
+- 用户确认 `InputNumber` 的 `readonly` 按“不允许编辑”理解；步进按钮保留普通视觉状态，但点击不改值，文档改为“只读，不允许输入或通过步进改值”。
 
 ### 代码编辑器与检查工具规范
 

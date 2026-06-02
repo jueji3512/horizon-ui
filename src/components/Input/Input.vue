@@ -226,10 +226,10 @@ const statusBorderMap: Record<InputStatus, string> = {
   success: 'border-success',
 }
 
-const statusShadowMap: Record<InputStatus, string> = {
-  error: 'shadow-[0_0_0_2px_var(--color-error-focus)]',
-  warning: 'shadow-[0_0_0_2px_var(--color-warning-focus)]',
-  success: 'shadow-[0_0_0_2px_var(--color-success-focus)]',
+const statusRingMap: Record<InputStatus, string> = {
+  error: 'ring-2 ring-error-focus',
+  warning: 'ring-2 ring-warning-focus',
+  success: 'ring-2 ring-success-focus',
 }
 
 const inputWrapperClasses = computed(() =>
@@ -242,11 +242,8 @@ const inputWrapperClasses = computed(() =>
     props.status &&
       !props.disabled &&
       !props.readonly &&
-      cn(statusBorderMap[props.status], isFocused.value && statusShadowMap[props.status]),
-    !props.status &&
-      !props.disabled &&
-      isFocused.value &&
-      'border-brand shadow-[0_0_0_2px_var(--color-brand-focus)]',
+      cn(statusBorderMap[props.status], isFocused.value && statusRingMap[props.status]),
+    !props.status && !props.disabled && isFocused.value && 'border-brand ring-2 ring-brand-focus',
     !props.status &&
       !props.disabled &&
       !isFocused.value &&

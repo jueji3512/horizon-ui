@@ -189,3 +189,11 @@
 - 用户确认：不要为了 VitePress 表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖；文档站样式污染应在 `docs/.vitepress/theme/vitepress.css` 隔离处理。
 - 定位 Link 文档页样式问题：`.vp-doc a` specificity 高于原 `.demo-box-preview :where(a, ...)` 隔离规则，导致 demo 内 Link 被 VitePress 链接色、字重和下划线覆盖；已将隔离选择器提高为 `.vp-doc .demo-box-preview :is(...)`。
 - 验证：5173 dev server 截图和 computed style 已确认 Link theme / disabled theme / underline 恢复为组件自身样式。
+
+### Text / Title 字体规范收敛
+
+- 继续基础组件扫描，发现 Title 文档仍写“字号参照 TDesign”，字体指南仍是旧 Tailwind `text-*` 阶梯。
+- Text / Title 源码 map 命名补充组件前缀；无行为变化。
+- Text / Title 组件文档新增或更新字体规格说明，明确使用 `font-body-*` / `font-title-*`。
+- `docs/guide/typography.md` 更新为 Horizon 当前字体 token 表。
+- 验证：`npm run check` 已通过；5173 dev server 截图和 computed style 已确认 Title 1-6 级标题映射到 `font-title-*`，Text 默认 / code / keyboard / disabled theme 映射到对应 `font-body-*` 与 disabled token。

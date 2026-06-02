@@ -4,7 +4,7 @@
 
 ## 等级
 
-`level` 对应 `h1`~`h6`，字号参照 TDesign。
+`level` 对应 `h1`~`h6`，字号使用 Horizon 的 `font-title-*` token。
 
 <DemoBox>
   <Title :level="1">一级标题 (36px / h1)</Title>
@@ -25,6 +25,17 @@
 <Title :level="6">六级标题 (14px / h6)</Title>
 ```
 :::
+
+## 字体规格
+
+| Level | Token | 字重 / 字号 / 行高 |
+|-------|-------|-------------------|
+| `1` | `font-title-1` | `600 / 36px / 44px` |
+| `2` | `font-title-2` | `600 / 28px / 36px` |
+| `3` | `font-title-3` | `600 / 24px / 32px` |
+| `4` | `font-title-4` | `600 / 18px / 26px` |
+| `5` | `font-title-5` | `600 / 16px / 24px` |
+| `6` | `font-title-6` | `600 / 14px / 22px` |
 
 ## 语义色
 

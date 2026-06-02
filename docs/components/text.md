@@ -28,6 +28,16 @@
 ```
 :::
 
+## 字体规格
+
+Text 默认使用 `font-body-md`。`code` 和 `keyboard` 为行内装饰形态，使用更紧凑的 `font-body-sm`。
+
+| 场景 | Token | 字号 / 行高 |
+|------|-------|-------------|
+| 默认文本 | `font-body-md` | `14px / 22px` |
+| 行内代码 | `font-body-sm` | `12px / 20px` |
+| 快捷键 | `font-body-sm` | `12px / 20px` |
+
 ## 格式标记
 
 `strong`、`italic`、`underline`、`delete`、`code`、`mark`、`keyboard`，可自由组合。
@@ -91,6 +101,9 @@
 <DemoBox>
   <div class="flex flex-wrap gap-3">
     <Text disabled>禁用的文本</Text>
+    <Text theme="brand" disabled>禁用的品牌文本</Text>
+    <Text theme="success" disabled>禁用的成功文本</Text>
+    <Text theme="warning" disabled>禁用的警告文本</Text>
     <Text theme="error" disabled>禁用的错误文本</Text>
   </div>
 </DemoBox>
@@ -98,6 +111,9 @@
 ::: details 查看代码
 ```html
 <Text disabled>禁用的文本</Text>
+<Text theme="brand" disabled>禁用的品牌文本</Text>
+<Text theme="success" disabled>禁用的成功文本</Text>
+<Text theme="warning" disabled>禁用的警告文本</Text>
 <Text theme="error" disabled>禁用的错误文本</Text>
 ```
 :::

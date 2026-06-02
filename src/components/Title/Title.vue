@@ -29,7 +29,7 @@ const props = withDefaults(
 
 const tag = computed(() => `h${props.level}`)
 
-const levelMap: Record<TitleLevel, string> = {
+const titleTypographyMap: Record<TitleLevel, string> = {
   1: 'font-title-1',
   2: 'font-title-2',
   3: 'font-title-3',
@@ -38,7 +38,7 @@ const levelMap: Record<TitleLevel, string> = {
   6: 'font-title-6',
 }
 
-const themeColorMap: Record<TitleTheme, string> = {
+const titleThemeColorMap: Record<TitleTheme, string> = {
   default: 'text-[var(--text-color-primary)]',
   brand: 'text-brand',
   success: 'text-success',
@@ -53,8 +53,8 @@ const markStyle = computed(() =>
 
 const classes = computed(() =>
   cn(
-    levelMap[props.level],
-    themeColorMap[props.theme],
+    titleTypographyMap[props.level],
+    titleThemeColorMap[props.theme],
     props.mark && typeof props.mark !== 'string' && 'bg-warning-light',
   ),
 )

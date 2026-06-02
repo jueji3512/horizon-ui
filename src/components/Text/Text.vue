@@ -37,7 +37,7 @@ const props = withDefaults(
   },
 )
 
-const themeColorMap: Record<TextTheme, string> = {
+const textThemeColorMap: Record<TextTheme, string> = {
   default: 'text-[var(--text-color-primary)]',
   brand: 'text-brand',
   success: 'text-success',
@@ -46,7 +46,7 @@ const themeColorMap: Record<TextTheme, string> = {
   secondary: 'text-[var(--text-color-secondary)]',
 }
 
-const disabledColorMap: Record<TextTheme, string> = {
+const textDisabledColorMap: Record<TextTheme, string> = {
   default: 'text-[var(--text-color-disabled)]',
   brand: 'text-brand-disabled',
   success: 'text-success-disabled',
@@ -62,7 +62,7 @@ const markStyle = computed(() =>
 const classes = computed(() =>
   cn(
     'font-body-md',
-    !props.disabled && themeColorMap[props.theme],
+    !props.disabled && textThemeColorMap[props.theme],
     props.strong && 'font-bold',
     props.italic && 'italic',
     props.delete && 'line-through',
@@ -74,7 +74,7 @@ const classes = computed(() =>
       !props.mark &&
       props.keyboard &&
       'font-body-sm rounded-[var(--round-default)] border border-[var(--border-color-component)] bg-[var(--bg-color-inner)] px-2 py-0.5 shadow-[inset_0_-1px_0_var(--border-color-divider)]',
-    props.disabled && cn(disabledColorMap[props.theme], 'cursor-not-allowed select-none'),
+    props.disabled && cn(textDisabledColorMap[props.theme], 'cursor-not-allowed select-none'),
   ),
 )
 </script>

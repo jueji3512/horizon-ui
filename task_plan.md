@@ -23,6 +23,7 @@
 - Tag 移除可配置尺寸，仅保留 sm 规格；默认高度 24px，左右 padding 8px。
 - Input 默认宽度占满父容器，并修正 disabled bg/border/text。
 - Link 补齐 `href` / `target` / `rel` API，并修正 disabled 状态下 href 原生跳转和半透明语义色问题；disabled 颜色按 theme 使用对应 disabled token。
+- Text / Title 文档和字体指南已对齐 `font-body-*` / `font-title-*` token。
 - Button 已拆分 `variant="solid|outline"` 与 `shape="rectangle|round|circle|square"`，icon-only 不再自动变圆。
 - InputNumber disabled 鼠标样式已修正。
 - PopperContent 默认无 border/background/text/radius/shadow，并支持上层通过 `class/style` 设置真实浮层 DOM。

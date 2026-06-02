@@ -207,6 +207,13 @@ docs(project): 更新项目上下文与待办
 - Link 文档新增“链接目标”示例和 props 说明，并明确 disabled 会阻止原生跳转和 `click` 事件派发。
 - VitePress 文档站对 `<a>` 的全局样式影响应继续在 `docs/.vitepress/theme/vitepress.css` 的 DemoBox 隔离层处理，不应把 `!important`、文档专用 class 或特殊覆盖写进组件源码。
 
+## 2026-06-03 Text / Title 字体规范收敛
+
+- Text / Title 源码中的颜色、禁用色和标题等级 map 命名补充组件前缀，便于后续扫描时区分组件自身配置。
+- Title 文档移除“字号参照 TDesign”的旧表述，改为说明 `level` 对应 `font-title-*` token。
+- Text 文档新增字体规格说明：默认文本使用 `font-body-md`，`code` / `keyboard` 使用 `font-body-sm`。
+- `docs/guide/typography.md` 已从旧 Tailwind `text-*` 阶梯更新为 Horizon 当前 `font-body-*` / `font-title-*` token 表。
+
 ## 后续入口
 
 - 任务清单：`TODO.md`。

@@ -108,6 +108,7 @@ docs(project): 更新项目上下文与待办
 - `Icon.vue` 继续使用本地 raw SVG 渲染，但已补充“仅来自打包期本地图标”的安全边界说明，并处理 lint warning。
 - 删除一个空的异常路径目录 `d...projectuisrccomponentsSpace`。
 - 新增 `TODO.md`，作为隐藏问题和未来任务索引。
+- 文档演示已统一为 VitePress `:::demo`：组件页引用 `docs/examples/**/*.vue` 渲染预览并展示源码，旧 DemoBox / details 查看代码 / Histoire / Storybook spike 已清理。
 
 ## 验证状态
 
@@ -120,6 +121,16 @@ docs(project): 更新项目上下文与待办
 - `/components/popper` HTTP 检查：通过。
 - 浏览器验证：`/components/field` 的尺寸、multi-value 清空按钮居中、range segment 聚焦视觉和 group 布局通过；`/components/input` 焦点 ring 通过；`/components/inputnumber` 尺寸、焦点 ring、键盘步进和按钮步进展示同步通过。
 - 浏览器验证：`/components/button` 的 `solid/outline`、`rectangle/round/square/circle` 渲染通过；`/components/inputnumber` 的 Button stepper 尺寸、disabled/readonly 状态和点击步进通过。
+- 最近一次文档演示体系验证：`npm run check` 通过；内置浏览器抽查 `/components/button`、`/components/checkbox`、`/components/inputnumber`、`/components/popper`，确认 `:::demo` 数量、源码折叠、预览渲染和源码内容正常。
+
+## 2026-06-04 VitePress `:::demo` 演示体系结论
+
+- 用户最终确认继续使用 VitePress，不保守兼容旧文档方案；组件文档演示追求一步到位的最终效果。
+- 当前实现采用 VitePress 官方样式隔离方向：`ComponentDemo` 根节点使用 `.vp-raw`，`docs/.vitepress/config.ts` 通过 `postcssIsolateStyles` 隔离 `base.css` / `vp-doc.css` 对组件 preview 的影响。
+- `docs/.vitepress/plugins/demo.ts` 基于 `markdown-it-container` 支持 `:::demo 标题` 语法，文档页只写示例路径；真实预览组件和源码均来自 `docs/examples/**/*.vue`。
+- `ComponentDemo` 自行提供预览、源码展开/收起和复制能力，不再依赖 VitePress `details` / custom-block 行为。
+- 已一次性迁移所有现有组件文档：17 个组件文档均改用 `:::demo`，生成 108 个示例文件；旧 DemoBox、Histoire、Storybook 和 `layout: page` spike 文件已清理。
+- 验证结论：`npm run check` 通过；内置浏览器抽查 Button、Checkbox、InputNumber、Popper，确认预览渲染、源码折叠和源码内容均正常。
 
 ## 已知风险
 
@@ -205,7 +216,7 @@ docs(project): 更新项目上下文与待办
 - Link disabled 状态不再使用 `text-brand/50` 等透明语义色，而是按 theme 映射 `text-brand-disabled` / `text-success-disabled` / `text-warning-disabled` / `text-error-disabled`；default 使用 `--text-color-disabled`。
 - Link disabled 状态会移除可跳转 `href`，并在点击时 `preventDefault` / `stopImmediatePropagation`，避免外部传入 href 时仍发生原生跳转。
 - Link 文档新增“链接目标”示例和 props 说明，并明确 disabled 会阻止原生跳转和 `click` 事件派发。
-- VitePress 文档站对 `<a>` 的全局样式影响应继续在 `docs/.vitepress/theme/vitepress.css` 的 DemoBox 隔离层处理，不应把 `!important`、文档专用 class 或特殊覆盖写进组件源码。
+- VitePress 文档站对组件 demo 的全局样式影响应继续在 `ComponentDemo` / VitePress theme 层处理，不应把 `!important`、文档专用 class 或特殊覆盖写进组件源码。
 
 ## 2026-06-03 Text / Title 字体规范收敛
 
@@ -213,6 +224,14 @@ docs(project): 更新项目上下文与待办
 - Title 文档移除“字号参照 TDesign”的旧表述，改为说明 `level` 对应 `font-title-*` token。
 - Text 文档新增字体规格说明：默认文本使用 `font-body-md`，`code` / `keyboard` 使用 `font-body-sm`。
 - `docs/guide/typography.md` 已从旧 Tailwind `text-*` 阶梯更新为 Horizon 当前 `font-body-*` / `font-title-*` token 表。
+
+## 2026-06-03/04 浏览器验证与 VitePress Demo 隔离结论
+
+- 本轮完成 Input、InputNumber、Tag、Popper 的浏览器验证，并结合截图与 computed style 检查尺寸、状态色、cursor、Teleport DOM、Popper 定位行为等关键点。
+- 文档站样式污染必须在 VitePress theme / demo shell 层处理，不应为了 VitePress 表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖。
+- 旧 demo shell 曾暴露 input padding、disabled cursor、Link 样式和内部按钮布局污染等问题；当前已统一迁移到 `ComponentDemo` `.vp-raw` + `postcssIsolateStyles`，不再维护旧 scoped reset 白名单。
+- `ComponentDemo` 负责源码折叠和复制，预览与源码展示共用 `docs/examples/**/*.vue`，避免文档页示例和展示源码漂移。
+- Popper 浏览器验证中，hover / focus 触发在当前 in-app browser 通道不够稳定；V-02 / V-03 不作为自动化通过项，后续如需回归应使用专门测试环境或人工复核。
 
 ## 后续入口
 

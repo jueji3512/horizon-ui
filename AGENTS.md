@@ -38,7 +38,7 @@ npm run check        # format:check + lint + typecheck + build
 
 1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
 2. 先读本文件，再读 `TODO.md` 和 `CODE_STYLE.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
-3. 当前更靠前的后续项是继续扫描未迁移组件、补充关键组件浏览器级视觉验证；Field 在 Select 多选、DatePicker range 等复杂场景的压力验证已决定先滞后，dark mode 放到当前队列最后。
+3. 当前更靠前的后续项是继续扫描未迁移组件、补充关键组件浏览器级视觉验证；组件文档已统一使用 VitePress `:::demo` + `docs/examples/**` 单源示例；Field 在 Select 多选、DatePicker range 等复杂场景的压力验证已决定先滞后，dark mode 放到当前队列最后。
 4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 
@@ -107,6 +107,9 @@ docs(project): 更新项目上下文与待办
 - InputNumber 已复用 FieldRoot / FieldNativeInput / FieldGroup，步进按钮复用 Button 的 `variant="outline"` + `shape="square"`，保留 sm/md/lg 的 24/32/40 尺寸，并修复聚焦时键盘/按钮步进后的展示值同步。
 - Checkbox / Radio 的 `variant="button"` 未来可考虑抽到 Toggle / ToggleGroup；当前只记录方向，不实现。
 - 组件级固有尺寸已完成首轮定稿：Switch track/thumb、Badge dot/count、Tooltip surface / PopperArrow、Checkbox / Radio 控件几何、FieldAction、InputNumber 输入段宽度、Callout 左侧色条、Divider 标签线均作为组件内部几何规格维护，不新增通用 token。
+- Input、InputNumber、Tag、Popper 已完成本轮浏览器验证；发现的问题已修复到组件源码或 VitePress demo 隔离层。
+- 文档演示已统一为 VitePress `:::demo` 单源示例：组件页通过 `docs/examples/**/*.vue` 渲染预览并展示源码，`ComponentDemo` 使用 `.vp-raw` 与 `postcssIsolateStyles` 隔离 VitePress 默认主题样式。
+- 旧 DemoBox / details 查看代码 / Histoire / Storybook spike 已清理；后续文档示例不要回到这些路线。
 - Popper 已完成 base-component review；`offset` / `flip` / `shift` / `matchWidth` / `autoUpdate` 改为响应式配置，`matchWidth` 改用 Floating UI `size` middleware，`disabled` 变 true 时会关闭已打开浮层。
 - Popper 文档去掉容易误解为内置主题的深色/浅色和默认边框表达。
 - `Icon.vue` 的 `v-html` 仅用于渲染打包期导入的本地图标 SVG，已补充安全边界说明并处理 lint warning。
@@ -132,4 +135,4 @@ Popper 是底层定位基座，不是最终视觉组件。
 - 如果未来 `Icon` 支持外部 SVG 或运行时 SVG 文本，必须重新评估当前 `v-html` 策略。
 - 如果修改颜色 token，必须同步更新 `src/styles` 和设计指南文档。
 - 如果修改代码风格或检查工具，必须同步更新 `CODE_STYLE.md` 和相关配置。
-- 文档站 VitePress 全局样式影响组件 demo 时，应在 `docs/.vitepress/theme/vitepress.css` 做样式隔离；不要为了 VitePress 表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖。
+- 文档站 VitePress 全局样式影响组件 demo 时，应优先检查 `ComponentDemo` 的 `.vp-raw` 隔离与 `docs/.vitepress/config.ts` 中的 `postcssIsolateStyles`；不要为了 VitePress 表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖。

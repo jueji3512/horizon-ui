@@ -197,3 +197,52 @@
 - Text / Title 组件文档新增或更新字体规格说明，明确使用 `font-body-*` / `font-title-*`。
 - `docs/guide/typography.md` 更新为 Horizon 当前字体 token 表。
 - 验证：`npm run check` 已通过；5173 dev server 截图和 computed style 已确认 Title 1-6 级标题映射到 `font-title-*`，Text 默认 / code / keyboard / disabled theme 映射到对应 `font-body-*` 与 disabled token。
+
+### Input / InputNumber / Tag / Popper 浏览器验证
+
+- 完成 Input 浏览器验证：sm/md/lg 为 24/32/40px；disabled 使用 disabled bg/border/text token；状态边框、清空按钮、密码切换和回焦行为正常。
+- 验证时发现 `docs/.vitepress/theme/vitepress.css` 的 demo 隔离规则对 `input/textarea` 使用 `all: revert-layer`，会清掉 Field/Input disabled cursor；中途尝试移除 input / textarea 后又发现 VitePress / Preflight 的 unlayered reset 会覆盖组件 padding。最终保留 input / textarea 的 `revert-layer` 以保护 padding，并在同一 DemoBox 范围后置补回 disabled cursor。
+- 完成 InputNumber 浏览器验证：步进按钮为 24/32/40px，中间输入段为 72/88/104px，按钮点击和 ArrowUp 同步正常；发现 readonly 下步进按钮外观仍可点击，已改为 disabled 视觉和行为一致。
+- 完成 Tag 浏览器验证：固定 24px 高、`px-2`、`gap-2`、theme/variant、关闭、可选、禁用状态正常；发现 VitePress button 隔离规则影响 Tag close button 的 scoped 布局，已排除 `.tag-close` / `.field-action`；Tag disabled closable 的 close cursor 已修正为 `not-allowed`，aria-label 改为“关闭”。
+- 完成 Popper 浏览器验证：V-01 click + Esc、V-04 matchWidth、V-05 placement/arrow、V-06 flip、V-07 shift、V-08 autoUpdate、V-09 disabled、V-10 z-index 递增、V-11 offset 均已验证。
+- Popper 验证中发现 V-10 文档写死 z-index 数值但实际会随页面 Popper 实例递增，已改为相对层级验证；V-06/V-07 浮层过小导致固定顶栏下难以触发边界，已改为高浮层 demo。
+- Popper `shift` 原实现只使用 Floating UI 默认轴，无法将 `top` 溢出的高浮层推回视口；已改为 `shift({ padding: 4, crossAxis: true })`，与文档“超出视口推回可见”语义一致。
+- 当前 in-app browser 控制通道无法可靠触发 hover / focus 事件；本轮未把 Popper V-02 / V-03 作为自动化通过项，已记录到 `TODO.md`，后续需要专门测试环境或人工复核。
+
+### 文档演示框架评估
+
+- 用户提出在阶段 3 和 4 之间插入文档演示框架调研：VitePress 作为文档站自带较多全局样式和 reset，当前 DemoBox 为此维护了额外隔离规则。
+- 已新增 VitePress `layout: page` 实验页 `docs/components/button-clean.md`，并新增 `ComponentDocPage` / `CleanDemoBox` 自定义文档 shell。
+- 实验结论：`layout: page` 可以避开 `.vp-doc` 包裹，降低 Markdown 样式对组件 demo 的影响；但 VitePress 全局 button reset 仍会覆盖 Button 的背景、边框和 padding，因此 CleanDemoBox preview 内仍需要 scoped `all: revert-layer`。
+- 已接入 Histoire 最小工作台：新增 `histoire.config.ts`、`histoire.setup.ts`、`stories/Button.story.vue`，并新增 `dev:histoire` / `build:histoire` / `preview:histoire` 脚本。Histoire 预览中 Button 的 theme、variant、shape、disabled、loading 渲染正常，controls/source 面板可用于组件验证。
+- 依赖已升级：新增 `histoire@1.0.0-beta.1`、`@histoire/plugin-vue@1.0.0-beta.1`、`@vitejs/plugin-vue@6.0.7`，并将根项目 Vite 升到 `^7.3.5`；VitePress 自身仍保留 `^1.6.4`。`package.json` 已声明 `engines.node >=22.13.0`。
+- 当前系统 Node `v22.10.0` 对 Vite 7 / Histoire 依赖链偏旧，安装时会出现 engine warning；使用临时 Node 22.13.1 执行 Histoire build 已通过，但 beta 版仍会输出空 global setup 虚拟模块相关的非阻断 warning。后续建议本地/CI 升到 22.13+ 或 24 LTS。
+- 内置浏览器复验：`/components/button-clean` 在加 scoped reset 后 Button computed style 恢复为正确背景、边框、文本色和 `15px` 横向 padding；Histoire `/story/stories-button-story-vue?variantId=stories-button-story-vue-0` 渲染正常。
+- 优先级结论：短期不整体替换 VitePress；Histoire 作为并行组件工作台优先推进，VitePress 文档 shell 按需渐进收敛。
+
+### 今日收尾记录
+
+- 用户复核 Input 演示截图时指出 disabled cursor 仍不对；重新用浏览器 computed style 确认：组件 scoped 的 `.field-native-input:disabled` 已命中，但随后被 DemoBox 的 `all: revert-layer` 恢复为 `cursor: default`。
+- 最终修正位于 `docs/.vitepress/theme/vitepress.css`：保留 DemoBox 内 `input` / `textarea` 的 `all: revert-layer` 来避免 input padding 被 VitePress / Preflight reset 覆盖，同时新增 `.vp-doc .demo-box-preview :is(input, textarea):disabled { cursor: not-allowed; }`。
+- 复验 `/components/input`：普通 input 为 `cursor: text`，disabled input 为 `cursor: not-allowed`，Input padding 为 `0px 12px`，截图显示输入框内容不再贴边。
+- 今日最后一次完整验证：`npm run check` 通过，包含 format:check、lint、typecheck 和 VitePress build。
+- 明天继续前先看 `git status --short`；当前本轮浏览器验证和修复尚未提交，建议确认改动后统一提交。
+
+## 2026-06-04
+
+### VitePress `:::demo` 一步到位迁移
+
+- 用户最终确认继续使用 VitePress，并要求不保守兼容旧 DemoBox / Histoire / Storybook 方案，直接追求文档演示的最终效果。
+- 清理 Histoire / Storybook spike：移除相关脚本、依赖、配置、story 和实验页，根项目 Vite 回到 VitePress 兼容的 `^6.4.3`。
+- 新增 VitePress `:::demo` 语法：`docs/.vitepress/plugins/demo.ts` 负责解析 demo 容器，`ComponentDemo` 负责预览、源码展开/收起和复制。
+- 使用 `.vp-raw` 与 `postcssIsolateStyles` 隔离 VitePress `base.css` / `vp-doc.css`，后续样式污染优先在 demo shell 和 VitePress theme 层处理，不写进组件源码。
+- 批量迁移 17 个组件文档，生成 108 个 `docs/examples/**/*.vue` 单源示例；组件页只引用示例路径，预览和源码展示共用同一份 `.vue` 文件。
+- 删除旧 `DemoBox.vue`，移除文档页内的 details 查看代码写法。
+- 验证：`npm run check` 通过；内置浏览器抽查 `/components/button`、`/components/checkbox`、`/components/inputnumber`、`/components/popper`，确认 demo 数量、预览渲染、源码折叠和源码内容正常。
+
+### 迁移后清理
+
+- 删除 `docs/.vitepress/theme/vitepress.css` 及其 theme import；该文件只剩 VitePress h2 节奏微调，不再承担 demo 隔离职责。
+- 将 `CLAUDE.md` 收敛为轻量入口，避免继续维护一份已经包含旧 DemoBox / Histoire 信息的重复项目说明。
+- 移除未直接使用的顶层依赖 `@floating-ui/dom` 和 `@vueuse/core`；`@floating-ui/dom` 仍由 `@floating-ui/vue` 作为传递依赖管理。
+- 修正 Radio 文档首个 demo 标题从 `??` 到“基本用法”。

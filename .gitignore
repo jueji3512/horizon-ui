@@ -1,4 +1,6 @@
 node_modules/
+dist/
+.codex-logs/
 docs/.vitepress/cache/
 docs/.vitepress/dist/
 .superpowers/

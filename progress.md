@@ -246,3 +246,14 @@
 - 将 `CLAUDE.md` 收敛为轻量入口，避免继续维护一份已经包含旧 DemoBox / Histoire 信息的重复项目说明。
 - 移除未直接使用的顶层依赖 `@floating-ui/dom` 和 `@vueuse/core`；`@floating-ui/dom` 仍由 `@floating-ui/vue` 作为传递依赖管理。
 - 修正 Radio 文档首个 demo 标题从 `??` 到“基本用法”。
+
+### 提交与下次接入计划
+
+- 用户要求记录当前进度和后续计划，确保下次对话能快速接上；本节作为 2026-06-04 收尾交接记录。
+- 已按性质拆分提交：
+  - `48c0c68 fix(components): 修正组件验证边界问题`
+  - `1bc564a docs(vitepress): 迁移组件演示为 demo 容器`
+  - `26fbf67 docs(project): 更新演示迁移上下文`
+- 收尾前 `git status --short` 为空，`npm run check` 通过；如果下次打开时状态不同，先按当前工作区差异判断是否有用户新增改动。
+- 新增后续事项：`ComponentDemo` 源码展示尚无语法高亮，demo 容器视觉样式也可继续优化；已记录到 `TODO.md` 和 `task_plan.md`。
+- 下次优先级建议：先确认工作区 clean 和最近提交，再从 `TODO.md` 的近期开发计划选择任务；若继续文档体验，优先做 `ComponentDemo` 语法高亮与样式打磨；若继续组件主线，则回到组件迁移扫描和关键组件浏览器验证。

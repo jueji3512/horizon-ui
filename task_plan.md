@@ -47,6 +47,7 @@
 |---|---|---|
 | 继续组件迁移扫描 | 高 | 从源码和当前规范重新扫描，不依赖旧计划勾选状态。 |
 | VitePress `:::demo` 维护 | 中 | 后续新增组件文档继续使用 `:::demo` + `docs/examples/<component>/`；样式污染优先从 `ComponentDemo` `.vp-raw` 与 `postcssIsolateStyles` 排查。 |
+| ComponentDemo 展示体验 | 中 | 后续补源码语法高亮，并继续打磨 demo 容器视觉样式；当前功能已可用，属于体验优化。 |
 | 组件级固有尺寸规范 | 完成 / 持续守护 | 首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，均作为组件内部几何规格维护，不新增通用尺寸 token。 |
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
 | 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper 的截图与 computed style 验证；后续继续覆盖剩余关键组件。 |
@@ -59,4 +60,4 @@
 - commit message 使用 Conventional Commit 格式，并用中文说明。
 - 不能擅自删除不确定用途的文件；先记录到 `TODO.md` 并询问用户。
 - 修改色彩 token 时，同步检查样式源文件和设计指南。
-- 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划。
+- 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划；当前最短接入路径是确认 git clean、查看 `TODO.md` 的近期开发计划，再决定先做组件扫描还是 `ComponentDemo` 体验优化。

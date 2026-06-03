@@ -2,150 +2,66 @@
 
 用于文本输入，支持密码、清空、图标等功能。
 
-<script setup>
-import { ref } from 'vue'
-
-const text = ref('')
-const password = ref('123456')
-const disabled = ref('禁用状态')
-const readonly = ref('只读状态')
-const clearable = ref('可清空文本')
-const statusError = ref('错误内容')
-const statusWarning = ref('警告内容')
-const statusSuccess = ref('成功内容')
-const wordLimited = ref('')
-</script>
-
 ## 基本用法
 
 `v-model` 绑定值。
 
-<DemoBox>
-  <Input v-model="text" placeholder="请输入内容" />
-</DemoBox>
-
-<div class="mt-2 text-sm text-[var(--text-color-secondary)]">text: {{ text }}</div>
-
-::: details 查看代码
-```html
-<Input v-model="text" placeholder="请输入内容" />
-```
+:::demo 基本用法
+input/example-01
 :::
 
 ## 密码类型
 
 设置 `type="password"` 并启用 `show-password` 显示密码切换按钮。
 
-<DemoBox>
-  <Input v-model="password" type="password" show-password placeholder="请输入密码" />
-</DemoBox>
-
-::: details 查看代码
-```html
-<Input v-model="password" type="password" show-password placeholder="请输入密码" />
-```
+:::demo 密码类型
+input/example-02
 :::
 
 ## 尺寸 Size
 
 `sm` / `md` (默认) / `lg` 三档。
 
-<DemoBox>
-  <div class="flex flex-col gap-3">
-    <Input v-model="text" size="sm" placeholder="小尺寸" />
-    <Input v-model="text" size="md" placeholder="中尺寸（默认）" />
-    <Input v-model="text" size="lg" placeholder="大尺寸" />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Input v-model="text" size="sm" placeholder="小尺寸" />
-<Input v-model="text" size="md" placeholder="中尺寸（默认）" />
-<Input v-model="text" size="lg" placeholder="大尺寸" />
-```
+:::demo 尺寸 Size
+input/example-03
 :::
 
 ## 可清空
 
 设置 `clearable`，输入内容后显示清空按钮。
 
-<DemoBox>
-  <Input v-model="clearable" clearable placeholder="输入试试" />
-</DemoBox>
-
-::: details 查看代码
-```html
-<Input v-model="clearable" clearable placeholder="输入试试" />
-```
+:::demo 可清空
+input/example-04
 :::
 
 ## 禁用与只读
 
-<DemoBox>
-  <div class="flex flex-col gap-3">
-    <Input v-model="disabled" disabled />
-    <Input v-model="readonly" readonly />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Input v-model="disabled" disabled />
-<Input v-model="readonly" readonly />
-```
+:::demo 禁用与只读
+input/example-05
 :::
 
 ## 图标
 
 `prefix-icon` 和 `suffix-icon` 设置前后图标。
 
-<DemoBox>
-  <div class="flex flex-col gap-3">
-    <Input v-model="text" prefix-icon="search" placeholder="搜索" />
-    <Input v-model="text" suffix-icon="search" placeholder="搜索" />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Input v-model="text" prefix-icon="search" placeholder="搜索" />
-<Input v-model="text" suffix-icon="search" placeholder="搜索" />
-```
+:::demo 图标
+input/example-06
 :::
 
 ## 状态 Status
 
 `status` 设置校验状态，影响边框颜色。
 
-<DemoBox>
-  <div class="flex flex-col gap-3">
-    <Input v-model="statusError" status="error" placeholder="错误状态" />
-    <Input v-model="statusWarning" status="warning" placeholder="警告状态" />
-    <Input v-model="statusSuccess" status="success" placeholder="成功状态" />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Input v-model="statusError" status="error" placeholder="错误状态" />
-<Input v-model="statusWarning" status="warning" placeholder="警告状态" />
-<Input v-model="statusSuccess" status="success" placeholder="成功状态" />
-```
+:::demo 状态 Status
+input/example-07
 :::
 
 ## 字数限制
 
 `maxlength` 限制最大字符数，`show-word-limit` 显示字数统计。
 
-<DemoBox>
-  <Input v-model="wordLimited" :maxlength="50" show-word-limit placeholder="最多输入 50 个字符" />
-</DemoBox>
-
-::: details 查看代码
-```html
-<Input v-model="wordLimited" :maxlength="50" show-word-limit placeholder="最多输入 50 个字符" />
-```
+:::demo 字数限制
+input/example-08
 :::
 
 ## Props

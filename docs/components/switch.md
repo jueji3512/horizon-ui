@@ -2,54 +2,20 @@
 
 用于控制单个功能的开启与关闭。
 
-<script setup>
-import { ref } from 'vue'
-
-const active = ref(true)
-const inactive = ref(false)
-const disabledOn = ref(true)
-const disabledOff = ref(false)
-const loadingOn = ref(true)
-</script>
-
 ## 基本用法
 
 `v-model` 绑定布尔值。
 
-<DemoBox>
-  <div class="flex gap-4 items-center">
-    <Switch v-model="active" />
-    <Switch v-model="inactive" />
-  </div>
-</DemoBox>
-
-<div class="mt-2 text-sm text-[var(--text-color-secondary)]">active: {{ active }}, inactive: {{ inactive }}</div>
-
-::: details 查看代码
-```html
-<Switch v-model="active" />
-<Switch v-model="inactive" />
-```
+:::demo 基本用法
+switch/example-01
 :::
 
 ## 尺寸 Size
 
 `sm` / `md` (默认) / `lg` 三档。
 
-<DemoBox>
-  <div class="flex gap-4 items-center">
-    <Switch v-model="active" size="sm" />
-    <Switch v-model="active" size="md" />
-    <Switch v-model="active" size="lg" />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Switch v-model="active" size="sm" />
-<Switch v-model="active" size="md" />
-<Switch v-model="active" size="lg" />
-```
+:::demo 尺寸 Size
+switch/example-02
 :::
 
 ## 尺寸规格
@@ -64,32 +30,14 @@ Switch 使用组件自身的轨道、滑块、位移几何矩阵，不直接映�
 
 ## 禁用态 Disabled
 
-<DemoBox>
-  <div class="flex gap-4 items-center">
-    <Switch v-model="disabledOn" disabled />
-    <Switch v-model="disabledOff" disabled />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Switch v-model="disabledOn" disabled />
-<Switch v-model="disabledOff" disabled />
-```
+:::demo 禁用态 Disabled
+switch/example-03
 :::
 
 ## 加载态 Loading
 
-<DemoBox>
-  <div class="flex gap-4 items-center">
-    <Switch v-model="loadingOn" loading />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Switch v-model="loadingOn" loading />
-```
+:::demo 加载态 Loading
+switch/example-04
 :::
 
 ## Props

@@ -2,40 +2,8 @@
 
 在一组互斥选项中选择一个。
 
-<script setup>
-import { ref } from 'vue'
-
-const basicDemo = ref('a')
-
-const dirV = ref('a')
-
-const disabledDemo = ref('a')
-const disabledGroup = ref('a')
-
-// button variant demos
-const btnDemo = ref('weekly')
-const btnSizeSm = ref('daily')
-const btnSizeMd = ref('daily')
-const btnSizeLg = ref('daily')
-const btnDisabled = ref('daily')
-</script>
-
-<DemoBox>
-  <RadioGroup v-model="basicDemo" class="mt-2">
-    <Radio value="a" label="选项 A" />
-    <Radio value="b" label="选项 B" />
-    <Radio value="c" label="选项 C" />
-  </RadioGroup>
-</DemoBox>
-
-::: details 查看代码
-```html
-<RadioGroup v-model="basicDemo">
-  <Radio value="a" label="选项 A" />
-  <Radio value="b" label="选项 B" />
-  <Radio value="c" label="选项 C" />
-</RadioGroup>
-```
+:::demo 基本用法
+radio/example-01
 :::
 
 ## 尺寸规格
@@ -52,113 +20,22 @@ Radio 使用自身的默认控件几何规格；button variant 当前仍作为 R
 
 ## 排列方向 Direction
 
-<DemoBox>
-  <RadioGroup v-model="dirV" direction="vertical">
-    <Radio value="a" label="垂直 A" />
-    <Radio value="b" label="垂直 B" />
-    <Radio value="c" label="垂直 C" />
-  </RadioGroup>
-</DemoBox>
-
-::: details 查看代码
-```html
-<RadioGroup v-model="dirV" direction="vertical">
-  <Radio value="a" label="垂直 A" />
-  <Radio value="b" label="垂直 B" />
-  <Radio value="c" label="垂直 C" />
-</RadioGroup>
-```
+:::demo 排列方向 Direction
+radio/example-02
 :::
 
 ## 禁用态 Disabled
 
-<DemoBox>
-  <RadioGroup v-model="disabledDemo">
-    <Radio value="a" label="可用" />
-    <Radio value="b" label="禁用" disabled />
-  </RadioGroup>
-  <RadioGroup v-model="disabledGroup" disabled class="mt-3">
-    <Radio value="a" label="整组禁用" />
-    <Radio value="b" label="全部不可用" />
-  </RadioGroup>
-</DemoBox>
-
-::: details 查看代码
-```html
-<!-- 单个禁用 -->
-<RadioGroup v-model="disabledDemo">
-  <Radio value="a" label="可用" />
-  <Radio value="b" label="禁用" disabled />
-</RadioGroup>
-
-<!-- 整组禁用 -->
-<RadioGroup v-model="disabledGroup" disabled>
-  <Radio value="a" label="整组禁用" />
-  <Radio value="b" label="全部不可用" />
-</RadioGroup>
-```
+:::demo 禁用态 Disabled
+radio/example-03
 :::
 
 ## 按钮组 Button Variant
 
 设置 `variant="button"` 切换为按钮组样式，支持 `size` 属性。
 
-<DemoBox>
-  <RadioGroup v-model="btnDemo" variant="button" class="mt-2">
-    <Radio value="daily" label="每日" />
-    <Radio value="weekly" label="每周" />
-    <Radio value="monthly" label="每月" />
-  </RadioGroup>
-
-  <div class="mt-4 flex flex-col gap-3 items-start">
-    <RadioGroup v-model="btnSizeSm" variant="button" size="sm">
-      <Radio value="daily" label="每日" />
-      <Radio value="weekly" label="每周" />
-    </RadioGroup>
-    <RadioGroup v-model="btnSizeMd" variant="button" size="md">
-      <Radio value="daily" label="每日" />
-      <Radio value="weekly" label="每周" />
-    </RadioGroup>
-    <RadioGroup v-model="btnSizeLg" variant="button" size="lg">
-      <Radio value="daily" label="每日" />
-      <Radio value="weekly" label="每周" />
-    </RadioGroup>
-  </div>
-
-  <RadioGroup v-model="btnDisabled" variant="button" class="mt-4">
-    <Radio value="daily" label="每日" />
-    <Radio value="weekly" label="每周" disabled />
-    <Radio value="monthly" label="每月" />
-  </RadioGroup>
-</DemoBox>
-
-::: details 查看代码
-```html
-<RadioGroup v-model="btnDemo" variant="button">
-  <Radio value="daily" label="每日" />
-  <Radio value="weekly" label="每周" />
-  <Radio value="monthly" label="每月" />
-</RadioGroup>
-
-<RadioGroup v-model="btnSizeSm" variant="button" size="sm">
-  <Radio value="daily" label="每日" />
-  <Radio value="weekly" label="每周" />
-</RadioGroup>
-<RadioGroup v-model="btnSizeMd" variant="button" size="md">
-  <Radio value="daily" label="每日" />
-  <Radio value="weekly" label="每周" />
-</RadioGroup>
-<RadioGroup v-model="btnSizeLg" variant="button" size="lg">
-  <Radio value="daily" label="每日" />
-  <Radio value="weekly" label="每周" />
-</RadioGroup>
-
-<RadioGroup v-model="btnDisabled" variant="button">
-  <Radio value="daily" label="每日" />
-  <Radio value="weekly" label="每周" disabled />
-  <Radio value="monthly" label="每月" />
-</RadioGroup>
-```
+:::demo 按钮组 Button Variant
+radio/example-04
 :::
 
 ## Props

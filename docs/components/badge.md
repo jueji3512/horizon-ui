@@ -4,26 +4,8 @@
 
 ## 基本用法
 
-<DemoBox>
-  <div class="flex items-center gap-8">
-    <Badge dot theme="error">
-      <div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" />
-    </Badge>
-    <Badge :value="5" theme="error">
-      <div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" />
-    </Badge>
-    <Badge value="新" theme="brand">
-      <div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" />
-    </Badge>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Badge dot theme="error">...</Badge>
-<Badge :value="5" theme="error">...</Badge>
-<Badge value="新" theme="brand">...</Badge>
-```
+:::demo 基本用法
+badge/example-01
 :::
 
 ## 尺寸规格
@@ -40,77 +22,43 @@ Badge 使用组件自身的圆点、胶囊和定位几何规格，不直接映�
 
 `theme` 支持 `default`、`brand`、`success`、`warning`、`error`。
 
-<DemoBox>
-  <div class="flex items-center gap-8">
-    <Badge :value="1" theme="default"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge :value="2" theme="brand"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge :value="3" theme="success"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge :value="4" theme="warning"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge :value="5" theme="error"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Badge :value="1" theme="default">...</Badge>
-<Badge :value="2" theme="brand">...</Badge>
-<Badge :value="3" theme="success">...</Badge>
-<Badge :value="4" theme="warning">...</Badge>
-<Badge :value="5" theme="error">...</Badge>
-```
+:::demo 主题
+badge/example-02
 :::
 
 ## 最大值
 
 `max` 控制数字溢出上限，超过时显示 `{max}+`。
 
-<DemoBox>
-  <div class="flex items-center gap-8">
-    <Badge :value="50"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge :value="100"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge :value="200" :max="99"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-  </div>
-</DemoBox>
+:::demo 最大值
+badge/example-03
+:::
 
 ## 显示零值
 
-<DemoBox>
-  <div class="flex items-center gap-8">
-    <Badge :value="0"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge :value="0" show-zero><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-  </div>
-</DemoBox>
+:::demo 显示零值
+badge/example-04
+:::
 
 ## 偏移量
 
-<DemoBox>
-  <div class="flex items-center gap-8">
-    <Badge :value="5"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge :value="5" :offset="[6, -6]"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge :value="5" :offset="[-6, 6]"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-  </div>
-</DemoBox>
+:::demo 偏移量
+badge/example-05
+:::
 
 ## 自定义颜色
 
 `color` 通过内联样式覆盖主题背景色。
 
-<DemoBox>
-  <div class="flex items-center gap-8">
-    <Badge :value="5" theme="error"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge :value="5" color="#8b5cf6"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge dot color="#ec4899"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-  </div>
-</DemoBox>
+:::demo 自定义颜色
+badge/example-06
+:::
 
 ## 隐藏
 
-<DemoBox>
-  <div class="flex items-center gap-8">
-    <Badge :value="5"><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-    <Badge :value="5" hidden><div class="h-10 w-10 rounded-[var(--round-2)] bg-[var(--bg-color-secondarycontainer)]" /></Badge>
-  </div>
-</DemoBox>
+:::demo 隐藏
+badge/example-07
+:::
 
 ## Props
 

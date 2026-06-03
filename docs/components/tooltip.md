@@ -6,26 +6,8 @@
 
 `content` prop 传入文本，默认 `hover` 触发。
 
-<DemoBox>
-  <div class="flex flex-wrap gap-3">
-    <Tooltip content="删除操作不可撤销">
-      <Button theme="error">删除</Button>
-    </Tooltip>
-    <Tooltip content="点击保存">
-      <Button>保存</Button>
-    </Tooltip>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Tooltip content="删除操作不可撤销">
-  <Button theme="error">删除</Button>
-</Tooltip>
-<Tooltip content="点击保存">
-  <Button>保存</Button>
-</Tooltip>
-```
+:::demo 基础用法
+tooltip/example-01
 :::
 
 ## 尺寸规格
@@ -42,249 +24,56 @@ Tooltip 使用自身的浮层 surface 和箭头几何规格，不直接映射为
 
 `trigger` 支持 `hover`（默认）、`click`、`focus`、`manual`。
 
-<DemoBox>
-  <div class="flex flex-wrap gap-3 items-center">
-    <Tooltip content="悬停触发" trigger="hover">
-      <Button theme="default">Hover</Button>
-    </Tooltip>
-    <Tooltip content="点击触发" trigger="click">
-      <Button theme="default">Click</Button>
-    </Tooltip>
-    <Tooltip content="聚焦触发" trigger="focus">
-      <Button theme="default">Focus</Button>
-    </Tooltip>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Tooltip content="悬停触发" trigger="hover">
-  <Button theme="default">Hover</Button>
-</Tooltip>
-<Tooltip content="点击触发" trigger="click">
-  <Button theme="default">Click</Button>
-</Tooltip>
-<Tooltip content="聚焦触发" trigger="focus">
-  <Button theme="default">Focus</Button>
-</Tooltip>
-```
+:::demo 触发方式
+tooltip/example-02
 :::
 
 ## 方位
 
 `placement` 支持 12 个方向，Popper 自动 flip 防溢出。
 
-<DemoBox>
-  <div class="flex flex-wrap justify-center gap-2" style="max-width:400px;margin:40px auto 20px;">
-    <Tooltip content="top-start" placement="top-start">
-      <Button size="sm" theme="default">TS</Button>
-    </Tooltip>
-    <Tooltip content="top" placement="top">
-      <Button size="sm" theme="default">T</Button>
-    </Tooltip>
-    <Tooltip content="top-end" placement="top-end">
-      <Button size="sm" theme="default">TE</Button>
-    </Tooltip>
-  </div>
-
-  <div class="flex justify-between items-center" style="max-width:440px;margin:0 auto 20px;">
-    <div class="flex flex-col gap-2">
-      <Tooltip content="left-start" placement="left-start">
-        <Button size="sm" theme="default">LS</Button>
-      </Tooltip>
-      <Tooltip content="left" placement="left">
-        <Button size="sm" theme="default">L</Button>
-      </Tooltip>
-      <Tooltip content="left-end" placement="left-end">
-        <Button size="sm" theme="default">LE</Button>
-      </Tooltip>
-    </div>
-    <div class="flex flex-col gap-2">
-      <Tooltip content="right-start" placement="right-start">
-        <Button size="sm" theme="default">RS</Button>
-      </Tooltip>
-      <Tooltip content="right" placement="right">
-        <Button size="sm" theme="default">R</Button>
-      </Tooltip>
-      <Tooltip content="right-end" placement="right-end">
-        <Button size="sm" theme="default">RE</Button>
-      </Tooltip>
-    </div>
-  </div>
-
-  <div class="flex flex-wrap justify-center gap-2" style="max-width:400px;margin:0 auto;">
-    <Tooltip content="bottom-start" placement="bottom-start">
-      <Button size="sm" theme="default">BS</Button>
-    </Tooltip>
-    <Tooltip content="bottom" placement="bottom">
-      <Button size="sm" theme="default">B</Button>
-    </Tooltip>
-    <Tooltip content="bottom-end" placement="bottom-end">
-      <Button size="sm" theme="default">BE</Button>
-    </Tooltip>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Tooltip content="top-start" placement="top-start">
-  <Button size="sm" theme="default">TS</Button>
-</Tooltip>
-<Tooltip content="top" placement="top">
-  <Button size="sm" theme="default">T</Button>
-</Tooltip>
-<!-- ... 12 方位 -->
-```
+:::demo 方位
+tooltip/example-03
 :::
 
 ## 主题 Theme
 
 `theme` 支持 5 种：`default`（默认深色）、`brand`、`success`、`warning`、`error`。
 
-<DemoBox>
-  <div class="flex flex-wrap gap-3">
-    <Tooltip content="默认深色" theme="default">
-      <Button>Default</Button>
-    </Tooltip>
-    <Tooltip content="品牌信息" theme="brand">
-      <Button theme="default">Brand</Button>
-    </Tooltip>
-    <Tooltip content="成功信息" theme="success">
-      <Button theme="default">Success</Button>
-    </Tooltip>
-    <Tooltip content="警告信息" theme="warning">
-      <Button theme="default">Warning</Button>
-    </Tooltip>
-    <Tooltip content="错误警告" theme="error">
-      <Button theme="default">Error</Button>
-    </Tooltip>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Tooltip content="默认深色" theme="default">
-  <Button>Default</Button>
-</Tooltip>
-<Tooltip content="品牌信息" theme="brand">
-  <Button theme="default">Brand</Button>
-</Tooltip>
-<Tooltip content="成功信息" theme="success">
-  <Button theme="default">Success</Button>
-</Tooltip>
-<Tooltip content="警告信息" theme="warning">
-  <Button theme="default">Warning</Button>
-</Tooltip>
-<Tooltip content="错误警告" theme="error">
-  <Button theme="default">Error</Button>
-</Tooltip>
-```
+:::demo 主题 Theme
+tooltip/example-04
 :::
 
 ## 自定义内容
 
 使用 `content` 插槽传入 HTML 或组件。
 
-<DemoBox>
-  <div class="flex flex-wrap gap-3">
-    <Tooltip>
-      <Button theme="default">富文本</Button>
-      <template #content>
-        <div>标题：操作说明</div>
-        <div class="text-[var(--text-color-secondary)]">第二步：确认提交</div>
-      </template>
-    </Tooltip>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Tooltip>
-  <Button theme="default">富文本</Button>
-  <template #content>
-    <div>标题：操作说明</div>
-    <div class="text-[var(--text-color-secondary)]">第二步：确认提交</div>
-  </template>
-</Tooltip>
-```
+:::demo 自定义内容
+tooltip/example-05
 :::
 
 ## 延迟
 
 `showDelay` 和 `hideDelay` 控制显示/隐藏延迟（毫秒）。
 
-<DemoBox>
-  <div class="flex flex-wrap gap-3">
-    <Tooltip content="延迟 500ms 显示" :show-delay="500">
-      <Button theme="default">延迟显示</Button>
-    </Tooltip>
-    <Tooltip content="延迟 300ms 隐藏" :hide-delay="300">
-      <Button theme="default">延迟隐藏</Button>
-    </Tooltip>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Tooltip content="延迟 500ms 显示" :show-delay="500">
-  <Button theme="default">延迟显示</Button>
-</Tooltip>
-<Tooltip content="延迟 300ms 隐藏" :hide-delay="300">
-  <Button theme="default">延迟隐藏</Button>
-</Tooltip>
-```
+:::demo 延迟
+tooltip/example-06
 :::
 
 ## 受控模式
 
 `v-model:visible` + `trigger="manual"` 完全控制显示状态。
 
-<script setup>
-import { ref } from 'vue'
-const show = ref(false)
-</script>
-
-<DemoBox>
-  <div class="flex flex-wrap gap-3 items-center">
-    <Tooltip v-model:visible="show" content="手动控制" trigger="manual">
-      <Button @click="show = !show">点击切换</Button>
-    </Tooltip>
-    <span class="text-sm text-[var(--text-color-secondary)]">状态：{{ show ? '显示' : '隐藏' }}</span>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<script setup>
-import { ref } from 'vue'
-const show = ref(false)
-</script>
-
-<Tooltip v-model:visible="show" content="手动控制" trigger="manual">
-  <Button @click="show = !show">点击切换</Button>
-</Tooltip>
-<span>状态：{{ show ? '显示' : '隐藏' }}</span>
-```
+:::demo 受控模式
+tooltip/example-07
 :::
 
 ## 禁用态
 
 `disabled` 阻止 tooltip 显示。
 
-<DemoBox>
-  <div class="flex flex-wrap gap-3">
-    <Tooltip content="不会出现的提示" disabled>
-      <Button theme="default">Disabled Tooltip</Button>
-    </Tooltip>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Tooltip content="不会出现的提示" disabled>
-  <Button theme="default">Disabled Tooltip</Button>
-</Tooltip>
-```
+:::demo 禁用态
+tooltip/example-08
 :::
 
 ## Props

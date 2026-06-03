@@ -6,36 +6,16 @@
 
 四种语义主题：`brand`、`success`、`warning`、`error`。
 
-<DemoBox>
-  <Callout>brand — 这是一条信息提示，用于展示辅助说明。</Callout>
-  <Callout theme="success">success — 操作已成功完成，数据已保存到服务器。</Callout>
-  <Callout theme="warning">warning — 该操作不可逆，请确认后再继续。</Callout>
-  <Callout theme="error">error — 服务器连接失败，请检查网络后重试。</Callout>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Callout>brand — 这是一条信息提示，用于展示辅助说明。</Callout>
-<Callout theme="success">success — 操作已成功完成，数据已保存到服务器。</Callout>
-<Callout theme="warning">warning — 该操作不可逆，请确认后再继续。</Callout>
-<Callout theme="error">error — 服务器连接失败，请检查网络后重试。</Callout>
-```
+:::demo 主题 Theme
+callout/example-01
 :::
 
 ## 标题
 
 `title` prop 或 `title` slot 设置标题。
 
-<DemoBox>
-  <Callout theme="brand" title="提示">这是带标题的信息标注。</Callout>
-  <Callout theme="warning" title="注意">这是带标题的警告标注。</Callout>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Callout theme="brand" title="提示">这是带标题的信息标注。</Callout>
-<Callout theme="warning" title="注意">这是带标题的警告标注。</Callout>
-```
+:::demo 标题
+callout/example-02
 :::
 
 ## 尺寸规格

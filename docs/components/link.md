@@ -6,133 +6,48 @@
 
 `theme` 支持 5 种语义色。
 
-<DemoBox>
-  <div class="flex flex-wrap gap-4">
-    <Link>default 默认</Link>
-    <Link theme="brand">brand 品牌</Link>
-    <Link theme="success">success 成功</Link>
-    <Link theme="warning">warning 警告</Link>
-    <Link theme="error">error 错误</Link>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Link>default 默认</Link>
-<Link theme="brand">brand 品牌</Link>
-<Link theme="success">success 成功</Link>
-<Link theme="warning">warning 警告</Link>
-<Link theme="error">error 错误</Link>
-```
+:::demo 主题 Theme
+link/example-01
 :::
 
 ## 链接目标
 
 `href` 设置跳转地址；`target="_blank"` 时如果未显式传入 `rel`，组件会默认使用 `noopener noreferrer`。
 
-<DemoBox>
-  <div class="flex flex-wrap gap-4">
-    <Link href="/components/button.html">组件内链接</Link>
-    <Link href="https://developer.mozilla.org/" target="_blank">外部链接</Link>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Link href="/components/button.html">组件内链接</Link>
-<Link href="https://developer.mozilla.org/" target="_blank">外部链接</Link>
-```
+:::demo 链接目标
+link/example-02
 :::
 
 ## 下划线
 
 `underline` 控制下划线行为：`always` 始终显示，`hover` 悬浮显示（默认），`never` 从不显示。
 
-<DemoBox>
-  <div class="flex flex-wrap gap-4">
-    <Link underline="always">始终下划线</Link>
-    <Link underline="hover">悬浮下划线</Link>
-    <Link underline="never">无下划线</Link>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Link underline="always">始终下划线</Link>
-<Link underline="hover">悬浮下划线</Link>
-<Link underline="never">无下划线</Link>
-```
+:::demo 下划线
+link/example-03
 :::
 
 ## 图标
 
 `prefix-icon` 和 `suffix-icon` 在文字前后插入图标。
 
-<DemoBox>
-  <div class="flex flex-wrap gap-4">
-    <Link prefix-icon="link">前置图标</Link>
-    <Link suffix-icon="arrow-right">后置图标</Link>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Link prefix-icon="link">前置图标</Link>
-<Link suffix-icon="arrow-right">后置图标</Link>
-```
+:::demo 图标
+link/example-04
 :::
 
 ## 尺寸
 
 `size` 支持 `sm`（12px）、`md`（14px，默认）、`lg`（16px）。
 
-<DemoBox>
-  <div class="flex flex-col gap-3">
-    <div class="flex gap-4">
-      <Link size="sm">小号链接</Link>
-      <Link size="sm" prefix-icon="plus">小号图标</Link>
-    </div>
-    <div class="flex gap-4">
-      <Link size="md">中号链接</Link>
-      <Link size="md" prefix-icon="plus">中号图标</Link>
-    </div>
-    <div class="flex gap-4">
-      <Link size="lg">大号链接</Link>
-      <Link size="lg" prefix-icon="plus">大号图标</Link>
-    </div>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Link size="sm">小号链接</Link>
-<Link size="md">中号链接</Link>
-<Link size="lg">大号链接</Link>
-```
+:::demo 尺寸
+link/example-05
 :::
 
 ## 禁用态
 
 `disabled` 使链接变为不可交互状态，颜色使用对应主题的 disabled token，并阻止原生跳转和 `click` 事件派发。
 
-<DemoBox>
-  <div class="flex flex-wrap gap-4">
-    <Link disabled>禁用链接</Link>
-    <Link theme="brand" disabled>品牌禁用</Link>
-    <Link theme="success" disabled>成功禁用</Link>
-    <Link theme="warning" disabled>警告禁用</Link>
-    <Link theme="error" disabled>错误禁用</Link>
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Link disabled>禁用链接</Link>
-<Link theme="brand" disabled>品牌禁用</Link>
-<Link theme="success" disabled>成功禁用</Link>
-<Link theme="warning" disabled>警告禁用</Link>
-<Link theme="error" disabled>错误禁用</Link>
-```
+:::demo 禁用态
+link/example-06
 :::
 
 ## Props

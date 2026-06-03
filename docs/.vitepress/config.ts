@@ -1,6 +1,7 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { fileURLToPath, URL } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
+import { createDemoContainer } from './plugins/demo'
 
 export default defineConfig({
   title: 'Horizon UI',
@@ -67,7 +68,22 @@ export default defineConfig({
     },
   },
 
+  markdown: {
+    config(md) {
+      createDemoContainer(md)
+    },
+  },
+
   vite: {
+    css: {
+      postcss: {
+        plugins: [
+          postcssIsolateStyles({
+            includeFiles: [/base\.css$/, /vp-doc\.css$/],
+          }),
+        ],
+      },
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('../../src', import.meta.url)),

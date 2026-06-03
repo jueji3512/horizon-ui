@@ -2,57 +2,20 @@
 
 步进按钮 + 数值范围约束的数字输入组件。
 
-<script setup>
-import { ref } from 'vue'
-
-const num = ref(0)
-const numStep = ref(0)
-const numPrecision = ref(0)
-const numRange = ref(50)
-const numDisabled = ref(0)
-const numReadonly = ref(0)
-const numStepStrictly = ref(0)
-const numAlign = ref(0)
-const numFormat = ref(0)
-
-function toThousands(v) { return v.toLocaleString('en-US') }
-function toYuan(v) { return '¥' + v.toLocaleString('en-US') }
-</script>
-
 ## 基本用法
 
 `v-model` 绑定 `number` 值。
 
-<DemoBox>
-  <InputNumber v-model="num" style="max-width: 320px" />
-</DemoBox>
-
-<div class="mt-2 text-sm text-[var(--text-color-secondary)]">value: {{ num }}</div>
-
-::: details 查看代码
-```html
-<InputNumber v-model="num" />
-```
+:::demo 基本用法
+inputnumber/example-01
 :::
 
 ## 尺寸 Size
 
 `sm` / `md` (默认) / `lg` 三档。
 
-<DemoBox>
-  <div class="flex flex-col gap-3">
-    <InputNumber v-model="num" size="sm" />
-    <InputNumber v-model="num" size="md" />
-    <InputNumber v-model="num" size="lg" />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<InputNumber v-model="num" size="sm" />
-<InputNumber v-model="num" size="md" />
-<InputNumber v-model="num" size="lg" />
-```
+:::demo 尺寸 Size
+inputnumber/example-02
 :::
 
 ## 尺寸规格
@@ -69,130 +32,54 @@ InputNumber 使用 FieldRoot + Button 组合几何。整体高度跟随 `--comp-
 
 `left` / `center`（默认）/ `right` 控制输入文本对齐。
 
-<DemoBox>
-  <div class="flex flex-col gap-3" style="max-width: 320px">
-    <InputNumber v-model="numAlign" align="left" />
-    <InputNumber v-model="numAlign" align="center" />
-    <InputNumber v-model="numAlign" align="right" />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<InputNumber v-model="num" align="left" />
-<InputNumber v-model="num" align="center" />
-<InputNumber v-model="num" align="right" />
-```
+:::demo 对齐 Align
+inputnumber/example-03
 :::
 
 ## 步进 Step
 
 `step` 控制每次增减的量。
 
-<DemoBox>
-  <div class="flex flex-col gap-3" style="max-width: 320px">
-    <InputNumber v-model="numStep" :step="5" />
-    <InputNumber v-model="numStep" :step="0.1" :precision="1" />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<InputNumber v-model="num" :step="5" />
-<InputNumber v-model="num" :step="0.1" :precision="1" />
-```
+:::demo 步进 Step
+inputnumber/example-04
 :::
 
 ## 精度 Precision
 
 `precision` 控制小数位数。
 
-<DemoBox>
-  <InputNumber v-model="numPrecision" :precision="2" :step="0.01" style="max-width: 320px" />
-</DemoBox>
-
-<div class="mt-2 text-sm text-[var(--text-color-secondary)]">value: {{ numPrecision }}</div>
-
-::: details 查看代码
-```html
-<InputNumber v-model="num" :precision="2" :step="0.01" />
-```
+:::demo 精度 Precision
+inputnumber/example-05
 :::
 
 ## 范围 Range
 
 `min` 和 `max` 限定取值范围，超出自动修正。
 
-<DemoBox>
-  <InputNumber v-model="numRange" :min="0" :max="100" style="max-width: 320px" />
-</DemoBox>
-
-<div class="mt-2 text-sm text-[var(--text-color-secondary)]">value: {{ numRange }} (min=0, max=100)</div>
-
-::: details 查看代码
-```html
-<InputNumber v-model="num" :min="0" :max="100" />
-```
+:::demo 范围 Range
+inputnumber/example-06
 :::
 
 ## 严格步进
 
 `step-strictly` 强制 blur 时修正为 step 的倍数。
 
-<DemoBox>
-  <InputNumber v-model="numStepStrictly" :step="5" step-strictly style="max-width: 320px" />
-</DemoBox>
-
-<div class="mt-2 text-sm text-[var(--text-color-secondary)]">value: {{ numStepStrictly }} (step=5, stepStrictly)</div>
-
-::: details 查看代码
-```html
-<InputNumber v-model="num" :step="5" step-strictly />
-```
+:::demo 严格步进
+inputnumber/example-07
 :::
 
 ## 格式化 Format
 
 `format` 函数控制输入框内的显示格式。聚焦时恢复原始数字供编辑。
 
-<DemoBox>
-  <div class="flex flex-col gap-3" style="max-width: 320px">
-    <InputNumber v-model="numFormat" :format="toThousands" />
-    <InputNumber v-model="numFormat" :format="toYuan" />
-  </div>
-</DemoBox>
-
-<div class="mt-2 text-sm text-[var(--text-color-secondary)]">actual value: {{ numFormat }}</div>
-
-::: details 查看代码
-```html
-<script setup>
-const num = ref(0)
-function toThousands(v) { return v.toLocaleString('en-US') }
-function toYuan(v) { return '¥' + v.toLocaleString('en-US') }
-</script>
-
-<template>
-  <InputNumber v-model="num" :format="toThousands" />
-  <InputNumber v-model="num" :format="toYuan" />
-</template>
-```
+:::demo 格式化 Format
+inputnumber/example-08
 :::
 
 ## 禁用与只读
 
-<DemoBox>
-  <div class="flex flex-col gap-3" style="max-width: 320px">
-    <InputNumber v-model="numDisabled" disabled />
-    <InputNumber v-model="numReadonly" readonly />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<InputNumber v-model="num" disabled />
-<InputNumber v-model="num" readonly />
-```
+:::demo 禁用与只读
+inputnumber/example-09
 :::
 
 ## Props

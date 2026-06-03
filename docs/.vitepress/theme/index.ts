@@ -1,5 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
+import type { App, Component } from 'vue'
 import {
   Badge,
   Button,
@@ -33,13 +34,49 @@ import {
   Tooltip,
 } from '@/components'
 import '@/styles/horizon.css'
-import './vitepress.css'
 import IconGrid from './components/IconGrid.vue'
-import DemoBox from './components/DemoBox.vue'
+import ComponentDemo from './components/ComponentDemo.vue'
+
+const demoModules = import.meta.glob('../../examples/**/*.vue', {
+  eager: true,
+}) as Record<string, { default: Component }>
+const demoSourceModules = import.meta.glob('../../examples/**/*.vue', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>
+
+function getDemoPath(filePath: string) {
+  return filePath.replace(/^\.\.\/\.\.\/examples\//, '').replace(/\.vue$/, '')
+}
+
+function toPascalCase(value: string) {
+  return value
+    .split(/[-/]/)
+    .filter(Boolean)
+    .map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`)
+    .join('')
+}
+
+function registerDemoExamples(app: App) {
+  const demoSources: Record<string, string> = {}
+
+  for (const [filePath, module] of Object.entries(demoModules)) {
+    const demoPath = getDemoPath(filePath)
+    app.component(`Demo${toPascalCase(demoPath)}`, module.default)
+  }
+
+  for (const [filePath, source] of Object.entries(demoSourceModules)) {
+    demoSources[getDemoPath(filePath)] = source
+  }
+
+  app.provide('demoSources', demoSources)
+}
 
 export default {
   extends: DefaultTheme,
   enhanceApp({ app }) {
+    registerDemoExamples(app)
     app.component('Button', Button)
     app.component('Badge', Badge)
     app.component('Icon', Icon)
@@ -71,6 +108,6 @@ export default {
     app.component('Divider', Divider)
     app.component('Space', Space)
     app.component('IconGrid', IconGrid)
-    app.component('DemoBox', DemoBox)
+    app.component('ComponentDemo', ComponentDemo)
   },
 } satisfies Theme

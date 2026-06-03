@@ -4,72 +4,24 @@
 
 ## 基本用法
 
-<DemoBox>
-  <div class="flex flex-wrap items-center gap-4">
-    <Icon name="settings" />
-    <Icon name="search" />
-    <Icon name="edit" />
-    <Icon name="delete" />
-    <Icon name="plus" />
-    <Icon name="check" />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Icon name="settings" />
-<Icon name="search" />
-<Icon name="edit" />
-<Icon name="delete" />
-<Icon name="plus" />
-<Icon name="check" />
-```
+:::demo 基本用法
+icon/example-01
 :::
 
 ## 尺寸
 
 图标默认宽高为 `1em`，可通过父级字号或外部 class / style 调整。
 
-<DemoBox>
-  <div class="flex flex-wrap items-end gap-4">
-    <Icon name="star" class="text-sm" />
-    <Icon name="star" class="text-base" />
-    <Icon name="star" class="text-xl" />
-    <Icon name="star" style="font-size: 28px" />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Icon name="star" class="text-sm" />
-<Icon name="star" class="text-base" />
-<Icon name="star" class="text-xl" />
-<Icon name="star" style="font-size: 28px" />
-```
+:::demo 尺寸
+icon/example-02
 :::
 
 ## 颜色 Color
 
 通过 `color` prop 或继承父级 CSS `color`：
 
-<DemoBox>
-  <div class="flex flex-wrap items-center gap-4">
-    <Icon name="heart" />
-    <Icon name="heart" color="#ef4444" />
-    <Icon name="heart" color="#3b82f6" />
-    <Icon name="heart" color="#10b981" />
-    <Icon name="heart" color="#f59e0b" />
-  </div>
-</DemoBox>
-
-::: details 查看代码
-```html
-<Icon name="heart" />
-<Icon name="heart" color="#ef4444" />
-<Icon name="heart" color="#3b82f6" />
-<Icon name="heart" color="#10b981" />
-<Icon name="heart" color="#f59e0b" />
-```
+:::demo 颜色 Color
+icon/example-03
 :::
 
 ## 全部图标

@@ -5,9 +5,9 @@
     <button
       v-if="closable"
       type="button"
-      class="tag-close opacity-70 hover:opacity-100"
+      class="tag-close opacity-70 hover:opacity-100 disabled:cursor-not-allowed"
       :disabled="disabled"
-      aria-label="close"
+      aria-label="关闭"
       @click.stop="handleClose"
     >
       <Icon name="close" />
@@ -186,5 +186,9 @@ const textSpanClasses = computed(() => cn(!props.checkable && !props.disabled &&
   cursor: pointer;
   flex-shrink: 0;
   transition: color 0.15s;
+}
+
+.tag-close:disabled {
+  cursor: not-allowed;
 }
 </style>

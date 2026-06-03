@@ -7,7 +7,9 @@
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
     @click="onClick"
+    @focus.capture="onFocusIn"
     @focusin="onFocusIn"
+    @blur.capture="onFocusOut"
     @focusout="onFocusOut"
   >
     <slot />
@@ -46,7 +48,9 @@ function onClick() {
 function onFocusIn() {
   if (ctx.trigger.value === 'focus' && !ctx.disabled.value) ctx.show()
 }
-function onFocusOut() {
+function onFocusOut(e: FocusEvent) {
+  const nextTarget = e.relatedTarget
+  if (nextTarget instanceof Node && triggerEl.value?.contains(nextTarget)) return
   if (ctx.trigger.value === 'focus') ctx.hide()
 }
 </script>

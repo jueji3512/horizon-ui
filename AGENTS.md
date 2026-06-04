@@ -38,7 +38,7 @@ npm run check        # format:check + lint + typecheck + build
 
 1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
 2. 先读本文件，再读 `TODO.md` 和 `CODE_STYLE.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
-3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。`ComponentDemo` 源码高亮与视觉样式、Field 在 Select 多选 / DatePicker range 等复杂场景的压力验证、pnpm 迁移评估和 dark mode 是后续队列。
+3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。Field 在 Select 多选 / DatePicker range 等复杂场景的压力验证、pnpm 迁移评估和 dark mode 是后续队列。
 4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 6. 后续遇到调研、重开发、复杂排查、跨组件验证、并行实现或其他子代理能提升效率、覆盖面、完成度的任务时，可以开启子代理协助；小而线性的任务优先主代理直接推进，避免不必要的协调成本。
@@ -98,6 +98,7 @@ docs(project): 更新项目上下文与待办
 - Token 文件按领域拆分为 `color.css`、`typography.css`、`radius.css`、`size.css`、`shadow.css`、`motion.css`、`z-index.css`；拆分原则是语义边界清晰，不为拆而拆。
 - 当前色彩规范主要完成 light mode；dark mode token、暗色状态映射、文档说明和组件适配仍是高优先级后续项。
 - 规范约束重点是组件源码内部实现；`docs/components/**` 中的示例代码视为使用者外部代码，可以自由展示自定义颜色、尺寸、圆角和业务样式，不要求完全使用 Horizon token。
+- `docs/.vitepress/theme/**` 属于文档站产品 shell，不是组件库内部组件规范对象；可为最终文档体验自由使用 scoped CSS、Tailwind 或 VitePress/Shiki 能力，但样式污染仍应在文档层处理。
 - `Text` / `Title` 的 `mark`、`Text` 的 `keyboard` 这类固定装饰样式可以作为组件内部特例使用明确色值，但如果有合适 token，优先使用 token 表达。
 
 ## 当前组件状态
@@ -126,8 +127,8 @@ docs(project): 更新项目上下文与待办
 - 组件级固有尺寸已完成首轮定稿：Switch track/thumb、Badge dot/count、Tooltip surface / PopperArrow、Checkbox / Radio 控件几何、FieldAction、InputNumber 输入段宽度、Callout 左侧色条、Divider 标签线均作为组件内部几何规格维护，不新增通用 token。
 - Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 已完成本轮浏览器验证；发现的问题已修复到组件源码或 VitePress demo 隔离层。
 - 文档演示已统一为 VitePress `:::demo` 单源示例：组件页通过 `docs/examples/**/*.vue` 渲染预览并展示源码，`ComponentDemo` 使用 `.vp-raw` 与 `postcssIsolateStyles` 隔离 VitePress 默认主题样式。
+- `ComponentDemo` 源码展示体验已优化：复用 VitePress / Shiki 构建期高亮，支持 `github-light` / `github-dark` 双主题、行号、示例路径、单一复制 icon 和完整亮暗 shell。
 - 旧 DemoBox / details 查看代码 / Histoire / Storybook spike 已清理；后续文档示例不要回到这些路线。
-- `ComponentDemo` 当前源码展示还没有语法高亮，容器视觉样式也可继续优化；该事项已记录到 `TODO.md`。
 - 当前实现组件集已完成迁移收敛扫描：未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留。
 - Tag checkable 已补键盘与 ARIA；Input 内部 action blur/focus 边界已修复；Tooltip 已通过 `aria-describedby` 关联真实 tooltip content；Icon 有 `ariaLabel` 时补 `role="img"`；InputNumber `change` 仅在聚焦会话内值确实变化后于 blur 提交时触发。
 - Popper 根导出已补 `Placement` / `TriggerType` / `UsePopperOptions` / `UsePopperReturn` / `PopperContext` / `usePopper`；shadow token 已补 `:root` fallback；`@types/node` 已对齐 Node 24 基线为 `^24.13.0`。

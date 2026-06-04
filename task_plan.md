@@ -41,6 +41,7 @@
 - token 文件边界已整理：`font.css` 改为 `typography.css`，`size.css` 中的圆角拆到 `radius.css`，`elevation.css` 拆为 `shadow.css`、`motion.css`、`z-index.css`；`color.css` 仍作为完整色彩系统保留。
 - Input、InputNumber、Tag、Popper 已完成本轮浏览器视觉验证；发现的问题已同步修复到组件源码或 VitePress demo 隔离层。
 - 文档演示体系已一步到位迁移：18 个组件文档使用 VitePress `:::demo`，108 个示例拆到 `docs/examples/**/*.vue`，预览与源码展示共用同一份 `.vue` 文件；旧 DemoBox、details 查看代码、Histoire / Storybook spike 已清理。
+- `ComponentDemo` 源码展示体验已优化：复用 VitePress / Shiki 构建期高亮，支持 `github-light` / `github-dark` 双主题、行号、示例路径、单一复制 icon 和完整亮暗 shell。
 - 运行时已升级到 Node `24.16.0` / npm `11.13.0`，`package.json` 已补 `engines` / `packageManager`。
 - 直接依赖已升级到当前最新可用版本，`npm outdated --json` 为空；ESLint 10 暴露的 `globals` 隐式依赖问题已修正为显式 devDependency。
 - Badge 文档示例改为本地 import，文档主题不再全局注册 `Badge`，避免与 VitePress 默认主题组件重名。
@@ -59,7 +60,7 @@
 |---|---|---|
 | 组件迁移滚动守护 | 高 | 当前实现组件集已完成收敛扫描；后续从源码和当前规范出发，按新增组件、复杂场景和发现的问题滚动扫描。 |
 | VitePress `:::demo` 维护 | 中 | 后续新增组件文档继续使用 `:::demo` + `docs/examples/<component>/`；样式污染优先从 `ComponentDemo` `.vp-raw` 与 `postcssIsolateStyles` 排查。 |
-| ComponentDemo 展示体验 | 中 | 后续补源码语法高亮，并继续打磨 demo 容器视觉样式；当前功能已可用，属于体验优化。 |
+| ComponentDemo 展示体验 | 完成 / 持续打磨 | 已接入构建期 Shiki 语法高亮、行号、路径、单一复制 icon 和 light/dark shell；后续只按实际文档体验继续微调。 |
 | 组件级固有尺寸规范 | 完成 / 持续守护 | 首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，均作为组件内部几何规格维护，不新增通用尺寸 token。 |
 | token 文件边界 | 完成 / 持续守护 | 当前 token 文件按 color、typography、radius、size、shadow、motion、z-index 拆分；后续只在语义确实不适合共处时继续拆分。 |
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
@@ -77,4 +78,4 @@
 - 不能擅自删除不确定用途的文件；先记录到 `TODO.md` 并询问用户。
 - 依赖、工具链或 Node.js 升级以最终效果为准：确认升级收益后先问用户，用户确认后直接升级，不因内部适配成本保留旧方案。
 - 修改色彩 token 时，同步检查样式源文件和设计指南。
-- 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划；当前最短接入路径是确认 git clean、查看 `TODO.md` 的近期开发计划，再决定先做组件扫描还是 `ComponentDemo` 体验优化。
+- 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划；当前最短接入路径是确认 git clean、查看 `TODO.md` 的近期开发计划，再决定先做组件扫描、Field 复杂场景验证还是包管理器迁移。

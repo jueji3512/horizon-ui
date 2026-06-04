@@ -363,3 +363,14 @@
 - 用户确认 `radius.css` / `typography.css` 这类拆分方向更合理，但强调目标不是为了拆文件，而是只拆确实不适合放在一起的 token。
 - 本轮审查 `src/styles/tokens/**` 后决定：`color.css` 仍保持完整色彩系统不拆；`size.css` 中的圆角拆出为 `radius.css`；`font.css` 重命名为更准确的 `typography.css`；`elevation.css` 拆为 `shadow.css`、`motion.css`、`z-index.css`。
 - `src/styles/horizon.css` 已按领域顺序导入：color、typography、radius、size、shadow、motion、z-index；变量名保持不变，组件源码无需跟随改动。
+
+### ComponentDemo 源码展示体验优化
+
+- 用户确认采用 A 方向：保留预览在上、源码在下的 Quiet Dock 结构；复制入口只保留一个 icon button，避免文字按钮和 icon 重复。
+- 用户进一步确认亮暗模式要覆盖整个 `ComponentDemo` shell，而不只是代码块；文档站 demo shell 不是组件库内部组件规范对象，可为最终文档体验自由使用 scoped CSS / Tailwind / VitePress 能力。
+- `docs/.vitepress/config.ts` 已将 Markdown 高亮配置为 `github-light` / `github-dark` 双主题。
+- `docs/.vitepress/plugins/demo.ts` 现在在构建期读取 `docs/examples/**/*.vue` 源码，并复用 VitePress MarkdownIt highlight 生成 Shiki 高亮 slot；复制仍使用 raw source，避免复制内容被展示 HTML 影响。
+- `ComponentDemo` 已增加示例路径、源码行数、行号栏、单一复制 icon、复制成功 check 状态、Shiki 高亮源码展示和跟随 `.dark` 的完整亮暗 shell 样式。
+- 复核亮色模式代码区后，将 light code surface 从纯白调整为浅冷灰背景，行号栏使用更深一层冷灰并增加分隔线；高亮 token 仍由 Shiki `github-light` / `github-dark` 控制。
+- 源码 toolbar 已整体可点击并支持 Enter / Space 展开收起；复制 icon 停止事件冒泡，避免复制时误触发展开状态变化。
+- 本轮临时真实预览页 `docs/public/component-demo-preview.html` 已用于方向确认，正式实现后已删除，避免把原型页带入项目。

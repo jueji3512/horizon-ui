@@ -69,6 +69,10 @@ export default defineConfig({
   },
 
   markdown: {
+    theme: {
+      light: 'github-light',
+      dark: 'github-dark',
+    },
     config(md) {
       createDemoContainer(md)
     },

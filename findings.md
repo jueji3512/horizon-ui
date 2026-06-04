@@ -138,9 +138,11 @@ docs(project): 更新项目上下文与待办
 - 当前实现采用 VitePress 官方样式隔离方向：`ComponentDemo` 根节点使用 `.vp-raw`，`docs/.vitepress/config.ts` 通过 `postcssIsolateStyles` 隔离 `base.css` / `vp-doc.css` 对组件 preview 的影响。
 - `docs/.vitepress/plugins/demo.ts` 基于 `markdown-it-container` 支持 `:::demo 标题` 语法，文档页只写示例路径；真实预览组件和源码均来自 `docs/examples/**/*.vue`。
 - `ComponentDemo` 自行提供预览、源码展开/收起和复制能力，不再依赖 VitePress `details` / custom-block 行为。
+- `ComponentDemo` 源码展示已接入 VitePress / Shiki 构建期高亮：`docs/.vitepress/plugins/demo.ts` 读取 `docs/examples/**/*.vue` 原始源码，通过 MarkdownIt highlight 生成高亮 slot；复制仍使用 raw source，避免展示 HTML 与复制内容耦合。
+- 文档站 shell 不属于 Horizon 组件源码内部规范对象；`ComponentDemo` 可为文档体验自由使用 scoped CSS、Tailwind 或 VitePress/Shiki 能力，但样式污染仍应停留在文档层，不写进组件源码。
+- `docs/.vitepress/config.ts` 的 Markdown highlighter 已配置 `github-light` / `github-dark` 双主题；`ComponentDemo` shell 自身也跟随 VitePress `.dark` 切换，亮暗模式覆盖外层容器、预览区、toolbar、行号栏和源码区，而不只是代码 token。
 - 已一次性迁移所有现有组件文档：17 个组件文档均改用 `:::demo`，生成 108 个示例文件；旧 DemoBox、Histoire、Storybook 和 `layout: page` spike 文件已清理。
 - 验证结论：`npm run check` 通过；内置浏览器抽查 Button、Checkbox、InputNumber、Popper，确认预览渲染、源码折叠和源码内容均正常。
-- 已知体验缺口：源码区尚未接入语法高亮，demo 容器视觉也可继续优化；作为后续文档体验任务记录。
 
 ## 已知风险
 

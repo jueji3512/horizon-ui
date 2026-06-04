@@ -16,6 +16,7 @@
 | 7. 代码编辑器与检查工具规范 | 完成 | 已新增 `CODE_STYLE.md`、`.editorconfig`、`.gitattributes`、Stylelint 和 Tailwind class sorting。 |
 | 8. Field 输入域体系 | 进行中 | Field 首版公开 primitives 已落地并迁移 Input / InputNumber；后续继续用 Select 多选和 DatePicker range 验证边界。 |
 | 9. 运行时与依赖维护 | 持续 | 已升级到 Node 24 LTS / npm 11，并将直接依赖推进到当前最新可用版本；VitePress 内部 audit 项等待上游版本。 |
+| 10. 代理工作流增强 | 持续 | 已全局安装 `obra/superpowers` 14 个工作流 skills；重启 Codex 后可用于计划、执行、验收、分支收尾、子代理协作、review、debug 与 TDD。 |
 
 ## 已完成的关键事项
 
@@ -42,6 +43,7 @@
 - Input、InputNumber、Tag、Popper 已完成本轮浏览器视觉验证；发现的问题已同步修复到组件源码或 VitePress demo 隔离层。
 - 文档演示体系已一步到位迁移：18 个组件文档使用 VitePress `:::demo`，108 个示例拆到 `docs/examples/**/*.vue`，预览与源码展示共用同一份 `.vue` 文件；旧 DemoBox、details 查看代码、Histoire / Storybook spike 已清理。
 - `ComponentDemo` 源码展示体验已优化：复用 VitePress / Shiki 构建期高亮，支持 `github-light` / `github-dark` 双主题、行号、示例路径、单一复制 icon 和完整亮暗 shell。
+- `obra/superpowers` 全局工作流 skills 已安装；该能力不改项目源码，但会作为后续新会话的计划、验收、分支收尾、子代理协作和 review 辅助。
 - 运行时已升级到 Node `24.16.0` / npm `11.13.0`，`package.json` 已补 `engines` / `packageManager`。
 - 直接依赖已升级到当前最新可用版本，`npm outdated --json` 为空；ESLint 10 暴露的 `globals` 隐式依赖问题已修正为显式 devDependency。
 - Badge 文档示例改为本地 import，文档主题不再全局注册 `Badge`，避免与 VitePress 默认主题组件重名。
@@ -71,6 +73,7 @@
 | 包管理器迁移 | 中 | 优先评估 pnpm，备选继续 npm，不优先 Bun / Yarn；若执行迁移，需用 Corepack 固定版本、替换锁文件、统一脚本和文档，并完整验证。 |
 | Dark mode 色彩规范 | 后置 | 用户已决定 dark mode 放到当前队列最后；当前完成的是 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。 |
 | Icon 外部 SVG 安全策略 | 中 | 如果未来支持外部 SVG 输入，需要替换当前仅适用于本地白名单图标的策略。 |
+| 工作流 skills 使用 | 持续 | Superpowers 已安装但需重启 Codex 后被新会话拾取；使用时仍以项目文档和当前源码为准。 |
 
 ## 工作约定
 
@@ -79,3 +82,4 @@
 - 依赖、工具链或 Node.js 升级以最终效果为准：确认升级收益后先问用户，用户确认后直接升级，不因内部适配成本保留旧方案。
 - 修改色彩 token 时，同步检查样式源文件和设计指南。
 - 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划；当前最短接入路径是确认 git clean、查看 `TODO.md` 的近期开发计划，再决定先做组件扫描、Field 复杂场景验证还是包管理器迁移。
+- Superpowers 是工作流辅助，不替代项目内 `base-component-review`、记忆文档和实际验证；复杂任务可结合其计划、执行、验收、分支收尾与子代理协作流程。

@@ -43,12 +43,13 @@ npm run check        # format:check + lint + typecheck + build
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 6. 后续遇到调研、重开发、复杂排查、跨组件验证、并行实现或其他子代理能提升效率、覆盖面、完成度的任务时，可以开启子代理协助；小而线性的任务优先主代理直接推进，避免不必要的协调成本。
 7. 如果发现依赖、工具链或 Node.js 版本偏旧，且升级能提升完整性、性能、简洁性或最终效果，先和用户确认；确认后直接升级，并修正项目内部不适配问题，不为旧适配成本保留低效方案。
+8. 2026-06-04 已全局安装 `obra/superpowers` 工作流 skills；重启 Codex 后新会话可在计划、执行、验收、分支收尾、子代理协作、code review、debug、TDD 等场景按收益触发使用。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。
 
 ## 当前收尾快照
 
-- 2026-06-04 收尾时工作区已提交并清理；本轮关键功能/文档提交可从最新 `git log` 接续查看，已包含 VitePress demo 迁移、Divider API 迁移、Callout/Checkbox/Radio/Switch/Badge/Tooltip 浏览器验证、PopperTrigger focus 事件修复、Node 24 LTS 与依赖升级，以及组件迁移收敛扫描。
+- 2026-06-04 收尾时功能与文档主线已提交并推送；近期关键提交包括 `6dc6521 refactor(styles): 拆分设计令牌文件边界` 和 `c99cc21 docs(vitepress): 优化组件示例源码展示`，本次收尾记录另见最新 `git log`。
 - 最近一次完整验证：`npm run check` 通过，包含 format、lint、typecheck 和 VitePress build。
-- 本地 dev server 曾在 `http://127.0.0.1:5181/` 用当前 Node 24 环境验证过 Tag、Tooltip、Input、InputNumber 和关键指南页；新对话如需继续看页面，先确认 dev server 是否仍在运行。
+- 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；新对话如需继续看页面，先确认 dev server 是否仍在运行。
 
 ## 当前规范重点
 
@@ -134,6 +135,7 @@ docs(project): 更新项目上下文与待办
 - Popper 根导出已补 `Placement` / `TriggerType` / `UsePopperOptions` / `UsePopperReturn` / `PopperContext` / `usePopper`；shadow token 已补 `:root` fallback；`@types/node` 已对齐 Node 24 基线为 `^24.13.0`。
 - docs theme 已纳入 stylelint，IconGrid 改用 Horizon 语义 token；色彩、FieldGroup、Typography、Popper、Tooltip、Text、Title 文档漂移已修正。
 - token 文件边界已收敛：`font.css` 改为 `typography.css`，`size.css` 中的圆角拆到 `radius.css`，`elevation.css` 拆为 `shadow.css`、`motion.css`、`z-index.css`；`color.css` 仍作为完整色彩系统保留。
+- 2026-06-04 已安装 `obra/superpowers` 全局工作流 skills，供重启后的 Codex 新会话在计划、验收、分支收尾、子代理协作和 review 等场景使用；该安装不属于仓库源码变更。
 - 本轮保留后续项：Radio button variant 仍可进一步做 roving `tabindex`，建议与未来 Toggle / ToggleGroup 方向一起设计。
 - 本轮组件迁移扫描未发现源码中仍有旧 `primary` / `danger` API 或旧 `--color-primary` / `--color-danger` / `--radius-*` token；已修复 Checkbox / Radio / Switch 的 `focus-visible` 可视 ring，对齐 `brand-focus` token。
 - 色彩指南已将语义色 token 文档修正为真实的 Tailwind v4 `@theme` 变量：`--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`。
@@ -175,3 +177,4 @@ Popper 是底层定位基座，不是最终视觉组件。
 - 文档站 VitePress 全局样式影响组件 demo 时，应优先检查 `ComponentDemo` 的 `.vp-raw` 隔离与 `docs/.vitepress/config.ts` 中的 `postcssIsolateStyles`；不要为了 VitePress 表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖。
 - 可按任务收益使用子代理：调研、重开发、复杂排查、跨组件验证、并行实现、独立文件修复等，只要能提升效率、覆盖面或完成度，就可以分派；同一文件或强耦合关键改动仍由主代理集中协调。
 - 依赖、工具链或 Node.js 版本如偏旧，且升级能明显改善最终效果、性能、完整性或开发简洁度，先与用户确认后直接升级；升级造成的内部不适配应同步修正，不以兼容旧实现为主要约束。
+- 外部 Superpowers skills 是工作流辅助，不替代项目规范；使用时仍以 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`、`findings.md`、`task_plan.md`、`progress.md` 和当前源码为准。

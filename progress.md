@@ -1,5 +1,22 @@
 # 工作进度记录
 
+## 2026-06-04 收尾与新对话交接
+
+### 今日完成概览
+
+- token 文件边界整理已完成并提交推送：`font.css` 改为 `typography.css`，`size.css` 中的圆角拆到 `radius.css`，`elevation.css` 拆为 `shadow.css`、`motion.css`、`z-index.css`；`color.css` 仍保持完整色彩系统。对应提交为 `6dc6521 refactor(styles): 拆分设计令牌文件边界`。
+- `ComponentDemo` 源码展示体验优化已完成并提交推送：源码展示复用 VitePress / Shiki 构建期高亮，支持 `github-light` / `github-dark` 双主题、行号、示例路径、单一复制 icon、完整亮暗 shell；源码 toolbar 整行可点击展开，复制 icon 阻止冒泡。对应提交为 `c99cc21 docs(vitepress): 优化组件示例源码展示`。
+- 本轮临时真实预览页 `docs/public/component-demo-preview.html` 已用于方向确认并在正式实现后删除，避免原型页进入项目。
+- 已查询并评估 skills 生态；skills.sh 当前公开榜单没有“好评率/评分”字段，只有安装量、近 8 周活跃度和来源信息，因此用安装量与来源声誉作为质量近似信号。
+- 用户确认需要安装 Superpowers；已全局安装 `obra/superpowers` 的 14 个工作流 skills，供重启 Codex 后在计划、执行、验收、分支收尾、子代理协作、review、debug、TDD 等场景使用。安装输出中 `PromptScript` 不支持全局安装的失败不影响 Codex。
+- 已更新 `AGENTS.md`、`TODO.md`、`task_plan.md`、`findings.md` 和 `progress.md`，记录今日任务、Superpowers 安装情况和下一次新对话接入注意点。
+
+### 新对话入口建议
+
+- 新会话先执行 `git status --short` 和 `git log -1 --oneline`，再读 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`；需要更多背景时读 `findings.md`、`task_plan.md`、`progress.md`。
+- 当前后续队列仍以 `TODO.md` 为准：Field 复杂场景验证、组件迁移滚动守护、pnpm 迁移评估/执行、关键组件浏览器验证和 dark mode 色彩规范。
+- Superpowers 是工作流辅助，不替代项目记忆文档、当前源码和实际验证；复杂任务可结合其计划、执行、验收、分支收尾和子代理协作流程。
+
 ## 2026-06-02
 
 ### 组件迁移扫描

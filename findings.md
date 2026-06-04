@@ -92,6 +92,13 @@ refactor(components): 对齐组件设计令牌规范
 docs(project): 更新项目上下文与待办
 ```
 
+## 工作流与代理能力
+
+- 项目内已有 `.agents/skills/base-component-review/`，用于 Popper、Field 等底层组件的审查。
+- 全局已安装 `find-skills`、`frontend-design`、`planning-with-files` 等通用 skills。
+- 2026-06-04 已全局安装 `obra/superpowers` 的 14 个工作流 skills：`brainstorming`、`writing-plans`、`executing-plans`、`verification-before-completion`、`finishing-a-development-branch`、`dispatching-parallel-agents`、`subagent-driven-development`、`requesting-code-review`、`receiving-code-review`、`systematic-debugging`、`test-driven-development`、`using-git-worktrees`、`using-superpowers`、`writing-skills`。
+- 新 skills 需要重启 Codex 后被新会话拾取；安装输出中 `PromptScript` 不支持全局安装的失败不影响 Codex。Superpowers 只作为工作流辅助，项目判断仍以当前源码、`AGENTS.md`、`TODO.md`、`CODE_STYLE.md`、`findings.md`、`task_plan.md` 和 `progress.md` 为准。
+
 ## 本轮已完成
 
 - Badge 改为 `theme` API，并补齐 sidebar。

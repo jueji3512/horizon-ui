@@ -57,6 +57,7 @@
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
 | 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 的截图 / DOM / computed style 验证；后续继续覆盖剩余关键组件。 |
 | Field 底层组件 | 中 | Input / InputNumber 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |
+| 依赖与运行时升级 | 按收益触发 | 后续发现依赖、工具链或 Node.js 偏旧且升级更有利于完整性、性能、简洁性或最终效果时，先与用户确认，确认后直接升级并修复内部适配。 |
 | Dark mode 色彩规范 | 后置 | 用户已决定 dark mode 放到当前队列最后；当前完成的是 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。 |
 | Icon 外部 SVG 安全策略 | 中 | 如果未来支持外部 SVG 输入，需要替换当前仅适用于本地白名单图标的策略。 |
 
@@ -64,5 +65,6 @@
 
 - commit message 使用 Conventional Commit 格式，并用中文说明。
 - 不能擅自删除不确定用途的文件；先记录到 `TODO.md` 并询问用户。
+- 依赖、工具链或 Node.js 升级以最终效果为准：确认升级收益后先问用户，用户确认后直接升级，不因内部适配成本保留旧方案。
 - 修改色彩 token 时，同步检查样式源文件和设计指南。
 - 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划；当前最短接入路径是确认 git clean、查看 `TODO.md` 的近期开发计划，再决定先做组件扫描还是 `ComponentDemo` 体验优化。

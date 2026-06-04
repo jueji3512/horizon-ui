@@ -281,6 +281,12 @@ docs(project): 更新项目上下文与待办
 - 该文件仍记录 `--color-primary-*` / `--color-danger-*`、`--radius-*` 等旧 token 体系，与当前 `brand` / `error`、`--round-*`、组件级 geometry map 规范冲突。
 - 按“完整、性能、简洁、最终效果优先”的开发原则，本轮直接删除该旧文件；当前规范入口以 `src/styles/tokens/**`、`docs/guide/**`、`AGENTS.md`、`TODO.md`、`findings.md`、`task_plan.md`、`progress.md` 为准。
 
+## 2026-06-04 依赖与运行时升级原则
+
+- 用户确认：项目仍处于开发阶段，依赖、工具链和 Node.js 版本不需要为了旧内部适配而保守停留。
+- 后续如发现升级能带来更好的完整性、性能、简洁性或最终效果，应先说明收益和影响并向用户确认；确认后直接升级，并同步修正项目内部适配问题。
+- 当前 TODO 中已有 Node `v22.10.0` 与部分依赖 engine 要求的记录；后续处理此类问题时按该原则执行。
+
 ## 后续入口
 
 - 任务清单：`TODO.md`。

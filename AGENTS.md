@@ -38,7 +38,7 @@ npm run check        # format:check + lint + typecheck + build
 
 1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
 2. 先读本文件，再读 `TODO.md` 和 `CODE_STYLE.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
-3. 当前更靠前的后续项是继续扫描未迁移组件、补充关键组件浏览器级视觉验证；组件文档已统一使用 VitePress `:::demo` + `docs/examples/**` 单源示例；`ComponentDemo` 的源码高亮与视觉样式可作为后续文档体验优化项；Field 在 Select 多选、DatePicker range 等复杂场景的压力验证已决定先滞后，dark mode 放到当前队列最后。
+3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。`ComponentDemo` 源码高亮与视觉样式、Field 在 Select 多选 / DatePicker range 等复杂场景的压力验证、pnpm 迁移评估和 dark mode 是后续队列。
 4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 6. 后续遇到调研、重开发、复杂排查、跨组件验证、并行实现或其他子代理能提升效率、覆盖面、完成度的任务时，可以开启子代理协助；小而线性的任务优先主代理直接推进，避免不必要的协调成本。
@@ -46,9 +46,9 @@ npm run check        # format:check + lint + typecheck + build
 
 ## 当前收尾快照
 
-- 2026-06-04 收尾时工作区已提交并清理；本轮关键功能/文档提交可从最新 `git log` 接续查看，已包含 VitePress demo 迁移、Divider API 迁移、Callout/Checkbox/Radio/Switch/Badge/Tooltip 浏览器验证、PopperTrigger focus 事件修复、Node 24 LTS 与依赖升级。
+- 2026-06-04 收尾时工作区已提交并清理；本轮关键功能/文档提交可从最新 `git log` 接续查看，已包含 VitePress demo 迁移、Divider API 迁移、Callout/Checkbox/Radio/Switch/Badge/Tooltip 浏览器验证、PopperTrigger focus 事件修复、Node 24 LTS 与依赖升级，以及组件迁移收敛扫描。
 - 最近一次完整验证：`npm run check` 通过，包含 format、lint、typecheck 和 VitePress build。
-- 本地 dev server 曾在 `http://127.0.0.1:5180/` 用当前 Node 24 环境验证过 Badge、Checkbox、Popper 等页面；新对话如需继续看页面，先确认 dev server 是否仍在运行。
+- 本地 dev server 曾在 `http://127.0.0.1:5181/` 用当前 Node 24 环境验证过 Tag、Tooltip、Input、InputNumber 和关键指南页；新对话如需继续看页面，先确认 dev server 是否仍在运行。
 
 ## 当前规范重点
 
@@ -66,7 +66,7 @@ docs(project): 更新项目上下文与待办
 - 仓库级规范见 `CODE_STYLE.md`。
 - 缩进使用 2 个空格，文本文件换行统一为 LF，编码为 UTF-8，文件末尾保留最终换行。
 - `.editorconfig` 负责编辑器基础行为；`.gitattributes` 固定文本文件 `eol=lf`。
-- Prettier 是格式化唯一来源，启用 Tailwind class sorting；ESLint 负责 JS/TS/Vue，Stylelint 负责 CSS/Vue style。
+- Prettier 是格式化唯一来源，启用 Tailwind class sorting；ESLint 负责 JS/TS/Vue，Stylelint 负责 CSS/Vue style，并覆盖 `src/**/*.{css,vue}` 与 `docs/.vitepress/theme/**/*.vue`。
 - 修改格式、lint 或编辑器规则时，同步更新 `CODE_STYLE.md`、相关配置和常用命令说明。
 
 ### 依赖与运行时升级
@@ -126,6 +126,11 @@ docs(project): 更新项目上下文与待办
 - 文档演示已统一为 VitePress `:::demo` 单源示例：组件页通过 `docs/examples/**/*.vue` 渲染预览并展示源码，`ComponentDemo` 使用 `.vp-raw` 与 `postcssIsolateStyles` 隔离 VitePress 默认主题样式。
 - 旧 DemoBox / details 查看代码 / Histoire / Storybook spike 已清理；后续文档示例不要回到这些路线。
 - `ComponentDemo` 当前源码展示还没有语法高亮，容器视觉样式也可继续优化；该事项已记录到 `TODO.md`。
+- 当前实现组件集已完成迁移收敛扫描：未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留。
+- Tag checkable 已补键盘与 ARIA；Input 内部 action blur/focus 边界已修复；Tooltip 已通过 `aria-describedby` 关联真实 tooltip content；Icon 有 `ariaLabel` 时补 `role="img"`；InputNumber `change` 仅在聚焦会话内值确实变化后于 blur 提交时触发。
+- Popper 根导出已补 `Placement` / `TriggerType` / `UsePopperOptions` / `UsePopperReturn` / `PopperContext` / `usePopper`；shadow token 已补 `:root` fallback；`@types/node` 已对齐 Node 24 基线为 `^24.13.0`。
+- docs theme 已纳入 stylelint，IconGrid 改用 Horizon 语义 token；色彩、FieldGroup、Typography、Popper、Tooltip、Text、Title 文档漂移已修正。
+- 本轮保留后续项：Radio button variant 仍可进一步做 roving `tabindex`，建议与未来 Toggle / ToggleGroup 方向一起设计。
 - 本轮组件迁移扫描未发现源码中仍有旧 `primary` / `danger` API 或旧 `--color-primary` / `--color-danger` / `--radius-*` token；已修复 Checkbox / Radio / Switch 的 `focus-visible` 可视 ring，对齐 `brand-focus` token。
 - 色彩指南已将语义色 token 文档修正为真实的 Tailwind v4 `@theme` 变量：`--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`。
 - Field 文档已补齐公开 primitives 的 props；Field 体系指南已从旧“实施计划”改为“当前状态与后续验证”；Popper 文档已清理多余 demo 结束标记。

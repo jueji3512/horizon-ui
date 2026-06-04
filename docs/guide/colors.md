@@ -1,12 +1,12 @@
 # 色彩系统
 
-Horizon UI 色彩体系参考 TDesign 配色节奏，所有色值取自 Tailwind CSS v4 OKLCH 原生色表。
+Horizon UI 色彩体系参考 Tailwind CSS v4 的 OKLCH 色彩模型和 TDesign 的状态节奏，最终以 `src/styles/tokens/color.css` 中的自定义 token 为准。
 
 ---
 
-## Tailwind CSS 全色表
+## Tailwind CSS 参考色表
 
-Tailwind CSS v4 内置 22 个色族，每族 50~900 共 10 阶。Horizon UI 所有色值均从这些色阶中选取。
+下表保留早期选色时参考的 Tailwind 色板，色阶名称仅作为设计参考，不承诺与当前安装的 `tailwindcss` 包逐值一致。组件实现和文档规范应以 Horizon token 的 OKLCH 值为准。
 
 <script setup>
 const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
@@ -236,7 +236,7 @@ function isDark(shade) {
 
 ### 文本色 — text-color-*
 
-| Token | 色阶 | 色块 | OKLCH | TDesign 参考 |
+| Token | 参考 | 色块 | OKLCH | TDesign 参考 |
 |-------|------|------|-------|-------------|
 | `--text-color-primary` | gray-900 | <span class="swatch" style="background:oklch(0.21 0.006 264.015)"> </span> | oklch(0.21 0.006 264.015) | rgba(0,0,0,90%) |
 | `--text-color-secondary` | gray-500 | <span class="swatch" style="background:oklch(0.704 0.016 256.798)"> </span> | oklch(0.704 0.016 256.798) | rgba(0,0,0,60%) |
@@ -246,7 +246,7 @@ function isDark(shade) {
 
 ### 背景色 — bg-color-*
 
-| Token | 色阶 | 色块 | OKLCH | TDesign 参考 |
+| Token | 参考 | 色块 | OKLCH | TDesign 参考 |
 |-------|------|------|-------|-------------|
 | `--bg-color-page` | neutral-200 | <span class="swatch" style="background:oklch(0.92 0 0)"> </span> | oklch(0.92 0 0) | #eee |
 | `--bg-color-container` | white | <span class="swatch" style="background:oklch(1 0 0)"> </span> | oklch(1 0 0) | #fff |
@@ -270,7 +270,7 @@ function isDark(shade) {
 
 ### 边框色 — border-color-*
 
-| Token | 色阶 | 色块 | OKLCH | TDesign 参考 |
+| Token | 参考 | 色块 | OKLCH | TDesign 参考 |
 |-------|------|------|-------|-------------|
 | `--border-color-component` | neutral-300 | <span class="swatch" style="background:oklch(0.87 0 0)"> </span> | oklch(0.87 0 0) | #ddd (level-2) |
 | `--border-color-container` | neutral-300 | <span class="swatch" style="background:oklch(0.87 0 0)"> </span> | oklch(0.87 0 0) | #ddd (level-2) |

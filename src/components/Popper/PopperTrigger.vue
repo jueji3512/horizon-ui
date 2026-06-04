@@ -4,6 +4,7 @@
     class="inline-flex"
     :aria-expanded="ctx.visible.value"
     :aria-controls="ctx.contentId"
+    :aria-describedby="resolvedAriaDescribedby"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
     @click="onClick"
@@ -13,8 +14,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, inject, onMounted, onBeforeUnmount } from 'vue'
 import { popperContextKey } from './index'
+
+const props = withDefaults(
+  defineProps<{
+    ariaDescribedby?: boolean | string
+  }>(),
+  {
+    ariaDescribedby: false,
+  },
+)
 
 const ctx = inject(popperContextKey)!
 if (!ctx) {
@@ -32,6 +42,12 @@ const emit = defineEmits<{
 }>()
 
 const triggerEl = ref<HTMLElement>()
+
+const resolvedAriaDescribedby = computed(() => {
+  if (typeof props.ariaDescribedby === 'string') return props.ariaDescribedby
+  if (props.ariaDescribedby && ctx.visible.value) return ctx.contentId
+  return undefined
+})
 
 onMounted(() => {
   const el = triggerEl.value

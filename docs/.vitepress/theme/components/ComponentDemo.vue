@@ -128,7 +128,7 @@ onBeforeUnmount(() => {
   height: 0;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
-  border-left: 5px solid currentColor;
+  border-left: 5px solid currentcolor;
   transition: transform var(--duration-fast);
 }
 

@@ -4,7 +4,7 @@
 
 ## 语义色
 
-`theme` 支持 6 种语义色。
+`theme` 支持通用语义色 `default` / `brand` / `success` / `warning` / `error`，并为文本层级额外提供 `secondary` 辅助色。
 
 :::demo 语义色
 text/example-01
@@ -48,7 +48,7 @@ text/example-04
 
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `theme` | `'default' \| 'brand' \| 'success' \| 'warning' \| 'error' \| 'secondary'` | `'default'` | 语义主题 |
+| `theme` | `'default' \| 'brand' \| 'success' \| 'warning' \| 'error' \| 'secondary'` | `'default'` | 文本色主题；`secondary` 是 Text 专属辅助文本层级 |
 | `strong` | `boolean` | `false` | 加粗 |
 | `italic` | `boolean` | `false` | 斜体 |
 | `underline` | `boolean` | `false` | 下划线 |

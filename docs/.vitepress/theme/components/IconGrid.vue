@@ -63,10 +63,10 @@ function copy(name: string) {
   height: 36px;
   padding: 0 12px;
   font-size: 14px;
-  border: 1px solid var(--color-slate-200);
+  border: 1px solid var(--border-color-component);
   border-radius: 8px;
-  background: #fff;
-  color: var(--color-slate-600);
+  background: var(--bg-color-container);
+  color: var(--text-color-primary);
   outline: none;
   transition:
     border-color 0.2s,
@@ -74,17 +74,17 @@ function copy(name: string) {
 }
 
 .search-input:focus {
-  border-color: var(--color-blue-400);
-  box-shadow: 0 0 0 2px var(--color-blue-100);
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 2px var(--color-brand-focus);
 }
 
 .search-input::placeholder {
-  color: var(--color-slate-400);
+  color: var(--text-color-placeholder);
 }
 
 .search-count {
   font-size: 13px;
-  color: var(--color-slate-400);
+  color: var(--text-color-secondary);
 }
 
 .icon-grid {
@@ -101,7 +101,7 @@ function copy(name: string) {
   padding: 12px 8px;
   border-radius: 8px;
   cursor: pointer;
-  color: var(--color-slate-600);
+  color: var(--text-color-secondary);
   transition:
     color 0.15s,
     background 0.15s,
@@ -110,15 +110,15 @@ function copy(name: string) {
 }
 
 .icon-card:hover {
-  color: var(--color-blue-600);
-  background: var(--color-blue-50);
-  border-color: var(--color-blue-200);
+  color: var(--color-brand);
+  background: var(--color-brand-light);
+  border-color: var(--color-brand-disabled);
 }
 
 .icon-card.copied {
-  color: var(--color-emerald-500);
-  background: var(--color-emerald-50);
-  border-color: var(--color-emerald-200);
+  color: var(--color-success);
+  background: var(--color-success-light);
+  border-color: var(--color-success-disabled);
 }
 
 .icon-name {
@@ -134,8 +134,8 @@ function copy(name: string) {
   left: 50%;
   transform: translateX(-50%);
   padding: 8px 20px;
-  background: var(--color-slate-800);
-  color: #fff;
+  background: var(--text-color-primary);
+  color: var(--text-color-inverse);
   font-size: 13px;
   border-radius: 8px;
   z-index: 100;
@@ -147,6 +147,7 @@ function copy(name: string) {
     opacity: 0;
     transform: translateX(-50%) translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0);

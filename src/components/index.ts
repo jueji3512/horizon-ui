@@ -31,6 +31,14 @@ import PopperArrow from './Popper/PopperArrow.vue'
 
 export type { FieldContext, FieldSize, FieldStatus } from './Field'
 export { fieldContextKey, useFieldContext } from './Field'
+export type {
+  Placement,
+  PopperContext,
+  TriggerType,
+  UsePopperOptions,
+  UsePopperReturn,
+} from './Popper'
+export { popperContextKey, usePopper } from './Popper'
 
 export {
   Badge,

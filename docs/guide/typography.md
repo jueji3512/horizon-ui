@@ -4,7 +4,7 @@
 
 | 用途 | 字体栈 |
 |------|--------|
-| **正文 / UI / 代码** | JetBrains Mono, ui-monospace, Fira Code, Consolas, monospace |
+| **正文 / UI / 代码** | JetBrains Mono, Noto Sans Mono SC, Microsoft YaHei, ui-monospace, Fira Code, Consolas, monospace |
 
 ## Body Token
 

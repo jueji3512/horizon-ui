@@ -52,6 +52,7 @@ Stylelint 负责 CSS 和 Vue SFC 中的样式规则。
 - 基于 `stylelint-config-standard-vue`。
 - Tailwind v4 的 `@theme`、`@source`、`@apply` 等 at-rule 在配置中显式放行。
 - 表单控件兼容性需要的 `-webkit-appearance`、`-moz-appearance`、`-webkit-text-fill-color` 显式放行。
+- `lint:style` 覆盖 `src/**/*.{css,vue}` 和 `docs/.vitepress/theme/**/*.vue`；文档主题组件属于项目样式边界，应继续使用 Horizon 语义 token。
 
 ## 常用命令
 

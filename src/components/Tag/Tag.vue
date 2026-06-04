@@ -1,5 +1,14 @@
 <template>
-  <span :class="tagClasses" :style="tagStyle" @click="handleClick">
+  <span
+    :class="tagClasses"
+    :style="tagStyle"
+    :role="rootRole"
+    :aria-checked="rootAriaChecked"
+    :aria-disabled="rootAriaDisabled"
+    :tabindex="rootTabindex"
+    @click="handleClick"
+    @keydown="handleKeydown"
+  >
     <Icon v-if="prefixIcon" :name="prefixIcon" />
     <span :class="textSpanClasses"><slot /></span>
     <button
@@ -70,6 +79,14 @@ function handleClick(e: MouseEvent) {
     emit('update:checked', !props.checked)
   }
   emit('click', e)
+}
+
+function handleKeydown(e: KeyboardEvent) {
+  if (!props.checkable || props.disabled || e.target !== e.currentTarget) return
+  if (e.key !== 'Enter' && e.key !== ' ') return
+
+  e.preventDefault()
+  emit('update:checked', !props.checked)
 }
 
 function handleClose(e: MouseEvent) {
@@ -152,7 +169,9 @@ const tagClasses = computed(() =>
       'cursor-not-allowed border border-[var(--border-color-component)] bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)]',
     props.round && 'rounded-[var(--round-full)]',
     props.maxWidth && 'truncate',
-    props.checkable && !props.disabled && 'cursor-pointer select-none',
+    props.checkable &&
+      !props.disabled &&
+      'cursor-pointer select-none focus-visible:ring-2 focus-visible:ring-brand-focus focus-visible:outline-none',
     !props.disabled && !effectiveColor.value && themeColorMap[effectiveColorKey.value],
   ),
 )
@@ -169,6 +188,17 @@ const tagStyle = computed(() => {
 })
 
 const textSpanClasses = computed(() => cn(!props.checkable && !props.disabled && 'cursor-text'))
+
+const rootRole = computed(() => (props.checkable ? 'checkbox' : undefined))
+
+const rootAriaChecked = computed(() => {
+  if (!props.checkable) return undefined
+  return props.checked ? 'true' : 'false'
+})
+
+const rootAriaDisabled = computed(() => (props.disabled ? 'true' : undefined))
+
+const rootTabindex = computed(() => (props.checkable && !props.disabled ? 0 : undefined))
 </script>
 
 <style scoped>

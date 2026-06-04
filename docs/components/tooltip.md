@@ -54,7 +54,7 @@ tooltip/example-05
 
 ## 延迟
 
-`showDelay` 和 `hideDelay` 控制显示/隐藏延迟（毫秒）。
+`show-delay` 和 `hide-delay` 控制显示/隐藏延迟（毫秒）。
 
 :::demo 延迟
 tooltip/example-06

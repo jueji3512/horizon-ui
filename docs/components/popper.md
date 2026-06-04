@@ -17,11 +17,11 @@ popper/example-01
 
 ---
 
-### V-02 Hover 触发 + 延时 + 箭头 (`trigger="hover"`, `showDelay`, `hideDelay`)
+### V-02 Hover 触发 + 延时 + 箭头 (`trigger="hover"`, `show-delay`, `hide-delay`)
 
 **验证**：悬停 200ms 弹出 / 离开 100ms 关闭 / 箭头跟随浮层内容背景显示。
 
-:::demo V-02 Hover 触发 + 延时 + 箭头 (`trigger="hover"`, `showDelay`, `hideDelay`)
+:::demo V-02 Hover 触发 + 延时 + 箭头 (`trigger="hover"`, `show-delay`, `hide-delay`)
 popper/example-02
 :::
 
@@ -37,11 +37,11 @@ popper/example-03
 
 ---
 
-### V-04 手动控制 + 匹配宽度 (`trigger="manual"`, `matchWidth`)
+### V-04 手动控制 + 匹配宽度 (`trigger="manual"`, `match-width`)
 
 **验证**：外部逻辑控制显隐 / 弹层宽度精确等于 trigger 渲染宽度 / 打开后 trigger 宽度变化时弹层同步更新。
 
-:::demo V-04 手动控制 + 匹配宽度 (`trigger="manual"`, `matchWidth`)
+:::demo V-04 手动控制 + 匹配宽度 (`trigger="manual"`, `match-width`)
 popper/example-04
 :::
 
@@ -77,11 +77,11 @@ popper/example-07
 
 ---
 
-### V-08 autoUpdate — 容器滚动时跟随 (`:autoUpdate="false"`)
+### V-08 auto-update — 容器滚动时跟随 (`:auto-update="false"`)
 
-**验证**：可滚动容器内。弹出气泡后滚动容器，`autoUpdate="true"` 跟随 trigger，`autoUpdate="false"` 留在原地。
+**验证**：可滚动容器内。弹出气泡后滚动容器，`auto-update="true"` 跟随 trigger，`auto-update="false"` 留在原地。
 
-:::demo V-08 autoUpdate — 容器滚动时跟随 (`:autoUpdate="false"`)
+:::demo V-08 auto-update — 容器滚动时跟随 (`:auto-update="false"`)
 popper/example-08
 :::
 
@@ -97,11 +97,11 @@ popper/example-09
 
 ---
 
-### V-10 zIndex (`zIndex`)
+### V-10 z-index (`z-index`)
 
 **验证**：一个按钮同时触发三个弹层。z-index 自动递增，绿色在最上面。
 
-:::demo V-10 zIndex (`zIndex`)
+:::demo V-10 z-index (`z-index`)
 popper/example-10
 :::
 
@@ -127,16 +127,16 @@ popper/example-11
 | `strategy` | `'absolute' \| 'fixed'` | `'absolute'` | 定位策略。`fixed` 直接跟视口绑定，容器滚动零延迟 |
 | `offset` | `number` | `8` | 距离 trigger 的间距 (px) |
 | `trigger` | `TriggerType` | `'manual'` | hover / click / focus / manual |
-| `showDelay` | `number` | `0` | 显示延时 (ms) |
-| `hideDelay` | `number` | `0` | 隐藏延时 (ms) |
+| `show-delay` | `number` | `0` | 显示延时 (ms) |
+| `hide-delay` | `number` | `0` | 隐藏延时 (ms) |
 | `visible` | `boolean` | — | v-model:visible，受控显隐 |
 | `disabled` | `boolean` | `false` | 禁用弹出 |
 | `to` | `string \| HTMLElement` | `'body'` | Teleport 目标 |
 | `flip` | `boolean` | `true` | 弹出方向空间不足时自动翻转到对面 |
 | `shift` | `boolean` | `true` | 弹层超出视口边界时沿轴向推回可见区域（留 4px 间距） |
-| `matchWidth` | `boolean` | `false` | 浮层宽度匹配 trigger 宽度 |
-| `autoUpdate` | `boolean` | `true` | 触发元素位置变化时弹层自动重新定位。`false` 仅定位一次 |
-| `zIndex` | `number` | 自动递增 | 手动指定 z-index，不填则自动计算（基准 2000） |
+| `match-width` | `boolean` | `false` | 浮层宽度匹配 trigger 宽度 |
+| `auto-update` | `boolean` | `true` | 触发元素位置变化时弹层自动重新定位。`false` 仅定位一次 |
+| `z-index` | `number` | 自动递增 | 手动指定 z-index，不填则自动计算（基准 2000） |
 
 ### Popper Events
 
@@ -146,7 +146,11 @@ popper/example-11
 
 ### PopperTrigger
 
-包裹层 `<div class="inline-flex">`，负责参考元素 ref 和事件委托。无 Props。
+包裹层 `<div class="inline-flex">`，负责参考元素 ref 和事件委托。
+
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `aria-describedby` | `boolean \| string` | `false` | 为 Tooltip 等上层组件关联浮层说明。`true` 时在浮层可见时使用当前 Popper content id，也可直接传入外部 id |
 
 | Event | 参数 | 说明 |
 |-------|------|------|

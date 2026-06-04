@@ -9,7 +9,7 @@
         :offset="6"
       >
         <PopperTrigger>
-          <Button size="sm" @click.stop="v08AutoOn = !v08AutoOn">autoUpdate="true"</Button>
+          <Button size="sm" @click.stop="v08AutoOn = !v08AutoOn">auto-update="true"</Button>
         </PopperTrigger>
         <PopperContent>
           <div
@@ -27,7 +27,7 @@
         :offset="6"
       >
         <PopperTrigger>
-          <Button size="sm" @click.stop="v08AutoOff = !v08AutoOff">autoUpdate="false"</Button>
+          <Button size="sm" @click.stop="v08AutoOff = !v08AutoOff">auto-update="false"</Button>
         </PopperTrigger>
         <PopperContent>
           <div

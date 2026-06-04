@@ -63,7 +63,7 @@ Field 是 Horizon UI 面向输入、选择、日期、范围、搜索等组件�
 组合输入容器。
 
 - 用于 `InputNumber` 两侧 stepper、`Input.Search` 右侧按钮、prepend/append addon。
-- 负责组合边界、相邻圆角、分割线、整体 disabled 状态。
+- 提供组合容器和整体 disabled cursor；相邻圆角、边框与分割线由上层组件按具体形态处理。
 
 ### FieldSegment
 
@@ -117,9 +117,9 @@ Field 统一表达以下状态：
 
 适用于 `InputNumber`、`Input.Search`、prepend/append addon。
 
-- FieldGroup 管相邻子项边界。
-- 子项之间使用 divider token。
-- 避免重复圆角和重复边框。
+- FieldGroup 管组合容器和整体 disabled cursor。
+- 上层组件决定相邻子项边界、圆角和分割线。
+- 避免把 InputNumber、Input.Search、addon 等不同组合形态的边界策略硬编码进 FieldGroup。
 
 ## 未来组件适配
 

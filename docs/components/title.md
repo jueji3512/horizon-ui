@@ -23,7 +23,7 @@ title/example-01
 
 ## 语义色
 
-`theme` 支持 6 种语义色。
+`theme` 支持通用语义色 `default` / `brand` / `success` / `warning` / `error`，并为标题层级额外提供 `secondary` 辅助色。
 
 :::demo 语义色
 title/example-02
@@ -50,6 +50,6 @@ title/example-04
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | 标题等级 |
-| `theme` | `'default' \| 'brand' \| 'success' \| 'warning' \| 'error' \| 'secondary'` | `'default'` | 语义主题 |
+| `theme` | `'default' \| 'brand' \| 'success' \| 'warning' \| 'error' \| 'secondary'` | `'default'` | 标题色主题；`secondary` 是 Title 专属辅助标题层级 |
 | `mark` | `boolean \| string` | `false` | 高亮标记，为 `true` 时使用默认高亮色，也可直接传入颜色值 |
 | `ellipsis` | `boolean` | `false` | 单行溢出省略号 |

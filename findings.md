@@ -19,7 +19,7 @@
 - `prettier-plugin-tailwindcss` 负责 Tailwind class sorting，读取 `src/styles/horizon.css`，并处理 `clsx` / `cn` 中的 class。
 - ESLint 负责 JS/TS/Vue 代码质量；Stylelint 基于 `stylelint-config-standard-vue`，负责 CSS 和 Vue style。
 - 当前 ESLint 已升级到 10.x；`eslint.config.js` 直接使用的 `globals` 已作为显式 devDependency 声明。
-- 新增 `npm run lint:js`、`npm run lint:style`、`npm run check`；`npm run lint` 同时运行 JS lint 与 style lint。
+- 新增 `npm run lint:js`、`npm run lint:style`、`npm run check`；`npm run lint` 同时运行 JS lint 与 style lint，`lint:style` 覆盖 `src/**/*.{css,vue}` 和 `docs/.vitepress/theme/**/*.vue`。
 
 ## 目录结构
 
@@ -129,6 +129,7 @@ docs(project): 更新项目上下文与待办
 - 最近一次文档演示体系验证：`npm run check` 通过；内置浏览器抽查 `/components/button`、`/components/checkbox`、`/components/inputnumber`、`/components/popper`，确认 `:::demo` 数量、源码折叠、预览渲染和源码内容正常。
 - 2026-06-04 收尾提交后再次执行 `npm run check` 通过；提交已按组件行为修复、VitePress demo 迁移、项目上下文更新拆分。
 - 2026-06-04 Node 24 / 依赖升级后执行 `npm run check` 通过；内置浏览器使用 `http://127.0.0.1:5180/` 抽查 Badge、Checkbox、Popper，页面标题、demo 数量和 Vite overlay 均正常，修复后的 Badge 页面无新增 warning。
+- 2026-06-04 组件迁移收敛扫描后执行 `npm run check` 通过；内置浏览器使用 `http://127.0.0.1:5181/` 复验 Tag 键盘切换、Tooltip `aria-describedby`、Input 清空回焦、InputNumber 页面和 colors / field-system / typography / popper 指南页，当前端口无 warning/error。
 
 ## 2026-06-04 VitePress `:::demo` 演示体系结论
 
@@ -297,7 +298,7 @@ docs(project): 更新项目上下文与待办
 
 - 本地确认 nvm 可用，版本为 `1.2.2`；已通过 nvm 安装并切换到 Node `24.16.0`，npm 为 `11.13.0`。
 - `package.json` 已声明 `packageManager: npm@11.13.0`，并通过 `engines` 固定 Node `>=24.16.0`、npm `>=11.13.0`。
-- 直接依赖已升级到当前最新可用版本：`@eslint/js@10.0.1`、`eslint@10.4.1`、`vite@8.0.16`、`@tailwindcss/vite@4.3.0`、`tailwindcss@4.3.0`、`tailwind-merge@3.6.0`、`vue@3.5.35`、`vue-tsc@3.3.3`、`typescript-eslint@8.60.1`、`@types/node@25.9.1` 等。
+- 直接依赖已升级到当前最新可用版本：`@eslint/js@10.0.1`、`eslint@10.4.1`、`vite@8.0.16`、`@tailwindcss/vite@4.3.0`、`tailwindcss@4.3.0`、`tailwind-merge@3.6.0`、`vue@3.5.35`、`vue-tsc@3.3.3`、`typescript-eslint@8.60.1` 等；`@types/node` 已对齐 Node 24 基线为 `^24.13.0`。
 - ESLint 10 首次检查暴露 `eslint.config.js` 直接 import 的 `globals` 未声明为直接依赖；已补 `globals@17.6.0` 到 devDependency。
 - `npm outdated --json` 已为空；`npm audit` 剩余 3 个 moderate，均来自 `vitepress@1.6.4` 内部嵌套的 Vite/esbuild，当前 npm registry 中 VitePress 最新正式版仍为 `1.6.4`，暂无直接修复版本。
 - 浏览器验证时发现 VitePress 默认主题已经注册 `Badge`，文档主题再次全局注册 Horizon `Badge` 会产生 Vue warning；已改为 Badge 示例本地 import Horizon `Badge`，并移除文档主题里的 `app.component('Badge', Badge)`。
@@ -310,8 +311,21 @@ docs(project): 更新项目上下文与待办
 - Switch 原先使用 `.switch-input:focus + .switch-track` 手写 box-shadow，鼠标点击也会触发焦点视觉。本轮改为 `peer-focus-visible:ring-2 peer-focus-visible:ring-brand-focus`，只在 `focus-visible` 下显示可视 ring。
 - 色彩指南中的语义色表原先写成 `--brand-color-*` / `--error-color-*` 等不存在的 token；本轮修正为真实 Tailwind v4 `@theme` 变量 `--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`，并补充会生成 `text-brand`、`bg-brand`、`ring-brand-focus` 等工具类。
 - 文档扫描发现 Popper V-10 demo 后多余一个 `:::`，Field 组件页没有完整列出公开 primitive props，Field 体系指南仍把已完成的 Field 实现和 Input/InputNumber 迁移写成实施计划；本轮均已修正。
-- 依赖扫描确认当前 Node 为 `v22.10.0`，`eslint-visitor-keys@5.0.1` 要求 `^20.19.0 || ^22.13.0 || >=24`；`npm audit` 仍有 4 个 moderate，其中 `brace-expansion@5.0.5` 可自动修到 `5.0.6`，VitePress 嵌套 Vite/esbuild 项暂无直接修复版本。该类升级按用户确认原则后续单独处理。
+- 依赖扫描确认（升级前）当时 Node 为 `v22.10.0`，`eslint-visitor-keys@5.0.1` 要求 `^20.19.0 || ^22.13.0 || >=24`；`npm audit` 当时有 4 个 moderate，其中 `brace-expansion@5.0.5` 可自动修到 `5.0.6`，VitePress 嵌套 Vite/esbuild 项暂无直接修复版本。后续 Node 24 LTS 与依赖升级已单独处理。
 - 验证：`npm run check` 通过；内置浏览器确认 Checkbox / Radio / Switch 默认控件和 button variant 的 computed `box-shadow` 命中 `oklch(0.932 0.032 255.585)` 的 `brand-focus` ring；`/guide/colors`、`/components/field`、`/guide/field-system` 页面显示新内容。
+
+## 2026-06-04 组件迁移收敛扫描
+
+- 本轮按源码组件、文档/示例/指南、样式/导出/工具链三路分派子代理并行审计；当前 18 个组件文档、108 个 `docs/examples/**/*.vue` 示例、sidebar 与组件目录关系均通过结构检查。
+- 源码侧未发现旧 `primary` / `danger` API 取值、旧 `--color-primary` / `--color-danger` / `--radius-*` token，或组件级视觉形态继续使用 `type` 的高置信残留。
+- 已修复 Tag checkable 的键盘和 ARIA：可选 Tag 使用 `role="checkbox"`、`aria-checked`、`tabindex` 和 Space/Enter 切换，并保留关闭按钮的事件隔离。
+- 已修复 Input 内部 action 焦点边界：清空、密码显示等兄弟按钮不再因原生 input blur 被误判为离开整个 Input。
+- 已修复 Tooltip 与 PopperTrigger 的描述关联：Tooltip 打开时 trigger 的 `aria-describedby` 指向真实 `role="tooltip"` 浮层；PopperTrigger 新增窄用途 `aria-describedby` 透传。
+- 已修复 Icon 有 `ariaLabel` 时缺少 `role="img"` 的语义问题；InputNumber `change` 改为一次聚焦会话内值确实变化后在 blur 提交时触发。
+- 已补齐 Popper 根出口的 `Placement` / `TriggerType` / `UsePopperOptions` / `UsePopperReturn` / `PopperContext` 和 `usePopper`，保持文档使用的公开类型可从根 barrel 获取。
+- 已为 `--shadow-*` / `--shadow-popper` 补 `:root` fallback；docs theme 的 IconGrid 改用 Horizon 语义 token，`lint:style` 扩展覆盖 docs theme 并修复暴露出的 ComponentDemo/IconGrid 样式问题。
+- 文档侧已修正色彩指南“所有色值来自 Tailwind 原生色阶”的强声明，改为 Horizon 自定义 OKLCH token 为准；Popper / Tooltip 模板 prop 统一为 kebab-case；FieldGroup 指南职责与源码对齐；Text / Title 的 `secondary` 明确为组件专属辅助文本层级；字体指南同步中文 fallback。
+- 本轮保留的后续项：Radio button variant 可进一步做 roving `tabindex`，建议与 Toggle / ToggleGroup 方向合并设计；InputNumber readonly 步进按钮的 disabled 视觉保持此前已确认的“readonly 不允许步进”边界。
 
 ## 后续入口
 

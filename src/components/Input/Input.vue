@@ -1,6 +1,6 @@
 <template>
   <div v-bind="rootAttrs" class="w-full">
-    <div :class="wrapperClasses">
+    <div ref="wrapperRef" :class="wrapperClasses">
       <FieldRoot
         :size="size"
         :status="status"
@@ -142,6 +142,7 @@ const emit = defineEmits<{
 }>()
 
 const inputRef = ref<FieldNativeInputExpose | null>(null)
+const wrapperRef = ref<HTMLElement | null>(null)
 const passwordVisible = ref(false)
 const isFocused = ref(false)
 const attrs = useAttrs()
@@ -185,7 +186,7 @@ function handleFocus(e: FocusEvent) {
 
 function handleBlur(e: FocusEvent) {
   const nextTarget = e.relatedTarget as Node | null
-  if (nextTarget && (e.currentTarget as HTMLElement).contains(nextTarget)) return
+  if (nextTarget && wrapperRef.value?.contains(nextTarget)) return
   isFocused.value = false
   emit('blur', e)
 }

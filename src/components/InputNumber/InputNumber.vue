@@ -104,6 +104,7 @@ const emit = defineEmits<{
 
 const displayValue = ref(getDisplayValue(props.modelValue))
 const isFocused = ref(false)
+const focusStartValue = ref(props.modelValue)
 
 function formatValue(val: number): string {
   if (!isFinite(val)) return '0'
@@ -209,13 +210,16 @@ function handleBlur(e: FocusEvent) {
   const corrected = clampAndRound(value)
   displayValue.value = getDisplayValue(corrected)
   emit('update:modelValue', corrected)
-  emit('change', corrected)
+  if (corrected !== focusStartValue.value) {
+    emit('change', corrected)
+  }
   emit('blur', e)
 }
 
 function handleFocus(e: FocusEvent) {
   if (isFocused.value) return
   isFocused.value = true
+  focusStartValue.value = props.modelValue
   displayValue.value = String(props.modelValue)
   emit('focus', e)
 }

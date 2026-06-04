@@ -8,7 +8,7 @@
 |---|---|---|
 | 1. 恢复项目上下文 | 完成 | 已阅读根目录文档、历史计划、组件源码、样式 token 和 VitePress 配置。 |
 | 2. 梳理历史计划 | 完成 | 已审计并删除 `docs/superpowers/**`，后续不再补充；保留结论已沉淀到根目录记忆文档。 |
-| 3. 组件规范迁移 | 进行中 | 已完成 Badge、Tag、Input、InputNumber、Popper 等本轮重点清理。 |
+| 3. 组件规范迁移 | 进行中 | 当前实现组件集已完成一轮收敛扫描；后续按新增组件、复杂场景和 dark mode 滚动守护。 |
 | 3.5 文档演示框架评估 | 完成 | 用户最终确认继续使用 VitePress；已改为 `:::demo` + `docs/examples/**` 单源示例体系，并清理 Histoire / Storybook spike。 |
 | 4. 文档示例同步 | 进行中 | 已同步多数组件文档的组件 API 命名和示例状态；示例外部样式不强制 token 化。 |
 | 5. Popper 底层定位基座 | 完成 | 已明确 Popper 不提供 surface 样式，并完成 deferred 行为处理与 base-component review。 |
@@ -37,8 +37,9 @@
 - Field 输入域基座已落地为公开 primitives，Input / InputNumber 已完成迁移；Field 支持外部 class 后置覆盖、FieldRoot focus-within ring、FieldSegment focus-within active 视觉。
 - InputNumber 复用 Field 后保留 24/32/40 规范尺寸，步进按钮已改为复用 Button 的 outline square 形态，并补齐聚焦状态下键盘/按钮步进后的展示值同步。
 - 2026-06-04 组件迁移扫描回合已完成：修复 Checkbox / Radio / Switch `focus-visible` 可视 ring，修正色彩指南语义 token 命名，补齐 Field primitive 文档并清理 Popper 多余 demo 标记。
+- 2026-06-04 组件迁移收敛扫描已完成：当前实现组件集未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；已修复 Tag checkable 键盘/ARIA、Input 内部 action 焦点边界、Tooltip 描述关联、Icon `ariaLabel` 语义、InputNumber `change` 事件语义、Popper 根导出、阴影 token fallback、Node 24 类型包和文档主题 stylelint 覆盖。
 - Input、InputNumber、Tag、Popper 已完成本轮浏览器视觉验证；发现的问题已同步修复到组件源码或 VitePress demo 隔离层。
-- 文档演示体系已一步到位迁移：全部组件文档使用 VitePress `:::demo`，108 个示例拆到 `docs/examples/**/*.vue`，预览与源码展示共用同一份 `.vue` 文件；旧 DemoBox、details 查看代码、Histoire / Storybook spike 已清理。
+- 文档演示体系已一步到位迁移：18 个组件文档使用 VitePress `:::demo`，108 个示例拆到 `docs/examples/**/*.vue`，预览与源码展示共用同一份 `.vue` 文件；旧 DemoBox、details 查看代码、Histoire / Storybook spike 已清理。
 - 运行时已升级到 Node `24.16.0` / npm `11.13.0`，`package.json` 已补 `engines` / `packageManager`。
 - 直接依赖已升级到当前最新可用版本，`npm outdated --json` 为空；ESLint 10 暴露的 `globals` 隐式依赖问题已修正为显式 devDependency。
 - Badge 文档示例改为本地 import，文档主题不再全局注册 `Badge`，避免与 VitePress 默认主题组件重名。
@@ -55,15 +56,16 @@
 
 | 任务 | 优先级 | 说明 |
 |---|---|---|
-| 继续组件迁移扫描 | 高 | 从源码和当前规范重新扫描，不依赖旧计划勾选状态。 |
+| 组件迁移滚动守护 | 高 | 当前实现组件集已完成收敛扫描；后续从源码和当前规范出发，按新增组件、复杂场景和发现的问题滚动扫描。 |
 | VitePress `:::demo` 维护 | 中 | 后续新增组件文档继续使用 `:::demo` + `docs/examples/<component>/`；样式污染优先从 `ComponentDemo` `.vp-raw` 与 `postcssIsolateStyles` 排查。 |
 | ComponentDemo 展示体验 | 中 | 后续补源码语法高亮，并继续打磨 demo 容器视觉样式；当前功能已可用，属于体验优化。 |
 | 组件级固有尺寸规范 | 完成 / 持续守护 | 首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，均作为组件内部几何规格维护，不新增通用尺寸 token。 |
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
-| 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 的截图 / DOM / computed style 验证；后续继续覆盖剩余关键组件。 |
+| 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 的截图 / DOM / computed style 验证；收敛扫描复验 Tag、Tooltip、Input、InputNumber 和关键指南页，后续继续覆盖新增组件。 |
 | Field 底层组件 | 中 | Input / InputNumber 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |
 | 依赖与运行时升级 | 持续 | 已升级到 Node 24 LTS / npm 11，直接依赖当前无 outdated；后续继续按收益触发升级并修复内部适配。 |
 | VitePress audit 等待项 | 中 | 当前 `npm audit` 剩余 3 个 moderate 均来自 `vitepress@1.6.4` 内部嵌套 Vite/esbuild；等待上游正式版本后复查升级。 |
+| 包管理器迁移 | 中 | 优先评估 pnpm，备选继续 npm，不优先 Bun / Yarn；若执行迁移，需用 Corepack 固定版本、替换锁文件、统一脚本和文档，并完整验证。 |
 | Dark mode 色彩规范 | 后置 | 用户已决定 dark mode 放到当前队列最后；当前完成的是 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。 |
 | Icon 外部 SVG 安全策略 | 中 | 如果未来支持外部 SVG 输入，需要替换当前仅适用于本地白名单图标的策略。 |
 

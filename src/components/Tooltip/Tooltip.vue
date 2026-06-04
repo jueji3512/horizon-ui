@@ -9,6 +9,7 @@
     @update:visible="onPopperVisibleUpdate"
   >
     <PopperTrigger
+      :aria-describedby="!disabled"
       @mouseenter="onMouseEnter"
       @mouseleave="onMouseLeave"
       @click="onTriggerClick"

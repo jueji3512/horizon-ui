@@ -216,7 +216,7 @@
 - 实验结论：`layout: page` 可以避开 `.vp-doc` 包裹，降低 Markdown 样式对组件 demo 的影响；但 VitePress 全局 button reset 仍会覆盖 Button 的背景、边框和 padding，因此 CleanDemoBox preview 内仍需要 scoped `all: revert-layer`。
 - 已接入 Histoire 最小工作台：新增 `histoire.config.ts`、`histoire.setup.ts`、`stories/Button.story.vue`，并新增 `dev:histoire` / `build:histoire` / `preview:histoire` 脚本。Histoire 预览中 Button 的 theme、variant、shape、disabled、loading 渲染正常，controls/source 面板可用于组件验证。
 - 依赖已升级：新增 `histoire@1.0.0-beta.1`、`@histoire/plugin-vue@1.0.0-beta.1`、`@vitejs/plugin-vue@6.0.7`，并将根项目 Vite 升到 `^7.3.5`；VitePress 自身仍保留 `^1.6.4`。`package.json` 已声明 `engines.node >=22.13.0`。
-- 当前系统 Node `v22.10.0` 对 Vite 7 / Histoire 依赖链偏旧，安装时会出现 engine warning；使用临时 Node 22.13.1 执行 Histoire build 已通过，但 beta 版仍会输出空 global setup 虚拟模块相关的非阻断 warning。后续建议本地/CI 升到 22.13+ 或 24 LTS。
+- 当时系统 Node `v22.10.0` 对 Vite 7 / Histoire 依赖链偏旧，安装时会出现 engine warning；使用临时 Node 22.13.1 执行 Histoire build 已通过，但 beta 版仍会输出空 global setup 虚拟模块相关的非阻断 warning。该历史问题已在后续 Node 24 LTS 升级中处理。
 - 内置浏览器复验：`/components/button-clean` 在加 scoped reset 后 Button computed style 恢复为正确背景、边框、文本色和 `15px` 横向 padding；Histoire `/story/stories-button-story-vue?variantId=stories-button-story-vue-0` 渲染正常。
 - 优先级结论：短期不整体替换 VitePress；Histoire 作为并行组件工作台优先推进，VitePress 文档 shell 按需渐进收敛。
 
@@ -323,7 +323,7 @@
 - 修复 Switch 焦点态：移除手写 `.switch-input:focus + .switch-track` box-shadow，改为 `peer-focus-visible:ring-2 peer-focus-visible:ring-brand-focus`，避免鼠标点击也显示键盘焦点环。
 - 修正 `docs/guide/colors.md`：语义色 token 从不存在的 `--brand-color-*` / `--error-color-*` 等改为真实 `--color-brand-*` / `--color-error-*` / `--color-success-*` / `--color-warning-*`，并补充 Tailwind v4 `@theme` 工具类生成说明。
 - 修正文档漂移：`docs/components/checkbox.md` 的 `direction` 说明改为 default 形态；`docs/components/popper.md` 删除 V-10 后多余 `:::`；`docs/components/field.md` 补齐 FieldContent、FieldAction、FieldGroup、FieldSegment 等公开 primitive props；`docs/guide/field-system.md` 从旧实施计划改为当前状态与后续验证。
-- 依赖扫描结果：当前 Node `v22.10.0` 低于 `eslint-visitor-keys@5.0.1` 的 `^22.13.0` 要求；`npm audit` 仍有 4 个 moderate，其中 `brace-expansion@5.0.5` 可自动修复，VitePress 嵌套 Vite/esbuild 暂无直接修复版本；`npm outdated` 有 Tailwind、Vue、vue-tsc、typescript-eslint 等 patch/minor 候选。本轮只记录，不混入组件迁移提交。
+- 依赖扫描结果（升级前）：当时 Node `v22.10.0` 低于 `eslint-visitor-keys@5.0.1` 的 `^22.13.0` 要求；`npm audit` 有 4 个 moderate，其中 `brace-expansion@5.0.5` 可自动修复，VitePress 嵌套 Vite/esbuild 暂无直接修复版本；`npm outdated` 有 Tailwind、Vue、vue-tsc、typescript-eslint 等 patch/minor 候选。后续 Node 24 LTS 与依赖升级已单独处理。
 - 验证：`npm run check` 通过；内置浏览器 5176 复验 `/components/checkbox`、`/components/radio`、`/components/switch`，默认控件和 button variant 均命中 `brand-focus` ring；`/guide/colors`、`/components/field`、`/guide/field-system` 显示新文案。
 
 ### Node 24 LTS 与依赖升级
@@ -335,3 +335,25 @@
 - `npm outdated --json` 当前为空；`npm audit` 剩余 3 个 moderate，均来自 `vitepress@1.6.4` 内部嵌套的 Vite/esbuild，当前 VitePress 最新正式版仍为 `1.6.4`，暂无直接修复版本。
 - 浏览器验证升级后的文档站时发现 VitePress 默认主题已注册 `Badge`，文档主题再全局注册 Horizon `Badge` 会产生 Vue warning；已将 Badge 示例改为本地 import，并从文档主题全局注册中移除 `Badge`。
 - 验证：`npm run check` 通过；使用当前 Node 24 环境启动 `http://127.0.0.1:5180/`，内置浏览器抽查 `/components/badge`、`/components/checkbox`、`/components/popper`，页面标题、demo 数量、Vite overlay 均正常，按导航时间过滤无新增 warning。
+
+### 包管理器迁移评估记录
+
+- 用户提出将依赖管理从 npm 迁移到 pnpm，并进一步要求横向评估是否有比 pnpm 更合适的选择。
+- 当前判断：pnpm 最适合列为中优先级工程基础任务；继续 npm 最稳但收益较小；Bun 性能强但对当前 Vue / Vite / VitePress / ESLint / Stylelint 工具链引入变量较多；Yarn Berry / PnP 能力强但迁移和生态适配成本偏高。
+- 已将包管理器迁移加入 `TODO.md` 和 `task_plan.md`：优先 pnpm，备选继续 npm，不优先 Bun / Yarn；若执行需通过 Corepack 固定 pnpm 11、替换锁文件、统一脚本和文档，并完整验证 `pnpm install`、`pnpm run check`、audit 等价项和关键页面。
+
+### 组件迁移收敛扫描
+
+- 用户要求尽量一次性收敛迁移扫描，并授权在任务较重时开启子代理；本轮由主代理统筹，分派 3 个子代理分别审计源码组件、文档/示例/指南、样式/导出/工具链。
+- 结构扫描通过：18 个组件文档、108 个 `docs/examples/**/*.vue` 示例、sidebar 与组件目录关系无缺失；未发现孤儿示例。
+- 规范残留扫描通过：当前源码未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token，或组件级视觉形态继续使用 `type` 的高置信残留。
+- 修复 Tag checkable 可访问性：补 `role="checkbox"`、`aria-checked`、`aria-disabled`、可聚焦 tabindex、Space/Enter 键盘切换和 focus-visible ring。
+- 修复 Input 内部 action 焦点边界：`handleBlur` 改用 wrapper ref 判断 `relatedTarget`，点击清空/密码按钮不再被误判为离开整个 Input。
+- 修复 Icon 有 `ariaLabel` 时的语义：补 `role="img"`；Tooltip 通过 PopperTrigger 的 `aria-describedby` 关联真实 tooltip content id。
+- 修复 InputNumber `change` 事件语义：聚焦时记录起始值，blur 提交/修正后仅在值确实变化时触发 `change`。
+- 补齐 Popper 根导出：公开 `Placement`、`TriggerType`、`UsePopperOptions`、`UsePopperReturn`、`PopperContext` 与 `usePopper`。
+- 补齐 shadow token `:root` fallback；`@types/node` 从 25.x 降回 `^24.13.0`，与 Node `>=24.16.0` 基线一致，并通过 `npm install` 重写 lockfile。
+- 扩展 `lint:style` 覆盖 `docs/.vitepress/theme/**/*.vue`；IconGrid 改用 Horizon 语义 token，ComponentDemo / IconGrid 修复新增 lint 范围暴露的 CSS 规则问题。
+- 修正文档漂移：色彩指南改为 Horizon 自定义 OKLCH token 为准；Popper / Tooltip 面向模板使用者统一 kebab-case prop；FieldGroup 指南职责与源码对齐；Text / Title 的 `secondary` 明确为组件专属辅助层级；字体指南同步 `Noto Sans Mono SC`、`Microsoft YaHei` fallback。
+- 验证：`npm run check` 通过；启动干净 dev server `http://127.0.0.1:5181/` 后，内置浏览器复验 Tag 键盘切换、Tooltip `aria-describedby`、Input 清空回焦、InputNumber 页面和 colors / field-system / typography / popper 指南页，当前端口无 warning/error。
+- 保留后续项：Radio button variant 尚未做 roving `tabindex`，建议与未来 Toggle / ToggleGroup 方向一起设计；InputNumber readonly 步进按钮 disabled 视觉保持此前“readonly 不允许步进”的既定边界。

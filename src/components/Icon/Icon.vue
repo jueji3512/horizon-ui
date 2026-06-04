@@ -4,6 +4,7 @@
   <i
     class="h-icon"
     :style="iconStyle"
+    :role="ariaLabel ? 'img' : undefined"
     :aria-hidden="!ariaLabel || undefined"
     :aria-label="ariaLabel || undefined"
     v-html="svgContent"

@@ -242,6 +242,13 @@ docs(project): 更新项目上下文与待办
 - Divider 文档与 `docs/examples/divider/example-02.vue` 已同步为 `variant="dashed"`，继续使用 VitePress `:::demo` 单源示例体系。
 - 验证：`npm run check` 通过；使用 5174 dev server 与内置浏览器确认 `/components/divider` 页面加载正常，虚线示例说明展示 `variant="dashed"`，源码展开后包含 `<Divider variant="dashed" />`，虚线分割线视觉正常。
 
+## 2026-06-04 Callout 浏览器验证
+
+- 使用内置浏览器验证 `/components/callout`：页面标题、2 个 `:::demo`、主题说明和源码预览均正常渲染。
+- 6 个实际 Callout 实例的左侧色条宽度均为 `4px`，内容区 padding 均为 `12px 16px`，外层圆角跟随 `--round-default`。
+- `brand` / `success` / `warning` / `error` 正文颜色分别命中对应语义色；带标题示例的 `Title level=6` 通过内联 color 跟随 Callout theme。
+- 本轮未发现 Callout 源码或文档需要修正的问题。
+
 ## 后续入口
 
 - 任务清单：`TODO.md`。

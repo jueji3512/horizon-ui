@@ -264,3 +264,10 @@
 - 已将 `src/components/Divider/Divider.vue` 的线型 prop 改为 `variant?: 'solid' | 'dashed'`，默认值为 `solid`，并改用 `props.variant` 控制 `border-dashed`。
 - 已同步 `docs/components/divider.md` 与 `docs/examples/divider/example-02.vue`，虚线示例改为 `variant="dashed"`。
 - 验证：`npm run check` 通过；5174 dev server 返回 `/components/divider` 200，内置浏览器确认页面显示 `variant="dashed"` 说明，源码展开后包含 `<Divider variant="dashed" />`，且虚线示例视觉正常。
+
+### Callout 浏览器验证
+
+- 继续补关键组件浏览器级视觉验证，优先覆盖此前只做过构建产物确认的 Callout。
+- 内置浏览器验证 `/components/callout`：页面标题、2 个 demo、主题说明、源码预览和 6 个实际 Callout 实例均正常渲染。
+- computed style 确认左侧色条为 4px，内容 padding 为 `12px 16px`，外层圆角为当前 `--round-default` 结果；正文和标题颜色均跟随 `brand` / `success` / `warning` / `error` theme。
+- 本轮未发现 Callout 需要代码修复的问题，已将 TODO / task_plan / findings 的浏览器验证覆盖范围补充到 Callout。

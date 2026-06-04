@@ -68,7 +68,7 @@ checkbox/example-07
 | `variant` | `'default' \| 'button'` | `'default'` | 视觉形态 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸（仅 button 形态） |
 | `disabled` | `boolean` | `false` | 整组禁用 |
-| `direction` | `'horizontal' \| 'vertical'` | `'vertical'` | 排列方向（default 类型） |
+| `direction` | `'horizontal' \| 'vertical'` | `'vertical'` | 排列方向（default 形态） |
 | `min` | `number` | — | 最少选中项数 |
 | `max` | `number` | — | 最多选中项数 |
 

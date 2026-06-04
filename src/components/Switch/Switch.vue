@@ -3,7 +3,7 @@
     <input
       type="checkbox"
       role="switch"
-      class="switch-input sr-only"
+      class="peer sr-only"
       :checked="modelValue"
       :disabled="disabled || loading"
       :name="name"
@@ -104,7 +104,7 @@ const switchClasses = computed(() =>
 
 const trackClasses = computed(() =>
   cn(
-    'switch-track relative flex items-center rounded-[var(--round-full)] transition-colors duration-200',
+    'relative flex items-center rounded-[var(--round-full)] transition-colors duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-brand-focus',
     switchGeometryMap[props.size].track,
     props.modelValue && !isDisabled.value && 'bg-brand',
     props.modelValue && isDisabled.value && 'bg-brand-disabled',
@@ -125,9 +125,3 @@ const thumbClasses = computed(() =>
   ),
 )
 </script>
-
-<style scoped>
-.switch-input:focus + .switch-track {
-  box-shadow: 0 0 0 2px var(--color-brand-focus);
-}
-</style>

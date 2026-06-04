@@ -152,15 +152,17 @@ Field 统一表达以下状态：
 - disabled 状态使用真实 `disabled` 或 `aria-disabled`，不能只靠视觉样式。
 - focus ring 应包住整个输入域；多选内部搜索 input 聚焦时也要触发外层 focused。
 
-## 实施计划
+## 当前状态与后续验证
 
-1. 定义 Field API 草案与组件边界。
-2. 实现 `src/components/Field/`，先提供 Root、Content、NativeInput、Prefix、Suffix、Action、Group、Segment。
-3. 增加 `docs/components/field.md`，把 Field 放入“底层组件”分组。
-4. 用 Field 迁移 `Input`，保持公开 API 不变。
-5. 用 Field 迁移 `InputNumber`，验证 FieldGroup 和按钮 focus-visible。
-6. 增加视觉矩阵，覆盖普通、hover、focus、error、warning、success、disabled、readonly、prefix、suffix、action、多选 tag、range segment。
-7. 进入 `Select` 设计时，用单选、多选、searchable、clear、loading、maxTagCount 验证 Field 体系。
+Field 首版已经作为公开 primitive 落地到 `src/components/Field/`，并已纳入底层组件文档。当前提供 Root、Content、NativeInput、Prefix、Suffix、Action、Group、Segment，Input 与 InputNumber 已迁移到 Field 体系。
+
+后续验证重点不再是“是否实现 Field”，而是用更复杂的 field-like 组件压测它的边界：
+
+1. Select 单选：验证 readonly trigger、searchable、clear、loading、Popper 宽度匹配和 suffix 行为。
+2. Select 多选 / TagInput：验证 Tag wrap、搜索输入自适应、Backspace 删除、`maxTagCount` 和 collapsed tag。
+3. DatePicker / TimePicker：验证手输与只读展示、面板打开 active 状态、格式化文本和 suffix 图标。
+4. DateRangePicker / 范围数值输入：验证两个 FieldSegment 的焦点、active、分隔符和范围校验。
+5. Input.Search / addon 类组合输入：验证 FieldGroup 相邻边界、右侧动作按钮、loading 和 Enter 行为。
 
 ## 风险与约束
 

@@ -287,6 +287,16 @@ docs(project): 更新项目上下文与待办
 - 后续如发现升级能带来更好的完整性、性能、简洁性或最终效果，应先说明收益和影响并向用户确认；确认后直接升级，并同步修正项目内部适配问题。
 - 当前 TODO 中已有 Node `v22.10.0` 与部分依赖 engine 要求的记录；后续处理此类问题时按该原则执行。
 
+## 2026-06-04 组件迁移扫描回合
+
+- 本轮按源码、文档/示例、依赖工具链三路并行扫描；未发现组件源码中仍有旧 `primary` / `danger` API 取值、`--color-primary` / `--color-danger` / `--radius-*` token，或用组件级 `type` 表达视觉形态的高置信残留。
+- Checkbox / Radio 默认控件原先隐藏原生 input 后没有把键盘焦点态投射到可视 box / circle；button variant 也缺少统一的 focus ring。本轮为默认控件补 `peer-focus-visible:ring-2 peer-focus-visible:ring-brand-focus`，为 button variant 补 `focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-focus`。
+- Switch 原先使用 `.switch-input:focus + .switch-track` 手写 box-shadow，鼠标点击也会触发焦点视觉。本轮改为 `peer-focus-visible:ring-2 peer-focus-visible:ring-brand-focus`，只在 `focus-visible` 下显示可视 ring。
+- 色彩指南中的语义色表原先写成 `--brand-color-*` / `--error-color-*` 等不存在的 token；本轮修正为真实 Tailwind v4 `@theme` 变量 `--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`，并补充会生成 `text-brand`、`bg-brand`、`ring-brand-focus` 等工具类。
+- 文档扫描发现 Popper V-10 demo 后多余一个 `:::`，Field 组件页没有完整列出公开 primitive props，Field 体系指南仍把已完成的 Field 实现和 Input/InputNumber 迁移写成实施计划；本轮均已修正。
+- 依赖扫描确认当前 Node 为 `v22.10.0`，`eslint-visitor-keys@5.0.1` 要求 `^20.19.0 || ^22.13.0 || >=24`；`npm audit` 仍有 4 个 moderate，其中 `brace-expansion@5.0.5` 可自动修到 `5.0.6`，VitePress 嵌套 Vite/esbuild 项暂无直接修复版本。该类升级按用户确认原则后续单独处理。
+- 验证：`npm run check` 通过；内置浏览器确认 Checkbox / Radio / Switch 默认控件和 button variant 的 computed `box-shadow` 命中 `oklch(0.932 0.032 255.585)` 的 `brand-focus` ring；`/guide/colors`、`/components/field`、`/guide/field-system` 页面显示新内容。
+
 ## 后续入口
 
 - 任务清单：`TODO.md`。

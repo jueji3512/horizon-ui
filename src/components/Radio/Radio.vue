@@ -3,7 +3,7 @@
   <label v-if="groupVariant === 'default'" :class="defaultClasses">
     <input
       type="radio"
-      class="sr-only"
+      class="peer sr-only"
       :name="groupName"
       :value="value"
       :checked="isChecked"
@@ -85,7 +85,7 @@ function handleSelect() {
 const circleClasses = computed(() =>
   cn(
     radioControlGeometryMap.circle,
-    'flex flex-shrink-0 items-center justify-center rounded-[var(--round-full)] border border-solid transition-colors duration-200',
+    'flex flex-shrink-0 items-center justify-center rounded-[var(--round-full)] border border-solid transition-colors duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-brand-focus',
     isDisabled.value &&
       'border-[var(--border-color-component)] bg-[var(--bg-color-component-disabled)]',
     !isDisabled.value && isChecked.value && 'border-brand',
@@ -116,7 +116,7 @@ const defaultClasses = computed(() =>
 
 const buttonClasses = computed(() =>
   cn(
-    'inline-flex flex-1 items-center justify-center font-medium whitespace-nowrap',
+    'relative inline-flex flex-1 items-center justify-center font-medium whitespace-nowrap focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-brand-focus focus-visible:outline-none focus-visible:ring-inset',
     'border-r border-[var(--border-color-component)] last:border-r-0',
     radioButtonGeometryMap[groupSize.value],
     !isDisabled.value && 'cursor-pointer',

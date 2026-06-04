@@ -35,6 +35,7 @@
 - `Icon.vue` 的 raw SVG 渲染已补充本地图标安全边界说明，并关闭该处 `vue/no-v-html` 告警。
 - Field 输入域基座已落地为公开 primitives，Input / InputNumber 已完成迁移；Field 支持外部 class 后置覆盖、FieldRoot focus-within ring、FieldSegment focus-within active 视觉。
 - InputNumber 复用 Field 后保留 24/32/40 规范尺寸，步进按钮已改为复用 Button 的 outline square 形态，并补齐聚焦状态下键盘/按钮步进后的展示值同步。
+- 2026-06-04 组件迁移扫描回合已完成：修复 Checkbox / Radio / Switch `focus-visible` 可视 ring，修正色彩指南语义 token 命名，补齐 Field primitive 文档并清理 Popper 多余 demo 标记。
 - Input、InputNumber、Tag、Popper 已完成本轮浏览器视觉验证；发现的问题已同步修复到组件源码或 VitePress demo 隔离层。
 - 文档演示体系已一步到位迁移：全部组件文档使用 VitePress `:::demo`，108 个示例拆到 `docs/examples/**/*.vue`，预览与源码展示共用同一份 `.vue` 文件；旧 DemoBox、details 查看代码、Histoire / Storybook spike 已清理。
 - 全项目 `lint`、`format:check`、`typecheck`、`build` 已通过。
@@ -58,6 +59,7 @@
 | 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 的截图 / DOM / computed style 验证；后续继续覆盖剩余关键组件。 |
 | Field 底层组件 | 中 | Input / InputNumber 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |
 | 依赖与运行时升级 | 按收益触发 | 后续发现依赖、工具链或 Node.js 偏旧且升级更有利于完整性、性能、简洁性或最终效果时，先与用户确认，确认后直接升级并修复内部适配。 |
+| Node / 依赖维护候选 | 中 | 当前 Node 为 `v22.10.0`，可升级到 22.13+ 或 24 LTS；`brace-expansion` 可自动修复，Tailwind/Vue/vue-tsc 等有 patch/minor 更新，建议单独确认后处理。 |
 | Dark mode 色彩规范 | 后置 | 用户已决定 dark mode 放到当前队列最后；当前完成的是 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。 |
 | Icon 外部 SVG 安全策略 | 中 | 如果未来支持外部 SVG 输入，需要替换当前仅适用于本地白名单图标的策略。 |
 

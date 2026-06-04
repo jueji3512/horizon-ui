@@ -124,6 +124,9 @@ docs(project): 更新项目上下文与待办
 - 文档演示已统一为 VitePress `:::demo` 单源示例：组件页通过 `docs/examples/**/*.vue` 渲染预览并展示源码，`ComponentDemo` 使用 `.vp-raw` 与 `postcssIsolateStyles` 隔离 VitePress 默认主题样式。
 - 旧 DemoBox / details 查看代码 / Histoire / Storybook spike 已清理；后续文档示例不要回到这些路线。
 - `ComponentDemo` 当前源码展示还没有语法高亮，容器视觉样式也可继续优化；该事项已记录到 `TODO.md`。
+- 本轮组件迁移扫描未发现源码中仍有旧 `primary` / `danger` API 或旧 `--color-primary` / `--color-danger` / `--radius-*` token；已修复 Checkbox / Radio / Switch 的 `focus-visible` 可视 ring，对齐 `brand-focus` token。
+- 色彩指南已将语义色 token 文档修正为真实的 Tailwind v4 `@theme` 变量：`--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`。
+- Field 文档已补齐公开 primitives 的 props；Field 体系指南已从旧“实施计划”改为“当前状态与后续验证”；Popper 文档已清理多余 demo 结束标记。
 - Popper 已完成 base-component review；`offset` / `flip` / `shift` / `matchWidth` / `autoUpdate` 改为响应式配置，`matchWidth` 改用 Floating UI `size` middleware，`disabled` 变 true 时会关闭已打开浮层。
 - PopperTrigger 已明确转发 `mouseenter` / `mouseleave` / `click` / `focus` / `focusin` / `blur` / `focusout` 事件；focus 显隐只消费 `focusin` / `focusout`，内部焦点切换不会重复触发上层离开事件。
 - Popper `updatePosition` / `UsePopperReturn.update` 返回类型已对齐 Floating UI 实际行为为 `void`，不再伪装为可等待的 `Promise<void>`。

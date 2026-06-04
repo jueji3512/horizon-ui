@@ -90,16 +90,39 @@ field/example-06
 | `autocomplete` | `string` | `''` | 原生 autocomplete |
 | `aria-label` | `string` | `''` | 无障碍标签 |
 
-### 其他 Primitive
+### FieldContent
 
-| 组件 | 说明 |
-|------|------|
-| `FieldContent` | 主内容布局区，支持 `multiline` 和 `tag` |
-| `FieldPrefix` | 左侧辅助区 |
-| `FieldSuffix` | 右侧辅助区 |
-| `FieldAction` | 可点击动作位，支持 `disabled` 和 `active` |
-| `FieldGroup` | 组合输入容器 |
-| `FieldSegment` | 范围或分段输入单元，支持 `active` / `disabled` / `readonly` |
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `multiline` | `boolean` | 继承 FieldRoot | 多行或多值内容布局 |
+| `tag` | `'span' \| 'div'` | 根据 `multiline` 推导 | 渲染标签 |
+
+### FieldPrefix / FieldSuffix
+
+无专用 Props。未声明属性会透传到外层 `span`，外部 `class` 后置合并，可用于补充图标尺寸、单位文本或自定义辅助内容。
+
+### FieldAction
+
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | 原生 button type |
+| `disabled` | `boolean` | `false` | 禁用动作位；也会继承 FieldRoot disabled |
+| `active` | `boolean` | `false` | 激活动作位文本色 |
+
+### FieldGroup
+
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `disabled` | `boolean` | `false` | 组合容器禁用视觉和鼠标状态 |
+
+### FieldSegment
+
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `tag` | `'span' \| 'div' \| 'button'` | `'span'` | 渲染标签；为 `button` 时自动补 `type="button"` |
+| `active` | `boolean` | `false` | 激活分段文本色 |
+| `disabled` | `boolean` | `false` | 禁用分段；也会继承 FieldRoot disabled |
+| `readonly` | `boolean` | `false` | 只读分段交互视觉 |
 
 ## Events
 

@@ -276,9 +276,11 @@ function isDark(shade) {
 | `--border-color-container` | neutral-300 | <span class="swatch" style="background:oklch(0.87 0 0)"> </span> | oklch(0.87 0 0) | #ddd (level-2) |
 | `--border-color-divider` | neutral-200 | <span class="swatch" style="background:oklch(0.92 0 0)"> </span> | oklch(0.92 0 0) | #e8e8e8 (level-1) |
 
-### 语义色
+### 语义色 — color-*
 
 每个语义色 6 档，按浅→深排列。注意 hover 比 base **更亮**（与 TDesign 一致，hover 为发光效果）。
+
+语义色定义在 Tailwind CSS v4 `@theme` 中，token 名称使用 `--color-<name>[-state]`，并生成 `text-brand`、`bg-brand`、`border-brand`、`ring-brand-focus` 等工具类。`:root` 中保留同名 fallback，确保 VitePress 构建和直接 CSS 引用都可用。
 
 #### Brand — base: blue-700
 
@@ -288,12 +290,12 @@ function isDark(shade) {
 
 | Token | 色块 | OKLCH | TDesign |
 |-------|------|-------|---------|
-| `--brand-color-light` | <span class="swatch" style="background:oklch(0.97 0.014 254.604)"> </span> | oklch(0.97 0.014 254.604) | #f2f3ff |
-| `--brand-color-focus` | <span class="swatch" style="background:oklch(0.932 0.032 255.585)"> </span> | oklch(0.932 0.032 255.585) | #d9e1ff |
-| `--brand-color-disabled` | <span class="swatch" style="background:oklch(0.882 0.059 254.128)"> </span> | oklch(0.882 0.059 254.128) | #b5c7ff |
-| `--brand-color` | <span class="swatch" style="background:oklch(0.488 0.243 264.376)"> </span> | oklch(0.488 0.243 264.376) | #0052d9 |
-| `--brand-color-hover` | <span class="swatch" style="background:oklch(0.623 0.214 259.815)"> </span> | oklch(0.623 0.214 259.815) | #366ef4 |
-| `--brand-color-active` | <span class="swatch" style="background:oklch(0.424 0.199 265.638)"> </span> | oklch(0.424 0.199 265.638) | #003cab |
+| `--color-brand-light` | <span class="swatch" style="background:oklch(0.97 0.014 254.604)"> </span> | oklch(0.97 0.014 254.604) | #f2f3ff |
+| `--color-brand-focus` | <span class="swatch" style="background:oklch(0.932 0.032 255.585)"> </span> | oklch(0.932 0.032 255.585) | #d9e1ff |
+| `--color-brand-disabled` | <span class="swatch" style="background:oklch(0.882 0.059 254.128)"> </span> | oklch(0.882 0.059 254.128) | #b5c7ff |
+| `--color-brand` | <span class="swatch" style="background:oklch(0.488 0.243 264.376)"> </span> | oklch(0.488 0.243 264.376) | #0052d9 |
+| `--color-brand-hover` | <span class="swatch" style="background:oklch(0.623 0.214 259.815)"> </span> | oklch(0.623 0.214 259.815) | #366ef4 |
+| `--color-brand-active` | <span class="swatch" style="background:oklch(0.424 0.199 265.638)"> </span> | oklch(0.424 0.199 265.638) | #003cab |
 
 #### Error — base: red-500
 
@@ -303,12 +305,12 @@ function isDark(shade) {
 
 | Token | 色块 | OKLCH | TDesign |
 |-------|------|-------|---------|
-| `--error-color-light` | <span class="swatch" style="background:oklch(0.971 0.013 17.38)"> </span> | oklch(0.971 0.013 17.38) | #fff0ed |
-| `--error-color-focus` | <span class="swatch" style="background:oklch(0.936 0.032 17.717)"> </span> | oklch(0.936 0.032 17.717) | #ffd8d2 |
-| `--error-color-disabled` | <span class="swatch" style="background:oklch(0.885 0.062 18.334)"> </span> | oklch(0.885 0.062 18.334) | #ffb9b0 |
-| `--error-color` | <span class="swatch" style="background:oklch(0.637 0.237 25.331)"> </span> | oklch(0.637 0.237 25.331) | #d54941 |
-| `--error-color-hover` | <span class="swatch" style="background:oklch(0.704 0.191 22.216)"> </span> | oklch(0.704 0.191 22.216) | #f6685d |
-| `--error-color-active` | <span class="swatch" style="background:oklch(0.505 0.213 27.518)"> </span> | oklch(0.505 0.213 27.518) | #ad352f |
+| `--color-error-light` | <span class="swatch" style="background:oklch(0.971 0.013 17.38)"> </span> | oklch(0.971 0.013 17.38) | #fff0ed |
+| `--color-error-focus` | <span class="swatch" style="background:oklch(0.936 0.032 17.717)"> </span> | oklch(0.936 0.032 17.717) | #ffd8d2 |
+| `--color-error-disabled` | <span class="swatch" style="background:oklch(0.885 0.062 18.334)"> </span> | oklch(0.885 0.062 18.334) | #ffb9b0 |
+| `--color-error` | <span class="swatch" style="background:oklch(0.637 0.237 25.331)"> </span> | oklch(0.637 0.237 25.331) | #d54941 |
+| `--color-error-hover` | <span class="swatch" style="background:oklch(0.704 0.191 22.216)"> </span> | oklch(0.704 0.191 22.216) | #f6685d |
+| `--color-error-active` | <span class="swatch" style="background:oklch(0.505 0.213 27.518)"> </span> | oklch(0.505 0.213 27.518) | #ad352f |
 
 #### Success — base: emerald-500
 
@@ -318,12 +320,12 @@ function isDark(shade) {
 
 | Token | 色块 | OKLCH | TDesign |
 |-------|------|-------|---------|
-| `--success-color-light` | <span class="swatch" style="background:oklch(0.969 0.015 170.0)"> </span> | oklch(0.969 0.015 170.0) | #e3f9e9 |
-| `--success-color-focus` | <span class="swatch" style="background:oklch(0.936 0.034 170.5)"> </span> | oklch(0.936 0.034 170.5) | #c6f3d7 |
-| `--success-color-disabled` | <span class="swatch" style="background:oklch(0.806 0.113 166.9)"> </span> | oklch(0.806 0.113 166.9) | #92dab2 |
-| `--success-color` | <span class="swatch" style="background:oklch(0.66 0.19 161.4)"> </span> | oklch(0.66 0.19 161.4) | #2ba471 |
-| `--success-color-hover` | <span class="swatch" style="background:oklch(0.723 0.162 164.4)"> </span> | oklch(0.723 0.162 164.4) | #56c08d |
-| `--success-color-active` | <span class="swatch" style="background:oklch(0.596 0.171 162.4)"> </span> | oklch(0.596 0.171 162.4) | #008858 |
+| `--color-success-light` | <span class="swatch" style="background:oklch(0.969 0.015 170.0)"> </span> | oklch(0.969 0.015 170.0) | #e3f9e9 |
+| `--color-success-focus` | <span class="swatch" style="background:oklch(0.936 0.034 170.5)"> </span> | oklch(0.936 0.034 170.5) | #c6f3d7 |
+| `--color-success-disabled` | <span class="swatch" style="background:oklch(0.806 0.113 166.9)"> </span> | oklch(0.806 0.113 166.9) | #92dab2 |
+| `--color-success` | <span class="swatch" style="background:oklch(0.66 0.19 161.4)"> </span> | oklch(0.66 0.19 161.4) | #2ba471 |
+| `--color-success-hover` | <span class="swatch" style="background:oklch(0.723 0.162 164.4)"> </span> | oklch(0.723 0.162 164.4) | #56c08d |
+| `--color-success-active` | <span class="swatch" style="background:oklch(0.596 0.171 162.4)"> </span> | oklch(0.596 0.171 162.4) | #008858 |
 
 #### Warning — base: amber-600
 
@@ -333,19 +335,19 @@ function isDark(shade) {
 
 | Token | 色块 | OKLCH | TDesign |
 |-------|------|-------|---------|
-| `--warning-color-light` | <span class="swatch" style="background:oklch(0.975 0.02 96.0)"> </span> | oklch(0.975 0.02 96.0) | #fff1e9 |
-| `--warning-color-focus` | <span class="swatch" style="background:oklch(0.952 0.05 96.5)"> </span> | oklch(0.952 0.05 96.5) | #ffd9c2 |
-| `--warning-color-disabled` | <span class="swatch" style="background:oklch(0.91 0.105 88.0)"> </span> | oklch(0.91 0.105 88.0) | #ffb98c |
-| `--warning-color` | <span class="swatch" style="background:oklch(0.737 0.178 59.0)"> </span> | oklch(0.737 0.178 59.0) | #e37318 |
-| `--warning-color-hover` | <span class="swatch" style="background:oklch(0.769 0.188 70.08)"> </span> | oklch(0.769 0.188 70.08) | #fa9550 |
-| `--warning-color-active` | <span class="swatch" style="background:oklch(0.66 0.16 47.0)"> </span> | oklch(0.66 0.16 47.0) | #be5a00 |
+| `--color-warning-light` | <span class="swatch" style="background:oklch(0.975 0.02 96.0)"> </span> | oklch(0.975 0.02 96.0) | #fff1e9 |
+| `--color-warning-focus` | <span class="swatch" style="background:oklch(0.952 0.05 96.5)"> </span> | oklch(0.952 0.05 96.5) | #ffd9c2 |
+| `--color-warning-disabled` | <span class="swatch" style="background:oklch(0.91 0.105 88.0)"> </span> | oklch(0.91 0.105 88.0) | #ffb98c |
+| `--color-warning` | <span class="swatch" style="background:oklch(0.737 0.178 59.0)"> </span> | oklch(0.737 0.178 59.0) | #e37318 |
+| `--color-warning-hover` | <span class="swatch" style="background:oklch(0.769 0.188 70.08)"> </span> | oklch(0.769 0.188 70.08) | #fa9550 |
+| `--color-warning-active` | <span class="swatch" style="background:oklch(0.66 0.16 47.0)"> </span> | oklch(0.66 0.16 47.0) | #be5a00 |
 
 ---
 
 ## 命名规则
 
 - 功能色：`<category>-color-<variant>`，如 `text-color-primary`、`bg-color-component-hover`
-- 语义色：`<name>-color[-state]`，如 `brand-color`、`brand-color-hover`
+- 语义色：`color-<name>[-state]`，如 `color-brand`、`color-brand-hover`
 - 状态后缀：`light` / `focus` / `disabled` / `hover` / `active`
 - `-` 仅用于分隔类型与状态，类型名不含 `-`（如 `secondarycontainer` 而非 `secondary-container`）
 

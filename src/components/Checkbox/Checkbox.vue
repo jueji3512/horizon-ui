@@ -3,7 +3,7 @@
   <label v-if="groupVariant === 'default'" :class="defaultClasses">
     <input
       type="checkbox"
-      class="sr-only"
+      class="peer sr-only"
       :checked="isChecked"
       :disabled="computedDisabled"
       @change="handleToggle"
@@ -135,7 +135,7 @@ function handleToggle() {
 const boxClasses = computed(() =>
   cn(
     checkboxControlGeometryMap.box,
-    'flex flex-shrink-0 items-center justify-center rounded-[var(--round-default)] border border-solid transition-colors duration-200',
+    'flex flex-shrink-0 items-center justify-center rounded-[var(--round-default)] border border-solid transition-colors duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-brand-focus',
     computedDisabled.value &&
       'border-[var(--border-color-component)] bg-[var(--bg-color-component-disabled)] text-[var(--text-color-disabled)]',
     !computedDisabled.value &&
@@ -161,7 +161,7 @@ const defaultClasses = computed(() =>
 
 const buttonClasses = computed(() =>
   cn(
-    'inline-flex flex-1 items-center justify-center font-medium whitespace-nowrap',
+    'relative inline-flex flex-1 items-center justify-center font-medium whitespace-nowrap focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-brand-focus focus-visible:outline-none focus-visible:ring-inset',
     'border-r border-[var(--border-color-component)] last:border-r-0',
     checkboxButtonGeometryMap[groupSize.value],
     !computedDisabled.value && 'cursor-pointer',

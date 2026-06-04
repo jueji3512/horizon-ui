@@ -314,3 +314,14 @@
 - 用户补充确认：如果项目依赖、工具链或 Node.js 版本偏旧，且升级能带来更好的完整性、性能、简洁性或最终效果，先和用户确认后直接升级。
 - 开发阶段不以旧内部适配为优先约束；升级后如果项目内部不适配，应同步修正适配问题，而不是为了兼容旧实现回避升级。
 - 已同步 `AGENTS.md`、`TODO.md`、`findings.md` 和 `task_plan.md`，后续处理依赖或 Node 版本问题时按该原则执行。
+
+### 组件迁移扫描回合
+
+- 使用主代理 + 3 个子代理并行扫描源码规范残留、文档示例漂移和依赖工具链隐患；本轮未发现源码中仍有旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token，或视觉形态继续使用组件级 `type` 的高置信残留。
+- 修复 Checkbox / Radio 默认控件键盘焦点态：隐藏 input 加 `peer`，可视 box / circle 使用 `peer-focus-visible:ring-2 peer-focus-visible:ring-brand-focus`。
+- 修复 Checkbox / Radio button variant 焦点态：补 `focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-focus focus-visible:outline-none`，并用 `focus-visible:z-10` 避免分段边界被相邻项压住。
+- 修复 Switch 焦点态：移除手写 `.switch-input:focus + .switch-track` box-shadow，改为 `peer-focus-visible:ring-2 peer-focus-visible:ring-brand-focus`，避免鼠标点击也显示键盘焦点环。
+- 修正 `docs/guide/colors.md`：语义色 token 从不存在的 `--brand-color-*` / `--error-color-*` 等改为真实 `--color-brand-*` / `--color-error-*` / `--color-success-*` / `--color-warning-*`，并补充 Tailwind v4 `@theme` 工具类生成说明。
+- 修正文档漂移：`docs/components/checkbox.md` 的 `direction` 说明改为 default 形态；`docs/components/popper.md` 删除 V-10 后多余 `:::`；`docs/components/field.md` 补齐 FieldContent、FieldAction、FieldGroup、FieldSegment 等公开 primitive props；`docs/guide/field-system.md` 从旧实施计划改为当前状态与后续验证。
+- 依赖扫描结果：当前 Node `v22.10.0` 低于 `eslint-visitor-keys@5.0.1` 的 `^22.13.0` 要求；`npm audit` 仍有 4 个 moderate，其中 `brace-expansion@5.0.5` 可自动修复，VitePress 嵌套 Vite/esbuild 暂无直接修复版本；`npm outdated` 有 Tailwind、Vue、vue-tsc、typescript-eslint 等 patch/minor 候选。本轮只记录，不混入组件迁移提交。
+- 验证：`npm run check` 通过；内置浏览器 5176 复验 `/components/checkbox`、`/components/radio`、`/components/switch`，默认控件和 button variant 均命中 `brand-focus` ring；`/guide/colors`、`/components/field`、`/guide/field-system` 显示新文案。

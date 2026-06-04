@@ -9,7 +9,7 @@
 ## 近期开发计划
 
 - [ ] 继续完善公开底层组件 Field：首版 `src/components/Field/` primitives 已落地，并已迁移 Input / InputNumber；后续需要用 Select 多选、DatePicker range 等场景继续验证 FieldGroup、multiline 和 FieldSegment 边界。
-- [ ] 继续下一轮组件迁移扫描，以当前源码为准，不直接信任旧计划文档。
+- [ ] 继续下一轮组件迁移扫描，以当前源码为准，不直接信任旧计划文档；2026-06-04 本轮已修复 Checkbox / Radio / Switch focus-visible、色彩指南 token 命名、Field/Popper 文档漂移，后续继续按新增组件和剩余复杂组件滚动扫描。
 - [ ] 后续扫描时只把组件源码内部实现作为规范约束对象；文档示例可保留外部使用者风格，不强制迁移到 Horizon token。
 - [ ] 为后续新增或继续迁移的关键组件补充更稳定的浏览器级视觉验证；Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 已完成一轮浏览器验证并修复或确认发现的问题。
 - [ ] 后续新增或继续迁移组件文档时，统一使用 VitePress `:::demo`；示例源码放在 `docs/examples/<component>/`，由文档页引用同一份 `.vue` 示例。
@@ -30,8 +30,9 @@
 - [ ] 如未来 `Icon` 支持外部 SVG 或运行时 SVG 文本，必须重新评估当前 `v-html` 本地图标白名单策略，加入 sanitizer 或改为更安全的渲染路径。
 - [ ] in-app browser / Playwright 能力已恢复并用于 Field、Input、InputNumber 视觉验证；后续继续为关键组件补浏览器级视觉回归。
 - [ ] `docs/.vitepress/cache` 和 `docs/.vitepress/dist` 是忽略的生成物。如果没有 dev server 依赖，可以定期清理。
-- [ ] `npm audit` 当前报告 4 个 moderate 项：`brace-expansion` 可通过 `npm audit fix` 处理，`vitepress@1.6.4` 嵌套的 `vite/esbuild` 暂无直接修复版本；后续升级 VitePress/Vite 时复查。
-- [ ] 当前 Node 为 `v22.10.0`，安装依赖时 `eslint-visitor-keys@5.0.1` 仍可能提示需要 `^20.19 || ^22.13 || >=24`；检查命令当前可通过，后续本地/CI Node 可升级到 22.13+ 或 24 LTS。
+- [ ] `npm audit` 当前报告 4 个 moderate 项：`brace-expansion@5.0.5` 可通过 `npm audit fix` 升到 `5.0.6`，`vitepress@1.6.4` 嵌套的 `vite/esbuild` 暂无直接修复版本；后续升级 VitePress/Vite 时复查。
+- [ ] 当前 Node 为 `v22.10.0`，安装依赖时 `eslint-visitor-keys@5.0.1` 仍可能提示需要 `^20.19.0 || ^22.13.0 || >=24`；后续本地/CI Node 可升级到 22.13+ 或 24 LTS，并考虑在 `package.json` 补 `engines` / `packageManager`。
+- [ ] `npm outdated` 当前显示一批 patch/minor 候选：`tailwindcss` / `@tailwindcss/vite` 4.2.4 → 4.3.0、`tailwind-merge` 3.5.0 → 3.6.0、`vue` 3.5.33 → 3.5.35、`vue-tsc` 3.2.8 → 3.3.3、`typescript-eslint` 8.59.2 → 8.60.1 等；建议等 Node 版本统一后单独确认并批量升级。
 - [ ] `AGENTS.md` 已重写为中文快速入口；后续如组件规范变化，要同步更新。
 
 ## 工作习惯

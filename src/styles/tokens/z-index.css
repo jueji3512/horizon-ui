@@ -1,0 +1,11 @@
+/* ========== Z-index :root ========== */
+:root {
+  --z-base: 0;
+  --z-float: 10;
+  --z-dropdown: 20;
+  --z-sticky: 30;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-notification: 60;
+  --z-top: 70;
+}

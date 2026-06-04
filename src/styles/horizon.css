@@ -4,9 +4,12 @@
 
 /* ===== Design Tokens ===== */
 @import './tokens/color.css';
-@import './tokens/font.css';
+@import './tokens/typography.css';
+@import './tokens/radius.css';
 @import './tokens/size.css';
-@import './tokens/elevation.css';
+@import './tokens/shadow.css';
+@import './tokens/motion.css';
+@import './tokens/z-index.css';
 
 @layer base {
   body {

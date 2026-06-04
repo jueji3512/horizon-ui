@@ -1,4 +1,4 @@
-/* ========== 字体元数据 @theme（font-* 工具类） ========== */
+/* ========== Typography metadata @theme ========== */
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono:
@@ -15,7 +15,7 @@
   --text-4xl: 2.25rem;
 }
 
-/* ========== 字体 token :root（font-size + line-height + font-family 组合） ========== */
+/* ========== Typography token :root ========== */
 :root {
   --font-body-sm: 12px/20px var(--font-mono);
   --font-body-md: 14px/22px var(--font-mono);
@@ -29,7 +29,7 @@
   --font-title-6: 600 14px/22px var(--font-mono);
 }
 
-/* ========== 字体工具类 ========== */
+/* ========== Typography utilities ========== */
 @layer base {
   .font-body-sm {
     font: var(--font-body-sm);

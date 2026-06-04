@@ -38,6 +38,7 @@
 - InputNumber 复用 Field 后保留 24/32/40 规范尺寸，步进按钮已改为复用 Button 的 outline square 形态，并补齐聚焦状态下键盘/按钮步进后的展示值同步。
 - 2026-06-04 组件迁移扫描回合已完成：修复 Checkbox / Radio / Switch `focus-visible` 可视 ring，修正色彩指南语义 token 命名，补齐 Field primitive 文档并清理 Popper 多余 demo 标记。
 - 2026-06-04 组件迁移收敛扫描已完成：当前实现组件集未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；已修复 Tag checkable 键盘/ARIA、Input 内部 action 焦点边界、Tooltip 描述关联、Icon `ariaLabel` 语义、InputNumber `change` 事件语义、Popper 根导出、阴影 token fallback、Node 24 类型包和文档主题 stylelint 覆盖。
+- token 文件边界已整理：`font.css` 改为 `typography.css`，`size.css` 中的圆角拆到 `radius.css`，`elevation.css` 拆为 `shadow.css`、`motion.css`、`z-index.css`；`color.css` 仍作为完整色彩系统保留。
 - Input、InputNumber、Tag、Popper 已完成本轮浏览器视觉验证；发现的问题已同步修复到组件源码或 VitePress demo 隔离层。
 - 文档演示体系已一步到位迁移：18 个组件文档使用 VitePress `:::demo`，108 个示例拆到 `docs/examples/**/*.vue`，预览与源码展示共用同一份 `.vue` 文件；旧 DemoBox、details 查看代码、Histoire / Storybook spike 已清理。
 - 运行时已升级到 Node `24.16.0` / npm `11.13.0`，`package.json` 已补 `engines` / `packageManager`。
@@ -60,6 +61,7 @@
 | VitePress `:::demo` 维护 | 中 | 后续新增组件文档继续使用 `:::demo` + `docs/examples/<component>/`；样式污染优先从 `ComponentDemo` `.vp-raw` 与 `postcssIsolateStyles` 排查。 |
 | ComponentDemo 展示体验 | 中 | 后续补源码语法高亮，并继续打磨 demo 容器视觉样式；当前功能已可用，属于体验优化。 |
 | 组件级固有尺寸规范 | 完成 / 持续守护 | 首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，均作为组件内部几何规格维护，不新增通用尺寸 token。 |
+| token 文件边界 | 完成 / 持续守护 | 当前 token 文件按 color、typography、radius、size、shadow、motion、z-index 拆分；后续只在语义确实不适合共处时继续拆分。 |
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
 | 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 的截图 / DOM / computed style 验证；收敛扫描复验 Tag、Tooltip、Input、InputNumber 和关键指南页，后续继续覆盖新增组件。 |
 | Field 底层组件 | 中 | Input / InputNumber 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |

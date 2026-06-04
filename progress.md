@@ -357,3 +357,9 @@
 - 修正文档漂移：色彩指南改为 Horizon 自定义 OKLCH token 为准；Popper / Tooltip 面向模板使用者统一 kebab-case prop；FieldGroup 指南职责与源码对齐；Text / Title 的 `secondary` 明确为组件专属辅助层级；字体指南同步 `Noto Sans Mono SC`、`Microsoft YaHei` fallback。
 - 验证：`npm run check` 通过；启动干净 dev server `http://127.0.0.1:5181/` 后，内置浏览器复验 Tag 键盘切换、Tooltip `aria-describedby`、Input 清空回焦、InputNumber 页面和 colors / field-system / typography / popper 指南页，当前端口无 warning/error。
 - 保留后续项：Radio button variant 尚未做 roving `tabindex`，建议与未来 Toggle / ToggleGroup 方向一起设计；InputNumber readonly 步进按钮 disabled 视觉保持此前“readonly 不允许步进”的既定边界。
+
+### token 文件边界整理
+
+- 用户确认 `radius.css` / `typography.css` 这类拆分方向更合理，但强调目标不是为了拆文件，而是只拆确实不适合放在一起的 token。
+- 本轮审查 `src/styles/tokens/**` 后决定：`color.css` 仍保持完整色彩系统不拆；`size.css` 中的圆角拆出为 `radius.css`；`font.css` 重命名为更准确的 `typography.css`；`elevation.css` 拆为 `shadow.css`、`motion.css`、`z-index.css`。
+- `src/styles/horizon.css` 已按领域顺序导入：color、typography、radius、size、shadow、motion、z-index；变量名保持不变，组件源码无需跟随改动。

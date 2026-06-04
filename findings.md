@@ -25,7 +25,7 @@
 
 - `src/components/`：组件源码。
 - `src/styles/`：样式入口和 token。
-- `src/styles/tokens/`：颜色、字体、尺寸、阴影等 token 拆分文件。
+- `src/styles/tokens/`：按领域拆分的 token 文件：`color.css`、`typography.css`、`radius.css`、`size.css`、`shadow.css`、`motion.css`、`z-index.css`。
 - `docs/components/`：组件文档。
 - `docs/guide/`：设计指南。
 - `docs/.vitepress/`：文档站配置和主题。
@@ -79,6 +79,7 @@
 - 尺寸：`--comp-size-sm/md/lg`。
 - 圆角：`--round-default`、`--round-full`。
 - 阴影：常规层级使用 `--shadow-*`；上层浮层 surface 使用 `--shadow-popper` / `shadow-popper`，Popper 底层本身不内置阴影。
+- 动效：`--duration-*`；层级：`--z-*`。
 - padding / gap 不再作为 Horizon token 规范；组件内部直接使用 Tailwind spacing class。只有当某类结构尺寸形成稳定组件规格时，再逐项确认是否新增组件级 token。
 - 字体：`font-body-*`、`font-title-*`。
 
@@ -326,6 +327,14 @@ docs(project): 更新项目上下文与待办
 - 已为 `--shadow-*` / `--shadow-popper` 补 `:root` fallback；docs theme 的 IconGrid 改用 Horizon 语义 token，`lint:style` 扩展覆盖 docs theme 并修复暴露出的 ComponentDemo/IconGrid 样式问题。
 - 文档侧已修正色彩指南“所有色值来自 Tailwind 原生色阶”的强声明，改为 Horizon 自定义 OKLCH token 为准；Popper / Tooltip 模板 prop 统一为 kebab-case；FieldGroup 指南职责与源码对齐；Text / Title 的 `secondary` 明确为组件专属辅助文本层级；字体指南同步中文 fallback。
 - 本轮保留的后续项：Radio button variant 可进一步做 roving `tabindex`，建议与 Toggle / ToggleGroup 方向合并设计；InputNumber readonly 步进按钮的 disabled 视觉保持此前已确认的“readonly 不允许步进”边界。
+
+## 2026-06-04 token 文件边界整理
+
+- token 文件拆分原则已明确：不为了数量拆分，只在 token 语义确实不同、放在一起会误导维护时拆成多个 CSS。
+- `size.css` 原本同时放组件高度和圆角；圆角是形状 token，不属于尺寸高度体系，已拆到 `radius.css`，`size.css` 仅保留 `--comp-size-sm/md/lg`。
+- `font.css` 实际承载字体族、字号阶梯、body/title 字体 shorthand 和工具类，已重命名为 `typography.css`，与 `docs/guide/typography.md` 对齐。
+- `elevation.css` 原本同时放 shadow、duration 和 z-index；已拆为 `shadow.css`、`motion.css`、`z-index.css`。其中 shadow 保留 `@theme` 工具类生成和 `:root` fallback，motion 只放 `--duration-*`，z-index 只放 `--z-*`。
+- `color.css` 暂不拆分：当前语义色、文本色、背景色、边框色和 fallback 属于同一色彩系统，强拆反而会增加跨文件跳转成本。
 
 ## 后续入口
 

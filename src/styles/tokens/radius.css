@@ -1,0 +1,10 @@
+/* ========== Radius @theme ========== */
+@theme {
+  --round-none: 0px;
+  --round-default: 3px;
+  --round-1: 4px;
+  --round-2: 8px;
+  --round-3: 12px;
+  --round-full: 9999px;
+  --round-circle: 50%;
+}

@@ -1,0 +1,7 @@
+/* ========== Motion duration :root ========== */
+:root {
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-gentle: 500ms;
+}

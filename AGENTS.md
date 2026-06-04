@@ -7,7 +7,7 @@
 Horizon UI 是一个简约现代的企业级 Vue 3 组件库。
 
 - 技术栈：Vue 3、TypeScript strict、Tailwind CSS v4、VitePress。
-- 样式体系：CSS-first Tailwind v4 token，使用语义色、功能色、尺寸、圆角、字体、阴影 token。
+- 样式体系：CSS-first Tailwind v4 token，使用语义色、功能色、尺寸、圆角、字体、阴影、动效和层级 token。
 - 文档站点：`docs/`，组件文档在 `docs/components/`。
 - 组件源码：`src/components/`。
 - 当前主线：重新定义组件库规范，并迁移所有组件的尺寸、颜色、圆角、字体、状态样式与 API 命名。
@@ -92,8 +92,10 @@ docs(project): 更新项目上下文与待办
 - 尺寸：`--comp-size-sm`、`--comp-size-md`、`--comp-size-lg`。
 - 圆角：`--round-default`、`--round-full`。
 - 阴影：常规层级使用 `--shadow-*`；上层浮层 surface 使用 `--shadow-popper` / `shadow-popper`，Popper 底层本身不内置阴影。
+- 动效：`--duration-*`；层级：`--z-*`。
 - padding / gap 不再作为 Horizon token 规范；组件内部直接使用 Tailwind spacing class，只有颜色、字体、圆角、组件高度等仍按 token 规范收敛。
 - 字体工具类：`font-body-*`、`font-title-*`。
+- Token 文件按领域拆分为 `color.css`、`typography.css`、`radius.css`、`size.css`、`shadow.css`、`motion.css`、`z-index.css`；拆分原则是语义边界清晰，不为拆而拆。
 - 当前色彩规范主要完成 light mode；dark mode token、暗色状态映射、文档说明和组件适配仍是高优先级后续项。
 - 规范约束重点是组件源码内部实现；`docs/components/**` 中的示例代码视为使用者外部代码，可以自由展示自定义颜色、尺寸、圆角和业务样式，不要求完全使用 Horizon token。
 - `Text` / `Title` 的 `mark`、`Text` 的 `keyboard` 这类固定装饰样式可以作为组件内部特例使用明确色值，但如果有合适 token，优先使用 token 表达。
@@ -130,6 +132,7 @@ docs(project): 更新项目上下文与待办
 - Tag checkable 已补键盘与 ARIA；Input 内部 action blur/focus 边界已修复；Tooltip 已通过 `aria-describedby` 关联真实 tooltip content；Icon 有 `ariaLabel` 时补 `role="img"`；InputNumber `change` 仅在聚焦会话内值确实变化后于 blur 提交时触发。
 - Popper 根导出已补 `Placement` / `TriggerType` / `UsePopperOptions` / `UsePopperReturn` / `PopperContext` / `usePopper`；shadow token 已补 `:root` fallback；`@types/node` 已对齐 Node 24 基线为 `^24.13.0`。
 - docs theme 已纳入 stylelint，IconGrid 改用 Horizon 语义 token；色彩、FieldGroup、Typography、Popper、Tooltip、Text、Title 文档漂移已修正。
+- token 文件边界已收敛：`font.css` 改为 `typography.css`，`size.css` 中的圆角拆到 `radius.css`，`elevation.css` 拆为 `shadow.css`、`motion.css`、`z-index.css`；`color.css` 仍作为完整色彩系统保留。
 - 本轮保留后续项：Radio button variant 仍可进一步做 roving `tabindex`，建议与未来 Toggle / ToggleGroup 方向一起设计。
 - 本轮组件迁移扫描未发现源码中仍有旧 `primary` / `danger` API 或旧 `--color-primary` / `--color-danger` / `--radius-*` token；已修复 Checkbox / Radio / Switch 的 `focus-visible` 可视 ring，对齐 `brand-focus` token。
 - 色彩指南已将语义色 token 文档修正为真实的 Tailwind v4 `@theme` 变量：`--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`。

@@ -1,16 +1,4 @@
-/* ========== 尺寸 @theme ========== */
-@theme {
-  /* 圆角 */
-  --round-none: 0px;
-  --round-default: 3px;
-  --round-1: 4px;
-  --round-2: 8px;
-  --round-3: 12px;
-  --round-full: 9999px;
-  --round-circle: 50%;
-}
-
-/* ========== 组件尺寸 :root ========== */
+/* ========== Component size :root ========== */
 :root {
   --comp-size-sm: 24px;
   --comp-size-md: 32px;

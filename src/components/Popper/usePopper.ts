@@ -79,9 +79,6 @@ export function usePopper(
     floatingStyles: floatingStyles as unknown as ComputedRef<CSSProperties>,
     middlewareData,
     placement: placement as Ref<Placement>,
-    update: () => {
-      floatingUpdate()
-      return Promise.resolve()
-    },
+    update: floatingUpdate,
   }
 }

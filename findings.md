@@ -233,7 +233,7 @@ docs(project): 更新项目上下文与待办
 - 文档站样式污染必须在 VitePress theme / demo shell 层处理，不应为了 VitePress 表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖。
 - 旧 demo shell 曾暴露 input padding、disabled cursor、Link 样式和内部按钮布局污染等问题；当前已统一迁移到 `ComponentDemo` `.vp-raw` + `postcssIsolateStyles`，不再维护旧 scoped reset 白名单。
 - `ComponentDemo` 负责源码折叠和复制，预览与源码展示共用 `docs/examples/**/*.vue`，避免文档页示例和展示源码漂移。
-- Popper 浏览器验证中，hover / focus 触发在当前 in-app browser 通道不够稳定；V-02 / V-03 不作为自动化通过项，后续如需回归应使用专门测试环境或人工复核。
+- Popper 浏览器验证中，hover 触发在当前 in-app browser CUA 鼠标移动通道不够稳定；V-02 后续如需稳定回归应使用专门测试环境或人工复核。V-03 focus 已在后续 Tooltip / PopperTrigger 回归中复验通过。
 
 ## 2026-06-04 Divider API 命名迁移
 
@@ -265,6 +265,15 @@ docs(project): 更新项目上下文与待办
 - 使用内置浏览器验证 `/components/badge`：7 个 demo、19 个实际 Badge 均正常渲染；dot 为 `6×6`，数字 / 文本胶囊为 `20px` 高、`16px` min-width、左右 `6px` padding。
 - Badge `max` 显示 `99+`，`show-zero` 只在显式开启时显示 `0`，offset 反映到 translate matrix，自定义 `color` 覆盖背景色，`hidden` 示例仅保留未隐藏徽标。
 - 本轮未发现 Switch / Badge 源码或文档需要修正的问题。
+
+## 2026-06-04 Tooltip / PopperTrigger 浏览器验证
+
+- 使用内置浏览器验证 `/components/tooltip`：focus、click、manual、disabled 触发路径均正常；focus 示例点击后 `aria-expanded="true"` 且浮层显示“聚焦触发”，click / manual 可正常开关，disabled 不显示浮层。
+- 本轮发现 Tooltip focus 触发失效，根因是 Tooltip 使用 `trigger="manual"` 包装 Popper 后依赖 `PopperTrigger` 向上转发交互事件，而原实现没有稳定对外转发 focus 事件族。
+- `PopperTrigger` 已明确 emit `mouseenter` / `mouseleave` / `click` / `focus` / `focusin` / `blur` / `focusout`；显隐行为只消费 `focusin` / `focusout`，`focus` / `blur` 只作事件转发，并且触发器内部焦点切换不会重复 emit 离开事件。
+- `Popper trigger="focus"` 的底座示例已在 `/components/popper` 复验：输入框聚焦后浮层显示“聚焦时显示，失焦关闭”，点击页面其他按钮后 `aria-expanded` 回到 `false` 且浮层卸载。
+- 按 base-component review 维度并行审查 Popper 改动：Critical 0；Important 中 focus 双触发、复合触发器内部切焦点误关闭、`updatePosition` 返回类型不实均已修复；剩余事件文档已补到 Popper 文档。
+- 当前内置浏览器 CUA 鼠标移动未能可靠改变页面 `:hover` 状态，因此 Tooltip hover / Popper V-02 未作为自动化通过项；源码事件链与 mouseenter/mouseleave 转发已复查，后续若需稳定 hover 回归应补专门测试环境或人工实测。
 
 ## 后续入口
 

@@ -7,10 +7,6 @@
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
     @click="onClick"
-    @focus.capture="onFocusIn"
-    @focusin="onFocusIn"
-    @blur.capture="onFocusOut"
-    @focusout="onFocusOut"
   >
     <slot />
   </div>
@@ -25,32 +21,78 @@ if (!ctx) {
   throw new Error('<PopperTrigger> must be used inside <Popper>')
 }
 
+const emit = defineEmits<{
+  mouseenter: [event: MouseEvent]
+  mouseleave: [event: MouseEvent]
+  click: [event: MouseEvent]
+  focus: [event: FocusEvent]
+  focusin: [event: FocusEvent]
+  blur: [event: FocusEvent]
+  focusout: [event: FocusEvent]
+}>()
+
 const triggerEl = ref<HTMLElement>()
 
 onMounted(() => {
-  if (triggerEl.value) {
-    ctx.triggerRef.value = triggerEl.value
-  }
+  const el = triggerEl.value
+  if (!el) return
+  ctx.triggerRef.value = el
+  el.addEventListener('focus', onFocus, true)
+  el.addEventListener('focusin', onFocusIn)
+  el.addEventListener('blur', onBlur, true)
+  el.addEventListener('focusout', onFocusOut)
 })
 onBeforeUnmount(() => {
+  const el = triggerEl.value
+  el?.removeEventListener('focus', onFocus, true)
+  el?.removeEventListener('focusin', onFocusIn)
+  el?.removeEventListener('blur', onBlur, true)
+  el?.removeEventListener('focusout', onFocusOut)
   ctx.triggerRef.value = undefined
 })
 
-function onMouseEnter() {
+function onMouseEnter(event: MouseEvent) {
   if (ctx.trigger.value === 'hover' && !ctx.disabled.value) ctx.show()
+  emit('mouseenter', event)
 }
-function onMouseLeave() {
+function onMouseLeave(event: MouseEvent) {
   if (ctx.trigger.value === 'hover') ctx.hide()
+  emit('mouseleave', event)
 }
-function onClick() {
+function onClick(event: MouseEvent) {
   if (ctx.trigger.value === 'click' && !ctx.disabled.value) ctx.toggle()
+  emit('click', event)
 }
-function onFocusIn() {
+
+function showOnFocusTrigger() {
   if (ctx.trigger.value === 'focus' && !ctx.disabled.value) ctx.show()
 }
-function onFocusOut(e: FocusEvent) {
-  const nextTarget = e.relatedTarget
-  if (nextTarget instanceof Node && triggerEl.value?.contains(nextTarget)) return
+
+function isInternalFocusMove(event: FocusEvent) {
+  const relatedTarget = event.relatedTarget
+  return relatedTarget instanceof Node && Boolean(triggerEl.value?.contains(relatedTarget))
+}
+
+function hideOnFocusTrigger() {
   if (ctx.trigger.value === 'focus') ctx.hide()
+}
+
+function onFocus(event: FocusEvent) {
+  if (isInternalFocusMove(event)) return
+  emit('focus', event)
+}
+function onFocusIn(event: FocusEvent) {
+  if (isInternalFocusMove(event)) return
+  showOnFocusTrigger()
+  emit('focusin', event)
+}
+function onBlur(event: FocusEvent) {
+  if (isInternalFocusMove(event)) return
+  emit('blur', event)
+}
+function onFocusOut(e: FocusEvent) {
+  if (isInternalFocusMove(e)) return
+  hideOnFocusTrigger()
+  emit('focusout', e)
 }
 </script>

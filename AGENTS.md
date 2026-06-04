@@ -45,7 +45,7 @@ npm run check        # format:check + lint + typecheck + build
 
 ## 当前收尾快照
 
-- 2026-06-04 收尾时工作区已提交并清理；本轮关键功能/文档提交为 `48c0c68`、`1bc564a`、`26fbf67`。
+- 2026-06-04 收尾时工作区已提交并清理；本轮关键功能/文档提交可从最新 `git log` 接续查看，已包含 VitePress demo 迁移、Divider API 迁移、Callout/Checkbox/Radio/Switch/Badge/Tooltip 浏览器验证与 PopperTrigger focus 事件修复。
 - 最近一次完整验证：`npm run check` 通过，包含 format、lint、typecheck 和 VitePress build。
 - 本地 dev server 曾在 `http://127.0.0.1:5173/` 验证过 Checkbox 等页面；新对话如需继续看页面，先确认 dev server 是否仍在运行。
 
@@ -114,11 +114,13 @@ docs(project): 更新项目上下文与待办
 - InputNumber 已复用 FieldRoot / FieldNativeInput / FieldGroup，步进按钮复用 Button 的 `variant="outline"` + `shape="square"`，保留 sm/md/lg 的 24/32/40 尺寸，并修复聚焦时键盘/按钮步进后的展示值同步。
 - Checkbox / Radio 的 `variant="button"` 未来可考虑抽到 Toggle / ToggleGroup；当前只记录方向，不实现。
 - 组件级固有尺寸已完成首轮定稿：Switch track/thumb、Badge dot/count、Tooltip surface / PopperArrow、Checkbox / Radio 控件几何、FieldAction、InputNumber 输入段宽度、Callout 左侧色条、Divider 标签线均作为组件内部几何规格维护，不新增通用 token。
-- Input、InputNumber、Tag、Popper 已完成本轮浏览器验证；发现的问题已修复到组件源码或 VitePress demo 隔离层。
+- Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 已完成本轮浏览器验证；发现的问题已修复到组件源码或 VitePress demo 隔离层。
 - 文档演示已统一为 VitePress `:::demo` 单源示例：组件页通过 `docs/examples/**/*.vue` 渲染预览并展示源码，`ComponentDemo` 使用 `.vp-raw` 与 `postcssIsolateStyles` 隔离 VitePress 默认主题样式。
 - 旧 DemoBox / details 查看代码 / Histoire / Storybook spike 已清理；后续文档示例不要回到这些路线。
 - `ComponentDemo` 当前源码展示还没有语法高亮，容器视觉样式也可继续优化；该事项已记录到 `TODO.md`。
 - Popper 已完成 base-component review；`offset` / `flip` / `shift` / `matchWidth` / `autoUpdate` 改为响应式配置，`matchWidth` 改用 Floating UI `size` middleware，`disabled` 变 true 时会关闭已打开浮层。
+- PopperTrigger 已明确转发 `mouseenter` / `mouseleave` / `click` / `focus` / `focusin` / `blur` / `focusout` 事件；focus 显隐只消费 `focusin` / `focusout`，内部焦点切换不会重复触发上层离开事件。
+- Popper `updatePosition` / `UsePopperReturn.update` 返回类型已对齐 Floating UI 实际行为为 `void`，不再伪装为可等待的 `Promise<void>`。
 - Popper 文档去掉容易误解为内置主题的深色/浅色和默认边框表达。
 - `Icon.vue` 的 `v-html` 仅用于渲染打包期导入的本地图标 SVG，已补充安全边界说明并处理 lint warning。
 - 全项目 `lint`、`format:check`、`typecheck`、`build` 已通过。

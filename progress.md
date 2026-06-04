@@ -207,7 +207,7 @@
 - 完成 Popper 浏览器验证：V-01 click + Esc、V-04 matchWidth、V-05 placement/arrow、V-06 flip、V-07 shift、V-08 autoUpdate、V-09 disabled、V-10 z-index 递增、V-11 offset 均已验证。
 - Popper 验证中发现 V-10 文档写死 z-index 数值但实际会随页面 Popper 实例递增，已改为相对层级验证；V-06/V-07 浮层过小导致固定顶栏下难以触发边界，已改为高浮层 demo。
 - Popper `shift` 原实现只使用 Floating UI 默认轴，无法将 `top` 溢出的高浮层推回视口；已改为 `shift({ padding: 4, crossAxis: true })`，与文档“超出视口推回可见”语义一致。
-- 当前 in-app browser 控制通道无法可靠触发 hover / focus 事件；本轮未把 Popper V-02 / V-03 作为自动化通过项，已记录到 `TODO.md`，后续需要专门测试环境或人工复核。
+- 当前 in-app browser 控制通道无法可靠触发 hover 事件；本轮未把 Popper V-02 作为自动化通过项，已记录到 `TODO.md`，后续需要专门测试环境或人工复核。Popper V-03 focus 已在后续 Tooltip / PopperTrigger 回归中复验通过。
 
 ### 文档演示框架评估
 
@@ -292,3 +292,14 @@
 - Switch 交互复验通过：非禁用关闭项点击后 checked / aria-checked / 背景色 / translate 更新；disabled 与 loading 项 cursor 为 `not-allowed`，点击 disabled 项被浏览器阻止。
 - 内置浏览器验证 `/components/badge`：7 个 demo、19 个实际 Badge 均正常；dot 为 6x6，数字 / 文本胶囊为 20px 高、16px min-width、左右 6px padding。
 - Badge 的 `max`、`show-zero`、offset、自定义 `color` 和 `hidden` 行为均符合文档预期；本轮未发现 Switch / Badge 需要代码修复的问题。
+### Tooltip / PopperTrigger 浏览器验证
+
+- 本轮任务转向 Tooltip 浏览器回归，因涉及 `PopperTrigger` 底层事件转发，按用户授权并行开启 3 个子代理做 base-component review 的性能、功能完整性与代码质量维度审查。
+- 内置浏览器验证 `/components/tooltip` 时发现 focus 触发不显示浮层；click、manual 与 disabled 路径正常。
+- 修复 `PopperTrigger`：明确转发 `mouseenter` / `mouseleave` / `click` / `focus` / `focusin` / `blur` / `focusout`，并将内部 focus 显隐收敛到 `focusin` / `focusout`，避免 `focus.capture` 与 `focusin` 双触发导致重复 timer / emit。
+- 修复复合触发器内部切焦点边界：内部 focus move 不再向上层 emit 离开事件，避免 Tooltip 等 `trigger="manual"` 上层组件误隐藏。
+- 修正 `usePopper` / `PopperContext` / `UsePopperReturn` 中 `updatePosition` 的返回类型，从虚假的 `Promise<void>` 改为真实 `void`。
+- 同步 `docs/components/popper.md`，补充 `PopperTrigger` 的事件门面说明。
+- 内置浏览器复验 `/components/tooltip`：focus 显示“聚焦触发”，click 与 manual 可开关，disabled 不显示浮层；Tooltip surface 仍为 max-width 240px、padding 4px 8px、round-default、shadow-popper。
+- 内置浏览器复验 `/components/popper` 的 `trigger="focus"`：输入框聚焦后浮层显示“聚焦时显示，失焦关闭”，点击页面其他按钮后浮层关闭。
+- 内置浏览器 CUA 鼠标移动未能可靠改变页面 `:hover` 状态，因此 hover 未作为自动化通过项；该限制已同步记录到 `TODO.md` 与 `findings.md`。

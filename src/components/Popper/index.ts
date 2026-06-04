@@ -19,7 +19,7 @@ export interface PopperContext {
   middlewareData: Ref<MiddlewareData>
   currentPlacement: Ref<Placement>
   to: ComputedRef<string | HTMLElement>
-  updatePosition: () => Promise<void>
+  updatePosition: () => void
   zIndex: ComputedRef<number>
   matchWidth: ComputedRef<boolean>
   contentId: string

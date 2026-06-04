@@ -51,7 +51,7 @@
 | ComponentDemo 展示体验 | 中 | 后续补源码语法高亮，并继续打磨 demo 容器视觉样式；当前功能已可用，属于体验优化。 |
 | 组件级固有尺寸规范 | 完成 / 持续守护 | 首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，均作为组件内部几何规格维护，不新增通用尺寸 token。 |
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
-| 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge 的截图 / DOM / computed style 验证；后续继续覆盖剩余关键组件。 |
+| 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 的截图 / DOM / computed style 验证；后续继续覆盖剩余关键组件。 |
 | Field 底层组件 | 中 | Input / InputNumber 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |
 | Dark mode 色彩规范 | 后置 | 用户已决定 dark mode 放到当前队列最后；当前完成的是 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。 |
 | Icon 外部 SVG 安全策略 | 中 | 如果未来支持外部 SVG 输入，需要替换当前仅适用于本地白名单图标的策略。 |

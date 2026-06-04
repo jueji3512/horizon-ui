@@ -32,5 +32,5 @@ export interface UsePopperReturn {
   floatingStyles: ComputedRef<CSSProperties>
   middlewareData: Ref<MiddlewareData>
   placement: Ref<Placement>
-  update: () => Promise<void>
+  update: () => void
 }

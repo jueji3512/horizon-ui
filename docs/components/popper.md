@@ -150,6 +150,16 @@ popper/example-11
 
 包裹层 `<div class="inline-flex">`，负责参考元素 ref 和事件委托。无 Props。
 
+| Event | 参数 | 说明 |
+|-------|------|------|
+| `mouseenter` | `MouseEvent` | 触发器鼠标进入事件 |
+| `mouseleave` | `MouseEvent` | 触发器鼠标离开事件 |
+| `click` | `MouseEvent` | 触发器点击事件 |
+| `focus` | `FocusEvent` | 焦点进入触发器 |
+| `focusin` | `FocusEvent` | 焦点进入触发器或其子元素；触发器内部焦点切换不会重复触发 |
+| `blur` | `FocusEvent` | 焦点离开触发器 |
+| `focusout` | `FocusEvent` | 焦点离开触发器或其子元素；触发器内部焦点切换不会重复触发 |
+
 ### PopperContent
 
 无 Props。z-index 由 Popper 管理，样式通过 `floatingStyles` 自动应用。PopperContent 默认不提供背景、边框或圆角；需要视觉样式时由上层通过 `class` / `style` 设置。

@@ -164,6 +164,7 @@ const buttonClasses = computed(() =>
     'inline-flex flex-1 items-center justify-center font-medium whitespace-nowrap',
     'border-r border-[var(--border-color-component)] last:border-r-0',
     checkboxButtonGeometryMap[groupSize.value],
+    !computedDisabled.value && 'cursor-pointer',
     isChecked.value && !computedDisabled.value && 'bg-brand text-[var(--text-color-inverse)]',
     !isChecked.value &&
       !computedDisabled.value &&

@@ -271,3 +271,11 @@
 - 内置浏览器验证 `/components/callout`：页面标题、2 个 demo、主题说明、源码预览和 6 个实际 Callout 实例均正常渲染。
 - computed style 确认左侧色条为 4px，内容 padding 为 `12px 16px`，外层圆角为当前 `--round-default` 结果；正文和标题颜色均跟随 `brand` / `success` / `warning` / `error` theme。
 - 本轮未发现 Callout 需要代码修复的问题，已将 TODO / task_plan / findings 的浏览器验证覆盖范围补充到 Callout。
+
+### Checkbox / Radio 浏览器验证
+
+- 继续补关键组件浏览器级视觉回归，覆盖 Checkbox / Radio 的 default 与 `variant="button"` 两套形态。
+- 内置浏览器验证 `/components/checkbox`：7 个 demo 正常；default box 为 16x16，icon 为 12x12；button variant sm/md/lg 为 24/32/40px，disabled 项为 `cursor: not-allowed`。
+- 内置浏览器验证 `/components/radio`：4 个 demo 正常；default circle 为 16x16，inner dot 为 8x8；button variant sm/md/lg 为 24/32/40px，disabled 项为 `cursor: not-allowed`。
+- 发现并修复 Checkbox / Radio button variant 非禁用项 cursor 为浏览器默认值的问题：已在 `src/components/Checkbox/Checkbox.vue` 和 `src/components/Radio/Radio.vue` 中为非禁用 button 项补 `cursor-pointer`。
+- 交互复验通过：Checkbox 独立项、Checkbox button 组、Radio default 组和 Radio button 组点击后均能更新对应 checked / aria-checked / data-selected 状态，禁用项保持不变。

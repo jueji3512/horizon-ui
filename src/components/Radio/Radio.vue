@@ -119,6 +119,7 @@ const buttonClasses = computed(() =>
     'inline-flex flex-1 items-center justify-center font-medium whitespace-nowrap',
     'border-r border-[var(--border-color-component)] last:border-r-0',
     radioButtonGeometryMap[groupSize.value],
+    !isDisabled.value && 'cursor-pointer',
     isChecked.value && !isDisabled.value && 'bg-brand text-[var(--text-color-inverse)]',
     !isChecked.value &&
       !isDisabled.value &&

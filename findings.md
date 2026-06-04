@@ -249,6 +249,14 @@ docs(project): 更新项目上下文与待办
 - `brand` / `success` / `warning` / `error` 正文颜色分别命中对应语义色；带标题示例的 `Title level=6` 通过内联 color 跟随 Callout theme。
 - 本轮未发现 Callout 源码或文档需要修正的问题。
 
+## 2026-06-04 Checkbox / Radio 浏览器验证
+
+- 使用内置浏览器验证 `/components/checkbox` 与 `/components/radio`：Checkbox 7 个 demo、Radio 4 个 demo 均正常渲染，文档中的 `variant="button"` 说明与示例源码可见。
+- Checkbox default box 为 `16 × 16px`，check / indeterminate icon 为 `12 × 12px`；Radio default circle 为 `16 × 16px`，inner dot 为 `8 × 8px`。
+- Checkbox / Radio button variant 的 sm/md/lg 高度分别为 `24px` / `32px` / `40px`，padding 与文档规格一致；disabled 项保持 `cursor: not-allowed`。
+- 验证发现 Checkbox / Radio button variant 的非禁用按钮项 cursor 为浏览器默认值，已补为 `cursor-pointer`；复验后可点击项为 `pointer`，禁用项仍为 `not-allowed`。
+- 交互验证通过：Checkbox 独立项、Checkbox button 组、Radio default 组和 Radio button 组点击后均能更新 checked / aria-checked / data-selected 状态，禁用项不改变。
+
 ## 后续入口
 
 - 任务清单：`TODO.md`。

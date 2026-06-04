@@ -11,7 +11,7 @@
 - [ ] 继续完善公开底层组件 Field：首版 `src/components/Field/` primitives 已落地，并已迁移 Input / InputNumber；后续需要用 Select 多选、DatePicker range 等场景继续验证 FieldGroup、multiline 和 FieldSegment 边界。
 - [ ] 继续下一轮组件迁移扫描，以当前源码为准，不直接信任旧计划文档。
 - [ ] 后续扫描时只把组件源码内部实现作为规范约束对象；文档示例可保留外部使用者风格，不强制迁移到 Horizon token。
-- [ ] 为后续新增或继续迁移的关键组件补充更稳定的浏览器级视觉验证；Input、InputNumber、Tag、Popper、Callout 已完成一轮浏览器验证并修复或确认发现的问题。
+- [ ] 为后续新增或继续迁移的关键组件补充更稳定的浏览器级视觉验证；Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio 已完成一轮浏览器验证并修复或确认发现的问题。
 - [ ] 后续新增或继续迁移组件文档时，统一使用 VitePress `:::demo`；示例源码放在 `docs/examples/<component>/`，由文档页引用同一份 `.vue` 示例。
 - [ ] 后续优化 `ComponentDemo` 的源码展示体验：当前源码区还没有语法高亮，demo 容器的视觉样式也有继续打磨空间。
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。

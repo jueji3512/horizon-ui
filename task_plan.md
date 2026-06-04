@@ -42,6 +42,10 @@
 - 本地 Switch 视觉原型 `switch-mockups.html` 已删除。
 - 仓库级代码编辑器与检查工具规范已建立：`CODE_STYLE.md`、`.editorconfig`、`.gitattributes`、Stylelint、Tailwind class sorting 和 `npm run check`。
 
+## 旧版资料清理
+
+- 根目录旧版 `design.md` 已删除；当前设计规范以 `src/styles/tokens/**`、`docs/guide/**` 和根目录记忆文档为准。
+
 ## 后续计划
 
 | 任务 | 优先级 | 说明 |

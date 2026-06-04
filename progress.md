@@ -303,3 +303,8 @@
 - 内置浏览器复验 `/components/tooltip`：focus 显示“聚焦触发”，click 与 manual 可开关，disabled 不显示浮层；Tooltip surface 仍为 max-width 240px、padding 4px 8px、round-default、shadow-popper。
 - 内置浏览器复验 `/components/popper` 的 `trigger="focus"`：输入框聚焦后浮层显示“聚焦时显示，失焦关闭”，点击页面其他按钮后浮层关闭。
 - 内置浏览器 CUA 鼠标移动未能可靠改变页面 `:hover` 状态，因此 hover 未作为自动化通过项；该限制已同步记录到 `TODO.md` 与 `findings.md`。
+### 旧版 design.md 清理
+
+- 继续扫描旧规范残留时发现根目录 `design.md` 仍保留 `primary` / `danger`、旧 radius / shadow token 等早期设计稿内容。
+- 该文件未被源码、文档站或构建引用，且与当前 `src/styles/tokens/**`、`docs/guide/**` 和根目录记忆文档中的规范冲突。
+- 按用户确认的开发阶段原则，已删除根目录旧版 `design.md`，避免后续代理或人工开发误读旧 token 体系。

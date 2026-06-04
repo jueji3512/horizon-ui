@@ -126,6 +126,10 @@ docs(project): 更新项目上下文与待办
 - 全项目 `lint`、`format:check`、`typecheck`、`build` 已通过。
 - `docs/superpowers/**` 历史计划资料已审计并删除，VitePress `srcExclude` 的过期配置已移除。
 
+## 旧版设计稿说明
+
+根目录旧版 `design.md` 已删除；它未被源码或文档站引用，且保留了过时的 `primary` / `danger`、旧 radius / shadow token 体系。当前设计规范以 `src/styles/tokens/**`、`docs/guide/**` 和根目录记忆文档为准，后续不要恢复该旧设计稿。
+
 ## Popper 特别说明
 
 Popper 是底层定位基座，不是最终视觉组件。

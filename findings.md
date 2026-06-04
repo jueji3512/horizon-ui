@@ -275,6 +275,12 @@ docs(project): 更新项目上下文与待办
 - 按 base-component review 维度并行审查 Popper 改动：Critical 0；Important 中 focus 双触发、复合触发器内部切焦点误关闭、`updatePosition` 返回类型不实均已修复；剩余事件文档已补到 Popper 文档。
 - 当前内置浏览器 CUA 鼠标移动未能可靠改变页面 `:hover` 状态，因此 Tooltip hover / Popper V-02 未作为自动化通过项；源码事件链与 mouseenter/mouseleave 转发已复查，后续若需稳定 hover 回归应补专门测试环境或人工实测。
 
+## 2026-06-04 旧版 design.md 清理
+
+- 根目录 `design.md` 仅保留旧版设计稿内容，未被源码、文档站或构建引用。
+- 该文件仍记录 `--color-primary-*` / `--color-danger-*`、`--radius-*` 等旧 token 体系，与当前 `brand` / `error`、`--round-*`、组件级 geometry map 规范冲突。
+- 按“完整、性能、简洁、最终效果优先”的开发原则，本轮直接删除该旧文件；当前规范入口以 `src/styles/tokens/**`、`docs/guide/**`、`AGENTS.md`、`TODO.md`、`findings.md`、`task_plan.md`、`progress.md` 为准。
+
 ## 后续入口
 
 - 任务清单：`TODO.md`。

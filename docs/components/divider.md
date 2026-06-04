@@ -12,7 +12,7 @@ divider/example-01
 
 ## 虚线
 
-`type="dashed"` 设置虚线样式。
+`variant="dashed"` 设置虚线样式。
 
 :::demo 虚线
 divider/example-02
@@ -58,7 +58,7 @@ Divider 使用组件内部结构尺寸，线条、文字间距和纵向高度不
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `direction` | `'horizontal' \| 'vertical'` | `'horizontal'` | 分割线方向 |
-| `type` | `'solid' \| 'dashed'` | `'solid'` | 线型 |
+| `variant` | `'solid' \| 'dashed'` | `'solid'` | 线型 |
 | `align` | `'left' \| 'center' \| 'right'` | `'center'` | 文字位置，无文字时忽略 |
 | `plain` | `boolean` | `false` | 朴素模式，文字颜色更浅 |
 

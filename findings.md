@@ -235,6 +235,13 @@ docs(project): 更新项目上下文与待办
 - `ComponentDemo` 负责源码折叠和复制，预览与源码展示共用 `docs/examples/**/*.vue`，避免文档页示例和展示源码漂移。
 - Popper 浏览器验证中，hover / focus 触发在当前 in-app browser 通道不够稳定；V-02 / V-03 不作为自动化通过项，后续如需回归应使用专门测试环境或人工复核。
 
+## 2026-06-04 Divider API 命名迁移
+
+- 继续组件迁移扫描时确认：组件级视觉形态里仅 Divider 仍使用 `type="solid|dashed"` 表达线型；Input、FieldNativeInput、FieldAction 等剩余 `type` 均为原生 input/button 语义，不属于本轮迁移对象。
+- Divider 源码已将线型 prop 迁移为 `variant="solid|dashed"`，默认仍为 `solid`；`lineClass` 改为基于 `props.variant` 判断 `border-dashed`。
+- Divider 文档与 `docs/examples/divider/example-02.vue` 已同步为 `variant="dashed"`，继续使用 VitePress `:::demo` 单源示例体系。
+- 验证：`npm run check` 通过；使用 5174 dev server 与内置浏览器确认 `/components/divider` 页面加载正常，虚线示例说明展示 `variant="dashed"`，源码展开后包含 `<Divider variant="dashed" />`，虚线分割线视觉正常。
+
 ## 后续入口
 
 - 任务清单：`TODO.md`。

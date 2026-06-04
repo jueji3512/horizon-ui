@@ -257,3 +257,10 @@
 - 收尾前 `git status --short` 为空，`npm run check` 通过；如果下次打开时状态不同，先按当前工作区差异判断是否有用户新增改动。
 - 新增后续事项：`ComponentDemo` 源码展示尚无语法高亮，demo 容器视觉样式也可继续优化；已记录到 `TODO.md` 和 `task_plan.md`。
 - 下次优先级建议：先确认工作区 clean 和最近提交，再从 `TODO.md` 的近期开发计划选择任务；若继续文档体验，优先做 `ComponentDemo` 语法高亮与样式打磨；若继续组件主线，则回到组件迁移扫描和关键组件浏览器验证。
+
+### Divider API 命名迁移
+
+- 继续组件迁移扫描，定位到 Divider 仍使用组件级 `type="solid|dashed"` 表达线型；其余 `type` 残留为 Input / Field 原生 input 类型或 button 类型，不属于视觉形态 API。
+- 已将 `src/components/Divider/Divider.vue` 的线型 prop 改为 `variant?: 'solid' | 'dashed'`，默认值为 `solid`，并改用 `props.variant` 控制 `border-dashed`。
+- 已同步 `docs/components/divider.md` 与 `docs/examples/divider/example-02.vue`，虚线示例改为 `variant="dashed"`。
+- 验证：`npm run check` 通过；5174 dev server 返回 `/components/divider` 200，内置浏览器确认页面显示 `variant="dashed"` 说明，源码展开后包含 `<Divider variant="dashed" />`，且虚线示例视觉正常。

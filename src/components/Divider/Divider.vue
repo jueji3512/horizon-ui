@@ -49,19 +49,19 @@ import { computed } from 'vue'
 import { cn } from '../../utils'
 
 type DividerDirection = 'horizontal' | 'vertical'
-type DividerType = 'solid' | 'dashed'
+type DividerVariant = 'solid' | 'dashed'
 type DividerAlign = 'left' | 'center' | 'right'
 
 const props = withDefaults(
   defineProps<{
     direction?: DividerDirection
-    type?: DividerType
+    variant?: DividerVariant
     align?: DividerAlign
     plain?: boolean
   }>(),
   {
     direction: 'horizontal',
-    type: 'solid',
+    variant: 'solid',
     align: 'center',
     plain: false,
   },
@@ -77,6 +77,6 @@ const dividerGeometryMap = {
 } as const
 
 const lineClass = computed(() =>
-  cn('border-[var(--border-color-divider)]', props.type === 'dashed' && 'border-dashed'),
+  cn('border-[var(--border-color-divider)]', props.variant === 'dashed' && 'border-dashed'),
 )
 </script>

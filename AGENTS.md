@@ -41,6 +41,7 @@ npm run check        # format:check + lint + typecheck + build
 3. 当前更靠前的后续项是继续扫描未迁移组件、补充关键组件浏览器级视觉验证；组件文档已统一使用 VitePress `:::demo` + `docs/examples/**` 单源示例；`ComponentDemo` 的源码高亮与视觉样式可作为后续文档体验优化项；Field 在 Select 多选、DatePicker range 等复杂场景的压力验证已决定先滞后，dark mode 放到当前队列最后。
 4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
+6. 后续遇到适合并行的重扫描、跨组件验证或互不冲突的修复时，可以开启子代理协助；小而线性的任务优先主代理直接推进，避免不必要的协调成本。
 
 ## 当前收尾快照
 
@@ -143,3 +144,4 @@ Popper 是底层定位基座，不是最终视觉组件。
 - 如果修改颜色 token，必须同步更新 `src/styles` 和设计指南文档。
 - 如果修改代码风格或检查工具，必须同步更新 `CODE_STYLE.md` 和相关配置。
 - 文档站 VitePress 全局样式影响组件 demo 时，应优先检查 `ComponentDemo` 的 `.vp-raw` 隔离与 `docs/.vitepress/config.ts` 中的 `postcssIsolateStyles`；不要为了 VitePress 表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖。
+- 可按任务复杂度使用子代理：适合并行拆分的扫描、验证或独立文件修复可以分派；同一文件或强耦合改动仍由主代理集中处理。

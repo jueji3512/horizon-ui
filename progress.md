@@ -279,3 +279,16 @@
 - 内置浏览器验证 `/components/radio`：4 个 demo 正常；default circle 为 16x16，inner dot 为 8x8；button variant sm/md/lg 为 24/32/40px，disabled 项为 `cursor: not-allowed`。
 - 发现并修复 Checkbox / Radio button variant 非禁用项 cursor 为浏览器默认值的问题：已在 `src/components/Checkbox/Checkbox.vue` 和 `src/components/Radio/Radio.vue` 中为非禁用 button 项补 `cursor-pointer`。
 - 交互复验通过：Checkbox 独立项、Checkbox button 组、Radio default 组和 Radio button 组点击后均能更新对应 checked / aria-checked / data-selected 状态，禁用项保持不变。
+
+### 工作方式记录
+
+- 用户提醒当前可以开启子代理；后续任务较重或天然可并行时，可分派子代理协助扫描、验证或处理互不冲突的文件。
+- 当前 Switch / Badge 浏览器验证范围较小、路径线性，先由主代理直接完成。
+
+### Switch / Badge 浏览器验证
+
+- 继续补关键组件浏览器级视觉验证，覆盖 Switch 与 Badge 的组件内部几何规格和关键状态。
+- 内置浏览器验证 `/components/switch`：4 个 demo、8 个实际 Switch 均正常；sm/md/lg track 为 26x16 / 32x20 / 40x24，thumb 为 10x10 / 12x12 / 14x14，激活位移为 10 / 12 / 16px。
+- Switch 交互复验通过：非禁用关闭项点击后 checked / aria-checked / 背景色 / translate 更新；disabled 与 loading 项 cursor 为 `not-allowed`，点击 disabled 项被浏览器阻止。
+- 内置浏览器验证 `/components/badge`：7 个 demo、19 个实际 Badge 均正常；dot 为 6x6，数字 / 文本胶囊为 20px 高、16px min-width、左右 6px padding。
+- Badge 的 `max`、`show-zero`、offset、自定义 `color` 和 `hidden` 行为均符合文档预期；本轮未发现 Switch / Badge 需要代码修复的问题。

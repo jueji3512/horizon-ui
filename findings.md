@@ -257,6 +257,15 @@ docs(project): 更新项目上下文与待办
 - 验证发现 Checkbox / Radio button variant 的非禁用按钮项 cursor 为浏览器默认值，已补为 `cursor-pointer`；复验后可点击项为 `pointer`，禁用项仍为 `not-allowed`。
 - 交互验证通过：Checkbox 独立项、Checkbox button 组、Radio default 组和 Radio button 组点击后均能更新 checked / aria-checked / data-selected 状态，禁用项不改变。
 
+## 2026-06-04 Switch / Badge 浏览器验证
+
+- 使用内置浏览器验证 `/components/switch`：4 个 demo、8 个实际 Switch 均正常渲染；sm/md/lg track 为 `26×16` / `32×20` / `40×24`，thumb 为 `10×10` / `12×12` / `14×14`。
+- Switch checked 状态位移通过 Tailwind v4 的独立 `translate` 属性生效，sm/md/lg 分别为 `10px` / `12px` / `16px`；disabled 与 loading 状态 cursor 为 `not-allowed`，点击 disabled 项被浏览器阻止。
+- Switch 交互验证通过：非禁用关闭项点击后 checked / aria-checked / 背景色 / translate 同步更新，disabled 与 loading 项状态保持不变。
+- 使用内置浏览器验证 `/components/badge`：7 个 demo、19 个实际 Badge 均正常渲染；dot 为 `6×6`，数字 / 文本胶囊为 `20px` 高、`16px` min-width、左右 `6px` padding。
+- Badge `max` 显示 `99+`，`show-zero` 只在显式开启时显示 `0`，offset 反映到 translate matrix，自定义 `color` 覆盖背景色，`hidden` 示例仅保留未隐藏徽标。
+- 本轮未发现 Switch / Badge 源码或文档需要修正的问题。
+
 ## 后续入口
 
 - 任务清单：`TODO.md`。

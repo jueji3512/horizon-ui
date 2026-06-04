@@ -7,6 +7,7 @@
 - 项目根目录：`D:\project\ui`。
 - 项目类型：Vue 3 企业级组件库 + VitePress 文档站。
 - 技术栈：Vue 3、TypeScript strict、Tailwind CSS v4、VitePress、ESLint、Stylelint、Prettier。
+- 运行时基线：Node.js `>=24.16.0`、npm `>=11.13.0`，`packageManager` 为 `npm@11.13.0`。
 - 当前工作主线：重新定义组件库规范，并迁移所有组件的尺寸、颜色、圆角、字体、状态样式和 API 命名。
 
 ## 代码风格与检查工具
@@ -17,6 +18,7 @@
 - Prettier 保持无分号、单引号、100 字符宽度、尾随逗号，并改用 `arrowParens: 'always'`。
 - `prettier-plugin-tailwindcss` 负责 Tailwind class sorting，读取 `src/styles/horizon.css`，并处理 `clsx` / `cn` 中的 class。
 - ESLint 负责 JS/TS/Vue 代码质量；Stylelint 基于 `stylelint-config-standard-vue`，负责 CSS 和 Vue style。
+- 当前 ESLint 已升级到 10.x；`eslint.config.js` 直接使用的 `globals` 已作为显式 devDependency 声明。
 - 新增 `npm run lint:js`、`npm run lint:style`、`npm run check`；`npm run lint` 同时运行 JS lint 与 style lint。
 
 ## 目录结构
@@ -109,6 +111,9 @@ docs(project): 更新项目上下文与待办
 - 删除一个空的异常路径目录 `d...projectuisrccomponentsSpace`。
 - 新增 `TODO.md`，作为隐藏问题和未来任务索引。
 - 文档演示已统一为 VitePress `:::demo`：组件页引用 `docs/examples/**/*.vue` 渲染预览并展示源码，旧 DemoBox / details 查看代码 / Histoire / Storybook spike 已清理。
+- Node 已通过 nvm 升级到 `24.16.0`，npm 升级到 `11.13.0`；`package.json` 已补充 `engines` 与 `packageManager`。
+- 直接依赖已升级到当前最新可用版本，`npm outdated --json` 为空；主要升级包括 Tailwind 4.3、Vue 3.5.35、ESLint 10.4、Vite 8.0、vue-tsc 3.3。
+- Badge 文档示例改为本地 import Horizon `Badge`，文档主题不再全局注册 `Badge`，避免与 VitePress 默认主题同名组件产生重复注册 warning。
 
 ## 验证状态
 
@@ -123,6 +128,7 @@ docs(project): 更新项目上下文与待办
 - 浏览器验证：`/components/button` 的 `solid/outline`、`rectangle/round/square/circle` 渲染通过；`/components/inputnumber` 的 Button stepper 尺寸、disabled/readonly 状态和点击步进通过。
 - 最近一次文档演示体系验证：`npm run check` 通过；内置浏览器抽查 `/components/button`、`/components/checkbox`、`/components/inputnumber`、`/components/popper`，确认 `:::demo` 数量、源码折叠、预览渲染和源码内容正常。
 - 2026-06-04 收尾提交后再次执行 `npm run check` 通过；提交已按组件行为修复、VitePress demo 迁移、项目上下文更新拆分。
+- 2026-06-04 Node 24 / 依赖升级后执行 `npm run check` 通过；内置浏览器使用 `http://127.0.0.1:5180/` 抽查 Badge、Checkbox、Popper，页面标题、demo 数量和 Vite overlay 均正常，修复后的 Badge 页面无新增 warning。
 
 ## 2026-06-04 VitePress `:::demo` 演示体系结论
 
@@ -285,7 +291,17 @@ docs(project): 更新项目上下文与待办
 
 - 用户确认：项目仍处于开发阶段，依赖、工具链和 Node.js 版本不需要为了旧内部适配而保守停留。
 - 后续如发现升级能带来更好的完整性、性能、简洁性或最终效果，应先说明收益和影响并向用户确认；确认后直接升级，并同步修正项目内部适配问题。
-- 当前 TODO 中已有 Node `v22.10.0` 与部分依赖 engine 要求的记录；后续处理此类问题时按该原则执行。
+- 该原则已在本轮 Node 24 LTS 与依赖升级中执行：升级后发现的内部适配问题已同步修正。
+
+## 2026-06-04 Node 24 LTS 与依赖升级
+
+- 本地确认 nvm 可用，版本为 `1.2.2`；已通过 nvm 安装并切换到 Node `24.16.0`，npm 为 `11.13.0`。
+- `package.json` 已声明 `packageManager: npm@11.13.0`，并通过 `engines` 固定 Node `>=24.16.0`、npm `>=11.13.0`。
+- 直接依赖已升级到当前最新可用版本：`@eslint/js@10.0.1`、`eslint@10.4.1`、`vite@8.0.16`、`@tailwindcss/vite@4.3.0`、`tailwindcss@4.3.0`、`tailwind-merge@3.6.0`、`vue@3.5.35`、`vue-tsc@3.3.3`、`typescript-eslint@8.60.1`、`@types/node@25.9.1` 等。
+- ESLint 10 首次检查暴露 `eslint.config.js` 直接 import 的 `globals` 未声明为直接依赖；已补 `globals@17.6.0` 到 devDependency。
+- `npm outdated --json` 已为空；`npm audit` 剩余 3 个 moderate，均来自 `vitepress@1.6.4` 内部嵌套的 Vite/esbuild，当前 npm registry 中 VitePress 最新正式版仍为 `1.6.4`，暂无直接修复版本。
+- 浏览器验证时发现 VitePress 默认主题已经注册 `Badge`，文档主题再次全局注册 Horizon `Badge` 会产生 Vue warning；已改为 Badge 示例本地 import Horizon `Badge`，并移除文档主题里的 `app.component('Badge', Badge)`。
+- 验证：`npm run check` 通过；内置浏览器在 `http://127.0.0.1:5180/` 抽查 `/components/badge`、`/components/checkbox`、`/components/popper`，页面渲染、demo 数量和 Vite overlay 均正常，按导航后时间过滤无新增 warning。
 
 ## 2026-06-04 组件迁移扫描回合
 

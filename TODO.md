@@ -15,6 +15,7 @@
 - [ ] 后续新增或继续迁移组件文档时，统一使用 VitePress `:::demo`；示例源码放在 `docs/examples/<component>/`，由文档页引用同一份 `.vue` 示例。
 - [ ] 后续优化 `ComponentDemo` 的源码展示体验：当前源码区还没有语法高亮，demo 容器的视觉样式也有继续打磨空间。
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。
+- [ ] 后续 VitePress 发布高于 `1.6.4` 的正式版本时，复查并升级以消除当前嵌套 Vite/esbuild 的 audit 项。
 - [ ] 后续评估新增 Toggle / ToggleGroup，用于承接 CheckboxGroup / RadioGroup 当前 `variant="button"` 这类分段切换形态；暂时不实现，现有 Checkbox / Radio button variant 先保持。
 - [ ] 后续新增或改造组件时，继续沿用组件内部 geometry map / 常量维护固有尺寸；首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，不新增通用尺寸 token。
 - [ ] 最后补全 dark mode 色彩规范。当前颜色体系主要完成 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。
@@ -30,9 +31,9 @@
 - [ ] 如未来 `Icon` 支持外部 SVG 或运行时 SVG 文本，必须重新评估当前 `v-html` 本地图标白名单策略，加入 sanitizer 或改为更安全的渲染路径。
 - [ ] in-app browser / Playwright 能力已恢复并用于 Field、Input、InputNumber 视觉验证；后续继续为关键组件补浏览器级视觉回归。
 - [ ] `docs/.vitepress/cache` 和 `docs/.vitepress/dist` 是忽略的生成物。如果没有 dev server 依赖，可以定期清理。
-- [ ] `npm audit` 当前报告 4 个 moderate 项：`brace-expansion@5.0.5` 可通过 `npm audit fix` 升到 `5.0.6`，`vitepress@1.6.4` 嵌套的 `vite/esbuild` 暂无直接修复版本；后续升级 VitePress/Vite 时复查。
-- [ ] 当前 Node 为 `v22.10.0`，安装依赖时 `eslint-visitor-keys@5.0.1` 仍可能提示需要 `^20.19.0 || ^22.13.0 || >=24`；后续本地/CI Node 可升级到 22.13+ 或 24 LTS，并考虑在 `package.json` 补 `engines` / `packageManager`。
-- [ ] `npm outdated` 当前显示一批 patch/minor 候选：`tailwindcss` / `@tailwindcss/vite` 4.2.4 → 4.3.0、`tailwind-merge` 3.5.0 → 3.6.0、`vue` 3.5.33 → 3.5.35、`vue-tsc` 3.2.8 → 3.3.3、`typescript-eslint` 8.59.2 → 8.60.1 等；建议等 Node 版本统一后单独确认并批量升级。
+- [ ] 当前运行时基线已升级为 Node `>=24.16.0` / npm `>=11.13.0`；如后续新增 CI 或协作环境，需按 `package.json` 的 `engines` / `packageManager` 对齐。
+- [ ] `npm audit` 当前报告 3 个 moderate 项，均来自 `vitepress@1.6.4` 内部嵌套的 Vite/esbuild；npm registry 当前暂无更高 VitePress 正式版本可修复，后续升级 VitePress 时复查。
+- [ ] 当前 `npm outdated --json` 为空；后续依赖维护按“确认收益后直接升级并修适配”的原则滚动处理。
 - [ ] `AGENTS.md` 已重写为中文快速入口；后续如组件规范变化，要同步更新。
 
 ## 工作习惯

@@ -2,7 +2,6 @@ import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
 import type { App, Component } from 'vue'
 import {
-  Badge,
   Button,
   Checkbox,
   CheckboxGroup,
@@ -78,7 +77,6 @@ export default {
   enhanceApp({ app }) {
     registerDemoExamples(app)
     app.component('Button', Button)
-    app.component('Badge', Badge)
     app.component('Icon', Icon)
     app.component('Checkbox', Checkbox)
     app.component('CheckboxGroup', CheckboxGroup)

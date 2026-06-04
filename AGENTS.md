@@ -46,9 +46,9 @@ npm run check        # format:check + lint + typecheck + build
 
 ## 当前收尾快照
 
-- 2026-06-04 收尾时工作区已提交并清理；本轮关键功能/文档提交可从最新 `git log` 接续查看，已包含 VitePress demo 迁移、Divider API 迁移、Callout/Checkbox/Radio/Switch/Badge/Tooltip 浏览器验证与 PopperTrigger focus 事件修复。
+- 2026-06-04 收尾时工作区已提交并清理；本轮关键功能/文档提交可从最新 `git log` 接续查看，已包含 VitePress demo 迁移、Divider API 迁移、Callout/Checkbox/Radio/Switch/Badge/Tooltip 浏览器验证、PopperTrigger focus 事件修复、Node 24 LTS 与依赖升级。
 - 最近一次完整验证：`npm run check` 通过，包含 format、lint、typecheck 和 VitePress build。
-- 本地 dev server 曾在 `http://127.0.0.1:5173/` 验证过 Checkbox 等页面；新对话如需继续看页面，先确认 dev server 是否仍在运行。
+- 本地 dev server 曾在 `http://127.0.0.1:5180/` 用当前 Node 24 环境验证过 Badge、Checkbox、Popper 等页面；新对话如需继续看页面，先确认 dev server 是否仍在运行。
 
 ## 当前规范重点
 
@@ -71,8 +71,10 @@ docs(project): 更新项目上下文与待办
 
 ### 依赖与运行时升级
 
+- 当前运行时基线：Node.js `>=24.16.0`，npm `>=11.13.0`，`packageManager` 为 `npm@11.13.0`；本地通过 nvm 安装并切到 Node `24.16.0`。
 - 依赖、构建工具、检查工具和 Node.js 版本不以“保持旧适配”为优先级；开发阶段以完整、性能、简洁和最终效果为准。
 - 后续如确认升级会更好，先向用户说明收益和影响；用户确认后直接升级，并把由升级引起的内部适配问题一起修掉。
+- 当前直接依赖已无 `npm outdated` 项；`npm audit` 剩余 3 个 moderate 均来自 `vitepress@1.6.4` 内部嵌套的 Vite/esbuild，npm registry 暂无更高 VitePress 正式版本可修复，后续等待上游版本后复查。
 
 ### API 命名
 
@@ -134,6 +136,9 @@ docs(project): 更新项目上下文与待办
 - `Icon.vue` 的 `v-html` 仅用于渲染打包期导入的本地图标 SVG，已补充安全边界说明并处理 lint warning。
 - 全项目 `lint`、`format:check`、`typecheck`、`build` 已通过。
 - `docs/superpowers/**` 历史计划资料已审计并删除，VitePress `srcExclude` 的过期配置已移除。
+- Node 已用 nvm 升级到 `24.16.0`，npm 升级到 `11.13.0`；`package.json` 已补 `engines` 与 `packageManager`，直接依赖更新到当前最新可用版本，包括 Tailwind 4.3、Vue 3.5.35、ESLint 10.4、Vite 8.0、vue-tsc 3.3。
+- `eslint.config.js` 使用的 `globals` 已补为显式 devDependency，不再依赖传递依赖偶然可用。
+- Badge 示例改为本地 import Horizon `Badge`，文档主题不再全局注册 `Badge`，避免与 VitePress 默认主题 `Badge` 重名产生 Vue warning。
 
 ## 旧版设计稿说明
 

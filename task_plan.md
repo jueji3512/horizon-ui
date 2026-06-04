@@ -15,6 +15,7 @@
 | 6. 项目记忆整理 | 完成 | 已新增/更新 `AGENTS.md`、`TODO.md`、`findings.md`、`progress.md`。 |
 | 7. 代码编辑器与检查工具规范 | 完成 | 已新增 `CODE_STYLE.md`、`.editorconfig`、`.gitattributes`、Stylelint 和 Tailwind class sorting。 |
 | 8. Field 输入域体系 | 进行中 | Field 首版公开 primitives 已落地并迁移 Input / InputNumber；后续继续用 Select 多选和 DatePicker range 验证边界。 |
+| 9. 运行时与依赖维护 | 持续 | 已升级到 Node 24 LTS / npm 11，并将直接依赖推进到当前最新可用版本；VitePress 内部 audit 项等待上游版本。 |
 
 ## 已完成的关键事项
 
@@ -38,6 +39,9 @@
 - 2026-06-04 组件迁移扫描回合已完成：修复 Checkbox / Radio / Switch `focus-visible` 可视 ring，修正色彩指南语义 token 命名，补齐 Field primitive 文档并清理 Popper 多余 demo 标记。
 - Input、InputNumber、Tag、Popper 已完成本轮浏览器视觉验证；发现的问题已同步修复到组件源码或 VitePress demo 隔离层。
 - 文档演示体系已一步到位迁移：全部组件文档使用 VitePress `:::demo`，108 个示例拆到 `docs/examples/**/*.vue`，预览与源码展示共用同一份 `.vue` 文件；旧 DemoBox、details 查看代码、Histoire / Storybook spike 已清理。
+- 运行时已升级到 Node `24.16.0` / npm `11.13.0`，`package.json` 已补 `engines` / `packageManager`。
+- 直接依赖已升级到当前最新可用版本，`npm outdated --json` 为空；ESLint 10 暴露的 `globals` 隐式依赖问题已修正为显式 devDependency。
+- Badge 文档示例改为本地 import，文档主题不再全局注册 `Badge`，避免与 VitePress 默认主题组件重名。
 - 全项目 `lint`、`format:check`、`typecheck`、`build` 已通过。
 - 根目录异常空目录 `d...projectuisrccomponentsSpace` 已删除。
 - 本地 Switch 视觉原型 `switch-mockups.html` 已删除。
@@ -58,8 +62,8 @@
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
 | 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 的截图 / DOM / computed style 验证；后续继续覆盖剩余关键组件。 |
 | Field 底层组件 | 中 | Input / InputNumber 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |
-| 依赖与运行时升级 | 按收益触发 | 后续发现依赖、工具链或 Node.js 偏旧且升级更有利于完整性、性能、简洁性或最终效果时，先与用户确认，确认后直接升级并修复内部适配。 |
-| Node / 依赖维护候选 | 中 | 当前 Node 为 `v22.10.0`，可升级到 22.13+ 或 24 LTS；`brace-expansion` 可自动修复，Tailwind/Vue/vue-tsc 等有 patch/minor 更新，建议单独确认后处理。 |
+| 依赖与运行时升级 | 持续 | 已升级到 Node 24 LTS / npm 11，直接依赖当前无 outdated；后续继续按收益触发升级并修复内部适配。 |
+| VitePress audit 等待项 | 中 | 当前 `npm audit` 剩余 3 个 moderate 均来自 `vitepress@1.6.4` 内部嵌套 Vite/esbuild；等待上游正式版本后复查升级。 |
 | Dark mode 色彩规范 | 后置 | 用户已决定 dark mode 放到当前队列最后；当前完成的是 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。 |
 | Icon 外部 SVG 安全策略 | 中 | 如果未来支持外部 SVG 输入，需要替换当前仅适用于本地白名单图标的策略。 |
 

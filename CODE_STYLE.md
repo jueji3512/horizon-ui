@@ -11,6 +11,13 @@
 - 尾随空格：默认清理；Markdown 例外，允许保留尾随空格以支持硬换行。
 - Git 换行：`.gitattributes` 使用 `* text=auto eol=lf` 固定文本文件换行，避免不同机器的 `core.autocrlf` 造成隐形差异。
 
+## 运行时与包管理
+
+- Node.js 基线：`>=24.16.0`。
+- npm 基线：`>=11.13.0`。
+- `package.json` 使用 `packageManager: npm@11.13.0` 记录当前包管理器版本。
+- 本地推荐使用 nvm 安装和切换 Node 版本；依赖升级后应同步运行 `npm run check`。
+
 ## Prettier
 
 Prettier 是格式化的唯一来源，VS Code 保存时使用 Prettier 格式化。
@@ -32,6 +39,7 @@ Tailwind class 顺序由 `prettier-plugin-tailwindcss` 自动整理，并通过 
 ESLint 负责 JavaScript、TypeScript 和 Vue SFC 的代码质量规则。
 
 - 使用 flat config。
+- 当前使用 ESLint 10；配置中直接引用的 `globals` 必须作为显式 devDependency 保留。
 - TypeScript 保持 strict。
 - 类型导入使用 `import type`。
 - Vue 单文件组件块顺序为 `template`、`script`、`style`。

@@ -325,3 +325,13 @@
 - 修正文档漂移：`docs/components/checkbox.md` 的 `direction` 说明改为 default 形态；`docs/components/popper.md` 删除 V-10 后多余 `:::`；`docs/components/field.md` 补齐 FieldContent、FieldAction、FieldGroup、FieldSegment 等公开 primitive props；`docs/guide/field-system.md` 从旧实施计划改为当前状态与后续验证。
 - 依赖扫描结果：当前 Node `v22.10.0` 低于 `eslint-visitor-keys@5.0.1` 的 `^22.13.0` 要求；`npm audit` 仍有 4 个 moderate，其中 `brace-expansion@5.0.5` 可自动修复，VitePress 嵌套 Vite/esbuild 暂无直接修复版本；`npm outdated` 有 Tailwind、Vue、vue-tsc、typescript-eslint 等 patch/minor 候选。本轮只记录，不混入组件迁移提交。
 - 验证：`npm run check` 通过；内置浏览器 5176 复验 `/components/checkbox`、`/components/radio`、`/components/switch`，默认控件和 button variant 均命中 `brand-focus` ring；`/guide/colors`、`/components/field`、`/guide/field-system` 显示新文案。
+
+### Node 24 LTS 与依赖升级
+
+- 用户确认建议使用 nvm 进行 Node 升级；本地确认 nvm `1.2.2` 可用，并通过 nvm 安装 / 切换到 Node `24.16.0`，npm 为 `11.13.0`。
+- `package.json` 已补 `packageManager: npm@11.13.0` 与 `engines`：Node `>=24.16.0`、npm `>=11.13.0`。
+- 执行依赖升级后，直接依赖已推进到当前最新可用版本，包括 Tailwind 4.3、tailwind-merge 3.6、Vue 3.5.35、vue-tsc 3.3、typescript-eslint 8.60、ESLint 10.4、Vite 8.0。
+- ESLint 10 检查时发现 `eslint.config.js` 直接 import `globals` 但未声明直接依赖；已补 `globals@17.6.0` 到 devDependency。
+- `npm outdated --json` 当前为空；`npm audit` 剩余 3 个 moderate，均来自 `vitepress@1.6.4` 内部嵌套的 Vite/esbuild，当前 VitePress 最新正式版仍为 `1.6.4`，暂无直接修复版本。
+- 浏览器验证升级后的文档站时发现 VitePress 默认主题已注册 `Badge`，文档主题再全局注册 Horizon `Badge` 会产生 Vue warning；已将 Badge 示例改为本地 import，并从文档主题全局注册中移除 `Badge`。
+- 验证：`npm run check` 通过；使用当前 Node 24 环境启动 `http://127.0.0.1:5180/`，内置浏览器抽查 `/components/badge`、`/components/checkbox`、`/components/popper`，页面标题、demo 数量、Vite overlay 均正常，按导航时间过滤无新增 warning。

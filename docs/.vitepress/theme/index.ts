@@ -16,6 +16,7 @@ import {
   Icon,
   Input,
   InputNumber,
+  Select,
   Callout,
   Divider,
   Link,
@@ -98,6 +99,7 @@ export default {
     app.component('Tag', Tag)
     app.component('Input', Input)
     app.component('InputNumber', InputNumber)
+    app.component('Select', Select)
     app.component('Tooltip', Tooltip)
     app.component('Popper', Popper)
     app.component('PopperTrigger', PopperTrigger)

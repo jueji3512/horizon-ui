@@ -15,6 +15,7 @@ import Tooltip from './Tooltip/Tooltip.vue'
 import Switch from './Switch/Switch.vue'
 import Input from './Input/Input.vue'
 import InputNumber from './InputNumber/InputNumber.vue'
+import Select from './Select/Select.vue'
 import Tag from './Tag/Tag.vue'
 import FieldRoot from './Field/FieldRoot.vue'
 import FieldContent from './Field/FieldContent.vue'
@@ -31,6 +32,7 @@ import PopperArrow from './Popper/PopperArrow.vue'
 
 export type { FieldContext, FieldSize, FieldStatus } from './Field'
 export { fieldContextKey, useFieldContext } from './Field'
+export type { SelectOption, SelectPlacement, SelectSize, SelectStatus, SelectValue } from './Select'
 export type {
   Placement,
   PopperContext,
@@ -67,6 +69,7 @@ export {
   RadioGroup,
   Space,
   Switch,
+  Select,
   Tag,
   Text,
   Title,

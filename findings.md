@@ -36,7 +36,7 @@
 已实现并文档化的组件：
 
 - 基础：Button、Icon、Link、Text、Title、Divider、Space。
-- 表单/输入：Checkbox、CheckboxGroup、Radio、RadioGroup、Switch、Input、InputNumber。
+- 表单/输入：Checkbox、CheckboxGroup、Radio、RadioGroup、Switch、Input、InputNumber、Select。
 - 展示/反馈：Badge、Tag、Callout、Tooltip。
 - 底层：FieldRoot、FieldContent、FieldNativeInput、FieldPrefix、FieldSuffix、FieldAction、FieldGroup、FieldSegment、Popper、PopperTrigger、PopperContent、PopperArrow。
 
@@ -59,8 +59,8 @@
 
 ## 2026-06-05 未来组件路线与内部原型候选
 
-- 当前建议的组件推进顺序：Select → TagInput → Dropdown / Menu → Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → TreeSelect / Cascader / ColorPicker。
-- Select 是下一阶段最关键的组件，因为它会同时验证 Field、Popper、Tag、键盘交互、ARIA、empty、loading、disabled、clearable、多选 tag wrap 等组合边界。
+- 当前建议的组件推进顺序：TagInput → Dropdown / Menu → Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → TreeSelect / Cascader / ColorPicker。
+- Select 单选首版已落地，已初步验证 Field、Popper、键盘交互、ARIA、empty、loading、disabled option、readonly 和 clearable 等组合边界；多选 tag wrap、searchable、maxTagCount 等仍是后续压力测试。
 - TagInput 建议加入计划：它是 Field 多值 / multiline / Tag wrap / Backspace 删除 / 输入宽度自适应的纯压力测试，比 Select 少一层 Popper，有助于先把多值输入域边界打磨干净。
 - Dropdown 和 Menu 建议联动设计：Dropdown 负责触发与浮层，Menu 负责内容结构和复合控件键盘模型；Select option list、ContextMenu、Cascader 等后续组件都可复用相关能力。
 - Form / FormItem 应在 Select 跑通后推进，因为 Field 当前明确不负责 label、help、error message、校验触发时机；FormItem 可承接布局、label、help、error、required、status 传递和 ARIA 关联。
@@ -72,6 +72,14 @@
 - FormControl context 应随 Form / FormItem 自然出现，用于统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby`、label/help/error 关联；公开 API 应以 Form 体系为主，不建议过早暴露底层 FormControl primitives。
 - PopupSurface / FloatingSurface 暂不建议立刻抽。Tooltip、Select panel、Dropdown menu、Popconfirm 的 surface 密度、padding、结构和角色差异较大；更合理的做法是先各自实现，等重复足够稳定后，再抽很薄的内部 `surfaceClass` 或 surface primitive。
 - 明确不建议抽的方向：IconButton 已由 Button 的 `shape="square|circle"` 覆盖；StatusSurface 会混淆 Callout、Alert、Message、Tag、Badge 等差异较大的结构；Panel / Card 过泛，容易变成样式垃圾桶；DatePanel 在 DatePicker 真实需求清楚前不预抽。
+
+## 2026-06-06 Select 单选首版实现
+
+- `Select` 首版只支持单选和 `options` prop，不提供 `SelectOption` 插槽组件、多选、搜索、分组、远程加载或虚拟滚动。
+- Public API 包含 `SelectValue = string | number`、`SelectOption = { label; value; disabled? }`、`modelValue`、`options`、`placeholder`、`size`、`status`、`disabled`、`readonly`、`clearable`、`loading`、`emptyText`、`name`、`ariaLabel`、`placement`、`zIndex`，以及 `update:modelValue`、`change`、`focus`、`blur`、`clear`、`visible-change` 事件。
+- 实现复用 `FieldRoot` / `FieldContent` / `FieldSuffix` / `FieldAction` 作为触发器，复用 `Popper trigger="manual"`、`match-width` 和默认 `bottom-start` 定位；Select 面板自行定义背景、边框、圆角、滚动、最大高度和 `shadow-popper`，不改变 Popper 无视觉 surface 的原则。
+- 键盘与 ARIA 采用 trigger 保持焦点的 `combobox` + `listbox` + `option` 模型，通过 `aria-activedescendant` 指向 active option；禁用不可聚焦不可展开，只读可聚焦但不可展开、不可清空、不可改值。
+- `SelectOptionList` 目前是 `src/components/Select/` 内部私有组件，用于沉淀 active、selected、disabled、loading、empty、滚动到 active option 和 listbox 语义；后续等 Dropdown / Autocomplete 等真实复用出现后再考虑抽内部 OptionList / Collection。
 
 ## 2026-06-05 Icon SVG 图标体系重整计划
 

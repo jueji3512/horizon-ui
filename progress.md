@@ -1,5 +1,13 @@
 # 工作进度记录
 
+## 2026-06-06 Select 单选首版
+
+- 按用户计划新增 `src/components/Select/`：`Select.vue`、`types.ts`、`index.ts` 和私有 `SelectOptionList.vue`。
+- 首版只支持单选与 `options` prop，复用 Field 触发器和 Popper `manual` + `match-width` 定位；Select 面板自行维护 surface 样式，不改变 Popper 底层无视觉样式原则。
+- 已支持 clearable、loading、empty、disabled option、readonly、状态、尺寸、隐藏 input、键盘导航和 combobox/listbox ARIA；禁用不可聚焦不可展开，只读可聚焦但不可展开、不可清空、不可改值。
+- 已更新 `src/components/index.ts`、VitePress theme 注册、sidebar、`docs/components/select.md` 和 7 个 `docs/examples/select/` 示例。
+- 先用 VitePress build 做红灯验证，确认文档示例因 Select 未导出失败；实现后 `npm run check` 通过。文档页 `http://127.0.0.1:5185/components/select` 已返回 200；当前会话没有可调用的 Browser 插件且仓库 Playwright 缺少 `playwright-core`，点击/键盘交互需后续在可用浏览器测试环境中补验。
+
 ## 2026-06-05 组件路线与内部原型计划
 
 - 用户确认后续组件路线方向可行，并要求将建议加入项目计划。

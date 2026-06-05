@@ -14,10 +14,10 @@
 | 5. Popper 底层定位基座 | 完成 | 已明确 Popper 不提供 surface 样式，并完成 deferred 行为处理与 base-component review。 |
 | 6. 项目记忆整理 | 完成 | 已新增/更新 `AGENTS.md`、`TODO.md`、`findings.md`、`progress.md`。 |
 | 7. 代码编辑器与检查工具规范 | 完成 | 已新增 `CODE_STYLE.md`、`.editorconfig`、`.gitattributes`、Stylelint 和 Tailwind class sorting。 |
-| 8. Field 输入域体系 | 进行中 | Field 首版公开 primitives 已落地并迁移 Input / InputNumber；后续继续用 Select 多选和 DatePicker range 验证边界。 |
+| 8. Field 输入域体系 | 进行中 | Field 首版公开 primitives 已落地并迁移 Input / InputNumber / Select；后续继续用 Select 多选和 DatePicker range 验证边界。 |
 | 9. 运行时与依赖维护 | 持续 | 已升级到 Node 24 LTS / npm 11，并将直接依赖推进到当前最新可用版本；VitePress 内部 audit 项等待上游版本。 |
 | 10. 代理工作流增强 | 持续 | 已全局安装 `obra/superpowers` 14 个工作流 skills，并补装 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs`；重启 Codex 后按收益用于计划、验收、图标检索、设计压力测试、接口设计和 ADR / 决策记录。 |
-| 11. 未来组件与内部原型路线 | 计划中 | 已确认优先推进 Select，并将 OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context 等作为有明确跨组件收益时才沉淀的候选。 |
+| 11. 未来组件与内部原型路线 | 进行中 | Select 单选首版已落地；后续优先推进 TagInput，并将 OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context 等作为有明确跨组件收益时才沉淀的候选。 |
 | 12. Icon SVG 图标体系重整 | 完成首轮 / 持续复核 | 48 个原有本地图标已按 Lucide outline 风格同名替换，并于 2026-06-06 补充 48 个常用图标；当前共 96 个 SVG，`check:icons` 同时校验结构和常用图标必备列表。 |
 | 13. Figma 设计工作区 | 待继续 | 用户确认后续设计稿建议都在 Horizon UI Figma 文件中实现；当前受 Starter 3 页上限与 MCP 调用额度限制，后续按 `00 Workspace` / `01 Icon Library` / `02 Component Drafts` 三页结构整理。 |
 
@@ -40,6 +40,7 @@
 - `Icon.vue` 的 raw SVG 渲染已补充本地图标安全边界说明，并关闭该处 `vue/no-v-html` 告警。
 - Field 输入域基座已落地为公开 primitives，Input / InputNumber 已完成迁移；Field 支持外部 class 后置覆盖、FieldRoot focus-within ring、FieldSegment focus-within active 视觉。
 - InputNumber 复用 Field 后保留 24/32/40 规范尺寸，步进按钮已改为复用 Button 的 outline square 形态，并补齐聚焦状态下键盘/按钮步进后的展示值同步。
+- Select 单选首版已落地：只支持 `options` prop，复用 Field 触发器和 Popper `manual` + `match-width` 定位，支持 clearable、loading、empty、disabled option、readonly、状态、尺寸、隐藏 input、键盘导航和 combobox/listbox ARIA；内部 `SelectOptionList` 暂不公开。
 - 2026-06-04 组件迁移扫描回合已完成：修复 Checkbox / Radio / Switch `focus-visible` 可视 ring，修正色彩指南语义 token 命名，补齐 Field primitive 文档并清理 Popper 多余 demo 标记。
 - 2026-06-04 组件迁移收敛扫描已完成：当前实现组件集未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；已修复 Tag checkable 键盘/ARIA、Input 内部 action 焦点边界、Tooltip 描述关联、Icon `ariaLabel` 语义、InputNumber `change` 事件语义、Popper 根导出、阴影 token fallback、Node 24 类型包和文档主题 stylelint 覆盖。
 - token 文件边界已整理：`font.css` 改为 `typography.css`，`size.css` 中的圆角拆到 `radius.css`，`elevation.css` 拆为 `shadow.css`、`motion.css`、`z-index.css`；`color.css` 仍作为完整色彩系统保留。
@@ -69,16 +70,16 @@
 | 组件级固有尺寸规范 | 完成 / 持续守护 | 首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，均作为组件内部几何规格维护，不新增通用尺寸 token。 |
 | token 文件边界 | 完成 / 持续守护 | 当前 token 文件按 color、typography、radius、size、shadow、motion、z-index 拆分；后续只在语义确实不适合共处时继续拆分。 |
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
-| 未来组件开发路线 | 高 | 推荐顺序为 Select、TagInput、Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps，TreeSelect / Cascader / ColorPicker 后置。 |
+| 未来组件开发路线 | 高 | Select 单选首版已完成；后续推荐顺序为 TagInput、Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps，TreeSelect / Cascader / ColorPicker 后置。 |
 | Icon SVG 图标体系重整 | 完成首轮 / 持续复核 | 当前 96 个本地图标均按 Lucide outline 风格维护；源文件统一 `viewBox`、`currentColor`、2px round stroke 和无固定宽高，并补图标网格预览、Figma 审计页与自动校验。 |
 | Figma 设计工作区 | 中 | 后续组件设计建议、图标候选和视觉草稿优先落到用户提供的 Horizon UI Figma 文件；由于 Starter 计划最多 3 页，保持 `00 Workspace`、`01 Icon Library`、`02 Component Drafts` 三页结构，不创建额外页面。 |
-| OptionList / Collection 内部原型 | 高 | 优先随 Select 设计内部 primitives / composable，统一 option 注册、active option、disabled、group、empty、loading、键盘导航、滚动定位和 listbox/menu 语义；先内部验证，不急于公开。 |
+| OptionList / Collection 内部原型 | 高 | Select 首版已用私有 `SelectOptionList` 跑通 active option、disabled、empty、loading、键盘导航、滚动定位和 listbox 语义；后续等 Autocomplete、Dropdown / Menu 等真实重复出现后，再考虑抽内部 primitives / composable。 |
 | RovingFocus / Composite 内部工具 | 中 | 用于 Radio button variant、未来 ToggleGroup、Tabs、Menu、Toolbar 等复合控件，统一 roving `tabindex`、方向键、Home / End、disabled item 跳过和循环策略。 |
 | Overlay / Layer 基座 | 中 / 后置 | 等 Dialog / Drawer 启动前设计，负责全局层级、遮罩、滚动锁、Esc、focus trap 和 `aria-modal`；不要与锚点定位的 Popper 混为一谈。 |
 | FormControl context | 中 | 随 Form / FormItem 自然沉淀内部 context，统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby`、label/help/error 关联；公开 API 以 Form 体系为主。 |
 | PopupSurface 观察项 | 低 / 暂缓 | Tooltip、Select panel、Dropdown menu、Popconfirm 的 surface 密度和结构差异较大，暂不抽万能 surface；等稳定重复出现后再考虑很薄的内部封装。 |
-| 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 的截图 / DOM / computed style 验证；收敛扫描复验 Tag、Tooltip、Input、InputNumber 和关键指南页，后续继续覆盖新增组件。 |
-| Field 底层组件 | 中 | Input / InputNumber 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |
+| 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 的截图 / DOM / computed style 验证；Select 文档页已确认 HTTP 可访问，但当前会话缺少可调用浏览器工具，点击/键盘交互仍需后续补验。 |
+| Field 底层组件 | 中 | Input / InputNumber / Select 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |
 | 依赖与运行时升级 | 持续 | 已升级到 Node 24 LTS / npm 11，直接依赖当前无 outdated；后续继续按收益触发升级并修复内部适配。 |
 | VitePress audit 等待项 | 中 | 当前 `npm audit` 剩余 3 个 moderate 均来自 `vitepress@1.6.4` 内部嵌套 Vite/esbuild；等待上游正式版本后复查升级。 |
 | 包管理器迁移 | 中 | 优先评估 pnpm，备选继续 npm，不优先 Bun / Yarn；若执行迁移，需用 Corepack 固定版本、替换锁文件、统一脚本和文档，并完整验证。 |

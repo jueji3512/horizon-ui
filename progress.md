@@ -7,7 +7,7 @@
 - 已支持 clearable、loading、empty、disabled option、readonly、状态、尺寸、隐藏 input、键盘导航和 combobox/listbox ARIA；禁用不可聚焦不可展开，只读可聚焦但不可展开、不可清空、不可改值。
 - 已更新 `src/components/index.ts`、VitePress theme 注册、sidebar、`docs/components/select.md` 和 7 个 `docs/examples/select/` 示例。
 - 先用 VitePress build 做红灯验证，确认文档示例因 Select 未导出失败；实现后 `npm run check` 通过。文档页 `http://127.0.0.1:5185/components/select` 已返回 200；当前会话没有可调用的 Browser 插件且仓库 Playwright 缺少 `playwright-core`，点击/键盘交互需后续在可用浏览器测试环境中补验。
-- 用户反馈先记录、今天不改：选项选中态样式需要先用生图能力出几版方案给用户确认；clearable 需要改成 hover Select 主体时下拉箭头位置切换为清空按钮；Select 默认宽度需要像 Input 一样占满父元素，避免示例页宽度参差；选项列表需要支持 group，下次确认是补进首版还是作为后续扩展。
+- 用户反馈先记录、今天不改：选项选中态和下拉浮层 surface 样式都需要先用生图能力出几版方案给用户确认，浮层重点考虑 box shadow、边框、圆角、间距和层级感；clearable 需要改成 hover Select 主体时下拉箭头位置切换为清空按钮；Select 默认宽度需要像 Input 一样占满父元素，避免示例页宽度参差；选项列表需要支持 group，下次确认是补进首版还是作为后续扩展。
 
 ## 2026-06-05 组件路线与内部原型计划
 

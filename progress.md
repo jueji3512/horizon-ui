@@ -1,5 +1,12 @@
 # 工作进度记录
 
+## 2026-06-06 收尾与新对话交接
+
+- 今天已完成图标补充收尾、Select 单选首版实现和 Select 后续反馈记录；最新关键提交包括 `98078e8 feat(select): 实现单选选择器首版`、`9abf7a1 docs(project): 记录 Select 后续调整项`、`f3b826e docs(project): 补充 Select 浮层样式方案待办`。
+- Select 首版通过 `npm run check`，文档页 `http://127.0.0.1:5185/components/select` 返回 200；收尾时 5185 dev server 仍在监听。当前会话没有可调用 Browser 插件且仓库 Playwright 缺少 `playwright-core`，点击/键盘交互仍需后续补验。
+- 明天新对话最短接入：先执行 `git status --short` 和 `git log -1 --oneline`，再读 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`。优先处理 Select 反馈：用生图能力先出几版选项选中态 + 下拉浮层 surface 方案给用户确认，再改 clearable hover 切换、默认宽度占满父容器，并确认 group 是首版补还是后续补。
+- 本次收尾只更新项目记忆文档，不修改组件实现；提交前以 `git diff --check` 和记忆文档 Prettier 检查为准。
+
 ## 2026-06-06 Select 单选首版
 
 - 按用户计划新增 `src/components/Select/`：`Select.vue`、`types.ts`、`index.ts` 和私有 `SelectOptionList.vue`。
@@ -22,7 +29,7 @@
 ### 收尾与新对话交接
 
 - 用户表示今天先到这里，预计明天开新对话；本节用于给新会话快速接入。
-- 当前最新提交仍是 `262db57 docs(project): 记录收尾与技能安装`；本轮未 stage / commit。
+- 当时最新提交仍是 `262db57 docs(project): 记录收尾与技能安装`；本轮未 stage / commit。
 - 收尾时工作区改动仅限记忆文档：`AGENTS.md`、`TODO.md`、`task_plan.md`、`findings.md`、`progress.md`。
 - 已完成轻量验证：`git diff --check` 与 `npm run format:check` 通过；未跑完整 `npm run check`，因为本轮没有组件源码、构建配置或依赖文件改动。
 - 明天新对话建议先重启 Codex，使今天安装的 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs` 被会话自动发现；随后执行 `git status --short` 和 `git log -1 --oneline`，再从 `TODO.md` / `task_plan.md` 选择是先收口文档提交、推进 Select，还是独立启动 Icon SVG 重整。

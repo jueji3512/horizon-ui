@@ -80,6 +80,7 @@
 - 实现复用 `FieldRoot` / `FieldContent` / `FieldSuffix` / `FieldAction` 作为触发器，复用 `Popper trigger="manual"`、`match-width` 和默认 `bottom-start` 定位；Select 面板自行定义背景、边框、圆角、滚动、最大高度和 `shadow-popper`，不改变 Popper 无视觉 surface 的原则。
 - 键盘与 ARIA 采用 trigger 保持焦点的 `combobox` + `listbox` + `option` 模型，通过 `aria-activedescendant` 指向 active option；禁用不可聚焦不可展开，只读可聚焦但不可展开、不可清空、不可改值。
 - `SelectOptionList` 目前是 `src/components/Select/` 内部私有组件，用于沉淀 active、selected、disabled、loading、empty、滚动到 active option 和 listbox 语义；后续等 Dropdown / Autocomplete 等真实复用出现后再考虑抽内部 OptionList / Collection。
+- 首版实现后用户反馈：选项选中态和下拉浮层 surface 视觉都不满意，下次应先用生图能力生成多版方案再改代码；浮层重点比较 box shadow、边框、圆角、间距和层级感。交互上 clearable 应改为 hover Select 主体时下拉箭头位置切换为清空按钮；布局上 Select 默认宽度应像 Input 一样占满父容器；数据结构上需要支持 group，需先确认是否放入首版修补以及 group API 形态。
 
 ## 2026-06-05 Icon SVG 图标体系重整计划
 

@@ -4,7 +4,8 @@
 
 ## 需要用户决策
 
-- 暂无。
+- Select 选项选中态和下拉浮层 surface 样式：下次先用生图能力出几版方案，用户确认后再修改代码。
+- Select group 支持范围：确认是否在首版修补中支持 group，以及采用嵌套 `SelectOptionGroup` 还是扁平 `group` 字段。
 
 ## 近期开发计划
 

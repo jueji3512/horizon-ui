@@ -39,7 +39,7 @@ npm run check        # format:check + check:icons + lint + typecheck + build
 
 1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
 2. 先读本文件，再读 `TODO.md` 和 `CODE_STYLE.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
-3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。Select 单选首版已落地；Field 在 Select 多选 / DatePicker range 等复杂场景的压力验证、pnpm 迁移评估和 dark mode 是后续队列；组件路线优先 TagInput → Dropdown / Menu → Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification，DatePicker / TimePicker 与数据展示、导航和复杂选择组件后置。
+3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。Select 单选首版已落地，但用户要求先重做选项选中态和下拉浮层 surface 视觉方案；下次优先用生图能力出几版方案让用户确认，再改代码。
 4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 6. 后续遇到调研、重开发、复杂排查、跨组件验证、并行实现或其他子代理能提升效率、覆盖面、完成度的任务时，可以开启子代理协助；小而线性的任务优先主代理直接推进，避免不必要的协调成本。
@@ -52,10 +52,11 @@ npm run check        # format:check + check:icons + lint + typecheck + build
 
 - 2026-06-04 收尾时功能与文档主线已提交并推送；近期关键提交包括 `6dc6521 refactor(styles): 拆分设计令牌文件边界` 和 `c99cc21 docs(vitepress): 优化组件示例源码展示`，本次收尾记录另见最新 `git log`。
 - 2026-06-05 已提交昨日遗留记忆文档 `4517523 docs(project): 更新未来计划与技能记忆`，并完成图标体系首轮重整提交 `2daa4b1 refactor(icons): 统一本地图标规范`。
+- 2026-06-06 已完成图标补充与 Select 首版，近期关键提交包括 `98078e8 feat(select): 实现单选选择器首版`、`9abf7a1 docs(project): 记录 Select 后续调整项`、`f3b826e docs(project): 补充 Select 浮层样式方案待办`。
 - 当前工作分支为 `codex/docs-and-icon-rework`；如继续收尾，先执行 `git status --short` 和 `git log -1 --oneline` 确认是否仍停在该分支。
 - 最近一次完整验证：2026-06-06 `npm run check` 通过，包含 format、check:icons、lint、typecheck 和 VitePress build。
-- 最近一次轻量验证：2026-06-06 `git diff --check` 通过。
-- 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；Select 文档页本轮在 `http://127.0.0.1:5185/components/select` 返回 200。新对话如需继续看页面，先确认 dev server 是否仍在运行。
+- 最近一次轻量验证：2026-06-06 `git diff --check` 与记忆文档 Prettier 检查通过。
+- 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；Select 文档页本轮在 `http://127.0.0.1:5185/components/select` 返回 200，收尾时 5185 仍在监听。新对话如需继续看页面，先确认 dev server 是否仍在运行。
 
 ## 当前规范重点
 
@@ -149,6 +150,7 @@ docs(project): 更新项目上下文与待办
 - 2026-06-05 用户确认后续设计稿建议都在上述 Horizon UI Figma 文件中实现；本轮尝试继续补 48 个常用 Lucide 图标候选并整理页面时，Figma MCP 因 Starter 计划 3 页上限和工具调用额度被拦截。后续恢复额度后按 3 页结构重跑，不要创建 4 页或删除未知内容。
 - 2026-06-06 已先不继续使用 Figma，改为在项目内补充 48 个常用本地图标；当前 `src/components/Icon/icons/` 共 96 个 SVG，新增图标覆盖导航、数据、表单、反馈、权限、文件、操作和系统场景；图标命名以 Horizon 对外简洁名为准，不直接照搬来源库后缀（例如 `grid`、`building`），VitePress Icon 页保持轻量搜索网格并将相关图标相邻展示，通过 `npm run check:icons` 必备列表、root `<svg>` 标签碎片、BOM 和子 `<rect>` 几何检查守护。
 - 2026-06-06 Select 单选首版已落地：只支持 `options` prop，复用 Field 触发器和 Popper `manual` + `match-width` 定位，面板 surface 由 Select 自己定义；支持 clearable、loading、empty、disabled option、readonly、状态、尺寸、隐藏 input、键盘导航和 combobox/listbox ARIA。当前内部 `SelectOptionList` 不公开，后续按 Dropdown / Autocomplete 等真实重复再沉淀通用 OptionList / Collection。
+- 2026-06-06 用户反馈 Select 首版视觉与交互需要后续调整：选项选中态和下拉浮层 surface 需先生成几版视觉方案确认；clearable 改为 hover 主体时下拉箭头位置切换成清空按钮；Select 默认宽度像 Input 一样占满父容器；选项列表需要支持 group，需先确认首版补还是后续补。
 - 本轮保留后续项：Radio button variant 仍可进一步做 roving `tabindex`，建议与未来 Toggle / ToggleGroup 方向一起设计。
 - 本轮组件迁移扫描未发现源码中仍有旧 `primary` / `danger` API 或旧 `--color-primary` / `--color-danger` / `--radius-*` token；已修复 Checkbox / Radio / Switch 的 `focus-visible` 可视 ring，对齐 `brand-focus` token。
 - 色彩指南已将语义色 token 文档修正为真实的 Tailwind v4 `@theme` 变量：`--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`。

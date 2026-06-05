@@ -17,7 +17,7 @@
 | 8. Field 输入域体系 | 进行中 | Field 首版公开 primitives 已落地并迁移 Input / InputNumber / Select；后续继续用 Select 多选和 DatePicker range 验证边界。 |
 | 9. 运行时与依赖维护 | 持续 | 已升级到 Node 24 LTS / npm 11，并将直接依赖推进到当前最新可用版本；VitePress 内部 audit 项等待上游版本。 |
 | 10. 代理工作流增强 | 持续 | 已全局安装 `obra/superpowers` 14 个工作流 skills，并补装 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs`；重启 Codex 后按收益用于计划、验收、图标检索、设计压力测试、接口设计和 ADR / 决策记录。 |
-| 11. 未来组件与内部原型路线 | 进行中 | Select 单选首版已落地；后续优先推进 TagInput，并将 OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context 等作为有明确跨组件收益时才沉淀的候选。 |
+| 11. 未来组件与内部原型路线 | 进行中 | Select 单选首版已落地；下一步先处理 Select 视觉/交互反馈，再推进 TagInput，并将 OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context 等作为有明确跨组件收益时才沉淀的候选。 |
 | 12. Icon SVG 图标体系重整 | 完成首轮 / 持续复核 | 48 个原有本地图标已按 Lucide outline 风格同名替换，并于 2026-06-06 补充 48 个常用图标；当前共 96 个 SVG，`check:icons` 同时校验结构和常用图标必备列表。 |
 | 13. Figma 设计工作区 | 待继续 | 用户确认后续设计稿建议都在 Horizon UI Figma 文件中实现；当前受 Starter 3 页上限与 MCP 调用额度限制，后续按 `00 Workspace` / `01 Icon Library` / `02 Component Drafts` 三页结构整理。 |
 
@@ -70,6 +70,7 @@
 | 组件级固有尺寸规范 | 完成 / 持续守护 | 首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，均作为组件内部几何规格维护，不新增通用尺寸 token。 |
 | token 文件边界 | 完成 / 持续守护 | 当前 token 文件按 color、typography、radius、size、shadow、motion、z-index 拆分；后续只在语义确实不适合共处时继续拆分。 |
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
+| Select 首版反馈修正 | 高 | 下次先用生图能力生成选项选中态和下拉浮层 surface 的多版方案给用户确认；确认后再修 clearable hover 切换、默认占满父容器宽度，并判断 group 支持是否纳入首版修补。 |
 | 未来组件开发路线 | 高 | Select 单选首版已完成；后续推荐顺序为 TagInput、Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps，TreeSelect / Cascader / ColorPicker 后置。 |
 | Icon SVG 图标体系重整 | 完成首轮 / 持续复核 | 当前 96 个本地图标均按 Lucide outline 风格维护；源文件统一 `viewBox`、`currentColor`、2px round stroke 和无固定宽高，并补图标网格预览、Figma 审计页与自动校验。 |
 | Figma 设计工作区 | 中 | 后续组件设计建议、图标候选和视觉草稿优先落到用户提供的 Horizon UI Figma 文件；由于 Starter 计划最多 3 页，保持 `00 Workspace`、`01 Icon Library`、`02 Component Drafts` 三页结构，不创建额外页面。 |
@@ -93,5 +94,5 @@
 - 不能擅自删除不确定用途的文件；先记录到 `TODO.md` 并询问用户。
 - 依赖、工具链或 Node.js 升级以最终效果为准：确认升级收益后先问用户，用户确认后直接升级，不因内部适配成本保留旧方案。
 - 修改色彩 token 时，同步检查样式源文件和设计指南。
-- 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划；当前最短接入路径是确认 git clean、查看 `TODO.md` 的近期开发计划，再决定先做组件扫描、Field 复杂场景验证还是包管理器迁移。
+- 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划；当前最短接入路径是确认 git clean、查看 `TODO.md` 的 Select 待决策项，先出 Select 选中态 / 下拉浮层视觉方案，再进入代码修改。
 - Superpowers 是工作流辅助，不替代项目内 `base-component-review`、记忆文档和实际验证；复杂任务可结合其计划、执行、验收、分支收尾与子代理协作流程。

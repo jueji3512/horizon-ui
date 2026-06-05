@@ -46,13 +46,14 @@ npm run check        # format:check + check:icons + lint + typecheck + build
 7. 如果发现依赖、工具链或 Node.js 版本偏旧，且升级能提升完整性、性能、简洁性或最终效果，先和用户确认；确认后直接升级，并修正项目内部不适配问题，不为旧适配成本保留低效方案。
 8. 2026-06-04 已全局安装 `obra/superpowers` 工作流 skills；重启 Codex 后新会话可在计划、执行、验收、分支收尾、子代理协作、code review、debug、TDD 等场景按收益触发使用。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。
 9. 2026-06-05 已全局安装 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs`；重启 Codex 后可分别用于统一 SVG 图标检索、重要设计压力测试、模块接口多方案比较和 ADR / 决策记录。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。
+10. 后续组件设计建议、图标审阅和视觉草稿优先落到用户提供的 Figma 文件 [Horizon UI](https://www.figma.com/design/NLlYHFxwYr01MfhH9siqfu/Horizon-UI?node-id=0-1&p=f&t=q9KEL4vzNdyXo7iS-0)；当前 Figma Starter 计划最多 3 页，建议页面结构为 `00 Workspace`、`01 Icon Library`、`02 Component Drafts`。
 
 ## 当前收尾快照
 
 - 2026-06-04 收尾时功能与文档主线已提交并推送；近期关键提交包括 `6dc6521 refactor(styles): 拆分设计令牌文件边界` 和 `c99cc21 docs(vitepress): 优化组件示例源码展示`，本次收尾记录另见最新 `git log`。
-- 2026-06-05 本轮主要完成计划与记忆整理、全局 skills 调研和安装，不涉及组件源码；收尾时未提交改动集中在 `AGENTS.md`、`TODO.md`、`task_plan.md`、`findings.md`、`progress.md`。
-- 2026-06-05 最新提交仍为 `262db57 docs(project): 记录收尾与技能安装`；如新对话要先收口，建议先 review 本轮文档 diff，再按需提交 `docs(project): 更新未来计划与技能记忆`。
-- 最近一次完整验证：`npm run check` 通过，包含 format、lint、typecheck 和 VitePress build。
+- 2026-06-05 已提交昨日遗留记忆文档 `4517523 docs(project): 更新未来计划与技能记忆`，并完成图标体系首轮重整提交 `2daa4b1 refactor(icons): 统一本地图标规范`。
+- 当前工作分支为 `codex/docs-and-icon-rework`；如继续收尾，先执行 `git status --short` 和 `git log -1 --oneline` 确认是否仍停在该分支。
+- 最近一次完整验证：2026-06-05 `npm run check` 通过，包含 format、check:icons、lint、typecheck 和 VitePress build。
 - 最近一次轻量验证：2026-06-05 `git diff --check` 与 `npm run format:check` 通过；本轮未重新跑 `npm run check`，因为只改记忆文档和全局 skills。
 - 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；新对话如需继续看页面，先确认 dev server 是否仍在运行。
 
@@ -145,6 +146,7 @@ docs(project): 更新项目上下文与待办
 - 2026-06-05 已安装 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs` 全局辅助 skills，供重启后的 Codex 新会话在图标检索、设计压力测试、接口设计和 ADR 记录场景使用；这些安装不属于仓库源码变更。
 - 2026-06-05 已将 Icon SVG 图标体系重整加入高优先级计划：当前 48 个本地图标后续需要统一 `viewBox`、绘制范围、视觉中心、`currentColor`、笔触和 fill/stroke 策略，并补图标网格预览与自动校验。
 - 2026-06-05 Icon SVG 图标体系已完成首轮重整：48 个本地图标已按 Lucide outline 风格同名替换，`Icon` API 不变，并补 `npm run check:icons`、文档图标网格多尺寸/真实容器预览和 Figma `Horizon Icons Audit` 审计页；后续如发现视觉中心仍不理想，按单个同名 SVG 局部替换或微调。
+- 2026-06-05 用户确认后续设计稿建议都在上述 Horizon UI Figma 文件中实现；本轮尝试继续补 48 个常用 Lucide 图标候选并整理页面时，Figma MCP 因 Starter 计划 3 页上限和工具调用额度被拦截。后续恢复额度后按 3 页结构重跑，不要创建 4 页或删除未知内容。
 - 本轮保留后续项：Radio button variant 仍可进一步做 roving `tabindex`，建议与未来 Toggle / ToggleGroup 方向一起设计。
 - 本轮组件迁移扫描未发现源码中仍有旧 `primary` / `danger` API 或旧 `--color-primary` / `--color-danger` / `--radius-*` token；已修复 Checkbox / Radio / Switch 的 `focus-visible` 可视 ring，对齐 `brand-focus` token。
 - 色彩指南已将语义色 token 文档修正为真实的 Tailwind v4 `@theme` 变量：`--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`。

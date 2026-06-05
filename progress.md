@@ -28,6 +28,13 @@
 - 已通过 Figma MCP 在用户提供的 Horizon UI 文件中生成 `Horizon Icons Audit` 页面，包含 48 个新版图标卡片、Lucide 来源标注、尺寸预览和 Button / Field / Tag 容器预览。
 - 遇到的问题：Node 子进程无法直接 spawn `npx` / `npx.cmd`，改用 Iconify API 批量获取 SVG；Figma 插件环境没有 `fetch`，改为把本地 SVG 数据嵌入 Figma 脚本生成审计页。
 
+## 2026-06-05 Figma 设计工作区整理尝试
+
+- 用户确认后续设计稿建议都在他提供的 Figma `Horizon UI` 文件中实现；后续组件方案、图标审阅和视觉草稿应优先落到该文件。
+- 本轮计划补充 48 个常用 Lucide 图标候选，并整理为 `00 Workspace`、`01 Icon Library`、`02 Component Drafts` 三页结构；分类覆盖 Navigation、Data、Forms、Feedback、Auth、Files、Actions、System。
+- Figma MCP 写入时先按 4 页结构尝试，触发 Starter 计划最多 3 页限制；调整前又触发 Starter 工具调用额度限制，后续 Figma 读写被拦，本轮无法确认或继续整理画布。
+- 已记录后续约定：额度恢复后按 3 页结构重跑，保留未知页面和未知内容，只替换带 `horizon_ui_codex` shared plugin data 或明确管理命名的画板。
+
 ## 2026-06-04 收尾与新对话交接
 
 ### 今日完成概览

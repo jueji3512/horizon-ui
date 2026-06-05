@@ -92,6 +92,12 @@
 - 已通过 Figma MCP 在用户提供的 Horizon UI 文件中生成 `Horizon Icons Audit` 页面，包含 48 个新版图标卡片、Lucide 来源标注、尺寸预览和真实容器预览；后续可在 Figma 中继续人工复核视觉中心。
 - 执行记录：`npx better-icons` 可从 shell 使用，但 Node 子进程直接 spawn `npx` / `npx.cmd` 在 Windows 下失败；本轮批量获取改用 Iconify API 直接拉取 Lucide SVG。Figma 插件运行环境无 `fetch`，因此 Figma 审计页使用嵌入后的本地 SVG 数据生成。
 
+## 2026-06-05 Figma 设计工作区约定
+
+- 用户提供并确认后续设计稿建议优先在 Figma `Horizon UI` 文件中实现：`https://www.figma.com/design/NLlYHFxwYr01MfhH9siqfu/Horizon-UI?node-id=0-1&p=f&t=q9KEL4vzNdyXo7iS-0`。
+- Figma Starter 计划当前最多 3 页；后续整理时应使用 `00 Workspace`、`01 Icon Library`、`02 Component Drafts` 三页结构，把封面和 foundations 索引合并到 `00 Workspace`，避免创建第 4 页。
+- 2026-06-05 曾尝试继续补 48 个常用 Lucide 图标候选并整理页面，但 Figma MCP 先因 4 页方案触发页数上限，随后又触发 Starter 工具调用额度限制。额度恢复后可按 3 页结构重跑，并且只替换带 `horizon_ui_codex` shared plugin data 或明确命名的管理画板，保留未知页面和未知内容。
+
 ## 当前规范
 
 ### 色彩模式

@@ -19,6 +19,7 @@
 | 10. 代理工作流增强 | 持续 | 已全局安装 `obra/superpowers` 14 个工作流 skills，并补装 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs`；重启 Codex 后按收益用于计划、验收、图标检索、设计压力测试、接口设计和 ADR / 决策记录。 |
 | 11. 未来组件与内部原型路线 | 计划中 | 已确认优先推进 Select，并将 OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context 等作为有明确跨组件收益时才沉淀的候选。 |
 | 12. Icon SVG 图标体系重整 | 完成首轮 / 持续复核 | 48 个本地图标已按 Lucide outline 风格同名替换并补 `check:icons`；后续在 Figma 审计页继续人工复核视觉中心和真实容器表现。 |
+| 13. Figma 设计工作区 | 待继续 | 用户确认后续设计稿建议都在 Horizon UI Figma 文件中实现；当前受 Starter 3 页上限与 MCP 调用额度限制，后续按 `00 Workspace` / `01 Icon Library` / `02 Component Drafts` 三页结构整理。 |
 
 ## 已完成的关键事项
 
@@ -70,6 +71,7 @@
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
 | 未来组件开发路线 | 高 | 推荐顺序为 Select、TagInput、Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps，TreeSelect / Cascader / ColorPicker 后置。 |
 | Icon SVG 图标体系重整 | 完成首轮 / 持续复核 | 当前 48 个本地图标已按 Lucide outline 风格同名替换；源文件统一 `viewBox`、`currentColor`、2px round stroke 和无固定宽高，并补图标网格预览、Figma 审计页与自动校验。 |
+| Figma 设计工作区 | 中 | 后续组件设计建议、图标候选和视觉草稿优先落到用户提供的 Horizon UI Figma 文件；由于 Starter 计划最多 3 页，保持 `00 Workspace`、`01 Icon Library`、`02 Component Drafts` 三页结构，不创建额外页面。 |
 | OptionList / Collection 内部原型 | 高 | 优先随 Select 设计内部 primitives / composable，统一 option 注册、active option、disabled、group、empty、loading、键盘导航、滚动定位和 listbox/menu 语义；先内部验证，不急于公开。 |
 | RovingFocus / Composite 内部工具 | 中 | 用于 Radio button variant、未来 ToggleGroup、Tabs、Menu、Toolbar 等复合控件，统一 roving `tabindex`、方向键、Home / End、disabled item 跳过和循环策略。 |
 | Overlay / Layer 基座 | 中 / 后置 | 等 Dialog / Drawer 启动前设计，负责全局层级、遮罩、滚动锁、Esc、focus trap 和 `aria-modal`；不要与锚点定位的 Popper 混为一谈。 |

@@ -21,6 +21,7 @@
 - [x] 2026-06-05 已全局安装 `better-auth/better-icons@better-icons`、`mattpocock/skills@grill-me`、`mattpocock/skills@design-an-interface`、`addyosmani/agent-skills@documentation-and-adrs`；重启 Codex 后可用于统一 SVG 图标检索、重要设计压力测试、模块接口多方案比较和 ADR / 决策记录。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。
 - [x] 2026-06-05 已完成 Icon SVG 图标体系首轮重整：当前 48 个本地图标已按 Lucide outline 风格同名替换，并统一 `viewBox="0 0 24 24"`、`currentColor`、`stroke-width="2"`、round linecap / linejoin 和无固定 `width` / `height` 的源文件规范；已补 `npm run check:icons` 并纳入 `npm run check`。
 - [ ] 在 Figma `Horizon Icons Audit` 页面继续人工复核新版图标的视觉中心和真实容器表现；如发现单个图标仍不理想，再按同名文件局部替换或微调 SVG。
+- [ ] 后续设计稿、组件视觉方案和图标审阅优先落到用户提供的 Figma `Horizon UI` 文件。当前 Figma Starter 计划最多 3 页，推荐整理为 `00 Workspace`、`01 Icon Library`、`02 Component Drafts`；2026-06-05 继续补常用图标时因 MCP 工具调用额度被拦，额度恢复后再重跑。
 - [ ] 2026-06-05 收尾时仍有未提交的记忆文档改动：`AGENTS.md`、`TODO.md`、`task_plan.md`、`findings.md`、`progress.md`；新对话若要先收口，先 review diff，按需跑完整 `npm run check`，再提交文档更新。
 - [ ] 后续评估新增 Toggle / ToggleGroup，用于承接 CheckboxGroup / RadioGroup 当前 `variant="button"` 这类分段切换形态；暂时不实现，现有 Checkbox / Radio button variant 先保持。
 - [ ] 后续新增或改造组件时，继续沿用组件内部 geometry map / 常量维护固有尺寸；首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，不新增通用尺寸 token。

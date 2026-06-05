@@ -34,9 +34,43 @@ const icons = import.meta.glob('../../../../src/components/Icon/icons/*.svg', {
   query: '?raw',
   eager: true,
 })
+
+const relatedIconSortHints: Record<string, [string, number]> = {
+  'arrow-left': ['arrow', 1],
+  'arrow-right': ['arrow', 2],
+  'arrow-up': ['arrow', 3],
+  'arrow-down': ['arrow', 4],
+  'arrow-up-down': ['arrow', 5],
+  'chevron-left': ['chevron', 1],
+  'chevron-right': ['chevron', 2],
+  'chevron-up': ['chevron', 3],
+  'chevron-down': ['chevron', 4],
+  'circle-alert': ['circle', 1],
+  'circle-check': ['circle', 2],
+  'circle-close': ['circle', 3],
+  'circle-help': ['circle', 4],
+  eye: ['eye', 1],
+  'eye-off': ['eye', 2],
+  folder: ['folder', 1],
+  'folder-open': ['folder', 2],
+  lock: ['lock', 1],
+  unlock: ['lock', 2],
+  'more-horizontal': ['more', 1],
+  'more-vertical': ['more', 2],
+  'panel-left': ['panel', 1],
+  'panel-right': ['panel', 2],
+  'sort-ascending': ['sort', 1],
+  'sort-descending': ['sort', 2],
+  user: ['user', 1],
+  'user-plus': ['user', 2],
+  users: ['user', 3],
+  'zoom-in': ['zoom', 1],
+  'zoom-out': ['zoom', 2],
+}
+
 const iconNames = Object.keys(icons)
   .map((k) => k.replace(/.*\/|\.svg/g, ''))
-  .sort()
+  .sort(compareIconNames)
 
 const filteredIcons = computed(() => {
   const q = search.value.trim().toLowerCase()
@@ -48,6 +82,17 @@ function copy(name: string) {
   navigator.clipboard.writeText(name)
   copiedName.value = name
   setTimeout(() => (copiedName.value = ''), 1500)
+}
+
+function compareIconNames(a: string, b: string) {
+  const [familyA, orderA] = relatedIconSortHints[a] ?? [a, 0]
+  const [familyB, orderB] = relatedIconSortHints[b] ?? [b, 0]
+  const familyCompare = familyA.localeCompare(familyB)
+
+  if (familyCompare !== 0) return familyCompare
+  if (orderA !== orderB) return orderA - orderB
+
+  return a.localeCompare(b)
 }
 </script>
 

@@ -42,6 +42,7 @@
 - 已从 Lucide / Iconify 获取并规范化 48 个 SVG，新增到 `src/components/Icon/icons/`，当前内置图标总数为 96。
 - 新增图标覆盖导航、数据、表单、反馈、权限、文件、操作和系统场景；Icon API 不变，仍通过 `<Icon name="menu" />` 这类同名文件调用。
 - 根据用户反馈，VitePress Icon 页已改回轻量搜索网格，移除分类筛选、尺寸预览和真实容器预览；同时重新规范化 48 个新增 SVG，修复子 `<rect>` 宽高被误删导致的图标缺笔画问题，并补 `check:icons` 规则防止 root 标签碎片、BOM 和缺失 rect 几何属性再次漏过。
+- 根据用户反馈，将来源库命名里的 `grid-2x2` / `building-2` 收敛为 Horizon 对外简洁名 `grid` / `building`，并调整 Icon 文档网格排序，让 `xx-left` / `xx-right`、`sort-*`、`folder*`、`zoom-*` 等关联图标相邻展示。
 
 ## 2026-06-04 收尾与新对话交接
 

@@ -103,6 +103,7 @@
 - 用户决定暂不继续使用 Figma，先在项目内补充常用图标。本轮新增 48 个 Lucide outline 本地图标，当前 `src/components/Icon/icons/` 总数为 96。
 - 新增图标覆盖企业组件库高频场景：导航 / 布局、数据 / 表格、表单、反馈、权限 / 组织、文件、操作和系统；典型新增项包括 `menu`、`table`、`sort-ascending`、`text-cursor-input`、`circle-alert`、`lock`、`folder`、`save`、`database`。
 - Icon 文档页保持轻量搜索网格，避免分类筛选、尺寸预览和真实容器预览在图标总览里抢占主内容。
+- 图标文件名是 Horizon 对外 API，应优先使用项目内简洁语义名，不直接照搬来源库命名；本轮已将 `grid-2x2` 改为 `grid`、`building-2` 改为 `building`，并让 Icon 文档网格中方向、左右、开关、缩放等关联图标相邻展示。
 - `scripts/check-icons.mjs` 已加入常用图标必备列表，避免后续误删这些基础图标；结构校验仍保持 `viewBox="0 0 24 24"`、无固定宽高、`currentColor` 和 2px round stroke 规则，并额外检查 root `<svg>` 标签中的非法属性碎片、UTF-8 BOM 和子 `<rect>` 几何属性。
 
 ## 当前规范

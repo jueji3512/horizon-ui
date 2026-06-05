@@ -18,6 +18,16 @@
 - 已完成轻量验证：`git diff --check` 与 `npm run format:check` 通过；未跑完整 `npm run check`，因为本轮没有组件源码、构建配置或依赖文件改动。
 - 明天新对话建议先重启 Codex，使今天安装的 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs` 被会话自动发现；随后执行 `git status --short` 和 `git log -1 --oneline`，再从 `TODO.md` / `task_plan.md` 选择是先收口文档提交、推进 Select，还是独立启动 Icon SVG 重整。
 
+## 2026-06-05 Icon SVG 图标体系首轮重整
+
+- 已先提交昨日遗留记忆文档：`4517523 docs(project): 更新未来计划与技能记忆`。
+- 已为图标规范补红灯校验：新增 `scripts/check-icons.mjs` 和 `npm run check:icons`，首次运行按预期因 48 个旧 SVG 固定 `width` / `height` 失败。
+- 用户确认整套图标统一替换为 Lucide 风格；已将 `src/components/Icon/icons/` 下 48 个 SVG 按同名文件替换为 Lucide outline 来源，并保留现有 `Icon` API 与调用名。
+- `npm run check:icons` 已从红转绿，确认新版 SVG 满足 `viewBox="0 0 24 24"`、无固定宽高、`currentColor` 和 2px round stroke 等结构规范。
+- 已更新 `docs/components/icon.md`、`docs/.vitepress/theme/components/IconGrid.vue`、`AGENTS.md`、`CODE_STYLE.md` 和 `package.json`：图标文档修正为 48 个，IconGrid 增加多尺寸与真实容器预览，`check:icons` 纳入 `npm run check`。
+- 已通过 Figma MCP 在用户提供的 Horizon UI 文件中生成 `Horizon Icons Audit` 页面，包含 48 个新版图标卡片、Lucide 来源标注、尺寸预览和 Button / Field / Tag 容器预览。
+- 遇到的问题：Node 子进程无法直接 spawn `npx` / `npx.cmd`，改用 Iconify API 批量获取 SVG；Figma 插件环境没有 `fetch`，改为把本地 SVG 数据嵌入 Figma 脚本生成审计页。
+
 ## 2026-06-04 收尾与新对话交接
 
 ### 今日完成概览

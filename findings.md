@@ -83,6 +83,15 @@
 - 建议补自动校验脚本或检查任务：扫描每个 SVG 的 `viewBox`、固定色值、硬编码 `width` / `height`、非 `currentColor`、异常 fill/stroke、缺失 linecap / linejoin、疑似超出绘制区的 path / shape bounding box。
 - 建议补浏览器级图标网格验证页或文档示例：在 12px、16px、20px、24px、32px 字号下展示所有图标，并在 Button square/circle、FieldAction、Tag close、Input suffix 等真实容器中抽查视觉居中和一致性。
 
+## 2026-06-05 Icon SVG 图标体系首轮重整
+
+- 本轮按用户确认将 48 个本地图标统一替换为 Lucide outline 风格来源，并保持原有文件名和 `<Icon name="...">` 调用不变；例如 `close.svg` 来自 `lucide:x`，`delete.svg` 来自 `lucide:trash-2`，`notification.svg` 来自 `lucide:bell`。
+- `Icon` 组件 API 保持不变：默认 `1em`、继承 `currentColor`、不恢复 `size` prop，也不新增 offset / align 这类补偿参数。
+- 新增 `scripts/check-icons.mjs` 与 `npm run check:icons`，校验本地 SVG 的 `viewBox`、固定宽高、固定色值、`currentColor`、`stroke-width="2"`、round linecap / linejoin；该检查已纳入 `npm run check`。
+- Icon 文档已修正为 48 个内置图标，并补充本地图标规范说明；`IconGrid` 去掉无效 `size="lg"`，新增 12 / 16 / 20 / 24 / 32 尺寸预览和 Button / Field / Tag 等真实容器抽查。
+- 已通过 Figma MCP 在用户提供的 Horizon UI 文件中生成 `Horizon Icons Audit` 页面，包含 48 个新版图标卡片、Lucide 来源标注、尺寸预览和真实容器预览；后续可在 Figma 中继续人工复核视觉中心。
+- 执行记录：`npx better-icons` 可从 shell 使用，但 Node 子进程直接 spawn `npx` / `npx.cmd` 在 Windows 下失败；本轮批量获取改用 Iconify API 直接拉取 Lucide SVG。Figma 插件运行环境无 `fetch`，因此 Figma 审计页使用嵌入后的本地 SVG 数据生成。
+
 ## 当前规范
 
 ### 色彩模式

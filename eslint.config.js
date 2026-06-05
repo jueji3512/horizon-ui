@@ -46,6 +46,13 @@ export default tseslint.config(
   },
 
   {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+
+  {
     files: ['**/*.vue'],
     languageOptions: {
       parserOptions: {

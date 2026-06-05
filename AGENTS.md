@@ -21,9 +21,10 @@ npm run typecheck    # vue-tsc --noEmit
 npm run lint         # ESLint
 npm run lint:js      # ESLint
 npm run lint:style   # Stylelint
+npm run check:icons  # 校验本地 SVG 图标规范
 npm run format:check # Prettier 检查
 npm run format       # Prettier 写入
-npm run check        # format:check + lint + typecheck + build
+npm run check        # format:check + check:icons + lint + typecheck + build
 ```
 
 ## 当前文档记忆
@@ -143,6 +144,7 @@ docs(project): 更新项目上下文与待办
 - 2026-06-04 已安装 `obra/superpowers` 全局工作流 skills，供重启后的 Codex 新会话在计划、验收、分支收尾、子代理协作和 review 等场景使用；该安装不属于仓库源码变更。
 - 2026-06-05 已安装 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs` 全局辅助 skills，供重启后的 Codex 新会话在图标检索、设计压力测试、接口设计和 ADR 记录场景使用；这些安装不属于仓库源码变更。
 - 2026-06-05 已将 Icon SVG 图标体系重整加入高优先级计划：当前 48 个本地图标后续需要统一 `viewBox`、绘制范围、视觉中心、`currentColor`、笔触和 fill/stroke 策略，并补图标网格预览与自动校验。
+- 2026-06-05 Icon SVG 图标体系已完成首轮重整：48 个本地图标已按 Lucide outline 风格同名替换，`Icon` API 不变，并补 `npm run check:icons`、文档图标网格多尺寸/真实容器预览和 Figma `Horizon Icons Audit` 审计页；后续如发现视觉中心仍不理想，按单个同名 SVG 局部替换或微调。
 - 本轮保留后续项：Radio button variant 仍可进一步做 roving `tabindex`，建议与未来 Toggle / ToggleGroup 方向一起设计。
 - 本轮组件迁移扫描未发现源码中仍有旧 `primary` / `danger` API 或旧 `--color-primary` / `--color-danger` / `--radius-*` token；已修复 Checkbox / Radio / Switch 的 `focus-visible` 可视 ring，对齐 `brand-focus` token。
 - 色彩指南已将语义色 token 文档修正为真实的 Tailwind v4 `@theme` 变量：`--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`。

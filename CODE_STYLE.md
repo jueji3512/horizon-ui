@@ -61,10 +61,11 @@ npm run format       # Prettier 写入
 npm run format:check # Prettier 检查
 npm run lint:js      # ESLint 检查
 npm run lint:style   # Stylelint 检查
+npm run check:icons  # SVG 图标规范检查
 npm run lint         # JS/TS/Vue + CSS 检查
 npm run typecheck    # vue-tsc --noEmit
 npm run build        # VitePress 构建
-npm run check        # 格式、lint、typecheck、build 全量检查
+npm run check        # 格式、图标规范、lint、typecheck、build 全量检查
 ```
 
 ## VS Code

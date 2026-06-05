@@ -98,6 +98,12 @@
 - Figma Starter 计划当前最多 3 页；后续整理时应使用 `00 Workspace`、`01 Icon Library`、`02 Component Drafts` 三页结构，把封面和 foundations 索引合并到 `00 Workspace`，避免创建第 4 页。
 - 2026-06-05 曾尝试继续补 48 个常用 Lucide 图标候选并整理页面，但 Figma MCP 先因 4 页方案触发页数上限，随后又触发 Starter 工具调用额度限制。额度恢复后可按 3 页结构重跑，并且只替换带 `horizon_ui_codex` shared plugin data 或明确命名的管理画板，保留未知页面和未知内容。
 
+## 2026-06-06 Icon 常用图标补充
+
+- 用户决定暂不继续使用 Figma，先在项目内补充常用图标。本轮新增 48 个 Lucide outline 本地图标，当前 `src/components/Icon/icons/` 总数为 96。
+- 新增图标覆盖企业组件库高频场景：导航 / 布局、数据 / 表格、表单、反馈、权限 / 组织、文件、操作和系统；典型新增项包括 `menu`、`table`、`sort-ascending`、`text-cursor-input`、`circle-alert`、`lock`、`folder`、`save`、`database`。
+- `scripts/check-icons.mjs` 已加入常用图标必备列表，避免后续误删这些基础图标；结构校验仍保持 `viewBox="0 0 24 24"`、无固定宽高、`currentColor` 和 2px round stroke 规则。
+
 ## 当前规范
 
 ### 色彩模式

@@ -35,6 +35,13 @@
 - Figma MCP 写入时先按 4 页结构尝试，触发 Starter 计划最多 3 页限制；调整前又触发 Starter 工具调用额度限制，后续 Figma 读写被拦，本轮无法确认或继续整理画布。
 - 已记录后续约定：额度恢复后按 3 页结构重跑，保留未知页面和未知内容，只替换带 `horizon_ui_codex` shared plugin data 或明确管理命名的画板。
 
+## 2026-06-06 Icon 常用图标补充
+
+- 用户决定先不继续使用 Figma，改为直接在项目内补充常用图标。
+- 本轮先将 48 个目标图标写入 `scripts/check-icons.mjs` 必备列表，并运行 `npm run check:icons` 得到预期红灯：48 个新增图标均缺失。
+- 已从 Lucide / Iconify 获取并规范化 48 个 SVG，新增到 `src/components/Icon/icons/`，当前内置图标总数为 96。
+- 新增图标覆盖导航、数据、表单、反馈、权限、文件、操作和系统场景；Icon API 不变，仍通过 `<Icon name="menu" />` 这类同名文件调用。
+
 ## 2026-06-04 收尾与新对话交接
 
 ### 今日完成概览

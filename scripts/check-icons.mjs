@@ -7,6 +7,63 @@ const iconsDir = path.join(rootDir, 'src/components/Icon/icons')
 
 const files = (await readdir(iconsDir)).filter((file) => file.endsWith('.svg')).sort()
 const errors = []
+const requiredIconNames = [
+  'archive',
+  'arrow-up-down',
+  'at-sign',
+  'ban',
+  'bug',
+  'building-2',
+  'chart-line',
+  'chart-pie',
+  'circle-alert',
+  'circle-help',
+  'code',
+  'database',
+  'external-link',
+  'folder',
+  'folder-open',
+  'grid-2x2',
+  'hash',
+  'inbox',
+  'layout-dashboard',
+  'link',
+  'list-filter',
+  'lock',
+  'menu',
+  'panel-left',
+  'panel-right',
+  'paperclip',
+  'printer',
+  'redo',
+  'rotate-ccw',
+  'save',
+  'server',
+  'shield',
+  'shield-check',
+  'sort-ascending',
+  'sort-descending',
+  'square-check',
+  'table',
+  'tag',
+  'terminal',
+  'text-cursor-input',
+  'triangle-alert',
+  'type',
+  'undo',
+  'unlock',
+  'user-plus',
+  'users',
+  'zoom-in',
+  'zoom-out',
+]
+const fileNames = new Set(files.map((file) => file.replace(/\.svg$/, '')))
+
+for (const name of requiredIconNames) {
+  if (!fileNames.has(name)) {
+    errors.push(`${name}.svg: required common icon is missing`)
+  }
+}
 
 function readAttribute(svg, name) {
   return svg.match(new RegExp(`${name}="([^"]*)"`))?.[1] ?? ''

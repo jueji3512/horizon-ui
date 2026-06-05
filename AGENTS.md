@@ -147,7 +147,7 @@ docs(project): 更新项目上下文与待办
 - 2026-06-05 已将 Icon SVG 图标体系重整加入高优先级计划：当前 48 个本地图标后续需要统一 `viewBox`、绘制范围、视觉中心、`currentColor`、笔触和 fill/stroke 策略，并补图标网格预览与自动校验。
 - 2026-06-05 Icon SVG 图标体系已完成首轮重整：48 个本地图标已按 Lucide outline 风格同名替换，`Icon` API 不变，并补 `npm run check:icons`、文档图标网格多尺寸/真实容器预览和 Figma `Horizon Icons Audit` 审计页；后续如发现视觉中心仍不理想，按单个同名 SVG 局部替换或微调。
 - 2026-06-05 用户确认后续设计稿建议都在上述 Horizon UI Figma 文件中实现；本轮尝试继续补 48 个常用 Lucide 图标候选并整理页面时，Figma MCP 因 Starter 计划 3 页上限和工具调用额度被拦截。后续恢复额度后按 3 页结构重跑，不要创建 4 页或删除未知内容。
-- 2026-06-06 已先不继续使用 Figma，改为在项目内补充 48 个常用本地图标；当前 `src/components/Icon/icons/` 共 96 个 SVG，新增图标覆盖导航、数据、表单、反馈、权限、文件、操作和系统场景；VitePress Icon 页已补分类筛选和分类标签，并通过 `npm run check:icons` 必备列表、root `<svg>` 标签碎片和 BOM 检查守护。
+- 2026-06-06 已先不继续使用 Figma，改为在项目内补充 48 个常用本地图标；当前 `src/components/Icon/icons/` 共 96 个 SVG，新增图标覆盖导航、数据、表单、反馈、权限、文件、操作和系统场景；VitePress Icon 页保持轻量搜索网格，并通过 `npm run check:icons` 必备列表、root `<svg>` 标签碎片、BOM 和子 `<rect>` 几何检查守护。
 - 本轮保留后续项：Radio button variant 仍可进一步做 roving `tabindex`，建议与未来 Toggle / ToggleGroup 方向一起设计。
 - 本轮组件迁移扫描未发现源码中仍有旧 `primary` / `danger` API 或旧 `--color-primary` / `--color-danger` / `--radius-*` token；已修复 Checkbox / Radio / Switch 的 `focus-visible` 可视 ring，对齐 `brand-focus` token。
 - 色彩指南已将语义色 token 文档修正为真实的 Tailwind v4 `@theme` 变量：`--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`。

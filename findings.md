@@ -88,7 +88,7 @@
 - 本轮按用户确认将 48 个本地图标统一替换为 Lucide outline 风格来源，并保持原有文件名和 `<Icon name="...">` 调用不变；例如 `close.svg` 来自 `lucide:x`，`delete.svg` 来自 `lucide:trash-2`，`notification.svg` 来自 `lucide:bell`。
 - `Icon` 组件 API 保持不变：默认 `1em`、继承 `currentColor`、不恢复 `size` prop，也不新增 offset / align 这类补偿参数。
 - 新增 `scripts/check-icons.mjs` 与 `npm run check:icons`，校验本地 SVG 的 `viewBox`、固定宽高、固定色值、`currentColor`、`stroke-width="2"`、round linecap / linejoin；该检查已纳入 `npm run check`。
-- Icon 文档已修正为 48 个内置图标，并补充本地图标规范说明；`IconGrid` 去掉无效 `size="lg"`，新增 12 / 16 / 20 / 24 / 32 尺寸预览和 Button / Field / Tag 等真实容器抽查。
+- Icon 文档已修正为 48 个内置图标，并补充本地图标规范说明；`IconGrid` 去掉无效 `size="lg"`，当前保持搜索、总数和全部图标网格，不在页面顶部额外放分类或尺寸/容器预览。
 - 已通过 Figma MCP 在用户提供的 Horizon UI 文件中生成 `Horizon Icons Audit` 页面，包含 48 个新版图标卡片、Lucide 来源标注、尺寸预览和真实容器预览；后续可在 Figma 中继续人工复核视觉中心。
 - 执行记录：`npx better-icons` 可从 shell 使用，但 Node 子进程直接 spawn `npx` / `npx.cmd` 在 Windows 下失败；本轮批量获取改用 Iconify API 直接拉取 Lucide SVG。Figma 插件运行环境无 `fetch`，因此 Figma 审计页使用嵌入后的本地 SVG 数据生成。
 
@@ -102,8 +102,8 @@
 
 - 用户决定暂不继续使用 Figma，先在项目内补充常用图标。本轮新增 48 个 Lucide outline 本地图标，当前 `src/components/Icon/icons/` 总数为 96。
 - 新增图标覆盖企业组件库高频场景：导航 / 布局、数据 / 表格、表单、反馈、权限 / 组织、文件、操作和系统；典型新增项包括 `menu`、`table`、`sort-ascending`、`text-cursor-input`、`circle-alert`、`lock`、`folder`、`save`、`database`。
-- Icon 文档页已补分类筛选、分类标签和新增场景说明，避免新增图标只通过数量变化和自动网格隐式出现。
-- `scripts/check-icons.mjs` 已加入常用图标必备列表，避免后续误删这些基础图标；结构校验仍保持 `viewBox="0 0 24 24"`、无固定宽高、`currentColor` 和 2px round stroke 规则，并额外检查 root `<svg>` 标签中的非法属性碎片和 UTF-8 BOM。
+- Icon 文档页保持轻量搜索网格，避免分类筛选、尺寸预览和真实容器预览在图标总览里抢占主内容。
+- `scripts/check-icons.mjs` 已加入常用图标必备列表，避免后续误删这些基础图标；结构校验仍保持 `viewBox="0 0 24 24"`、无固定宽高、`currentColor` 和 2px round stroke 规则，并额外检查 root `<svg>` 标签中的非法属性碎片、UTF-8 BOM 和子 `<rect>` 几何属性。
 
 ## 当前规范
 

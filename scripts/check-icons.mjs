@@ -85,6 +85,10 @@ for (const file of files) {
   const fixedColors = [...svg.matchAll(/(?:#[0-9a-fA-F]{3,8}|rgb\([^)]*\)|oklch\([^)]*\))/g)].map(
     (match) => match[0],
   )
+  const rectTags = [...svg.matchAll(/<rect\b[^>]*>/g)].map((match) => match[0])
+  const filledOutlineTags = [
+    ...svg.matchAll(/<(?:path|rect|line|polyline|polygon)\b[^>]*\sfill="currentColor"[^>]*>/g),
+  ].map((match) => match[0])
 
   if (svg.charCodeAt(0) === 0xfeff) {
     errors.push(`${file}: must not start with a UTF-8 BOM`)
@@ -100,6 +104,16 @@ for (const file of files) {
 
   if (width || height) {
     errors.push(`${file}: root svg must not hard-code width/height`)
+  }
+
+  for (const rectTag of rectTags) {
+    if (!readAttribute(rectTag, 'width') || !readAttribute(rectTag, 'height')) {
+      errors.push(`${file}: rect elements must keep width and height attributes`)
+    }
+  }
+
+  if (filledOutlineTags.length > 0) {
+    errors.push(`${file}: outline shapes must not be filled with currentColor`)
   }
 
   if (fixedColors.length > 0) {

@@ -73,6 +73,11 @@ for (const file of files) {
   const svg = await readFile(path.join(iconsDir, file), 'utf8')
   const svgTag = svg.match(/<svg\b[^>]*>/)?.[0] ?? ''
   const pathData = svg.replace(svgTag, '')
+  const malformedRootAttributes = svgTag
+    .replace(/^<svg\b/, '')
+    .replace(/>$/, '')
+    .replace(/\s+[A-Za-z_:][-A-Za-z0-9_:.]*(?:="[^"]*")?/g, '')
+    .trim()
 
   const viewBox = readAttribute(svgTag, 'viewBox')
   const width = readAttribute(svgTag, 'width')
@@ -81,8 +86,16 @@ for (const file of files) {
     (match) => match[0],
   )
 
+  if (svg.charCodeAt(0) === 0xfeff) {
+    errors.push(`${file}: must not start with a UTF-8 BOM`)
+  }
+
   if (viewBox !== '0 0 24 24') {
     errors.push(`${file}: expected viewBox="0 0 24 24", got "${viewBox || '(missing)'}"`)
+  }
+
+  if (malformedRootAttributes) {
+    errors.push(`${file}: root svg tag contains malformed text "${malformedRootAttributes}"`)
   }
 
   if (width || height) {

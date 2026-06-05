@@ -41,6 +41,7 @@
 - 本轮先将 48 个目标图标写入 `scripts/check-icons.mjs` 必备列表，并运行 `npm run check:icons` 得到预期红灯：48 个新增图标均缺失。
 - 已从 Lucide / Iconify 获取并规范化 48 个 SVG，新增到 `src/components/Icon/icons/`，当前内置图标总数为 96。
 - 新增图标覆盖导航、数据、表单、反馈、权限、文件、操作和系统场景；Icon API 不变，仍通过 `<Icon name="menu" />` 这类同名文件调用。
+- 根据用户反馈，VitePress Icon 页已补分类筛选与分类标签，并在文档中明确新增常用图标覆盖的场景，避免只依赖“全部图标”自动网格和数量文案；同时修复 48 个新增 SVG 根标签中的机械转换残留和 BOM，并补 `check:icons` 规则防止类似非法属性碎片再次漏过。
 
 ## 2026-06-04 收尾与新对话交接
 

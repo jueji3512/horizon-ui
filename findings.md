@@ -102,7 +102,8 @@
 
 - 用户决定暂不继续使用 Figma，先在项目内补充常用图标。本轮新增 48 个 Lucide outline 本地图标，当前 `src/components/Icon/icons/` 总数为 96。
 - 新增图标覆盖企业组件库高频场景：导航 / 布局、数据 / 表格、表单、反馈、权限 / 组织、文件、操作和系统；典型新增项包括 `menu`、`table`、`sort-ascending`、`text-cursor-input`、`circle-alert`、`lock`、`folder`、`save`、`database`。
-- `scripts/check-icons.mjs` 已加入常用图标必备列表，避免后续误删这些基础图标；结构校验仍保持 `viewBox="0 0 24 24"`、无固定宽高、`currentColor` 和 2px round stroke 规则。
+- Icon 文档页已补分类筛选、分类标签和新增场景说明，避免新增图标只通过数量变化和自动网格隐式出现。
+- `scripts/check-icons.mjs` 已加入常用图标必备列表，避免后续误删这些基础图标；结构校验仍保持 `viewBox="0 0 24 24"`、无固定宽高、`currentColor` 和 2px round stroke 规则，并额外检查 root `<svg>` 标签中的非法属性碎片和 UTF-8 BOM。
 
 ## 当前规范
 

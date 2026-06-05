@@ -18,6 +18,7 @@
 - [ ] 评估并迁移包管理器：优先考虑 pnpm，备选继续 npm，不优先 Bun / Yarn；迁移时使用 Corepack 固定 pnpm 11，替换 `package-lock.json` 为 `pnpm-lock.yaml`，统一 scripts、`packageManager`、`engines` 和项目记忆文档，并验证 `pnpm install`、`pnpm run check`、audit 等价项和关键文档页面。
 - [ ] 按新的组件路线继续推进：Select 单选首版已落地，后续优先推进 TagInput，再推进 Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps，TreeSelect / Cascader / ColorPicker 后置。
 - [ ] 评估并沉淀真正有收益的内部通用原型：Select 首版的 OptionList 先保持私有；后续等 Autocomplete、Dropdown / Menu 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Overlay / Layer 等到 Dialog / Drawer 前设计；FormControl context 随 Form / FormItem 自然沉淀；PopupSurface 暂缓，等 Select / Dropdown / Popconfirm 出现稳定重复后再抽。
+- [ ] Select 后续调整队列：先用生图能力生成几组选项选中态样式方案给用户确认，再落地修改；`clearable` 交互改为鼠标悬浮 Select 主体时下拉箭头位置切换为清空按钮，而不是清空按钮与下拉按钮并排；Select 默认宽度要像 Input 一样占满父容器，演示页不要出现参差不齐的默认宽度；确认 `options` 数据结构是否首版就支持 group，或先记录为后续扩展。
 - [x] 2026-06-05 已全局安装 `better-auth/better-icons@better-icons`、`mattpocock/skills@grill-me`、`mattpocock/skills@design-an-interface`、`addyosmani/agent-skills@documentation-and-adrs`；重启 Codex 后可用于统一 SVG 图标检索、重要设计压力测试、模块接口多方案比较和 ADR / 决策记录。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。
 - [x] 2026-06-05 已完成 Icon SVG 图标体系首轮重整：当前 48 个本地图标已按 Lucide outline 风格同名替换，并统一 `viewBox="0 0 24 24"`、`currentColor`、`stroke-width="2"`、round linecap / linejoin 和无固定 `width` / `height` 的源文件规范；已补 `npm run check:icons` 并纳入 `npm run check`。
 - [x] 2026-06-06 已补充 48 个企业组件库常用本地图标，当前内置图标总数为 96；新增图标覆盖导航、数据、表单、反馈、权限、文件、操作和系统场景，并加入 `check:icons` 必备列表。
@@ -32,6 +33,7 @@
 ## 隐藏问题
 
 - [ ] Field 一旦公开，API 需要谨慎收敛：首版只暴露结构、状态和样式基座，不承载 Select/DatePicker 等业务行为；多选 Select 的 Tag wrap / searchable / maxTagCount 是后续关键压力测试。
+- [ ] Select group 支持会影响 public option 数据结构：可考虑 `SelectOptionGroup = { label: string; options: SelectOption[]; disabled?: boolean }` 或扁平 options + group 字段；下次实现前先判断是否放入首版修补，避免很快破坏 `options` API。
 - [ ] 组件级固有尺寸首轮已统一为组件内部 geometry map / 常量策略；后续扫描新组件时避免把强耦合结构尺寸误沉淀为通用 token。
 - [ ] Checkbox / Radio 的 button variant 未来可迁移或抽象到 Toggle / ToggleGroup；迁移前需确认是否保持多选/单选语义差异，避免只为了视觉复用而损失表单语义。
 - [ ] Radio button variant 当前方向键可用，但尚未做 roving `tabindex`；若继续提升 radiogroup 键盘模型，应与 Toggle / ToggleGroup 方向一起设计。

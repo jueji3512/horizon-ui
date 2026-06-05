@@ -16,7 +16,9 @@
 | 7. 代码编辑器与检查工具规范 | 完成 | 已新增 `CODE_STYLE.md`、`.editorconfig`、`.gitattributes`、Stylelint 和 Tailwind class sorting。 |
 | 8. Field 输入域体系 | 进行中 | Field 首版公开 primitives 已落地并迁移 Input / InputNumber；后续继续用 Select 多选和 DatePicker range 验证边界。 |
 | 9. 运行时与依赖维护 | 持续 | 已升级到 Node 24 LTS / npm 11，并将直接依赖推进到当前最新可用版本；VitePress 内部 audit 项等待上游版本。 |
-| 10. 代理工作流增强 | 持续 | 已全局安装 `obra/superpowers` 14 个工作流 skills；重启 Codex 后可用于计划、执行、验收、分支收尾、子代理协作、review、debug 与 TDD。 |
+| 10. 代理工作流增强 | 持续 | 已全局安装 `obra/superpowers` 14 个工作流 skills，并补装 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs`；重启 Codex 后按收益用于计划、验收、图标检索、设计压力测试、接口设计和 ADR / 决策记录。 |
+| 11. 未来组件与内部原型路线 | 计划中 | 已确认优先推进 Select，并将 OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context 等作为有明确跨组件收益时才沉淀的候选。 |
+| 12. Icon SVG 图标体系重整 | 计划中 | 当前本地图标需要重新统一 SVG 规范、视觉中心、绘制范围、笔触和校验方式；优先级高，可独立于 Select 主线推进。 |
 
 ## 已完成的关键事项
 
@@ -66,6 +68,13 @@
 | 组件级固有尺寸规范 | 完成 / 持续守护 | 首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，均作为组件内部几何规格维护，不新增通用尺寸 token。 |
 | token 文件边界 | 完成 / 持续守护 | 当前 token 文件按 color、typography、radius、size、shadow、motion、z-index 拆分；后续只在语义确实不适合共处时继续拆分。 |
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
+| 未来组件开发路线 | 高 | 推荐顺序为 Select、TagInput、Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps，TreeSelect / Cascader / ColorPicker 后置。 |
+| Icon SVG 图标体系重整 | 高 | 审计并替换 / 规范化当前 48 个本地图标；统一 `viewBox`、绘制范围、视觉中心、`currentColor`、笔触宽度、linecap / linejoin、fill/stroke 策略，并补图标网格预览与自动校验。 |
+| OptionList / Collection 内部原型 | 高 | 优先随 Select 设计内部 primitives / composable，统一 option 注册、active option、disabled、group、empty、loading、键盘导航、滚动定位和 listbox/menu 语义；先内部验证，不急于公开。 |
+| RovingFocus / Composite 内部工具 | 中 | 用于 Radio button variant、未来 ToggleGroup、Tabs、Menu、Toolbar 等复合控件，统一 roving `tabindex`、方向键、Home / End、disabled item 跳过和循环策略。 |
+| Overlay / Layer 基座 | 中 / 后置 | 等 Dialog / Drawer 启动前设计，负责全局层级、遮罩、滚动锁、Esc、focus trap 和 `aria-modal`；不要与锚点定位的 Popper 混为一谈。 |
+| FormControl context | 中 | 随 Form / FormItem 自然沉淀内部 context，统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby`、label/help/error 关联；公开 API 以 Form 体系为主。 |
+| PopupSurface 观察项 | 低 / 暂缓 | Tooltip、Select panel、Dropdown menu、Popconfirm 的 surface 密度和结构差异较大，暂不抽万能 surface；等稳定重复出现后再考虑很薄的内部封装。 |
 | 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 的截图 / DOM / computed style 验证；收敛扫描复验 Tag、Tooltip、Input、InputNumber 和关键指南页，后续继续覆盖新增组件。 |
 | Field 底层组件 | 中 | Input / InputNumber 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |
 | 依赖与运行时升级 | 持续 | 已升级到 Node 24 LTS / npm 11，直接依赖当前无 outdated；后续继续按收益触发升级并修复内部适配。 |
@@ -73,7 +82,7 @@
 | 包管理器迁移 | 中 | 优先评估 pnpm，备选继续 npm，不优先 Bun / Yarn；若执行迁移，需用 Corepack 固定版本、替换锁文件、统一脚本和文档，并完整验证。 |
 | Dark mode 色彩规范 | 后置 | 用户已决定 dark mode 放到当前队列最后；当前完成的是 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。 |
 | Icon 外部 SVG 安全策略 | 中 | 如果未来支持外部 SVG 输入，需要替换当前仅适用于本地白名单图标的策略。 |
-| 工作流 skills 使用 | 持续 | Superpowers 已安装但需重启 Codex 后被新会话拾取；使用时仍以项目文档和当前源码为准。 |
+| 工作流 skills 使用 | 持续 | Superpowers、better-icons、grill-me、design-an-interface、documentation-and-adrs 已安装但需重启 Codex 后被新会话拾取；使用时仍以项目文档和当前源码为准。 |
 
 ## 工作约定
 

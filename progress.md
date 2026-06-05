@@ -1,5 +1,23 @@
 # 工作进度记录
 
+## 2026-06-05 组件路线与内部原型计划
+
+- 用户确认后续组件路线方向可行，并要求将建议加入项目计划。
+- 已将未来组件开发顺序写入计划：优先 Select，其后依次考虑 TagInput、Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps，TreeSelect / Cascader / ColorPicker 后置。
+- 已将内部通用原型候选写入计划：OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context；同时明确 PopupSurface / FloatingSurface 暂缓，避免为了统一 surface 样式过早抽成万能盒子。
+- 已补充判断原则：内部原型必须有明确跨组件收益，能减少真实重复、统一可访问性或降低复杂状态错误时才沉淀；不为了文件拆分、样式复用或概念完整而提前抽象。
+- 已全局安装 4 个新增技能：`better-icons` 用于获取统一 SVG icon；`grill-me` 可用于重要设计前的逐问题压力测试；`design-an-interface` 可用于 Select、OptionList、Overlay 等模块接口多方案比较；`documentation-and-adrs` 可用于重要架构/API/工具链决策记录。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。
+- 用户补充指出当前 Icon 本地 SVG 存在视觉中心、大小和规范不一致问题；已将 Icon SVG 图标体系重整加入高优先级计划，后续应统一 `viewBox`、绘制范围、视觉中心、`currentColor`、笔触和 fill/stroke 策略，并补图标网格预览与自动校验。
+- 本轮只更新项目记忆文档和全局 skills，不修改组件源码，不运行构建。
+
+### 收尾与新对话交接
+
+- 用户表示今天先到这里，预计明天开新对话；本节用于给新会话快速接入。
+- 当前最新提交仍是 `262db57 docs(project): 记录收尾与技能安装`；本轮未 stage / commit。
+- 收尾时工作区改动仅限记忆文档：`AGENTS.md`、`TODO.md`、`task_plan.md`、`findings.md`、`progress.md`。
+- 已完成轻量验证：`git diff --check` 与 `npm run format:check` 通过；未跑完整 `npm run check`，因为本轮没有组件源码、构建配置或依赖文件改动。
+- 明天新对话建议先重启 Codex，使今天安装的 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs` 被会话自动发现；随后执行 `git status --short` 和 `git log -1 --oneline`，再从 `TODO.md` / `task_plan.md` 选择是先收口文档提交、推进 Select，还是独立启动 Icon SVG 重整。
+
 ## 2026-06-04 收尾与新对话交接
 
 ### 今日完成概览

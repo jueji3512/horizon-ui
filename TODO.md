@@ -16,6 +16,11 @@
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。
 - [ ] 后续 VitePress 发布高于 `1.6.4` 的正式版本时，复查并升级以消除当前嵌套 Vite/esbuild 的 audit 项。
 - [ ] 评估并迁移包管理器：优先考虑 pnpm，备选继续 npm，不优先 Bun / Yarn；迁移时使用 Corepack 固定 pnpm 11，替换 `package-lock.json` 为 `pnpm-lock.yaml`，统一 scripts、`packageManager`、`engines` 和项目记忆文档，并验证 `pnpm install`、`pnpm run check`、audit 等价项和关键文档页面。
+- [ ] 按新的组件路线继续推进：优先用 Select 验证 Field / Popper / Tag 组合边界，再推进 TagInput、Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps，TreeSelect / Cascader / ColorPicker 后置。
+- [ ] 评估并沉淀真正有收益的内部通用原型：OptionList / Collection 优先服务 Select、Autocomplete、Dropdown / Menu；RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Overlay / Layer 等到 Dialog / Drawer 前设计；FormControl context 随 Form / FormItem 自然沉淀；PopupSurface 暂缓，等 Select / Dropdown / Popconfirm 出现稳定重复后再抽。
+- [x] 2026-06-05 已全局安装 `better-auth/better-icons@better-icons`、`mattpocock/skills@grill-me`、`mattpocock/skills@design-an-interface`、`addyosmani/agent-skills@documentation-and-adrs`；重启 Codex 后可用于统一 SVG 图标检索、重要设计压力测试、模块接口多方案比较和 ADR / 决策记录。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。
+- [ ] 重整 Icon SVG 图标体系：当前 48 个本地图标存在视觉中心、大小、笔触和规范不一致风险；后续应重新定一套统一、简洁、易用的 SVG icon 规范，并结合 `better-icons` / Lucide 等成熟图标源替换或规范化现有图标。
+- [ ] 2026-06-05 收尾时仍有未提交的记忆文档改动：`AGENTS.md`、`TODO.md`、`task_plan.md`、`findings.md`、`progress.md`；新对话若要先收口，先 review diff，按需跑完整 `npm run check`，再提交文档更新。
 - [ ] 后续评估新增 Toggle / ToggleGroup，用于承接 CheckboxGroup / RadioGroup 当前 `variant="button"` 这类分段切换形态；暂时不实现，现有 Checkbox / Radio button variant 先保持。
 - [ ] 后续新增或改造组件时，继续沿用组件内部 geometry map / 常量维护固有尺寸；首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，不新增通用尺寸 token。
 - [ ] 最后补全 dark mode 色彩规范。当前颜色体系主要完成 light 规范，dark token、暗色状态映射、文档说明和组件适配尚未完成。
@@ -26,9 +31,11 @@
 - [ ] 组件级固有尺寸首轮已统一为组件内部 geometry map / 常量策略；后续扫描新组件时避免把强耦合结构尺寸误沉淀为通用 token。
 - [ ] Checkbox / Radio 的 button variant 未来可迁移或抽象到 Toggle / ToggleGroup；迁移前需确认是否保持多选/单选语义差异，避免只为了视觉复用而损失表单语义。
 - [ ] Radio button variant 当前方向键可用，但尚未做 roving `tabindex`；若继续提升 radiogroup 键盘模型，应与 Toggle / ToggleGroup 方向一起设计。
+- [ ] 内部通用原型必须有明确跨组件收益才沉淀：OptionList / Collection 和 RovingFocus / Composite 可优先作为内部 composable / primitives 验证，不急于公开；Overlay / Layer 在 Dialog / Drawer 真实启动前不空转；PopupSurface 不为了统一边框、背景、圆角和阴影而提前抽成万能盒子。
 - [ ] Popper 未来可按上层组件需要继续扩展边界能力，例如嵌套弹出层协调、boundary 自定义、crossAxis offset 或 fallback placement；当前 Select/Dropdown 前置的响应式配置、disabled 自动关闭、matchWidth trigger resize 和 base-component review 已完成。
 - [ ] 当前 in-app browser 控制通道对 hover 事件触发仍不稳定；Tooltip hover 与 Popper V-02 已检查源码事件链和视觉结构，后续如需稳定回归 hover，应优先补专门的浏览器测试环境或人工实测；Tooltip focus 与 Popper V-03 已在内置浏览器复验通过。
 - [ ] VitePress 文档站样式污染应统一在文档 shell / theme 层处理，不要写进组件源码。当前 demo 体系使用 `ComponentDemo` 的 `.vp-raw` 与 `postcssIsolateStyles` 隔离 VitePress `base.css` / `vp-doc.css`，不要为了文档表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖。
+- [ ] Icon 重整时应先保留当前 `Icon` 组件 API：默认 `1em`、继承 `currentColor`、不恢复固定 `size` prop；重心放在 SVG 源文件本身的 `viewBox`、绘制范围、视觉居中、笔触宽度、端点/拐角、fill/stroke 策略和自动校验，而不是向组件 API 增加补偿参数。
 - [ ] 如未来 `Icon` 支持外部 SVG 或运行时 SVG 文本，必须重新评估当前 `v-html` 本地图标白名单策略，加入 sanitizer 或改为更安全的渲染路径。
 - [ ] in-app browser / Playwright 能力已恢复并用于 Field、Input、InputNumber 视觉验证；后续继续为关键组件补浏览器级视觉回归。
 - [ ] `docs/.vitepress/cache` 和 `docs/.vitepress/dist` 是忽略的生成物。如果没有 dev server 依赖，可以定期清理。

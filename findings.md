@@ -57,6 +57,32 @@
 - 早期交互规范里 `type` 迁移到 `theme`、禁用态不用 opacity、统一 token 的方向已被当前规范吸收；旧 token 名称和值不再直接沿用。
 - 历史路线图只保留为方向参考：完成 Popper 能力后优先考虑 Select/Dropdown/Popconfirm 等依赖链组件，再进入 Form、反馈、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
 
+## 2026-06-05 未来组件路线与内部原型候选
+
+- 当前建议的组件推进顺序：Select → TagInput → Dropdown / Menu → Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → TreeSelect / Cascader / ColorPicker。
+- Select 是下一阶段最关键的组件，因为它会同时验证 Field、Popper、Tag、键盘交互、ARIA、empty、loading、disabled、clearable、多选 tag wrap 等组合边界。
+- TagInput 建议加入计划：它是 Field 多值 / multiline / Tag wrap / Backspace 删除 / 输入宽度自适应的纯压力测试，比 Select 少一层 Popper，有助于先把多值输入域边界打磨干净。
+- Dropdown 和 Menu 建议联动设计：Dropdown 负责触发与浮层，Menu 负责内容结构和复合控件键盘模型；Select option list、ContextMenu、Cascader 等后续组件都可复用相关能力。
+- Form / FormItem 应在 Select 跑通后推进，因为 Field 当前明确不负责 label、help、error message、校验触发时机；FormItem 可承接布局、label、help、error、required、status 传递和 ARIA 关联。
+- DatePicker / TimePicker 建议后置于 Select、Form 和 Overlay 能力之后，因为日期组件牵涉解析、格式化、面板、范围选择、键盘模型和本地化，过早实现容易把底层边界和业务复杂度揉在一起。
+- 内部通用原型的判断原则：只有当一个结构或交互模型服务多个明确组件，并且能减少真实重复、统一可访问性或降低复杂状态错误时才沉淀；不为了文件拆分、样式复用或概念完整而提前抽象。
+- OptionList / Collection 是优先级最高的内部候选：服务 Select、Autocomplete、Dropdown / Menu、TreeSelect、Cascader，统一 option 注册、disabled、group、empty、loading、active option、键盘导航、滚动到当前项、typeahead 和 listbox/menu 语义映射。第一阶段应作为内部 primitives / composable 验证，不急于公开。
+- RovingFocus / Composite 建议作为内部交互工具：服务 Radio button variant、未来 ToggleGroup、Tabs、Menu、Toolbar，统一 roving `tabindex`、方向键移动、Home / End、disabled item 跳过和循环策略。它解决的是可访问性和键盘模型，不是视觉复用。
+- Overlay / Layer 值得抽，但应等 Dialog / Drawer 启动前设计；它负责全局层级、遮罩、滚动锁、Esc、focus trap 和 `aria-modal`，与负责锚点定位的 Popper 不同。
+- FormControl context 应随 Form / FormItem 自然出现，用于统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby`、label/help/error 关联；公开 API 应以 Form 体系为主，不建议过早暴露底层 FormControl primitives。
+- PopupSurface / FloatingSurface 暂不建议立刻抽。Tooltip、Select panel、Dropdown menu、Popconfirm 的 surface 密度、padding、结构和角色差异较大；更合理的做法是先各自实现，等重复足够稳定后，再抽很薄的内部 `surfaceClass` 或 surface primitive。
+- 明确不建议抽的方向：IconButton 已由 Button 的 `shape="square|circle"` 覆盖；StatusSurface 会混淆 Callout、Alert、Message、Tag、Badge 等差异较大的结构；Panel / Card 过泛，容易变成样式垃圾桶；DatePanel 在 DatePicker 真实需求清楚前不预抽。
+
+## 2026-06-05 Icon SVG 图标体系重整计划
+
+- 当前 `src/components/Icon/icons/` 下有 48 个本地 SVG。用户反馈部分图标在实际显示时存在视觉中心偏差、大小不一和规范不统一的问题；该问题应作为高优先级基础质量项单独收束。
+- Icon 组件 API 暂不应通过新增 `size`、`offset`、`align` 等补偿参数解决源文件问题。当前 `Icon` 默认 `1em`、继承字号和颜色的方向仍成立；重整重点应放在 SVG 源文件规范、导入校验和文档预览。
+- 推荐规范方向：统一 `viewBox="0 0 24 24"`；默认 `width` / `height` 不写死在 SVG 源文件中；颜色使用 `currentColor`；outline 图标优先 `fill="none"`、`stroke="currentColor"`、`stroke-width="2"`、`stroke-linecap="round"`、`stroke-linejoin="round"`；确有 fill 图标需求时单独记录例外。
+- 视觉规格应明确绘制安全区和视觉居中规则：主体图形尽量落在 2px 到 22px 的 20x20 绘制区内，避免因为 path 偏上/偏下或边界不对称导致按钮、输入域 suffix、loading 等场景看起来不居中。
+- 后续可用 `better-icons` 从 Lucide / Iconify 等成熟图标库检索替换候选，但不能直接照搬后结束；仍需跑本地规范化和视觉网格检查，确保与 Horizon 当前 `Icon` 组件、Button 图标按钮、FieldAction、Switch loading 等场景一致。
+- 建议补自动校验脚本或检查任务：扫描每个 SVG 的 `viewBox`、固定色值、硬编码 `width` / `height`、非 `currentColor`、异常 fill/stroke、缺失 linecap / linejoin、疑似超出绘制区的 path / shape bounding box。
+- 建议补浏览器级图标网格验证页或文档示例：在 12px、16px、20px、24px、32px 字号下展示所有图标，并在 Button square/circle、FieldAction、Tag close、Input suffix 等真实容器中抽查视觉居中和一致性。
+
 ## 当前规范
 
 ### 色彩模式

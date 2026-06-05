@@ -38,17 +38,21 @@ npm run check        # format:check + lint + typecheck + build
 
 1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
 2. 先读本文件，再读 `TODO.md` 和 `CODE_STYLE.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
-3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。Field 在 Select 多选 / DatePicker range 等复杂场景的压力验证、pnpm 迁移评估和 dark mode 是后续队列。
+3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。Field 在 Select 多选 / DatePicker range 等复杂场景的压力验证、Icon SVG 图标体系重整、pnpm 迁移评估和 dark mode 是后续队列；组件路线优先 Select → TagInput → Dropdown / Menu → Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification，DatePicker / TimePicker 与数据展示、导航和复杂选择组件后置。
 4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 6. 后续遇到调研、重开发、复杂排查、跨组件验证、并行实现或其他子代理能提升效率、覆盖面、完成度的任务时，可以开启子代理协助；小而线性的任务优先主代理直接推进，避免不必要的协调成本。
 7. 如果发现依赖、工具链或 Node.js 版本偏旧，且升级能提升完整性、性能、简洁性或最终效果，先和用户确认；确认后直接升级，并修正项目内部不适配问题，不为旧适配成本保留低效方案。
 8. 2026-06-04 已全局安装 `obra/superpowers` 工作流 skills；重启 Codex 后新会话可在计划、执行、验收、分支收尾、子代理协作、code review、debug、TDD 等场景按收益触发使用。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。
+9. 2026-06-05 已全局安装 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs`；重启 Codex 后可分别用于统一 SVG 图标检索、重要设计压力测试、模块接口多方案比较和 ADR / 决策记录。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。
 
 ## 当前收尾快照
 
 - 2026-06-04 收尾时功能与文档主线已提交并推送；近期关键提交包括 `6dc6521 refactor(styles): 拆分设计令牌文件边界` 和 `c99cc21 docs(vitepress): 优化组件示例源码展示`，本次收尾记录另见最新 `git log`。
+- 2026-06-05 本轮主要完成计划与记忆整理、全局 skills 调研和安装，不涉及组件源码；收尾时未提交改动集中在 `AGENTS.md`、`TODO.md`、`task_plan.md`、`findings.md`、`progress.md`。
+- 2026-06-05 最新提交仍为 `262db57 docs(project): 记录收尾与技能安装`；如新对话要先收口，建议先 review 本轮文档 diff，再按需提交 `docs(project): 更新未来计划与技能记忆`。
 - 最近一次完整验证：`npm run check` 通过，包含 format、lint、typecheck 和 VitePress build。
+- 最近一次轻量验证：2026-06-05 `git diff --check` 与 `npm run format:check` 通过；本轮未重新跑 `npm run check`，因为只改记忆文档和全局 skills。
 - 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；新对话如需继续看页面，先确认 dev server 是否仍在运行。
 
 ## 当前规范重点
@@ -122,6 +126,7 @@ docs(project): 更新项目上下文与待办
 - PopperContent 通过 `v-bind="$attrs"` 将上层 `class/style` 传给 Teleport 后的真实浮层 DOM。
 - PopperContent 已将注入的 visible 状态与 Teleport target 收束为顶层 computed，避免触发器已打开但浮层 DOM 未挂载的边界。
 - Field 已作为公开底层输入域组件落地到 `src/components/Field/`，不是 `_internal`；它用于统一 Input、InputNumber、Select、DatePicker 等 field-like 组件的 surface、状态、尺寸和组合布局。Input / InputNumber 已迁移到 Field 验证首版边界。
+- 后续可沉淀的内部通用原型按真实收益推进：OptionList / Collection 优先服务 Select、Autocomplete、Dropdown / Menu 等 option 类组件；RovingFocus / Composite 服务 Radio button variant、ToggleGroup、Tabs、Menu 等复合控件；Overlay / Layer 等到 Dialog / Drawer 前设计；FormControl context 随 Form / FormItem 自然出现；PopupSurface 暂缓，避免过早抽成万能 surface。
 - Field primitives 支持外部 `class` 后置覆盖；FieldRoot 具备 `focus-within` 默认 ring，FieldSegment 具备 `focus-within:text-brand` 分段聚焦视觉。
 - InputNumber 已复用 FieldRoot / FieldNativeInput / FieldGroup，步进按钮复用 Button 的 `variant="outline"` + `shape="square"`，保留 sm/md/lg 的 24/32/40 尺寸，并修复聚焦时键盘/按钮步进后的展示值同步。
 - Checkbox / Radio 的 `variant="button"` 未来可考虑抽到 Toggle / ToggleGroup；当前只记录方向，不实现。
@@ -136,6 +141,8 @@ docs(project): 更新项目上下文与待办
 - docs theme 已纳入 stylelint，IconGrid 改用 Horizon 语义 token；色彩、FieldGroup、Typography、Popper、Tooltip、Text、Title 文档漂移已修正。
 - token 文件边界已收敛：`font.css` 改为 `typography.css`，`size.css` 中的圆角拆到 `radius.css`，`elevation.css` 拆为 `shadow.css`、`motion.css`、`z-index.css`；`color.css` 仍作为完整色彩系统保留。
 - 2026-06-04 已安装 `obra/superpowers` 全局工作流 skills，供重启后的 Codex 新会话在计划、验收、分支收尾、子代理协作和 review 等场景使用；该安装不属于仓库源码变更。
+- 2026-06-05 已安装 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs` 全局辅助 skills，供重启后的 Codex 新会话在图标检索、设计压力测试、接口设计和 ADR 记录场景使用；这些安装不属于仓库源码变更。
+- 2026-06-05 已将 Icon SVG 图标体系重整加入高优先级计划：当前 48 个本地图标后续需要统一 `viewBox`、绘制范围、视觉中心、`currentColor`、笔触和 fill/stroke 策略，并补图标网格预览与自动校验。
 - 本轮保留后续项：Radio button variant 仍可进一步做 roving `tabindex`，建议与未来 Toggle / ToggleGroup 方向一起设计。
 - 本轮组件迁移扫描未发现源码中仍有旧 `primary` / `danger` API 或旧 `--color-primary` / `--color-danger` / `--radius-*` token；已修复 Checkbox / Radio / Switch 的 `focus-visible` 可视 ring，对齐 `brand-focus` token。
 - 色彩指南已将语义色 token 文档修正为真实的 Tailwind v4 `@theme` 变量：`--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`。

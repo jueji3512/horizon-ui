@@ -81,7 +81,7 @@
 - 实现复用 `FieldRoot` / `FieldContent` / `FieldSuffix` / `FieldAction` 作为触发器，复用 `Popper trigger="manual"`、`match-width` 和默认 `bottom-start` 定位；Select 面板自行定义背景、边框、圆角、滚动、最大高度和 `shadow-popper`，不改变 Popper 无视觉 surface 的原则。
 - 键盘与 ARIA 采用 trigger 保持焦点的 `combobox` + `listbox` + `option` 模型，通过 `aria-activedescendant` 指向 active option；禁用不可聚焦不可展开，只读可聚焦但不可展开、不可清空、不可改值。
 - `SelectOptionList` 目前是 `src/components/Select/` 内部私有组件，用于沉淀 active、selected、disabled、loading、empty、滚动到 active option 和 listbox 语义；后续等 Dropdown / Autocomplete 等真实复用出现后再考虑抽内部 OptionList / Collection。
-- 首版实现后用户反馈：选项选中态和下拉浮层 surface 视觉都不满意，下次应先用生图能力生成多版方案再改代码；浮层重点比较 box shadow、边框、圆角、间距和层级感。交互上 clearable 应改为 hover Select 主体时下拉箭头位置切换为清空按钮；布局上 Select 默认宽度应像 Input 一样占满父容器；数据结构上需要支持 group，需先确认是否放入首版修补以及 group API 形态。
+- 首版实现后的视觉 / 交互反馈已落地：选中态改为浅 brand 背景 + 左侧深 brand 条，去掉右侧 check 图标；下拉浮层移除显式 border，仅由 `shadow-popper` 和 inset edge 表达边缘；clearable 改为 hover Select 主体时在下拉箭头位置切换为清空按钮；Select 默认宽度像 Input 一样占满父容器；选项列表已支持 `children` / `title` 一层 group。
 
 ## 2026-06-06 ScrollArea 底层滚动基座
 
@@ -96,6 +96,12 @@
 - v1 暂不做虚拟滚动、不新增依赖。未来如果 Table、Tree、Virtualized Select 或大型 Dropdown 需要虚拟列表，优先评估 `@tanstack/vue-virtual`，因为它以 HTML scroll element 为核心接入点，和当前 viewport expose 契约匹配。
 - Select 面板已迁移到 `ScrollArea :max-height="240"`；`SelectOptionList` 通过 ScrollArea context 在 active option 变化时调用 `scrollToElement(..., { block: 'nearest' })`，保持键盘导航时 active 项可见。
 - 新增 `scripts/check-scroll-area.mjs` 与 `npm run check:scroll-area`，用于守护 ScrollArea 结构、expose API、性能关键字、Select 迁移和禁止直接 `scrollIntoView()`；该检查已纳入 `npm run check`。
+
+## 2026-06-07 ScrollArea 收口结论
+
+- ScrollArea thumb 首尾 inset 已修复：垂直 top / bottom、水平 left / right 的有效端点 inset 均为 4px；`check:scroll-area` 已守护显式 `top-1` / `left-1` 和禁止 transform 中重复追加 edge inset。
+- ScrollArea 文档已补“编程控制”示例，覆盖 `scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState` 和 `scroll` / `update` 事件状态；该示例也被 `check:scroll-area` 守护。
+- 本轮完整功能提交为 `d0185e6 feat(scrollarea): 实现滚动区域组件`；当前下一步优先进入 Dropdown / Menu，不再回到 Select 视觉确认队列。
 
 ## 2026-06-05 Icon SVG 图标体系重整计划
 
@@ -211,7 +217,7 @@ docs(project): 更新项目上下文与待办
 - 2026-06-04 收尾提交后再次执行 `npm run check` 通过；提交已按组件行为修复、VitePress demo 迁移、项目上下文更新拆分。
 - 2026-06-04 Node 24 / 依赖升级后执行 `npm run check` 通过；内置浏览器使用 `http://127.0.0.1:5180/` 抽查 Badge、Checkbox、Popper，页面标题、demo 数量和 Vite overlay 均正常，修复后的 Badge 页面无新增 warning。
 - 2026-06-04 组件迁移收敛扫描后执行 `npm run check` 通过；内置浏览器使用 `http://127.0.0.1:5181/` 复验 Tag 键盘切换、Tooltip `aria-describedby`、Input 清空回焦、InputNumber 页面和 colors / field-system / typography / popper 指南页，当前端口无 warning/error。
-- 2026-06-06 ScrollArea v1 后执行 `npm run check` 通过；headless Chrome CDP 使用 `http://127.0.0.1:5186/` 验证 ScrollArea 垂直 / 水平 / 双轴示例、auto 显隐、thumb 拖拽、focusable、scroll metrics，以及 Select 分组面板使用 ScrollArea、方向键跳过 disabled option、active option 保持可见。
+- 2026-06-07 ScrollArea v1 收口后执行 `npm run check` 通过；headless Chrome CDP 使用 `http://127.0.0.1:5186/` 验证 ScrollArea 垂直 / 水平 / 双轴示例、auto 显隐、thumb 拖拽、focusable、scroll metrics、编程控制示例，以及 Select 分组面板使用 ScrollArea、方向键跳过 disabled option、active option 保持可见。
 
 ## 2026-06-04 VitePress `:::demo` 演示体系结论
 

@@ -1,5 +1,14 @@
 # 工作进度记录
 
+## 2026-06-07 收尾与新对话交接
+
+- 今天已完成 ScrollArea v1 收口并提交：`d0185e6 feat(scrollarea): 实现滚动区域组件`。
+- ScrollArea 已作为公开底层滚动基座落地，并迁移 Select 面板；文档新增垂直、水平、双轴和编程控制 4 个示例；`check:scroll-area` 已纳入 `npm run check`。
+- 今日修复 ScrollArea thumb 首尾 inset 不一致问题，并补编程控制演示；headless Chrome CDP 已验证 thumb 两端 inset 均为 4px，`下移` / `定位目标` / `底部` / `顶部` 等编程控制按钮可正常驱动滚动和 metrics。
+- 最新完整验证：2026-06-07 `npm run check` 通过，包含 format、check:icons、check:scroll-area、lint、typecheck 和 VitePress build。
+- 当前工作分支为 `codex/docs-and-icon-rework`。收尾文档提交前工作区曾为 clean，最新状态以明天新对话启动后的 `git status --short` 和 `git log -1 --oneline` 为准。
+- 明天新对话最短接入：先读 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`，确认最新提交和工作区状态；下一步优先推进 Dropdown / Menu 的接口设计、键盘模型、浮层结构和是否沉淀 OptionList / Collection 内部能力。
+
 ## 2026-06-07 ScrollArea 编程控制演示补充
 
 - 用户指出 ScrollArea 文档示例只覆盖基础滚动方向，缺少 `scrollTo` 等 expose 能力展示。

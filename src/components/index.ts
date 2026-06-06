@@ -32,7 +32,15 @@ import PopperArrow from './Popper/PopperArrow.vue'
 
 export type { FieldContext, FieldSize, FieldStatus } from './Field'
 export { fieldContextKey, useFieldContext } from './Field'
-export type { SelectOption, SelectPlacement, SelectSize, SelectStatus, SelectValue } from './Select'
+export type {
+  SelectOption,
+  SelectOptionGroup,
+  SelectOptionItem,
+  SelectPlacement,
+  SelectSize,
+  SelectStatus,
+  SelectValue,
+} from './Select'
 export type {
   Placement,
   PopperContext,

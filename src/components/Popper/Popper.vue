@@ -36,7 +36,7 @@ const props = withDefaults(
     disabled: false,
     to: 'body',
     flip: true,
-    shift: true,
+    shift: false,
     matchWidth: false,
     strategy: 'absolute',
     autoUpdate: true,

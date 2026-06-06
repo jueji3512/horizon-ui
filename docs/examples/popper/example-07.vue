@@ -20,15 +20,9 @@
         </div>
       </PopperContent>
     </Popper>
-    <Popper
-      v-model:visible="v07ShiftOff"
-      trigger="manual"
-      placement="top"
-      :flip="false"
-      :shift="false"
-    >
+    <Popper v-model:visible="v07ShiftOff" trigger="manual" placement="top" :flip="false">
       <PopperTrigger>
-        <Button size="sm" @click.stop="v07ShiftOff = !v07ShiftOff">shift="false"</Button>
+        <Button size="sm" @click.stop="v07ShiftOff = !v07ShiftOff">default shift=false</Button>
       </PopperTrigger>
       <PopperContent>
         <div
@@ -42,8 +36,8 @@
     </Popper>
   </div>
   <p class="mt-2 text-xs text-[var(--text-color-secondary)]">
-    将此区域滚至视口顶端后点击按钮。高浮层会让 shift 差异更明显；shift="true"
-    弹层被推回可见，shift="false" 弹层溢出视口外不可见。
+    将此区域滚至视口顶端后点击按钮。高浮层会让 shift 差异更明显；shift="true" 弹层被推回可见；默认
+    shift=false，弹层溢出视口外不可见。
   </p>
 </template>
 

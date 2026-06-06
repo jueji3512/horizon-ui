@@ -21,7 +21,7 @@ export function usePopper(
     const m: Middleware[] = []
     m.push(offsetMiddleware(toValue(options.offset) ?? 8))
     if (toValue(options.flip) !== false) m.push(flip())
-    if (toValue(options.shift) !== false) m.push(shift({ padding: 4, crossAxis: true }))
+    if (toValue(options.shift) === true) m.push(shift({ padding: 4, crossAxis: true }))
     if (toValue(options.matchWidth)) {
       m.push(
         size({

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-3">
+  <div class="flex max-w-80 flex-col gap-3">
     <Select v-model="value" clearable :options="statusOptions" placeholder="选择状态" />
     <Text theme="secondary">清空后值会变为：{{ value ?? 'null' }}</Text>
   </div>

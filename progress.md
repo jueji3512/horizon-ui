@@ -1,10 +1,42 @@
 # 工作进度记录
 
+## 2026-06-06 Popper shift 默认行为
+
+- 用户确认 Select 与 Tooltip 都不需要 Popper `shift` 的吸边行为；该行为应作为 Popper 的显式 opt-in 能力，而不是默认行为。
+- 本轮修改 `src/components/Popper/Popper.vue` 与 `src/components/Popper/usePopper.ts`：`shift` 默认值改为 `false`，底层 hook 也改为只有 `shift === true` 时才加载 Floating UI `shift` middleware。
+- 本轮移除 Select / Tooltip 上临时的 `:shift="false"`，两者改为继承 Popper 默认行为；`docs/components/popper.md` 已同步 `shift` 默认值和 V-07 demo 标题说明。
+- 浏览器验证 `/components/tooltip.html`：打开 click Tooltip 后继续滚动，触发器滚出顶部时 tooltip 也自然滚出视口，没有停在 viewport 顶部。
+
+## 2026-06-06 Select group 缩进方案
+
+- 用户确认分组视觉更接近视觉草稿 A：不加分割线或背景块，通过 group title 与组内 option 的左边距差异表达层级。
+- 本轮修改 `src/components/Select/SelectOptionList.vue`：组内 option 在 sm / md / lg 下使用更大的左 padding，未分组选项和 group title 保持原有左边距，选中态背景和左侧 brand 条仍保持 edge-to-edge。
+- 浏览器验证 `/components/select`：md 尺寸下 group title 左 padding 为 12px，组内 option 左 padding 为 20px，未分组选项左 padding 仍为 12px。
+- 根据用户反馈，Select 下拉浮层关闭 Popper `shift`：保留 `flip`，但不再把浮层推回 viewport 边缘；浏览器验证中，上弹浮层继续滚动后会跟随触发器自然离开视口，不再像 fixed 一样吊在顶部/底部。
+
+## 2026-06-06 Select children group API
+
+- 用户确认 Select 分组 API 使用 `children` 判定 group，分组标题字段使用 `title`，普通选项继续使用 `label` / `value`。
+- 本轮修改 `src/components/Select/types.ts`：`SelectOption` 改为 `SelectOptionItem | SelectOptionGroup` 联合类型；group 项使用 `children: SelectOptionItem[]`，并通过 `value?: never` / `label?: never` 限制和普通项混用。
+- 本轮修改 `src/components/Select/Select.vue` 与 `SelectOptionList.vue`：内部把 `options` 规整为一层 group / option 结构，active index、选择、滚动定位和键盘导航只作用于真实 option；`group.disabled` 会合并为子 option 的禁用态；分组使用 `role="group"`，真实选项继续使用 `role="option"`。
+- 本轮新增 `docs/examples/select/example-08.vue` 并更新 `docs/components/select.md`，补充分组选项 demo 与 `SelectOption` 类型说明。
+- 本轮补充 `docs/examples/select/example-07.vue` 空分组示例，用于验证所有 group 的 `children` 都为空时展示 `empty-text`。
+- 验证：先用源码断言确认 group API 标记从缺失转为存在；随后 `npm run typecheck` 与完整 `npm run check` 通过。浏览器验证 `/components/select`：分组标题渲染为 `role="group"` 且不可选中，键盘方向键跳过 group 标题和 disabled option，`group.disabled` 会禁用子选项，混排普通 option 与 group child 都可选中，空 group 示例展示 `empty-text`。
+## 2026-06-06 Select 视觉反馈修正
+
+- 用户确认 Select 选项选中态采用“第三版”结构方向，并进一步要求选中项除了左侧深 brand 条外，背景使用浅 brand 色、不要右侧 check 图标、选项行左右贴满下拉面板。
+- 本轮修改 `src/components/Select/SelectOptionList.vue`：选中项改为 edge-to-edge `bg-brand-light`、左侧 3px `bg-brand` 条、`text-brand` 中字重，并移除右侧 check icon；hover / active 非选中项继续使用中性 hover 背景。
+- 本轮修改 `src/components/Select/Select.vue`：`clearable` 改为鼠标悬浮 Select 主体时在下拉箭头位置切换为清空按钮；补 `PopperTrigger class="w-full"`，避免外层 inline-flex 让 Select 默认宽度被内容撑缩。
+- 根据用户继续反馈，Select 下拉面板移除显式 `border` / `border-[var(--border-color-component)]`，保留 `shadow-popper`，用多层阴影和 inset edge 表达类似 TDesign 的浮层边缘。
+- 根据用户继续反馈，clearable hover 切换时清空按钮与下拉箭头视觉位置不一致；浏览器量测发现箭头作为直接 SVG 子节点在 20px suffix 槽位内左对齐，而清空按钮作为 `FieldAction` 在槽位内居中。本轮为 Select suffix 槽位补 `justify-center`，让箭头、loading 和清空按钮共用同一中心点。
+- 本轮统一 `docs/examples/select/` 示例父容器宽度为 `max-w-80`，让 Select 默认宽度表现为占满父容器，不再在示例页出现参差不齐的默认宽度。
+- 验证：`npm run format:check`、`npm run lint`、`npm run typecheck`、`npm run build` 和完整 `npm run check` 均通过；本地 VitePress dev server 已启动在 `http://127.0.0.1:5185/components/select` 且页面返回 200。当前工具环境未暴露 Browser 控制工具，Node REPL 也缺少 `playwright` / `playwright-core`，所以未完成自动化点击/hover 截图复验。
+
 ## 2026-06-06 收尾与新对话交接
 
 - 今天已完成图标补充收尾、Select 单选首版实现和 Select 后续反馈记录；最新关键提交包括 `98078e8 feat(select): 实现单选选择器首版`、`9abf7a1 docs(project): 记录 Select 后续调整项`、`f3b826e docs(project): 补充 Select 浮层样式方案待办`。
 - Select 首版通过 `npm run check`，文档页 `http://127.0.0.1:5185/components/select` 返回 200；收尾时 5185 dev server 仍在监听。当前会话没有可调用 Browser 插件且仓库 Playwright 缺少 `playwright-core`，点击/键盘交互仍需后续补验。
-- 明天新对话最短接入：先执行 `git status --short` 和 `git log -1 --oneline`，再读 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`。优先处理 Select 反馈：用生图能力先出几版选项选中态 + 下拉浮层 surface 方案给用户确认，再改 clearable hover 切换、默认宽度占满父容器，并确认 group 是首版补还是后续补。
+- 明天新对话最短接入：先执行 `git status --short` 和 `git log -1 --oneline`，再读 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`。Select 首版视觉反馈与 `children` / `title` 分组 API 已落地；下一步优先按组件路线推进 TagInput，或继续补 Select 多选 / searchable 等后续能力。
 - 本次收尾只更新项目记忆文档，不修改组件实现；提交前以 `git diff --check` 和记忆文档 Prettier 检查为准。
 
 ## 2026-06-06 Select 单选首版

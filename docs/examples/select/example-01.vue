@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-3">
+  <div class="flex max-w-80 flex-col gap-3">
     <Select v-model="value" :options="frameworkOptions" placeholder="选择框架" />
     <Text theme="secondary">当前值：{{ value ?? 'null' }}</Text>
   </div>

@@ -67,11 +67,11 @@ popper/example-06
 
 ---
 
-### V-07 shift — 溢出视口时推入视野 (`:shift="false"`)
+### V-07 shift — 溢出视口时推入视野 (`:shift="true"`)
 
 **验证**：两组 `placement="top"` + `:flip="false"`。shift 开启时弹层被推入可见区域；关闭时可能溢出视口不可见。
 
-:::demo V-07 shift — 溢出视口时推入视野 (`:shift="false"`)
+:::demo V-07 shift — 溢出视口时推入视野 (`:shift="true"`)
 popper/example-07
 :::
 
@@ -133,7 +133,7 @@ popper/example-11
 | `disabled` | `boolean` | `false` | 禁用弹出 |
 | `to` | `string \| HTMLElement` | `'body'` | Teleport 目标 |
 | `flip` | `boolean` | `true` | 弹出方向空间不足时自动翻转到对面 |
-| `shift` | `boolean` | `true` | 弹层超出视口边界时沿轴向推回可见区域（留 4px 间距） |
+| `shift` | `boolean` | `false` | 弹层超出视口边界时是否沿轴向推回可见区域（留 4px 间距） |
 | `match-width` | `boolean` | `false` | 浮层宽度匹配 trigger 宽度 |
 | `auto-update` | `boolean` | `true` | 触发元素位置变化时弹层自动重新定位。`false` 仅定位一次 |
 | `z-index` | `number` | 自动递增 | 手动指定 z-index，不填则自动计算（基准 2000） |

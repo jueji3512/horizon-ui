@@ -9,8 +9,14 @@
     :z-index="zIndex"
     @update:visible="handlePopperVisibleUpdate"
   >
-    <PopperTrigger>
-      <div v-bind="rootAttrs" ref="wrapperRef" :class="wrapperClasses">
+    <PopperTrigger class="w-full">
+      <div
+        v-bind="rootAttrs"
+        ref="wrapperRef"
+        :class="wrapperClasses"
+        @mouseenter="handleMouseEnter"
+        @mouseleave="handleMouseLeave"
+      >
         <FieldRoot
           v-bind="controlAttrs"
           role="combobox"
@@ -41,12 +47,10 @@
             </span>
           </FieldContent>
 
-          <FieldSuffix class="gap-1">
+          <FieldSuffix class="relative h-5 w-5 justify-center">
             <FieldAction
-              v-if="clearable"
-              :class="showClear ? '' : 'invisible'"
-              :aria-label="showClear ? '清空' : undefined"
-              :disabled="!showClear"
+              v-if="showClear"
+              aria-label="清空"
               @mousedown.prevent
               @click.stop="handleClear"
             >
@@ -54,7 +58,7 @@
             </FieldAction>
 
             <Icon v-if="loading" name="loading" class="select-loading" />
-            <Icon v-else name="chevron-down" :class="chevronClasses" />
+            <Icon v-else-if="!showClear" name="chevron-down" :class="chevronClasses" />
           </FieldSuffix>
         </FieldRoot>
 
@@ -70,7 +74,7 @@
 
     <PopperContent :class="panelClasses">
       <SelectOptionList
-        :options="options"
+        :items="optionListItems"
         :selected-value="modelValue"
         :active-index="activeIndex"
         :size="size"
@@ -95,7 +99,15 @@ import Icon from '../Icon/Icon.vue'
 import { Popper, PopperContent, PopperTrigger } from '../Popper'
 import { cn } from '../../utils'
 import SelectOptionList from './SelectOptionList.vue'
-import type { SelectOption, SelectPlacement, SelectSize, SelectStatus, SelectValue } from './types'
+import type {
+  SelectOption,
+  SelectOptionGroup,
+  SelectOptionItem,
+  SelectPlacement,
+  SelectSize,
+  SelectStatus,
+  SelectValue,
+} from './types'
 
 defineOptions({ inheritAttrs: false })
 
@@ -143,11 +155,30 @@ const emit = defineEmits<{
   'visible-change': [value: boolean]
 }>()
 
+interface SelectOptionListOptionItem {
+  type: 'option'
+  key: string
+  option: SelectOptionItem
+  optionIndex: number
+  disabled: boolean
+}
+
+interface SelectOptionListGroupItem {
+  type: 'group'
+  key: string
+  title: string
+  disabled: boolean
+  children: SelectOptionListOptionItem[]
+}
+
+type SelectOptionListItem = SelectOptionListOptionItem | SelectOptionListGroupItem
+
 const attrs = useAttrs()
 const selectId = useId()
 const wrapperRef = ref<HTMLElement | null>(null)
 const isOpen = ref(false)
 const isFocused = ref(false)
+const isHovered = ref(false)
 const activeIndex = ref(-1)
 
 const rootAttrs = computed(() => {
@@ -160,13 +191,67 @@ const controlAttrs = computed(() => {
   return controlOnlyAttrs
 })
 
-const selectedOption = computed(() =>
-  props.options.find((option) => option.value === props.modelValue),
+function isSelectOptionGroup(option: SelectOption): option is SelectOptionGroup {
+  return 'children' in option
+}
+
+const optionListItems = computed<SelectOptionListItem[]>(() => {
+  const items: SelectOptionListItem[] = []
+  let optionIndex = 0
+
+  props.options.forEach((option, index) => {
+    if (isSelectOptionGroup(option)) {
+      if (option.children.length === 0) return
+
+      const groupDisabled = Boolean(option.disabled)
+      const children = option.children.map((child, childIndex) => {
+        const item: SelectOptionListOptionItem = {
+          type: 'option',
+          key: `group-${index}-option-${childIndex}-${String(child.value)}`,
+          option: child,
+          optionIndex,
+          disabled: groupDisabled || Boolean(child.disabled),
+        }
+        optionIndex += 1
+        return item
+      })
+
+      items.push({
+        type: 'group',
+        key: `group-${index}-${option.title}`,
+        title: option.title,
+        disabled: groupDisabled,
+        children,
+      })
+      return
+    }
+
+    items.push({
+      type: 'option',
+      key: `option-${index}-${String(option.value)}`,
+      option,
+      optionIndex,
+      disabled: Boolean(option.disabled),
+    })
+    optionIndex += 1
+  })
+
+  return items
+})
+
+const selectableOptions = computed<SelectOptionListOptionItem[]>(() =>
+  optionListItems.value.flatMap((item) => (item.type === 'group' ? item.children : [item])),
+)
+
+const selectedOption = computed(
+  () => selectableOptions.value.find((item) => item.option.value === props.modelValue)?.option,
 )
 
 const canOpen = computed(() => !props.disabled && !props.readonly)
 const hasValue = computed(() => props.modelValue !== null && props.modelValue !== undefined)
-const showClear = computed(() => props.clearable && canOpen.value && hasValue.value)
+const showClear = computed(
+  () => props.clearable && canOpen.value && hasValue.value && isHovered.value && !props.loading,
+)
 const listboxId = computed(() => `${selectId}-listbox`)
 const optionIdPrefix = computed(() => `${selectId}-option`)
 const activeOptionId = computed(() => {
@@ -207,6 +292,14 @@ function handleTriggerClick() {
   setOpen(!isOpen.value)
 }
 
+function handleMouseEnter() {
+  isHovered.value = true
+}
+
+function handleMouseLeave() {
+  isHovered.value = false
+}
+
 function handleFocus(e: FocusEvent) {
   if (isFocused.value) return
   isFocused.value = true
@@ -232,7 +325,7 @@ function handleClear() {
   nextTick(focusTrigger)
 }
 
-function handleOptionSelect(option: SelectOption) {
+function handleOptionSelect(option: SelectOptionItem) {
   if (option.disabled) return
 
   if (option.value !== props.modelValue) {
@@ -249,32 +342,36 @@ function setActiveIndex(index: number) {
 }
 
 function getFirstEnabledIndex() {
-  return props.options.findIndex((option) => !option.disabled)
+  return selectableOptions.value.findIndex((option) => !option.disabled)
 }
 
 function getLastEnabledIndex() {
-  for (let index = props.options.length - 1; index >= 0; index -= 1) {
-    if (!props.options[index]?.disabled) return index
+  const options = selectableOptions.value
+
+  for (let index = options.length - 1; index >= 0; index -= 1) {
+    if (!options[index]?.disabled) return index
   }
   return -1
 }
 
 function getNextEnabledIndex(currentIndex: number, direction: 1 | -1) {
-  if (props.options.length === 0) return -1
+  const options = selectableOptions.value
+
+  if (options.length === 0) return -1
 
   let index = currentIndex
-  for (let attempt = 0; attempt < props.options.length; attempt += 1) {
+  for (let attempt = 0; attempt < options.length; attempt += 1) {
     index += direction
-    if (index < 0) index = props.options.length - 1
-    if (index >= props.options.length) index = 0
-    if (!props.options[index]?.disabled) return index
+    if (index < 0) index = options.length - 1
+    if (index >= options.length) index = 0
+    if (!options[index]?.disabled) return index
   }
 
   return -1
 }
 
 function getSelectedIndex() {
-  return props.options.findIndex((option) => option.value === props.modelValue)
+  return selectableOptions.value.findIndex((option) => option.option.value === props.modelValue)
 }
 
 function syncActiveOption() {
@@ -284,7 +381,7 @@ function syncActiveOption() {
   }
 
   const selectedIndex = getSelectedIndex()
-  if (selectedIndex >= 0 && !props.options[selectedIndex]?.disabled) {
+  if (selectedIndex >= 0 && !selectableOptions.value[selectedIndex]?.disabled) {
     activeIndex.value = selectedIndex
     return
   }
@@ -297,9 +394,9 @@ function moveActiveOption(direction: 1 | -1) {
 }
 
 function selectActiveOption() {
-  const option = props.options[activeIndex.value]
+  const option = selectableOptions.value[activeIndex.value]
   if (!option || option.disabled) return
-  handleOptionSelect(option)
+  handleOptionSelect(option.option)
 }
 
 function handleKeydown(e: KeyboardEvent) {
@@ -430,7 +527,7 @@ const panelSizeMap: Record<SelectSize, string> = {
 
 const panelClasses = computed(() =>
   cn(
-    'max-h-60 overflow-auto rounded-[var(--round-default)] border border-[var(--border-color-component)] bg-[var(--bg-color-container)] text-[var(--text-color-primary)] shadow-popper outline-none',
+    'max-h-60 overflow-auto rounded-[var(--round-default)] bg-[var(--bg-color-container)] text-[var(--text-color-primary)] shadow-popper outline-none',
     panelSizeMap[props.size],
   ),
 )

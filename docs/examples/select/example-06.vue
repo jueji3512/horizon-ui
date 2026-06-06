@@ -1,5 +1,7 @@
 <template>
-  <Select v-model="value" :options="roleOptions" placeholder="选择角色" />
+  <div class="max-w-80">
+    <Select v-model="value" :options="roleOptions" placeholder="选择角色" />
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -50,6 +50,14 @@ select/example-05
 select/example-06
 :::
 
+## 分组选项
+
+带 `children` 的项目会被视为分组，`title` 渲染为分组标题；分组自身不可选中，设置 `disabled` 会禁用组内所有选项。
+
+:::demo 分组选项
+select/example-08
+:::
+
 ## 加载与空状态
 
 `loading` 展示加载状态；选项为空时展示 `empty-text`。
@@ -63,7 +71,7 @@ select/example-07
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `model-value` | `string \| number \| null` | `null` | v-model 绑定值 |
-| `options` | `SelectOption[]` | `[]` | 选项列表 |
+| `options` | `SelectOption[]` | `[]` | 选项列表，支持普通项与一层分组混排 |
 | `placeholder` | `string` | `'请选择'` | 占位文本 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
 | `status` | `'error' \| 'warning' \| 'success'` | — | 校验状态 |
@@ -82,10 +90,21 @@ select/example-07
 ```ts
 type SelectValue = string | number
 
-interface SelectOption {
+type SelectOption = SelectOptionItem | SelectOptionGroup
+
+interface SelectOptionItem {
   label: string
   value: SelectValue
   disabled?: boolean
+  children?: never
+}
+
+interface SelectOptionGroup {
+  title: string
+  disabled?: boolean
+  children: SelectOptionItem[]
+  value?: never
+  label?: never
 }
 ```
 

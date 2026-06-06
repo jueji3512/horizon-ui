@@ -1,5 +1,40 @@
 # 工作进度记录
 
+## 2026-06-07 ScrollArea 编程控制演示补充
+
+- 用户指出 ScrollArea 文档示例只覆盖基础滚动方向，缺少 `scrollTo` 等 expose 能力展示。
+- 本轮新增 `docs/examples/scrollarea/example-04.vue`，演示 `scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState` 和 `scroll` / `update` 事件返回的状态。
+- `docs/components/scrollarea.md` 已新增“编程控制”章节，放在 API 之前；`check:scroll-area` 已加入示例存在性和 API 调用守护。
+- 浏览器验证：headless Chrome CDP 点击新示例控制按钮后，`下移` 可滚到 96，`定位目标` 可滚到目标项且目标可见，`底部` 可滚到 max 944，`顶部` 可回到 0；metrics 区显示 `scrollTop`、`maxScrollTop`、`isAtTop`、`isAtBottom` 和 `update`。
+
+## 2026-06-07 ScrollArea thumb 首尾 inset 修复
+
+- 用户反馈 ScrollArea thumb 滑到顶端 / 底端、左端 / 右端时，两侧边距不一致。
+- 复现并量测：修复前 vertical top start gap 为 8px、bottom end gap 为 0px；horizontal left start gap 为 8px、right end gap 为 0px。
+- 根因：thumb 已经因为 track padding 处在 4px 起点，但 transform 又额外加了 `+ 4`，导致起点双重 inset、终点没有 inset。
+- 修复：thumb 显式使用 `top-1` / `left-1` 锚定起点，transform 只应用滚动位移；`check:scroll-area` 新增守护，禁止再次出现双重 inset。
+- 浏览器验证：headless Chrome CDP 量测修复后 vertical top / bottom 和 horizontal left / right 的有效端点 inset 均为 4px。
+
+## 2026-06-06 ScrollArea 底层滚动基座
+
+- 按用户要求直接实现公开 `ScrollArea` v1，不引入虚拟滚动依赖，但预留稳定 viewport 契约。
+- 新增 `src/components/ScrollArea/`：组件结构固定为 `root > viewport > content`，viewport 是唯一真实滚动容器；支持垂直 / 水平 / 双轴原生滚动、隐藏原生滚动条、悬浮自定义 scrollbar、thumb 拖拽、auto / always / hidden 显隐、`maxHeight` / `maxWidth`、`focusable` 与 `ariaLabel`。
+- ScrollArea expose `viewportRef`、`contentRef`、`scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState`，并提供 `scrollAreaContextKey` / `useScrollAreaContext()` 给内部子组件使用；`scrollToElement` 不调用浏览器 `scrollIntoView()`，只调整当前 viewport。
+- 性能实现要点：scroll listener 使用 passive；scroll / resize 测量统一进入 `requestAnimationFrame`；ResizeObserver 只观察 viewport / content；滚动中只更新 thumb `transform: translate3d(...)`，避免把大 slot 内容绑到响应式 scroll state 上。
+- ScrollArea 不提供 surface 视觉：不内置背景、边框、阴影、圆角或业务主题；Select / Dropdown / Dialog 等上层继续自行定义 surface。
+- 新增 `docs/components/scrollarea.md` 与 3 个 `docs/examples/scrollarea/` 示例，覆盖垂直滚动、水平滚动、双轴滚动、自动显隐、常显、focusable 和 scroll metrics。
+- 新增 `scripts/check-scroll-area.mjs` 与 `npm run check:scroll-area`，并纳入 `npm run check`，用于守护 ScrollArea 结构、expose API、性能关键字、Select 迁移和禁止直接 `scrollIntoView()`。
+- Select 面板已从 `max-h-60 overflow-auto` 迁移为 `ScrollArea :max-height="240"`；`SelectOptionList` active 项保持可见改为通过 ScrollArea context 调用 `scrollToElement(..., { block: 'nearest' })`，并保留现有 group、disabled、keyboard 和 ARIA 行为。
+- 已按 base-component review 清单修复多项边界：scroll 热路径不再测量 thumb 尺寸、hover active 不触发布局滚动、option refs 不使用响应式数组、支持 pointercancel cleanup、动态 orientation / visibility 更新、horizontal track 撑满宽度、`scrollToElement` 使用真实 viewport 尺寸 clamp、程序化滚动后 auto scrollbar 能正常隐藏。
+- 验证：`npm run check` 通过，包含 format、check:icons、check:scroll-area、lint、typecheck 和 VitePress build。
+- 浏览器验证：本轮 dev server 启动在 `http://127.0.0.1:5186/`；headless Chrome CDP 验证 ScrollArea 文档页 3 个示例均可滚，vertical auto 显隐正常，thumb 拖拽可改变 `scrollTop`，horizontal track 宽度不塌陷，双轴 focusable 与 scroll metrics 正常；Select 分组示例确认面板使用 ScrollArea，方向键跳过 disabled option，active option 保持可见。
+
+## 2026-06-06 TagInput 优先级调整
+
+- 用户判断 TagInput 独立使用场景相对较少，确认先把它降到组件路线最后。
+- 后续组件路线调整为：Dropdown / Menu → Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → TreeSelect / Cascader / ColorPicker → TagInput。
+- TagInput 的价值仍记录为 Field 多值 / Tag wrap / Backspace 删除 / 输入宽度自适应等压力测试，但不再作为 Select 之后的下一优先级。
+
 ## 2026-06-06 Popper shift 默认行为
 
 - 用户确认 Select 与 Tooltip 都不需要 Popper `shift` 的吸边行为；该行为应作为 Popper 的显式 opt-in 能力，而不是默认行为。
@@ -36,7 +71,7 @@
 
 - 今天已完成图标补充收尾、Select 单选首版实现和 Select 后续反馈记录；最新关键提交包括 `98078e8 feat(select): 实现单选选择器首版`、`9abf7a1 docs(project): 记录 Select 后续调整项`、`f3b826e docs(project): 补充 Select 浮层样式方案待办`。
 - Select 首版通过 `npm run check`，文档页 `http://127.0.0.1:5185/components/select` 返回 200；收尾时 5185 dev server 仍在监听。当前会话没有可调用 Browser 插件且仓库 Playwright 缺少 `playwright-core`，点击/键盘交互仍需后续补验。
-- 明天新对话最短接入：先执行 `git status --short` 和 `git log -1 --oneline`，再读 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`。Select 首版视觉反馈与 `children` / `title` 分组 API 已落地；下一步优先按组件路线推进 TagInput，或继续补 Select 多选 / searchable 等后续能力。
+- 明天新对话最短接入：先执行 `git status --short` 和 `git log -1 --oneline`，再读 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`。Select 首版视觉反馈与 `children` / `title` 分组 API 已落地；TagInput 已后置到路线最后，下一步优先按组件路线推进 Dropdown / Menu，或继续补 Select 多选 / searchable 等后续能力。
 - 本次收尾只更新项目记忆文档，不修改组件实现；提交前以 `git diff --check` 和记忆文档 Prettier 检查为准。
 
 ## 2026-06-06 Select 单选首版
@@ -51,7 +86,7 @@
 ## 2026-06-05 组件路线与内部原型计划
 
 - 用户确认后续组件路线方向可行，并要求将建议加入项目计划。
-- 已将未来组件开发顺序写入计划：优先 Select，其后依次考虑 TagInput、Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps，TreeSelect / Cascader / ColorPicker 后置。
+- 已将未来组件开发顺序写入计划：优先 Select；Select 单选首版完成后，依次考虑 Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、TreeSelect / Cascader / ColorPicker，TagInput 后置到最后。
 - 已将内部通用原型候选写入计划：OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context；同时明确 PopupSurface / FloatingSurface 暂缓，避免为了统一 surface 样式过早抽成万能盒子。
 - 已补充判断原则：内部原型必须有明确跨组件收益，能减少真实重复、统一可访问性或降低复杂状态错误时才沉淀；不为了文件拆分、样式复用或概念完整而提前抽象。
 - 已全局安装 4 个新增技能：`better-icons` 用于获取统一 SVG icon；`grill-me` 可用于重要设计前的逐问题压力测试；`design-an-interface` 可用于 Select、OptionList、Overlay 等模块接口多方案比较；`documentation-and-adrs` 可用于重要架构/API/工具链决策记录。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。

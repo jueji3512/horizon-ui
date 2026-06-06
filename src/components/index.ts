@@ -17,6 +17,7 @@ import Input from './Input/Input.vue'
 import InputNumber from './InputNumber/InputNumber.vue'
 import Select from './Select/Select.vue'
 import Tag from './Tag/Tag.vue'
+import ScrollArea from './ScrollArea/ScrollArea.vue'
 import FieldRoot from './Field/FieldRoot.vue'
 import FieldContent from './Field/FieldContent.vue'
 import FieldNativeInput from './Field/FieldNativeInput.vue'
@@ -32,6 +33,18 @@ import PopperArrow from './Popper/PopperArrow.vue'
 
 export type { FieldContext, FieldSize, FieldStatus } from './Field'
 export { fieldContextKey, useFieldContext } from './Field'
+export type {
+  ScrollAreaAlignment,
+  ScrollAreaAxis,
+  ScrollAreaContext,
+  ScrollAreaExpose,
+  ScrollAreaOrientation,
+  ScrollAreaScrollToElementOptions,
+  ScrollAreaScrollToOptions,
+  ScrollAreaScrollbarVisibility,
+  ScrollAreaState,
+} from './ScrollArea'
+export { scrollAreaContextKey, useScrollAreaContext } from './ScrollArea'
 export type {
   SelectOption,
   SelectOptionGroup,
@@ -75,6 +88,7 @@ export {
   PopperTrigger,
   Radio,
   RadioGroup,
+  ScrollArea,
   Space,
   Switch,
   Select,

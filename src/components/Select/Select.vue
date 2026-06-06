@@ -73,18 +73,21 @@
     </PopperTrigger>
 
     <PopperContent :class="panelClasses">
-      <SelectOptionList
-        :items="optionListItems"
-        :selected-value="modelValue"
-        :active-index="activeIndex"
-        :size="size"
-        :loading="loading"
-        :empty-text="emptyText"
-        :listbox-id="listboxId"
-        :option-id-prefix="optionIdPrefix"
-        @active="setActiveIndex"
-        @select="handleOptionSelect"
-      />
+      <ScrollArea :max-height="240">
+        <SelectOptionList
+          :items="optionListItems"
+          :selected-value="modelValue"
+          :active-index="activeIndex"
+          :active-scroll-key="activeScrollKey"
+          :size="size"
+          :loading="loading"
+          :empty-text="emptyText"
+          :listbox-id="listboxId"
+          :option-id-prefix="optionIdPrefix"
+          @active="setActiveIndex"
+          @select="handleOptionSelect"
+        />
+      </ScrollArea>
     </PopperContent>
   </Popper>
 </template>
@@ -97,6 +100,7 @@ import FieldRoot from '../Field/FieldRoot.vue'
 import FieldSuffix from '../Field/FieldSuffix.vue'
 import Icon from '../Icon/Icon.vue'
 import { Popper, PopperContent, PopperTrigger } from '../Popper'
+import { ScrollArea } from '../ScrollArea'
 import { cn } from '../../utils'
 import SelectOptionList from './SelectOptionList.vue'
 import type {
@@ -180,6 +184,7 @@ const isOpen = ref(false)
 const isFocused = ref(false)
 const isHovered = ref(false)
 const activeIndex = ref(-1)
+const activeScrollKey = ref(0)
 
 const rootAttrs = computed(() => {
   const { class: className, style } = attrs
@@ -247,6 +252,12 @@ const selectedOption = computed(
   () => selectableOptions.value.find((item) => item.option.value === props.modelValue)?.option,
 )
 
+const selectableOptionState = computed(() =>
+  selectableOptions.value
+    .map(({ option, disabled }) => `${String(option.value)}:${disabled ? '1' : '0'}`)
+    .join('|'),
+)
+
 const canOpen = computed(() => !props.disabled && !props.readonly)
 const hasValue = computed(() => props.modelValue !== null && props.modelValue !== undefined)
 const showClear = computed(
@@ -278,7 +289,7 @@ function setOpen(value: boolean) {
 
   isOpen.value = value
   if (value) {
-    syncActiveOption()
+    syncActiveOption({ scroll: true })
   }
   emit('visible-change', value)
 }
@@ -374,7 +385,7 @@ function getSelectedIndex() {
   return selectableOptions.value.findIndex((option) => option.option.value === props.modelValue)
 }
 
-function syncActiveOption() {
+function syncActiveOption(options: { scroll?: boolean } = {}) {
   if (props.loading) {
     activeIndex.value = -1
     return
@@ -383,14 +394,17 @@ function syncActiveOption() {
   const selectedIndex = getSelectedIndex()
   if (selectedIndex >= 0 && !selectableOptions.value[selectedIndex]?.disabled) {
     activeIndex.value = selectedIndex
+    if (options.scroll) activeScrollKey.value += 1
     return
   }
 
   activeIndex.value = getFirstEnabledIndex()
+  if (options.scroll) activeScrollKey.value += 1
 }
 
 function moveActiveOption(direction: 1 | -1) {
   activeIndex.value = getNextEnabledIndex(activeIndex.value, direction)
+  activeScrollKey.value += 1
 }
 
 function selectActiveOption() {
@@ -438,6 +452,7 @@ function handleKeydown(e: KeyboardEvent) {
     if (!isOpen.value) return
     e.preventDefault()
     activeIndex.value = getFirstEnabledIndex()
+    activeScrollKey.value += 1
     return
   }
 
@@ -445,6 +460,7 @@ function handleKeydown(e: KeyboardEvent) {
     if (!isOpen.value) return
     e.preventDefault()
     activeIndex.value = getLastEnabledIndex()
+    activeScrollKey.value += 1
     return
   }
 
@@ -470,16 +486,15 @@ watch(
 watch(
   () => props.modelValue,
   () => {
-    if (isOpen.value) syncActiveOption()
+    if (isOpen.value) syncActiveOption({ scroll: true })
   },
 )
 
 watch(
-  () => props.options,
+  () => selectableOptionState.value,
   () => {
-    if (isOpen.value) syncActiveOption()
+    if (isOpen.value) syncActiveOption({ scroll: true })
   },
-  { deep: true },
 )
 
 const wrapperClasses = computed(() =>
@@ -527,7 +542,7 @@ const panelSizeMap: Record<SelectSize, string> = {
 
 const panelClasses = computed(() =>
   cn(
-    'max-h-60 overflow-auto rounded-[var(--round-default)] bg-[var(--bg-color-container)] text-[var(--text-color-primary)] shadow-popper outline-none',
+    'overflow-hidden rounded-[var(--round-default)] bg-[var(--bg-color-container)] text-[var(--text-color-primary)] shadow-popper outline-none',
     panelSizeMap[props.size],
   ),
 )

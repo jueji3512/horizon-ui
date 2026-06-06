@@ -38,7 +38,7 @@
 - 基础：Button、Icon、Link、Text、Title、Divider、Space。
 - 表单/输入：Checkbox、CheckboxGroup、Radio、RadioGroup、Switch、Input、InputNumber、Select。
 - 展示/反馈：Badge、Tag、Callout、Tooltip。
-- 底层：FieldRoot、FieldContent、FieldNativeInput、FieldPrefix、FieldSuffix、FieldAction、FieldGroup、FieldSegment、Popper、PopperTrigger、PopperContent、PopperArrow。
+- 底层：FieldRoot、FieldContent、FieldNativeInput、FieldPrefix、FieldSuffix、FieldAction、FieldGroup、FieldSegment、Popper、PopperTrigger、PopperContent、PopperArrow、ScrollArea。
 
 特别说明：
 
@@ -46,6 +46,7 @@
 - Tooltip 已迁移到 Popper 基座；Tooltip 保留 theme、delay、trigger/manual 等语义和视觉 API，定位、Teleport、arrow、outside click、Esc 与 z-index 交给 Popper。
 - Popper 是底层定位基座，不提供业务 surface 样式；已完成 base-component review，可作为 Select/Dropdown 等上层组件的当前基座。
 - Field 已作为公开底层输入域基座落地在 `src/components/Field/`；它像 Popper 一样允许用户组合使用，不放在 `_internal`。
+- ScrollArea 已作为公开底层滚动基座落地在 `src/components/ScrollArea/`；它负责滚动容器、悬浮 scrollbar、thumb 拖拽和 viewport expose，不负责 surface 视觉。
 
 ## 历史计划资料处置
 
@@ -59,9 +60,9 @@
 
 ## 2026-06-05 未来组件路线与内部原型候选
 
-- 当前建议的组件推进顺序：TagInput → Dropdown / Menu → Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → TreeSelect / Cascader / ColorPicker。
+- 当前建议的组件推进顺序：Dropdown / Menu → Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → TreeSelect / Cascader / ColorPicker → TagInput。
 - Select 单选首版已落地，已初步验证 Field、Popper、键盘交互、ARIA、empty、loading、disabled option、readonly 和 clearable 等组合边界；多选 tag wrap、searchable、maxTagCount 等仍是后续压力测试。
-- TagInput 建议加入计划：它是 Field 多值 / multiline / Tag wrap / Backspace 删除 / 输入宽度自适应的纯压力测试，比 Select 少一层 Popper，有助于先把多值输入域边界打磨干净。
+- TagInput 已降到路线最后：它仍可作为 Field 多值 / multiline / Tag wrap / Backspace 删除 / 输入宽度自适应的压力测试，但独立使用场景相对较少，先等后续出现明确自由多值输入需求时再启动。
 - Dropdown 和 Menu 建议联动设计：Dropdown 负责触发与浮层，Menu 负责内容结构和复合控件键盘模型；Select option list、ContextMenu、Cascader 等后续组件都可复用相关能力。
 - Form / FormItem 应在 Select 跑通后推进，因为 Field 当前明确不负责 label、help、error message、校验触发时机；FormItem 可承接布局、label、help、error、required、status 传递和 ARIA 关联。
 - DatePicker / TimePicker 建议后置于 Select、Form 和 Overlay 能力之后，因为日期组件牵涉解析、格式化、面板、范围选择、键盘模型和本地化，过早实现容易把底层边界和业务复杂度揉在一起。
@@ -81,6 +82,20 @@
 - 键盘与 ARIA 采用 trigger 保持焦点的 `combobox` + `listbox` + `option` 模型，通过 `aria-activedescendant` 指向 active option；禁用不可聚焦不可展开，只读可聚焦但不可展开、不可清空、不可改值。
 - `SelectOptionList` 目前是 `src/components/Select/` 内部私有组件，用于沉淀 active、selected、disabled、loading、empty、滚动到 active option 和 listbox 语义；后续等 Dropdown / Autocomplete 等真实复用出现后再考虑抽内部 OptionList / Collection。
 - 首版实现后用户反馈：选项选中态和下拉浮层 surface 视觉都不满意，下次应先用生图能力生成多版方案再改代码；浮层重点比较 box shadow、边框、圆角、间距和层级感。交互上 clearable 应改为 hover Select 主体时下拉箭头位置切换为清空按钮；布局上 Select 默认宽度应像 Input 一样占满父容器；数据结构上需要支持 group，需先确认是否放入首版修补以及 group API 形态。
+
+## 2026-06-06 ScrollArea 底层滚动基座
+
+- 新增公开 `src/components/ScrollArea/`：`ScrollArea.vue`、`types.ts`、`context.ts`、`index.ts`，并已导出到 `src/components/index.ts`、注册到 VitePress theme、加入 sidebar 与组件文档。
+- 组件内部结构固定为 `root > viewport > content`，viewport 是唯一真实滚动容器；上层和未来 virtualizer 应只把 viewport 当成 scroll element。
+- v1 使用原生 `overflow: auto` 保持滚动性能，并隐藏原生滚动条；悬浮 scrollbar 只镜像滚动状态并控制 `scrollTop` / `scrollLeft`，不改变浏览器原生滚动模型。
+- v1 支持 `orientation="vertical|horizontal|both"`、`scrollbarVisibility="auto|always|hidden"`、`scrollbarHideDelay`、`maxHeight`、`maxWidth`、`focusable`、`ariaLabel`，以及 `scroll` / `update` 事件。
+- v1 expose `viewportRef`、`contentRef`、`scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState`，并通过 `scrollAreaContextKey` / `useScrollAreaContext()` 供内部子组件协作。
+- `scrollToElement` 自行基于 viewport / element rect 计算目标位置，只滚动当前 viewport，不调用浏览器 `scrollIntoView()`，避免带动页面或外层容器滚动。
+- 性能边界：scroll listener 使用 passive；scroll / resize 测量进入 `requestAnimationFrame`；ResizeObserver 只观察 viewport 和 content；滚动中只更新 thumb transform，不把 scroll state 放进会让大 slot 反复重渲染的响应式状态。
+- ScrollArea 不提供 surface 视觉，不内置背景、边框、阴影、圆角或业务主题；Select / Dropdown / Dialog 等上层组件继续自行定义 surface。
+- v1 暂不做虚拟滚动、不新增依赖。未来如果 Table、Tree、Virtualized Select 或大型 Dropdown 需要虚拟列表，优先评估 `@tanstack/vue-virtual`，因为它以 HTML scroll element 为核心接入点，和当前 viewport expose 契约匹配。
+- Select 面板已迁移到 `ScrollArea :max-height="240"`；`SelectOptionList` 通过 ScrollArea context 在 active option 变化时调用 `scrollToElement(..., { block: 'nearest' })`，保持键盘导航时 active 项可见。
+- 新增 `scripts/check-scroll-area.mjs` 与 `npm run check:scroll-area`，用于守护 ScrollArea 结构、expose API、性能关键字、Select 迁移和禁止直接 `scrollIntoView()`；该检查已纳入 `npm run check`。
 
 ## 2026-06-05 Icon SVG 图标体系重整计划
 
@@ -196,6 +211,7 @@ docs(project): 更新项目上下文与待办
 - 2026-06-04 收尾提交后再次执行 `npm run check` 通过；提交已按组件行为修复、VitePress demo 迁移、项目上下文更新拆分。
 - 2026-06-04 Node 24 / 依赖升级后执行 `npm run check` 通过；内置浏览器使用 `http://127.0.0.1:5180/` 抽查 Badge、Checkbox、Popper，页面标题、demo 数量和 Vite overlay 均正常，修复后的 Badge 页面无新增 warning。
 - 2026-06-04 组件迁移收敛扫描后执行 `npm run check` 通过；内置浏览器使用 `http://127.0.0.1:5181/` 复验 Tag 键盘切换、Tooltip `aria-describedby`、Input 清空回焦、InputNumber 页面和 colors / field-system / typography / popper 指南页，当前端口无 warning/error。
+- 2026-06-06 ScrollArea v1 后执行 `npm run check` 通过；headless Chrome CDP 使用 `http://127.0.0.1:5186/` 验证 ScrollArea 垂直 / 水平 / 双轴示例、auto 显隐、thumb 拖拽、focusable、scroll metrics，以及 Select 分组面板使用 ScrollArea、方向键跳过 disabled option、active option 保持可见。
 
 ## 2026-06-04 VitePress `:::demo` 演示体系结论
 

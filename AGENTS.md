@@ -22,9 +22,10 @@ npm run lint         # ESLint
 npm run lint:js      # ESLint
 npm run lint:style   # Stylelint
 npm run check:icons  # 校验本地 SVG 图标规范
+npm run check:scroll-area # 校验 ScrollArea 基础契约
 npm run format:check # Prettier 检查
 npm run format       # Prettier 写入
-npm run check        # format:check + check:icons + lint + typecheck + build
+npm run check        # format:check + check:icons + check:scroll-area + lint + typecheck + build
 ```
 
 ## 当前文档记忆
@@ -39,7 +40,7 @@ npm run check        # format:check + check:icons + lint + typecheck + build
 
 1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
 2. 先读本文件，再读 `TODO.md` 和 `CODE_STYLE.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
-3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。Select 单选首版已落地，但用户要求先重做选项选中态和下拉浮层 surface 视觉方案；下次优先用生图能力出几版方案让用户确认，再改代码。
+3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。Select 单选首版、分组与视觉反馈已落地；ScrollArea v1 已作为公开底层滚动基座落地并迁移 Select 面板，下一步优先推进 Dropdown / Menu。
 4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 6. 后续遇到调研、重开发、复杂排查、跨组件验证、并行实现或其他子代理能提升效率、覆盖面、完成度的任务时，可以开启子代理协助；小而线性的任务优先主代理直接推进，避免不必要的协调成本。
@@ -52,11 +53,11 @@ npm run check        # format:check + check:icons + lint + typecheck + build
 
 - 2026-06-04 收尾时功能与文档主线已提交并推送；近期关键提交包括 `6dc6521 refactor(styles): 拆分设计令牌文件边界` 和 `c99cc21 docs(vitepress): 优化组件示例源码展示`，本次收尾记录另见最新 `git log`。
 - 2026-06-05 已提交昨日遗留记忆文档 `4517523 docs(project): 更新未来计划与技能记忆`，并完成图标体系首轮重整提交 `2daa4b1 refactor(icons): 统一本地图标规范`。
-- 2026-06-06 已完成图标补充与 Select 首版，近期关键提交包括 `98078e8 feat(select): 实现单选选择器首版`、`9abf7a1 docs(project): 记录 Select 后续调整项`、`f3b826e docs(project): 补充 Select 浮层样式方案待办`。
+- 2026-06-06 已完成图标补充、Select 首版、Select 分组 / 视觉反馈和 ScrollArea v1；近期关键提交包括 `98078e8 feat(select): 实现单选选择器首版`、`9abf7a1 docs(project): 记录 Select 后续调整项`、`f3b826e docs(project): 补充 Select 浮层样式方案待办`，ScrollArea 本轮仍待提交。
 - 当前工作分支为 `codex/docs-and-icon-rework`；如继续收尾，先执行 `git status --short` 和 `git log -1 --oneline` 确认是否仍停在该分支。
-- 最近一次完整验证：2026-06-06 `npm run check` 通过，包含 format、check:icons、lint、typecheck 和 VitePress build。
+- 最近一次完整验证：2026-06-06 `npm run check` 通过，包含 format、check:icons、check:scroll-area、lint、typecheck 和 VitePress build。
 - 最近一次轻量验证：2026-06-06 `git diff --check` 与记忆文档 Prettier 检查通过。
-- 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；Select 文档页本轮在 `http://127.0.0.1:5185/components/select` 返回 200，收尾时 5185 仍在监听。新对话如需继续看页面，先确认 dev server 是否仍在运行。
+- 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；Select 文档页曾在 `http://127.0.0.1:5185/components/select` 返回 200。本轮 ScrollArea / Select 使用 `http://127.0.0.1:5186/` 和 headless Chrome CDP 验证，收尾时 5186 dev server 仍由本轮启动进程监听。新对话如需继续看页面，先确认 dev server 是否仍在运行。
 
 ## 当前规范重点
 
@@ -111,7 +112,7 @@ docs(project): 更新项目上下文与待办
 
 ## 当前组件状态
 
-- 已实现并纳入文档：Button、Icon、Link、Checkbox、Radio、Text、Title、Callout、Divider、Badge、Tooltip、Switch、Input、InputNumber、Select、Tag、Space、Field、Popper。
+- 已实现并纳入文档：Button、Icon、Link、Checkbox、Radio、Text、Title、Callout、Divider、Badge、Tooltip、Switch、Input、InputNumber、Select、Tag、Space、Field、Popper、ScrollArea。
 - Badge 已加入 sidebar。
 - 历史计划目录 `docs/superpowers/**` 已审计并删除；需要保留的路线和边界结论已沉淀到 `findings.md`。
 - 本地 Switch 视觉原型 `switch-mockups.html` 已删除；后续不要提交临时原型文件。
@@ -134,7 +135,7 @@ docs(project): 更新项目上下文与待办
 - InputNumber 已复用 FieldRoot / FieldNativeInput / FieldGroup，步进按钮复用 Button 的 `variant="outline"` + `shape="square"`，保留 sm/md/lg 的 24/32/40 尺寸，并修复聚焦时键盘/按钮步进后的展示值同步。
 - Checkbox / Radio 的 `variant="button"` 未来可考虑抽到 Toggle / ToggleGroup；当前只记录方向，不实现。
 - 组件级固有尺寸已完成首轮定稿：Switch track/thumb、Badge dot/count、Tooltip surface / PopperArrow、Checkbox / Radio 控件几何、FieldAction、InputNumber 输入段宽度、Callout 左侧色条、Divider 标签线均作为组件内部几何规格维护，不新增通用 token。
-- Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip 已完成本轮浏览器验证；发现的问题已修复到组件源码或 VitePress demo 隔离层。
+- Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea 已完成本轮浏览器验证；发现的问题已修复到组件源码或 VitePress demo 隔离层。
 - 文档演示已统一为 VitePress `:::demo` 单源示例：组件页通过 `docs/examples/**/*.vue` 渲染预览并展示源码，`ComponentDemo` 使用 `.vp-raw` 与 `postcssIsolateStyles` 隔离 VitePress 默认主题样式。
 - `ComponentDemo` 源码展示体验已优化：复用 VitePress / Shiki 构建期高亮，支持 `github-light` / `github-dark` 双主题、行号、示例路径、单一复制 icon 和完整亮暗 shell。
 - 旧 DemoBox / details 查看代码 / Histoire / Storybook spike 已清理；后续文档示例不要回到这些路线。
@@ -150,7 +151,11 @@ docs(project): 更新项目上下文与待办
 - 2026-06-05 用户确认后续设计稿建议都在上述 Horizon UI Figma 文件中实现；本轮尝试继续补 48 个常用 Lucide 图标候选并整理页面时，Figma MCP 因 Starter 计划 3 页上限和工具调用额度被拦截。后续恢复额度后按 3 页结构重跑，不要创建 4 页或删除未知内容。
 - 2026-06-06 已先不继续使用 Figma，改为在项目内补充 48 个常用本地图标；当前 `src/components/Icon/icons/` 共 96 个 SVG，新增图标覆盖导航、数据、表单、反馈、权限、文件、操作和系统场景；图标命名以 Horizon 对外简洁名为准，不直接照搬来源库后缀（例如 `grid`、`building`），VitePress Icon 页保持轻量搜索网格并将相关图标相邻展示，通过 `npm run check:icons` 必备列表、root `<svg>` 标签碎片、BOM 和子 `<rect>` 几何检查守护。
 - 2026-06-06 Select 单选首版已落地：只支持 `options` prop，复用 Field 触发器和 Popper `manual` + `match-width` 定位，面板 surface 由 Select 自己定义；支持 clearable、loading、empty、disabled option、readonly、状态、尺寸、隐藏 input、键盘导航和 combobox/listbox ARIA。当前内部 `SelectOptionList` 不公开，后续按 Dropdown / Autocomplete 等真实重复再沉淀通用 OptionList / Collection。
-- 2026-06-06 用户反馈 Select 首版视觉与交互需要后续调整：选项选中态和下拉浮层 surface 需先生成几版视觉方案确认；clearable 改为 hover 主体时下拉箭头位置切换成清空按钮；Select 默认宽度像 Input 一样占满父容器；选项列表需要支持 group，需先确认首版补还是后续补。
+- 2026-06-06 Select 首版视觉与交互反馈已落地：选项选中态改为浅 brand 背景 + 左侧深 brand 条，去掉右侧 check 图标；下拉浮层移除显式 border，仅由 `shadow-popper` 和 inset edge 表达边缘；clearable 改为 hover Select 主体时在下拉箭头位置切换为清空按钮；Select 默认宽度像 Input 一样占满父容器；选项列表已支持 `children` / `title` 一层 group。
+- 2026-06-06 ScrollArea v1 已作为公开底层组件落地：内部结构固定为 `root > viewport > content`，viewport 是唯一真实滚动容器；支持原生高性能滚动、隐藏原生滚动条、悬浮自定义 scrollbar、thumb 拖拽、auto / always / hidden 显隐、垂直 / 水平 / 双轴滚动、`maxHeight` / `maxWidth`、`focusable` 与 `ariaLabel`。
+- ScrollArea 不提供 surface 视觉，不内置背景、边框、阴影或业务主题；Select / Dropdown / Dialog 等上层组件继续自行定义 surface。
+- ScrollArea 已 expose `viewportRef`、`contentRef`、`scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState`，并提供内部 context 供 SelectOptionList 这类子组件保持 active 项可见；v1 不做虚拟滚动、不引入依赖，但 viewport 契约预留给未来 `@tanstack/vue-virtual` 等 virtualizer。
+- Select 面板已改用 `ScrollArea :max-height="240"`，`SelectOptionList` active 项滚动改为调用 ScrollArea 的 `scrollToElement(..., { block: 'nearest' })`，不再直接使用浏览器 `scrollIntoView()`。
 - 本轮保留后续项：Radio button variant 仍可进一步做 roving `tabindex`，建议与未来 Toggle / ToggleGroup 方向一起设计。
 - 本轮组件迁移扫描未发现源码中仍有旧 `primary` / `danger` API 或旧 `--color-primary` / `--color-danger` / `--radius-*` token；已修复 Checkbox / Radio / Switch 的 `focus-visible` 可视 ring，对齐 `brand-focus` token。
 - 色彩指南已将语义色 token 文档修正为真实的 Tailwind v4 `@theme` 变量：`--color-brand-*`、`--color-error-*`、`--color-success-*`、`--color-warning-*`。
@@ -160,7 +165,7 @@ docs(project): 更新项目上下文与待办
 - Popper `updatePosition` / `UsePopperReturn.update` 返回类型已对齐 Floating UI 实际行为为 `void`，不再伪装为可等待的 `Promise<void>`。
 - Popper 文档去掉容易误解为内置主题的深色/浅色和默认边框表达。
 - `Icon.vue` 的 `v-html` 仅用于渲染打包期导入的本地图标 SVG，已补充安全边界说明并处理 lint warning。
-- 全项目 `lint`、`format:check`、`typecheck`、`build` 已通过。
+- 全项目 `lint`、`format:check`、`check:scroll-area`、`typecheck`、`build` 已通过。
 - `docs/superpowers/**` 历史计划资料已审计并删除，VitePress `srcExclude` 的过期配置已移除。
 - Node 已用 nvm 升级到 `24.16.0`，npm 升级到 `11.13.0`；`package.json` 已补 `engines` 与 `packageManager`，直接依赖更新到当前最新可用版本，包括 Tailwind 4.3、Vue 3.5.35、ESLint 10.4、Vite 8.0、vue-tsc 3.3。
 - `eslint.config.js` 使用的 `globals` 已补为显式 devDependency，不再依赖传递依赖偶然可用。

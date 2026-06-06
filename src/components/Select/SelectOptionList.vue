@@ -76,8 +76,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUpdate, ref, watch, type ComponentPublicInstance } from 'vue'
+import { computed, nextTick, onBeforeUpdate, watch, type ComponentPublicInstance } from 'vue'
 import Icon from '../Icon/Icon.vue'
+import { useScrollAreaContext } from '../ScrollArea'
 import { cn } from '../../utils'
 import type { SelectOptionItem, SelectSize, SelectValue } from './types'
 
@@ -103,6 +104,7 @@ const props = defineProps<{
   items: SelectOptionListItem[]
   selectedValue: SelectValue | null
   activeIndex: number
+  activeScrollKey: number
   size: SelectSize
   loading: boolean
   emptyText: string
@@ -115,29 +117,34 @@ const emit = defineEmits<{
   active: [index: number]
 }>()
 
-const optionRefs = ref<HTMLElement[]>([])
+let optionRefs: HTMLElement[] = []
+const scrollArea = useScrollAreaContext()
 
 const hasOptions = computed(() =>
   props.items.some((item) => item.type === 'option' || item.children.length > 0),
 )
 
 onBeforeUpdate(() => {
-  optionRefs.value = []
+  optionRefs = []
 })
 
 watch(
-  () => props.activeIndex,
-  (index) => {
+  () => props.activeScrollKey,
+  () => {
+    const index = props.activeIndex
     if (index < 0) return
     nextTick(() => {
-      optionRefs.value[index]?.scrollIntoView({ block: 'nearest' })
+      const option = optionRefs[index]
+      if (!option) return
+      scrollArea?.scrollToElement(option, { block: 'nearest' })
     })
   },
+  { immediate: true },
 )
 
 function setOptionRef(el: Element | ComponentPublicInstance | null, index: number) {
   if (el instanceof HTMLElement) {
-    optionRefs.value[index] = el
+    optionRefs[index] = el
   }
 }
 

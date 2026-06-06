@@ -26,6 +26,7 @@ import {
   PopperTrigger,
   Radio,
   RadioGroup,
+  ScrollArea,
   Space,
   Switch,
   Tag,
@@ -91,6 +92,7 @@ export default {
     app.component('FieldSegment', FieldSegment)
     app.component('Radio', Radio)
     app.component('RadioGroup', RadioGroup)
+    app.component('ScrollArea', ScrollArea)
     app.component('Text', Text)
     app.component('Title', Title)
     app.component('Callout', Callout)

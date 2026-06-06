@@ -53,6 +53,7 @@ export default defineConfig({
           items: [
             { text: 'Field 输入域', link: '/components/field' },
             { text: 'Popper 弹出定位引擎', link: '/components/popper' },
+            { text: 'ScrollArea 滚动区域', link: '/components/scrollarea' },
           ],
         },
       ],

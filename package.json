@@ -17,6 +17,7 @@
     "lint:js": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:style": "stylelint \"src/**/*.{css,vue}\" \"docs/.vitepress/theme/**/*.vue\"",
+    "check:component-demo": "node scripts/check-component-demo.mjs",
     "check:icons": "node scripts/check-icons.mjs",
     "check:scroll-area": "node scripts/check-scroll-area.mjs",
     "check:popper": "node scripts/check-popper.mjs",
@@ -24,7 +25,7 @@
     "check:menu": "node scripts/check-menu.mjs",
     "check:select": "node scripts/check-select.mjs",
     "check:dropdown-menu": "node scripts/check-dropdown-menu.mjs",
-    "check": "npm run format:check && npm run check:icons && npm run check:scroll-area && npm run check:popper && npm run check:popover && npm run check:menu && npm run check:select && npm run check:dropdown-menu && npm run lint && npm run typecheck && npm run build",
+    "check": "npm run format:check && npm run check:component-demo && npm run check:icons && npm run check:scroll-area && npm run check:popper && npm run check:popover && npm run check:menu && npm run check:select && npm run check:dropdown-menu && npm run lint && npm run typecheck && npm run build",
     "format": "prettier . --write",
     "format:check": "prettier . --check"
   },

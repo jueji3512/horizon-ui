@@ -309,6 +309,11 @@ function fallbackCopyText(text: string) {
   font: var(--font-body-sm);
 }
 
+.component-demo-lines li {
+  height: 20px;
+  line-height: 20px;
+}
+
 .component-demo-code-scroll {
   min-width: 0;
   overflow: auto;
@@ -335,11 +340,14 @@ function fallbackCopyText(text: string) {
 
 .component-demo-code-scroll :deep(.vp-code code) {
   display: block;
+  white-space: normal;
 }
 
 .component-demo-code-scroll :deep(.line) {
   display: block;
+  line-height: 20px;
   min-height: 20px;
+  white-space: pre;
 }
 
 .component-demo-sr-only {

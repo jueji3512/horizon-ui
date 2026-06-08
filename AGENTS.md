@@ -21,6 +21,7 @@ npm run typecheck    # vue-tsc --noEmit
 npm run lint         # ESLint
 npm run lint:js      # ESLint
 npm run lint:style   # Stylelint
+npm run check:component-demo # 校验 ComponentDemo 源码展示契约
 npm run check:icons  # 校验本地 SVG 图标规范
 npm run check:scroll-area # 校验 ScrollArea 基础契约
 npm run check:popper # 校验 Popper 基础契约
@@ -30,7 +31,7 @@ npm run check:select # 校验 Select slot 子组件契约
 npm run check:dropdown-menu # 校验 DropdownMenu 组合契约
 npm run format:check # Prettier 检查
 npm run format       # Prettier 写入
-npm run check        # format:check + check:icons + check:scroll-area + check:popper + check:popover + check:menu + check:select + check:dropdown-menu + lint + typecheck + build
+npm run check        # format:check + check:component-demo + check:icons + check:scroll-area + check:popper + check:popover + check:menu + check:select + check:dropdown-menu + lint + typecheck + build
 ```
 
 ## 当前文档记忆
@@ -60,9 +61,9 @@ npm run check        # format:check + check:icons + check:scroll-area + check:po
 - 2026-06-05 已提交昨日遗留记忆文档 `4517523 docs(project): 更新未来计划与技能记忆`，并完成图标体系首轮重整提交 `2daa4b1 refactor(icons): 统一本地图标规范`。
 - 2026-06-06 至 2026-06-08 已完成图标补充、Select 首版、Select slot-first 改造、ScrollArea v1、Popover、Menu 和 DropdownMenu；Popover / DropdownMenu 的公开状态统一使用 `open` / `v-model:open`，旧泛型 Dropdown 已迁移为 `DropdownMenu = Popover + explicit Menu`。近期关键提交包括 `0a30490 feat(select): 支持分组选项与浮层滚动优化`、`d0185e6 feat(scrollarea): 实现滚动区域组件` 和 `7312ed2 feat(components): 落地下拉菜单与选择器 slot 契约`。
 - 当前工作分支为 `codex/docs-and-icon-rework`；如继续收尾，先执行 `git status --short` 和 `git log -1 --oneline` 确认是否仍停在该分支。
-- 最近一次完整验证：2026-06-08 `npm run check` 通过，包含 format、check:icons、check:scroll-area、check:popper、check:popover、check:menu、check:select、check:dropdown-menu、lint、typecheck 和 VitePress build。
+- 最近一次完整验证：2026-06-08 `npm run check` 通过，包含 format、check:component-demo、check:icons、check:scroll-area、check:popper、check:popover、check:menu、check:select、check:dropdown-menu、lint、typecheck 和 VitePress build。
 - 最近一次轻量验证：2026-06-08 `git diff --check` 通过。
-- 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；Select 文档页曾在 `http://127.0.0.1:5185/components/select` 返回 200；ScrollArea / Select 曾使用 `http://127.0.0.1:5186/` 和 headless Chrome CDP 验证；本轮 Popover / Menu / DropdownMenu 在 `http://127.0.0.1:5190/` 通过 in-app Browser 验证。新对话如需继续看页面，先确认 dev server 是否仍在运行。
+- 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；Select 文档页曾在 `http://127.0.0.1:5185/components/select` 返回 200；ScrollArea / Select 曾使用 `http://127.0.0.1:5186/` 和 headless Chrome CDP 验证；Popover / Menu / DropdownMenu 在 `http://127.0.0.1:5190/` 通过 in-app Browser 验证；ComponentDemo 源码行号对齐在 `http://127.0.0.1:5192/components/button.html` 通过 in-app Browser 复验。新对话如需继续看页面，先确认 dev server 是否仍在运行。
 
 ## 当前规范重点
 

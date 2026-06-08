@@ -1,5 +1,13 @@
 # 工作进度记录
 
+## 2026-06-08 ComponentDemo 源码行号对齐修复
+
+- 排查 Button 文档源码展开区后确认根因：Shiki 输出的每行源码已经包在 `.line` 内，`ComponentDemo` 又把 `.line` 设为 block，但 code 容器仍为 `white-space: pre`，导致 `.line` 之间的格式化换行文本节点也被渲染成额外空行。
+- 修复 `docs/.vitepress/theme/components/ComponentDemo.vue`：code 容器改为 `white-space: normal`，每个 `.line` 自己保留 `white-space: pre` 并固定 20px 行高；行号 `li` 同步固定 20px 高和行高。
+- 新增 `scripts/check-component-demo.mjs` 与 `npm run check:component-demo`，并纳入 `npm run check`，守护 ComponentDemo 源码展示的 Shiki 行结构和行高契约。
+- 浏览器复验 `http://127.0.0.1:5192/components/button.html`：展开首个源码块后，前 8 行行号和源码 top 坐标完全一致，步进均为 20px，最大偏差 0px，console warning/error 为空。
+- 验证：`npm run check` 与 `git diff --check` 通过。
+
 ## 2026-06-08 Popover / Menu / DropdownMenu 实施
 
 - 按用户确认的“原语 / 英文 / ARIA 优先”边界推进：`Popover` 负责通用非模态浮层，`Menu` 负责动作 / 命令菜单内容，`DropdownMenu` 作为菜单型 Popover 预设；导航后续另做 `NavigationMenu`，不让 `Menu` 承担路由导航。

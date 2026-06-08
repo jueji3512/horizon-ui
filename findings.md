@@ -37,14 +37,14 @@
 
 - 基础：Button、Icon、Link、Text、Title、Divider、Space。
 - 表单/输入：Checkbox、CheckboxGroup、Radio、RadioGroup、Switch、Input、InputNumber、Select。
-- 展示/反馈：Badge、Tag、Callout、Tooltip、Dropdown。
+- 展示/反馈：Badge、Tag、Callout、Tooltip、Popover、Menu、DropdownMenu。
 - 底层：FieldRoot、FieldContent、FieldNativeInput、FieldPrefix、FieldSuffix、FieldAction、FieldGroup、FieldSegment、Popper、PopperTrigger、PopperContent、PopperArrow、ScrollArea。
 
 特别说明：
 
 - Paragraph 旧计划已过时，目前没有实现。
 - Tooltip 已迁移到 Popper 基座；Tooltip 保留 theme、delay、trigger/manual 等语义和视觉 API，定位、Teleport、arrow、可配置 outside click / Esc dismiss 与 z-index 交给 Popper。
-- Popper 是底层定位基座，不提供业务 surface 样式；已完成 base-component review，可作为 Select/Dropdown 等上层组件的当前基座。
+- Popper 是底层定位基座，不提供业务 surface 样式；已完成 base-component review，可作为 Select、Popover、MenuSub、DropdownMenu 等上层组件的当前基座。
 - Field 已作为公开底层输入域基座落地在 `src/components/Field/`；它像 Popper 一样允许用户组合使用，不放在 `_internal`。
 - ScrollArea 已作为公开底层滚动基座落地在 `src/components/ScrollArea/`；它负责滚动容器、悬浮 scrollbar、thumb 拖拽和 viewport expose，不负责 surface 视觉。
 
@@ -52,19 +52,19 @@
 
 - `docs/superpowers/**` 已于 2026-06-01 审计并删除，后续不再补充。
 - 该目录内大多数内容是早期实施草案，已经被当前源码、组件文档和根目录记忆文件覆盖；历史勾选状态不再作为依据。
-- 保留下来的有效结论是：Popper 是 Select、Dropdown、Popconfirm、DatePicker、TimePicker、ColorPicker、Menu 等弹出类组件的前置基座；Select 依赖 Input、Tag、Popper；Dropdown 依赖 Button、Popper。
+- 保留下来的有效结论是：Popper 是 Select、Popover、DropdownMenu、Popconfirm、DatePicker、TimePicker、ColorPicker、MenuSub 等弹出类能力的前置基座；Select 依赖 Field、Popper、ScrollArea；DropdownMenu 依赖 Popover 与显式 Menu。
 - Paragraph 旧计划已明确过时，当前不实现；如未来需要大段文本编排，重新按当前 API/token 规范设计。
 - Tooltip 当前已迁移到 Popper 基座；历史上“后续评估迁移”的结论已落实。
 - 早期交互规范里 `type` 迁移到 `theme`、禁用态不用 opacity、统一 token 的方向已被当前规范吸收；旧 token 名称和值不再直接沿用。
-- 历史路线图只保留为方向参考：完成 Popper 能力后优先考虑 Select/Dropdown/Popconfirm 等依赖链组件，再进入 Form、反馈、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
+- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu 已按当前边界落地；后续优先进入 Form / FormItem / Textarea，再推进反馈、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
 
 ## 2026-06-05 未来组件路线与内部原型候选
 
-- 当前建议的组件推进顺序：Menu → Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → TreeSelect / Cascader / ColorPicker → TagInput。
+- 当前建议的组件推进顺序：Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → NavigationMenu → TreeSelect / Cascader / ColorPicker → TagInput。
 - Select slot-first 单选首版已落地，已初步验证 Field、Popper、键盘交互、ARIA、empty、loading、disabled option、readonly 和 clearable 等组合边界；多选 tag wrap、searchable、maxTagCount 等仍是后续压力测试。
 - TagInput 已降到路线最后：它仍可作为 Field 多值 / multiline / Tag wrap / Backspace 删除 / 输入宽度自适应的压力测试，但独立使用场景相对较少，先等后续出现明确自由多值输入需求时再启动。
-- Dropdown 和 Menu 继续拆开推进：Dropdown 当前采用常见下拉菜单语义，负责触发、浮层和简单操作项；Menu 后续负责更完整的导航/选中/嵌套等复合控件模型；Select、Dropdown、ContextMenu、Cascader 等后续组件都可复用 collection 相关能力。
-- Popper / Dropdown 的 overlay 语义已拆分为三层：`trigger` 只描述触发器如何打开或切换，`visible` / `v-model:visible` 只描述显隐状态同步，outside click / Esc 是否触发关闭由独立的 `close-on-outside-click` / `close-on-esc` 控制。
+- Popover / Menu / DropdownMenu 已按“原语 / 英文 / ARIA 优先”的边界拆分：Popover 负责任意非模态浮层，Menu 负责动作 / 命令菜单内容，DropdownMenu 是 `Popover + explicit Menu` 的菜单型预设；导航后续由 NavigationMenu 承担。
+- 浮层公开显隐语义已统一到 `open` / `v-model:open` / `open-change`；`trigger` 只描述触发器打开策略，outside click / Esc 是否关闭由独立关闭策略表达。
 - Form / FormItem 应在 Select 跑通后推进，因为 Field 当前明确不负责 label、help、error message、校验触发时机；FormItem 可承接布局、label、help、error、required、status 传递和 ARIA 关联。
 - DatePicker / TimePicker 建议后置于 Select、Form 和 Overlay 能力之后，因为日期组件牵涉解析、格式化、面板、范围选择、键盘模型和本地化，过早实现容易把底层边界和业务复杂度揉在一起。
 - 内部通用原型的判断原则：只有当一个结构或交互模型服务多个明确组件，并且能减少真实重复、统一可访问性或降低复杂状态错误时才沉淀；不为了文件拆分、样式复用或概念完整而提前抽象。
@@ -72,7 +72,7 @@
 - RovingFocus / Composite 建议作为内部交互工具：服务 Radio button variant、未来 ToggleGroup、Tabs、Menu、Toolbar，统一 roving `tabindex`、方向键移动、Home / End、disabled item 跳过和循环策略。它解决的是可访问性和键盘模型，不是视觉复用。
 - Overlay / Layer 值得抽，但应等 Dialog / Drawer 启动前设计；它负责全局层级、遮罩、滚动锁、Esc、focus trap 和 `aria-modal`，与负责锚点定位的 Popper 不同。
 - FormControl context 应随 Form / FormItem 自然出现，用于统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby`、label/help/error 关联；公开 API 应以 Form 体系为主，不建议过早暴露底层 FormControl primitives。
-- PopupSurface / FloatingSurface 暂不建议立刻抽。Tooltip、Select panel、Dropdown menu、Popconfirm 的 surface 密度、padding、结构和角色差异较大；更合理的做法是先各自实现，等重复足够稳定后，再抽很薄的内部 `surfaceClass` 或 surface primitive。
+- PopupSurface / FloatingSurface 暂不建议立刻抽。Tooltip、Select panel、Popover content、DropdownMenu content、Popconfirm 的 surface 密度、padding、结构和角色差异较大；更合理的做法是先各自实现，等重复足够稳定后，再抽很薄的内部 `surfaceClass` 或 surface primitive。
 - 明确不建议抽的方向：IconButton 已由 Button 的 `shape="square|circle"` 覆盖；StatusSurface 会混淆 Callout、Alert、Message、Tag、Badge 等差异较大的结构；Panel / Card 过泛，容易变成样式垃圾桶；DatePanel 在 DatePicker 真实需求清楚前不预抽。
 
 ## 2026-06-06 Select 单选首版实现
@@ -105,13 +105,23 @@
 - ScrollArea 文档已补“编程控制”示例，覆盖 `scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState` 和 `scroll` / `update` 事件状态；该示例也被 `check:scroll-area` 守护。
 - 本轮完整功能提交为 `d0185e6 feat(scrollarea): 实现滚动区域组件`；ScrollArea 后续不再回到 Select 视觉确认队列。
 
+## 2026-06-08 Popover / Menu / DropdownMenu 边界落地
+
+- 用户确认组件边界以原语、英文含义和 ARIA 为优先：`Menu` 是动作 / 命令菜单内容原语，不承担路由导航；导航后续另做 `NavigationMenu`；不保留泛型 `Dropdown`，当前下拉操作菜单迁移为 `DropdownMenu`。
+- 新增 `src/components/Popover/`：`Popover`、`PopoverTrigger`、`PopoverContent`。公开状态统一为 `open` / `v-model:open` / `open-change`，支持 click / hover / focus / manual、open / close delay、outside click、Esc、focus return、Teleport、flip / shift、as-child trigger 与 nested layer 协调。
+- 新增 `src/components/Menu/`：`Menu`、`MenuItem`、`MenuCheckboxItem`、`MenuRadioGroup`、`MenuRadioItem`、`MenuSub`、`MenuSubTrigger`、`MenuSubContent`、`MenuGroup`、`MenuLabel`、`MenuSeparator`。Menu 不提供 `selectedKeys`，active 只表达当前聚焦 / 悬停行；checkbox / radio item 使用左侧轻量 indicator，不复用表单 Checkbox / Radio 视觉。
+- `MenuItem` 默认选择后请求关闭菜单；`MenuCheckboxItem` / `MenuRadioItem` 默认不关闭，并允许 item 级 `close-on-select` 覆盖。SubMenu 纳入 v1，支持嵌套浮层、方向键进入 / 退出和 Esc 分层关闭。
+- 新增 `src/components/DropdownMenu/`：`DropdownMenu`、`DropdownMenuTrigger`、`DropdownMenuContent`。它只作为菜单型 Popover 预设，写法要求在 content 内显式放入 `Menu`，不再拥有 `DropdownItem` / `DropdownGroup` / `DropdownDivider` 系列。
+- 新增 `scripts/check-popover.mjs`、`scripts/check-menu.mjs`、`scripts/check-dropdown-menu.mjs`，并将 `check:popover`、`check:menu`、`check:dropdown-menu` 纳入 `npm run check`；旧 `check:dropdown` 与 `src/components/Dropdown/` 已移除。
+
 ## 2026-06-08 Slot-first Select / Dropdown 决策
 
+- 历史记录：本节描述的是 Select slot-first 与旧 Dropdown 菜单化阶段；当前 Dropdown 已进一步迁移为 `DropdownMenu = Popover + explicit Menu`，不再保留 `src/components/Dropdown/`。
 - 用户确认 collection 类组件首版统一采用 slot 子组件驱动；数据驱动便捷写法是否补充，后续按真实需求再议。
 - Select 已从 `options` prop 改为 `SelectOption` / `SelectOptionGroup` 子组件；父组件仍负责 Field 触发器、Popper 定位、ScrollArea 面板、单选值、clearable、loading / empty、键盘导航和 combobox/listbox ARIA。
-- Dropdown 已从“独立浮层壳”改为常见下拉菜单语义；默认 slot 使用 `DropdownItem` / `DropdownGroup` / `DropdownDivider`，父组件负责 Popper 定位、菜单 surface、方向键和 `select` 事件；outside click / Esc 是否关闭由 `close-on-outside-click` / `close-on-esc` 独立控制。
+- 当时 Dropdown 已从“独立浮层壳”改为常见下拉菜单语义；默认 slot 使用 `DropdownItem` / `DropdownGroup` / `DropdownDivider`。该方案随后被 Popover / Menu / DropdownMenu 边界取代。
 - 本轮新增 `scripts/check-select.mjs`，并将 `check:select`、更新后的 `check:dropdown` 纳入 `npm run check`；两者守护 slot 子组件契约、文档示例、barrel/theme 注册和禁止回退到首版数据 prop / popover shell。
-- 当前实现选择“先各自跑通，不急于抽象”：Select 与 Dropdown 都使用内部 collection 注册和 slot vnode 解析，后续等 Menu、Autocomplete、Tabs 等出现重复后，再沉淀 OptionList / Collection 或 RovingFocus。
+- 当时实现选择“先各自跑通，不急于抽象”：Select 与 Dropdown 都使用内部 collection 注册和 slot vnode 解析；当前 Menu 已独立落地，后续等 Autocomplete、Tabs、NavigationMenu 等出现重复后，再沉淀 OptionList / Collection 或 RovingFocus。
 - 验证：`npm run check` 通过；浏览器验证覆盖 Select 点击 / 键盘选择、Dropdown 点击 / 键盘选择、默认 Esc / outside 关闭、manual 示例 `v-model:visible` + `close-on-outside-click=false` / `close-on-esc=false` 不被外部点击或 Esc 关闭、disabled trigger、`match-width` 和 `max-height` ScrollArea。修复子项注册递归更新后，新时间点之后无新增 warning/error。
 
 ## 2026-06-07 Dropdown v1 独立浮层壳
@@ -226,8 +236,9 @@ docs(project): 更新项目上下文与待办
 
 最近一次完整验证：
 
-- 2026-06-08 `npm run check`：通过，包含 format、check:icons、check:scroll-area、check:select、check:dropdown、lint、typecheck 和 VitePress build；`git diff --check` 通过。
-- 2026-06-08 in-app browser 验证 `/components/dropdown.html`：默认 Dropdown 外部点击 / Esc 关闭；manual 示例使用 `v-model:visible` 且 `close-on-outside-click=false` / `close-on-esc=false` 时，外部点击和 Esc 不关闭，只有外部“关闭”按钮改变显隐。
+- 2026-06-08 `npm run check`：通过，包含 format、check:icons、check:scroll-area、check:popper、check:popover、check:menu、check:select、check:dropdown-menu、lint、typecheck 和 VitePress build；`git diff --check` 通过。
+- 2026-06-08 base-component review 覆盖 Popover / Menu / DropdownMenu 两轮：第一轮发现的 SubMenu、受控 Popover disabled、DropdownMenu 透传和 Menu 键盘热路径问题已修复；第二轮 Critical / Important 清零，仅保留非 ScrollArea fallback 滚动读 rect 的 Minor 残余。
+- 2026-06-08 in-app Browser 使用 `http://127.0.0.1:5190/` 验证 `/components/popover.html`、`/components/menu.html`、`/components/dropdown-menu.html`：Popover 基础打开与嵌套 Esc、Menu 子菜单点击展开、DropdownMenu 显式 Menu 选择后关闭并更新状态、DropdownMenu 子菜单展开均通过，console warning/error 为空。
 - `npm run typecheck`：通过。
 - `npm run lint`：通过，无 `src/components/Icon/Icon.vue` 的 `vue/no-v-html` warning。
 - `npm run format:check`：通过。

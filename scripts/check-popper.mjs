@@ -94,6 +94,16 @@ expectIncludes(
   'resolvedTeleportTarget',
   'PopperContent resolves Teleport target',
 )
+expectNotIncludes(
+  'src/components/Popper/PopperContent.vue',
+  'h-popper-content',
+  'PopperContent does not add docs-only isolation classes',
+)
+expectIncludes(
+  'docs/.vitepress/config.ts',
+  '.shadow-popper, .shadow-popper *',
+  'VitePress reset excludes existing popper surface classes without changing components',
+)
 expectIncludes(
   'src/components/Popper/PopperContent.vue',
   'function resolveTeleportTarget',

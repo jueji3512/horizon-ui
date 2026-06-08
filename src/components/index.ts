@@ -12,16 +12,29 @@ import Title from './Title/Title.vue'
 import Badge from './Badge/Badge.vue'
 import Link from './Link/Link.vue'
 import Tooltip from './Tooltip/Tooltip.vue'
+import Popover from './Popover/Popover.vue'
+import PopoverTrigger from './Popover/PopoverTrigger'
+import PopoverContent from './Popover/PopoverContent.vue'
+import Menu from './Menu/Menu.vue'
+import MenuItem from './Menu/MenuItem.vue'
+import MenuCheckboxItem from './Menu/MenuCheckboxItem.vue'
+import MenuRadioGroup from './Menu/MenuRadioGroup.vue'
+import MenuRadioItem from './Menu/MenuRadioItem.vue'
+import MenuSub from './Menu/MenuSub.vue'
+import MenuSubTrigger from './Menu/MenuSubTrigger.vue'
+import MenuSubContent from './Menu/MenuSubContent.vue'
+import MenuGroup from './Menu/MenuGroup.vue'
+import MenuLabel from './Menu/MenuLabel.vue'
+import MenuSeparator from './Menu/MenuSeparator.vue'
 import Switch from './Switch/Switch.vue'
 import Input from './Input/Input.vue'
 import InputNumber from './InputNumber/InputNumber.vue'
 import Select from './Select/Select.vue'
 import SelectOption from './Select/SelectOption.vue'
 import SelectOptionGroup from './Select/SelectOptionGroup.vue'
-import Dropdown from './Dropdown/Dropdown.vue'
-import DropdownItem from './Dropdown/DropdownItem.vue'
-import DropdownGroup from './Dropdown/DropdownGroup.vue'
-import DropdownDivider from './Dropdown/DropdownDivider.vue'
+import DropdownMenu from './DropdownMenu/DropdownMenu.vue'
+import DropdownMenuTrigger from './DropdownMenu/DropdownMenuTrigger.vue'
+import DropdownMenuContent from './DropdownMenu/DropdownMenuContent.vue'
 import Tag from './Tag/Tag.vue'
 import ScrollArea from './ScrollArea/ScrollArea.vue'
 import FieldRoot from './Field/FieldRoot.vue'
@@ -40,12 +53,10 @@ import PopperArrow from './Popper/PopperArrow.vue'
 export type { FieldContext, FieldSize, FieldStatus } from './Field'
 export { fieldContextKey, useFieldContext } from './Field'
 export type {
-  DropdownItemTheme,
-  DropdownPlacement,
-  DropdownStrategy,
-  DropdownTrigger,
-  DropdownValue,
-} from './Dropdown'
+  DropdownMenuPlacement,
+  DropdownMenuStrategy,
+  DropdownMenuTriggerType,
+} from './DropdownMenu'
 export type {
   ScrollAreaAlignment,
   ScrollAreaAxis,
@@ -67,16 +78,47 @@ export type {
   UsePopperReturn,
 } from './Popper'
 export { popperContextKey, usePopper } from './Popper'
+export type {
+  PopoverCloseOptions,
+  PopoverContext,
+  PopoverLayer,
+  PopoverPlacement,
+  PopoverStrategy,
+  PopoverTriggerType,
+} from './Popover'
+export { popoverContextKey, usePopoverContext } from './Popover'
+export type {
+  MenuContext,
+  MenuDismissContext,
+  MenuGroupContext,
+  MenuItemKind,
+  MenuItemRegistration,
+  MenuItemTheme,
+  MenuRadioGroupContext,
+  MenuSubContext,
+  MenuValue,
+} from './Menu'
+export {
+  menuContextKey,
+  menuDismissContextKey,
+  menuGroupContextKey,
+  menuRadioGroupContextKey,
+  menuSubContextKey,
+  useMenuContext,
+  useMenuDismissContext,
+  useMenuGroupContext,
+  useMenuRadioGroupContext,
+  useMenuSubContext,
+} from './Menu'
 
 export {
   Badge,
   Button,
   Checkbox,
   CheckboxGroup,
-  Dropdown,
-  DropdownDivider,
-  DropdownGroup,
-  DropdownItem,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
   FieldAction,
   FieldContent,
   FieldGroup,
@@ -91,10 +133,24 @@ export {
   Callout,
   Divider,
   Link,
+  Menu,
+  MenuCheckboxItem,
+  MenuGroup,
+  MenuItem,
+  MenuLabel,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuSeparator,
+  MenuSub,
+  MenuSubContent,
+  MenuSubTrigger,
+  Popover,
+  PopoverContent,
   Popper,
   PopperArrow,
   PopperContent,
   PopperTrigger,
+  PopoverTrigger,
   Radio,
   RadioGroup,
   ScrollArea,

@@ -40,11 +40,13 @@ export default defineConfig({
             { text: 'Callout 标注', link: '/components/callout' },
             { text: 'Divider 分割线', link: '/components/divider' },
             { text: 'Tooltip 文字提示', link: '/components/tooltip' },
+            { text: 'Popover 弹出层', link: '/components/popover' },
+            { text: 'Menu 菜单', link: '/components/menu' },
             { text: 'Switch 开关', link: '/components/switch' },
             { text: 'Input 输入框', link: '/components/input' },
             { text: 'InputNumber 数字输入框', link: '/components/inputnumber' },
             { text: 'Select 选择器', link: '/components/select' },
-            { text: 'Dropdown 下拉菜单', link: '/components/dropdown' },
+            { text: 'DropdownMenu 下拉菜单', link: '/components/dropdown-menu' },
             { text: 'Tag 标签', link: '/components/tag' },
             { text: 'Space 间距', link: '/components/space' },
           ],
@@ -87,6 +89,7 @@ export default defineConfig({
         plugins: [
           postcssIsolateStyles({
             includeFiles: [/base\.css$/, /vp-doc\.css$/],
+            prefix: ':not(:where(.vp-raw, .vp-raw *, .shadow-popper, .shadow-popper *))',
           }),
         ],
       },

@@ -16,8 +16,8 @@
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。
 - [ ] 后续 VitePress 发布高于 `1.6.4` 的正式版本时，复查并升级以消除当前嵌套 Vite/esbuild 的 audit 项。
 - [ ] 评估并迁移包管理器：优先考虑 pnpm，备选继续 npm，不优先 Bun / Yarn；迁移时使用 Corepack 固定 pnpm 11，替换 `package-lock.json` 为 `pnpm-lock.yaml`，统一 scripts、`packageManager`、`engines` 和项目记忆文档，并验证 `pnpm install`、`pnpm run check`、audit 等价项和关键文档页面。
-- [ ] 按新的组件路线继续推进：Select slot-first 首版与 Dropdown 菜单首版已落地，后续优先推进 Menu，再推进 Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、TreeSelect / Cascader / ColorPicker；TagInput 因独立使用场景较少，先后置到路线最后。
-- [ ] 评估并沉淀真正有收益的内部通用原型：Select / Dropdown 已各自用 slot 子组件 + 内部 collection 注册跑通首版；后续等 Autocomplete、Menu、Tabs 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Overlay / Layer 等到 Dialog / Drawer 前设计；FormControl context 随 Form / FormItem 自然沉淀；PopupSurface 暂缓，等 Select / Dropdown / Popconfirm 出现稳定重复后再抽。
+- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu 与 DropdownMenu 已落地；后续优先推进 Form / FormItem / Textarea，再推进 Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；TagInput 因独立使用场景较少，先后置到路线最后。
+- [ ] 评估并沉淀真正有收益的内部通用原型：Select 与 Menu 已各自用 slot 子组件 + 内部 collection 注册跑通首版；后续等 Autocomplete、Tabs、NavigationMenu 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Overlay / Layer 等到 Dialog / Drawer 前设计；FormControl context 随 Form / FormItem 自然沉淀；PopupSurface 暂缓，等 Select / Popover / DropdownMenu / Popconfirm 出现稳定重复后再抽。
 - [x] 2026-06-06 ScrollArea v1 已作为公开底层组件落地：结构固定为 `root > viewport > content`，viewport 是唯一真实滚动容器；支持原生滚动、隐藏原生滚动条、悬浮自定义 scrollbar、thumb 拖拽、auto / always / hidden 显隐、垂直 / 水平 / 双轴滚动、`maxHeight` / `maxWidth`、`focusable`、`ariaLabel` 和 `scroll` / `update` 事件。
 - [x] ScrollArea 已 expose `viewportRef`、`contentRef`、`scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState`，并提供内部 context；v1 不引入虚拟滚动依赖，但 viewport 接口可服务未来 `@tanstack/vue-virtual` 等 virtualizer。
 - [x] Select 面板已迁移到 `ScrollArea :max-height="240"`，active option 保持可见改为通过 ScrollArea `scrollToElement(..., { block: 'nearest' })` 完成，不再直接调用浏览器 `scrollIntoView()`。
@@ -26,7 +26,7 @@
 - [x] 2026-06-05 已完成 Icon SVG 图标体系首轮重整：当前 48 个本地图标已按 Lucide outline 风格同名替换，并统一 `viewBox="0 0 24 24"`、`currentColor`、`stroke-width="2"`、round linecap / linejoin 和无固定 `width` / `height` 的源文件规范；已补 `npm run check:icons` 并纳入 `npm run check`。
 - [x] 2026-06-06 已补充 48 个企业组件库常用本地图标，当前内置图标总数为 96；新增图标覆盖导航、数据、表单、反馈、权限、文件、操作和系统场景，并加入 `check:icons` 必备列表。
 - [x] 2026-06-08 Select 已改为 slot-first 单选首版：使用 `SelectOption` / `SelectOptionGroup` 子组件，不再暴露首版数据 prop；复用 Field / Popper / ScrollArea，保留 clearable、loading、empty、disabled option、readonly、尺寸、状态、隐藏 input、键盘导航和 combobox/listbox ARIA。
-- [x] 2026-06-08 Dropdown 已改为菜单语义首版：使用 `DropdownItem` / `DropdownGroup` / `DropdownDivider` 子组件，支持 trigger slot、Popper 定位 / 显隐、菜单 surface、方向键、`select` 事件、`match-width` 和可选 `maxHeight` ScrollArea；outside click / Esc 是否关闭由 `close-on-outside-click` / `close-on-esc` 独立控制，不和 `trigger` 或 `v-model:visible` 混用。
+- [x] 2026-06-08 Popover / Menu / DropdownMenu 已按新边界落地：Popover 提供 `open` / `v-model:open`、全触发模式、dismiss、focus return 和 nested layer；Menu 提供 item / checkbox item / radio item / submenu / group / label / separator；DropdownMenu 作为 `Popover + explicit Menu` 预设，不再保留泛型 Dropdown。
 - [ ] 在 Figma `Horizon Icons Audit` 页面继续人工复核新版图标的视觉中心和真实容器表现；如发现单个图标仍不理想，再按同名文件局部替换或微调 SVG。
 - [ ] 后续设计稿、组件视觉方案和图标审阅优先落到用户提供的 Figma `Horizon UI` 文件。当前 Figma Starter 计划最多 3 页，推荐整理为 `00 Workspace`、`01 Icon Library`、`02 Component Drafts`；2026-06-05 继续补常用图标时因 MCP 工具调用额度被拦，额度恢复后再重跑。
 - [x] 2026-06-05 收尾时遗留的记忆文档改动已在 `4517523 docs(project): 更新未来计划与技能记忆` 中提交。

@@ -1,7 +1,7 @@
 
 # Popper 弹出定位引擎
 
-> **底层组件** — 为 Select、Dropdown、Menu、Popconfirm 等上层组件提供定位与交互基础设施，通常不直接使用。
+> **底层组件** — 为 Select、Popover、DropdownMenu、MenuSub、Popconfirm 等上层组件提供定位与交互基础设施，通常不直接使用。
 
 本页是开发者行为验证页面，覆盖全部 props 和边界场景。
 
@@ -172,7 +172,7 @@ popper/example-11
 
 无 Props。默认使用 `8 × 8px` 的旋转方块，静态边偏移为 `-4px`，背景色通过 `bg-inherit` 从父级继承。
 
-PopperArrow 的尺寸属于 Popper 的结构定位规格，不提供主题或尺寸 API；Tooltip、Dropdown、Popconfirm 等上层组件只负责传入背景色和 surface 样式。
+PopperArrow 的尺寸属于 Popper 的结构定位规格，不提供主题或尺寸 API；Tooltip、Popover、DropdownMenu、Popconfirm 等上层组件只负责传入背景色和 surface 样式。
 
 ### Placement 可选值
 

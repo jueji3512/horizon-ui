@@ -1,6 +1,6 @@
 # ScrollArea 滚动区域
 
-> **底层组件** — 为 Select、Dropdown、Menu、Dialog、Table 等组件提供稳定的滚动视口和悬浮滚动条。
+> **底层组件** — 为 Select、Menu、DropdownMenu、Dialog、Table 等组件提供稳定的滚动视口和悬浮滚动条。
 
 ScrollArea 只负责滚动 viewport，不提供背景、边框、阴影或业务主题。上层组件需要自行定义 surface 视觉。
 

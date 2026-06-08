@@ -5,10 +5,9 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
-  Dropdown,
-  DropdownDivider,
-  DropdownGroup,
-  DropdownItem,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
   FieldAction,
   FieldContent,
   FieldGroup,
@@ -26,6 +25,20 @@ import {
   Callout,
   Divider,
   Link,
+  Menu,
+  MenuCheckboxItem,
+  MenuGroup,
+  MenuItem,
+  MenuLabel,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuSeparator,
+  MenuSub,
+  MenuSubContent,
+  MenuSubTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Popper,
   PopperArrow,
   PopperContent,
@@ -88,10 +101,9 @@ export default {
     app.component('Icon', Icon)
     app.component('Checkbox', Checkbox)
     app.component('CheckboxGroup', CheckboxGroup)
-    app.component('Dropdown', Dropdown)
-    app.component('DropdownItem', DropdownItem)
-    app.component('DropdownGroup', DropdownGroup)
-    app.component('DropdownDivider', DropdownDivider)
+    app.component('DropdownMenu', DropdownMenu)
+    app.component('DropdownMenuTrigger', DropdownMenuTrigger)
+    app.component('DropdownMenuContent', DropdownMenuContent)
     app.component('FieldRoot', FieldRoot)
     app.component('FieldContent', FieldContent)
     app.component('FieldNativeInput', FieldNativeInput)
@@ -107,6 +119,17 @@ export default {
     app.component('Title', Title)
     app.component('Callout', Callout)
     app.component('Link', Link)
+    app.component('Menu', Menu)
+    app.component('MenuItem', MenuItem)
+    app.component('MenuCheckboxItem', MenuCheckboxItem)
+    app.component('MenuRadioGroup', MenuRadioGroup)
+    app.component('MenuRadioItem', MenuRadioItem)
+    app.component('MenuSub', MenuSub)
+    app.component('MenuSubTrigger', MenuSubTrigger)
+    app.component('MenuSubContent', MenuSubContent)
+    app.component('MenuGroup', MenuGroup)
+    app.component('MenuLabel', MenuLabel)
+    app.component('MenuSeparator', MenuSeparator)
     app.component('Switch', Switch)
     app.component('Tag', Tag)
     app.component('Input', Input)
@@ -115,6 +138,9 @@ export default {
     app.component('SelectOption', SelectOption)
     app.component('SelectOptionGroup', SelectOptionGroup)
     app.component('Tooltip', Tooltip)
+    app.component('Popover', Popover)
+    app.component('PopoverTrigger', PopoverTrigger)
+    app.component('PopoverContent', PopoverContent)
     app.component('Popper', Popper)
     app.component('PopperTrigger', PopperTrigger)
     app.component('PopperContent', PopperContent)

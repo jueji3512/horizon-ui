@@ -115,4 +115,8 @@ onBeforeUnmount(() => {
   syncDocumentListeners(false)
   ctx.contentRef.value = undefined
 })
+
+defineExpose({
+  contentEl,
+})
 </script>

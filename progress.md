@@ -1,5 +1,17 @@
 # 工作进度记录
 
+## 2026-06-08 Popover / Menu / DropdownMenu 实施
+
+- 按用户确认的“原语 / 英文 / ARIA 优先”边界推进：`Popover` 负责通用非模态浮层，`Menu` 负责动作 / 命令菜单内容，`DropdownMenu` 作为菜单型 Popover 预设；导航后续另做 `NavigationMenu`，不让 `Menu` 承担路由导航。
+- 已先补红灯契约脚本：`scripts/check-popover.mjs`、`scripts/check-menu.mjs`、`scripts/check-dropdown-menu.mjs`，首次运行在旧实现上分别失败；实现后 `npm run check:popover`、`npm run check:menu`、`npm run check:dropdown-menu` 均已通过。
+- 新增 `src/components/Popover/`：`Popover`、`PopoverTrigger`、`PopoverContent`，公开状态统一为 `open` / `v-model:open`，支持 click / hover / focus / manual、delay、outside click、Esc、focus return、Teleport、flip / shift、as-child trigger 与 nested layer。
+- 新增 `src/components/Menu/`：`MenuItem`、checkbox/radio item、radio group、submenu、group、label、separator；普通 item 默认选择后关闭，checkbox/radio item 默认不关闭并支持 item 级 `close-on-select` 覆盖。
+- 旧 `src/components/Dropdown/` 已迁移为 `src/components/DropdownMenu/`：不再拥有 `DropdownItem` 系列，文档写法要求 `DropdownMenuContent` 内显式放入 `Menu`。
+- 文档与注册已同步到 `docs/components/popover.md`、`docs/components/menu.md`、`docs/components/dropdown-menu.md`、VitePress sidebar/theme 和 `src/components/index.ts`。
+- Base-component review 已完成两轮：第一轮发现 SubMenu 打开链路、延迟 / 离开 / 焦点回归、DropdownMenu `return-focus-on-close` 透传、受控 Popover disabled 关闭和 Menu 键盘热路径问题；已修复后第二轮 Critical / Important 清零，仅保留非 ScrollArea fallback 滚动仍需读 rect 的 Minor 残余。
+- in-app Browser 使用 `http://127.0.0.1:5190/` 验证 `/components/popover.html`、`/components/menu.html`、`/components/dropdown-menu.html`：Popover 基础打开与嵌套 Esc、Menu 子菜单点击展开、DropdownMenu 显式 Menu 选择后关闭并更新状态、DropdownMenu 子菜单展开均通过，console warning/error 为空。
+- 根据用户视觉反馈，MenuSub 浮层 offset 从 `4` 调整为 `-2`，让子菜单与父菜单贴合并轻微交叉；Teleport 后 Popover 示例中的 Input / Button padding 被文档站 reset 置零的问题已改为只在 VitePress reset 隔离规则中排除现有 `shadow-popper` surface，不向组件内部新增文档专用类或逻辑。
+
 ## 2026-06-08 收尾交接
 
 - 本轮 Dropdown / Popper 语义已按用户最终确认收口：`trigger`、`visible` / `v-model:visible` 和 outside click / Esc dismiss 是三层独立语义，不再把 `v-model` 与是否可被外部点击关闭绑定。

@@ -100,13 +100,6 @@ expectNotIncludes(
   'scrollIntoView(',
   'Select avoids browser scrollIntoView',
 )
-expectIncludes('src/components/Dropdown/Dropdown.vue', 'ScrollArea')
-expectIncludes(
-  'src/components/Dropdown/Dropdown.vue',
-  "scrollToElement(element, { block: 'nearest' })",
-  'Dropdown delegates active item visibility to ScrollArea',
-)
-
 const failures = checks.filter((check) => !check.pass)
 
 if (failures.length > 0) {

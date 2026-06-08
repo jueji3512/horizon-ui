@@ -5,6 +5,10 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
+  Dropdown,
+  DropdownDivider,
+  DropdownGroup,
+  DropdownItem,
   FieldAction,
   FieldContent,
   FieldGroup,
@@ -17,6 +21,8 @@ import {
   Input,
   InputNumber,
   Select,
+  SelectOption,
+  SelectOptionGroup,
   Callout,
   Divider,
   Link,
@@ -82,6 +88,10 @@ export default {
     app.component('Icon', Icon)
     app.component('Checkbox', Checkbox)
     app.component('CheckboxGroup', CheckboxGroup)
+    app.component('Dropdown', Dropdown)
+    app.component('DropdownItem', DropdownItem)
+    app.component('DropdownGroup', DropdownGroup)
+    app.component('DropdownDivider', DropdownDivider)
     app.component('FieldRoot', FieldRoot)
     app.component('FieldContent', FieldContent)
     app.component('FieldNativeInput', FieldNativeInput)
@@ -102,6 +112,8 @@ export default {
     app.component('Input', Input)
     app.component('InputNumber', InputNumber)
     app.component('Select', Select)
+    app.component('SelectOption', SelectOption)
+    app.component('SelectOptionGroup', SelectOptionGroup)
     app.component('Tooltip', Tooltip)
     app.component('Popper', Popper)
     app.component('PopperTrigger', PopperTrigger)

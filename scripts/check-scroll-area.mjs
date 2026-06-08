@@ -89,11 +89,22 @@ expectIncludes('docs/examples/scrollarea/example-04.vue', 'update()')
 
 expectIncludes('src/components/Select/Select.vue', 'ScrollArea')
 expectIncludes('src/components/Select/Select.vue', ':max-height="240"')
+expectIncludes(
+  'src/components/Select/Select.vue',
+  "scrollToElement(element, { block: 'nearest' })",
+  'Select delegates active option visibility to ScrollArea',
+)
 expectNotIncludes('src/components/Select/Select.vue', 'max-h-60 overflow-auto')
 expectNotIncludes(
-  'src/components/Select/SelectOptionList.vue',
+  'src/components/Select/Select.vue',
   'scrollIntoView(',
-  'SelectOptionList delegates active option visibility to ScrollArea',
+  'Select avoids browser scrollIntoView',
+)
+expectIncludes('src/components/Dropdown/Dropdown.vue', 'ScrollArea')
+expectIncludes(
+  'src/components/Dropdown/Dropdown.vue',
+  "scrollToElement(element, { block: 'nearest' })",
+  'Dropdown delegates active item visibility to ScrollArea',
 )
 
 const failures = checks.filter((check) => !check.pass)

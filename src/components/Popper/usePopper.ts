@@ -1,4 +1,4 @@
-import { computed, toValue, watch, type Ref, type ComputedRef, type CSSProperties } from 'vue'
+import { computed, toValue, watch, type Ref } from 'vue'
 import {
   useFloating,
   flip,
@@ -9,8 +9,7 @@ import {
   autoUpdate,
   type Middleware,
 } from '@floating-ui/vue'
-import type { UsePopperOptions, UsePopperReturn } from './types'
-import type { Placement } from './types'
+import type { Placement, UsePopperOptions, UsePopperReturn } from './types'
 
 export function usePopper(
   referenceEl: Ref<HTMLElement | undefined>,
@@ -76,9 +75,9 @@ export function usePopper(
   })
 
   return {
-    floatingStyles: floatingStyles as unknown as ComputedRef<CSSProperties>,
+    floatingStyles,
     middlewareData,
-    placement: placement as Ref<Placement>,
+    placement: placement as Readonly<Ref<Placement>>,
     update: floatingUpdate,
   }
 }

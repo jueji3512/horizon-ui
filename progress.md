@@ -1,5 +1,34 @@
 # 工作进度记录
 
+## 2026-06-08 收尾交接
+
+- 本轮 Dropdown / Popper 语义已按用户最终确认收口：`trigger`、`visible` / `v-model:visible` 和 outside click / Esc dismiss 是三层独立语义，不再把 `v-model` 与是否可被外部点击关闭绑定。
+- Popper 新增并透传 `close-on-outside-click` / `close-on-esc`；Dropdown 文档和 manual 示例已使用 `v-model:visible` + 显式关闭策略展示 manual 控制。
+- in-app browser 在 `http://127.0.0.1:5187/components/dropdown.html` 验证：默认 Dropdown 外部点击 / Esc 关闭；manual 示例禁用 outside / Esc 后不会被外部点击或 Esc 关闭，只由外部“打开 / 关闭”按钮控制。
+- 最新验证：2026-06-08 `npm run check` 与 `git diff --check` 通过。
+- 下次新对话最短接入：先执行 `git status --short` 和 `git log -1 --oneline`，再读 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`；当前功能方向建议进入 Menu 的接口、键盘模型、内容结构和是否沉淀内部 Collection / RovingFocus。
+
+## 2026-06-08 Select / Dropdown slot-first 改造
+
+- 用户确认所有 collection 类组件首版先统一采用 slot 子组件驱动；数据驱动便捷写法是否补充，后续再议。
+- Select 已从 `options` prop 改为 `SelectOption` / `SelectOptionGroup`：保留 Field 触发器、Popper `manual` + `match-width`、ScrollArea 面板、单选、clearable、loading、empty、disabled option、readonly、状态、尺寸、隐藏 input、键盘导航和 combobox/listbox ARIA。
+- Dropdown 已从独立浮层壳改为菜单语义：新增 `DropdownItem` / `DropdownGroup` / `DropdownDivider`，父组件负责 trigger、Popper 定位、显隐、surface、方向键和 `select` 事件。
+- Popper / Dropdown 已将触发方式、显隐同步和关闭策略拆开：`trigger` 只决定触发器行为，`visible` / `v-model:visible` 只负责状态同步，outside click / Esc 由 `close-on-outside-click` / `close-on-esc` 独立控制。
+- 新增 `scripts/check-select.mjs`，并将 `check:select` 与更新后的 `check:dropdown` 纳入 `npm run check`，守护 slot 子组件契约、文档示例和 barrel / VitePress theme 注册。
+- 文档已更新 `docs/components/select.md`、`docs/components/dropdown.md` 及对应示例，示例不再使用 Select 数据 prop，也不再把 Dropdown 展示为任意内容浮层。
+- 当前已验证：先写新契约检查并确认在旧实现上失败；实现后 `npm run check` 通过。浏览器验证覆盖 Select 点击选择与键盘选择、Dropdown 点击选择与键盘选择、默认 Esc / outside 关闭、manual 示例 `v-model:visible` + 独立关闭策略禁用 outside / Esc、disabled trigger、`match-width`、`max-height` ScrollArea，并确认修复递归注册后没有新增 warning/error。
+
+## 2026-06-07 Dropdown v1 独立浮层壳
+
+- 历史记录：本节描述的是已被 2026-06-08 取代的 popover-like shell 方案；当前 Dropdown 是下拉菜单语义，不再作为任意内容浮层使用。
+- 按用户确认将 Dropdown 和 Menu 分开推进，本轮只实现 Dropdown v1，不内置 Menu / item / roving focus 行为。
+- 新增 `src/components/Dropdown/`：`Dropdown.vue`、`types.ts`、`index.ts`；复用 Popper 手动显隐管理，支持 `click|hover|focus|manual`、trigger slot、受控 `visible`、`match-width`、标准 surface 和可选 `maxHeight` ScrollArea。
+- Dropdown 内容点击默认不关闭；默认插槽和 trigger slot 暴露 `close()`，用于内容主动关闭。
+- 新增 `docs/components/dropdown.md` 与 6 个 `docs/examples/dropdown/` 示例，覆盖基础点击、内容点击与禁用、hover/focus、manual、match-width、自定义内容与滚动。
+- 新增 `scripts/check-dropdown.mjs` 与 `npm run check:dropdown`，并纳入 `npm run check`，用于守护文件结构、注册、文档示例和不混入 Menu 行为。
+- 验证：`npm run check` 通过；本地文档页 `http://127.0.0.1:5187/components/dropdown` 返回 200。内置浏览器验证 click 打开、Esc / 外部点击关闭、内容点击不关闭、slot close、disabled、focus、manual、match-width 和 max-height ScrollArea；当前浏览器鼠标移动通道仍无法稳定触发 hover，hover 仅确认源码事件链与示例覆盖。
+- 下一步最短接入：确认工作区状态后进入 Menu 的接口、键盘模型和内容结构设计；Dropdown 已经提供承载 Menu 的浮层壳。
+
 ## 2026-06-07 收尾与新对话交接
 
 - 今天已完成 ScrollArea v1 收口并提交：`d0185e6 feat(scrollarea): 实现滚动区域组件`。
@@ -7,7 +36,7 @@
 - 今日修复 ScrollArea thumb 首尾 inset 不一致问题，并补编程控制演示；headless Chrome CDP 已验证 thumb 两端 inset 均为 4px，`下移` / `定位目标` / `底部` / `顶部` 等编程控制按钮可正常驱动滚动和 metrics。
 - 最新完整验证：2026-06-07 `npm run check` 通过，包含 format、check:icons、check:scroll-area、lint、typecheck 和 VitePress build。
 - 当前工作分支为 `codex/docs-and-icon-rework`。收尾文档提交前工作区曾为 clean，最新状态以明天新对话启动后的 `git status --short` 和 `git log -1 --oneline` 为准。
-- 明天新对话最短接入：先读 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`，确认最新提交和工作区状态；下一步优先推进 Dropdown / Menu 的接口设计、键盘模型、浮层结构和是否沉淀 OptionList / Collection 内部能力。
+- 明天新对话最短接入：先读 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`，确认最新提交和工作区状态；Dropdown v1 已单独落地后，下一步优先推进 Menu 的接口设计、键盘模型、内容结构和是否沉淀 OptionList / Collection 内部能力。
 
 ## 2026-06-07 ScrollArea 编程控制演示补充
 
@@ -170,7 +199,7 @@
 - 用户确认 gap 不需要 token 化，`--space-*` 不再作为 Horizon 规范 token；已移除 `src/styles/tokens/size.css` 中的 `--space-*` 定义，并恢复组件内部普通 Tailwind `gap-*` 写法。
 - 用户进一步确认 padding 也不需要 token 化；已移除 `src/styles/tokens/size.css` 中的 `--padding-x-*` / `--padding-y-*` 定义，并将组件内部已使用 padding token 的地方恢复为等值 Tailwind spacing class。
 - `Icon` 已移除固定尺寸预设和 `size` prop，默认宽高为 `1em`，由字号或外部 class/style 控制；`Switch` loading 图标改为通过字号 class 适配。
-- Tooltip 已迁移到 Popper 基座：Tooltip 继续负责语义 API、延迟与主题视觉，Popper 负责定位、Teleport、arrow、outside click、Esc 和 z-index。
+- Tooltip 已迁移到 Popper 基座：Tooltip 继续负责语义 API、延迟与主题视觉，Popper 负责定位、Teleport、arrow、可配置 outside click / Esc dismiss 和 z-index。
 - Tooltip 浮层阴影已沉淀为 `--shadow-popper` / `shadow-popper`，参考 TDesign 中层浮层多层投影并叠加 inset 边界，增强浅色主题气泡与页面背景的分离度。
 - 用户确认 Field 不应隐藏在 `_internal`，而应作为类似 Popper 的公开底层组件放在 `src/components/Field/`；已新增 `docs/guide/field-system.md` 记录 Field 输入域体系的目标、组件草案、状态模型、布局模式、未来组件适配、性能和可访问性原则。
 - 已新增公开 `src/components/Field/` primitives：Root、Content、NativeInput、Prefix、Suffix、Action、Group、Segment；新增 `docs/components/field.md` 并加入底层组件导航，Input 已迁移到 FieldRoot/FieldNativeInput/FieldAction 以验证首版边界。

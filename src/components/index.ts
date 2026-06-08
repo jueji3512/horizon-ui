@@ -16,6 +16,12 @@ import Switch from './Switch/Switch.vue'
 import Input from './Input/Input.vue'
 import InputNumber from './InputNumber/InputNumber.vue'
 import Select from './Select/Select.vue'
+import SelectOption from './Select/SelectOption.vue'
+import SelectOptionGroup from './Select/SelectOptionGroup.vue'
+import Dropdown from './Dropdown/Dropdown.vue'
+import DropdownItem from './Dropdown/DropdownItem.vue'
+import DropdownGroup from './Dropdown/DropdownGroup.vue'
+import DropdownDivider from './Dropdown/DropdownDivider.vue'
 import Tag from './Tag/Tag.vue'
 import ScrollArea from './ScrollArea/ScrollArea.vue'
 import FieldRoot from './Field/FieldRoot.vue'
@@ -34,6 +40,13 @@ import PopperArrow from './Popper/PopperArrow.vue'
 export type { FieldContext, FieldSize, FieldStatus } from './Field'
 export { fieldContextKey, useFieldContext } from './Field'
 export type {
+  DropdownItemTheme,
+  DropdownPlacement,
+  DropdownStrategy,
+  DropdownTrigger,
+  DropdownValue,
+} from './Dropdown'
+export type {
   ScrollAreaAlignment,
   ScrollAreaAxis,
   ScrollAreaContext,
@@ -45,15 +58,7 @@ export type {
   ScrollAreaState,
 } from './ScrollArea'
 export { scrollAreaContextKey, useScrollAreaContext } from './ScrollArea'
-export type {
-  SelectOption,
-  SelectOptionGroup,
-  SelectOptionItem,
-  SelectPlacement,
-  SelectSize,
-  SelectStatus,
-  SelectValue,
-} from './Select'
+export type { SelectPlacement, SelectSize, SelectStatus, SelectValue } from './Select'
 export type {
   Placement,
   PopperContext,
@@ -68,6 +73,10 @@ export {
   Button,
   Checkbox,
   CheckboxGroup,
+  Dropdown,
+  DropdownDivider,
+  DropdownGroup,
+  DropdownItem,
   FieldAction,
   FieldContent,
   FieldGroup,
@@ -92,6 +101,8 @@ export {
   Space,
   Switch,
   Select,
+  SelectOption,
+  SelectOptionGroup,
   Tag,
   Text,
   Title,

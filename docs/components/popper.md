@@ -131,6 +131,8 @@ popper/example-11
 | `hide-delay` | `number` | `0` | 隐藏延时 (ms) |
 | `visible` | `boolean` | — | v-model:visible，受控显隐 |
 | `disabled` | `boolean` | `false` | 禁用弹出 |
+| `close-on-outside-click` | `boolean` | `true` | 点击 trigger 与 content 外部时触发关闭 |
+| `close-on-esc` | `boolean` | `true` | 按 Esc 时触发关闭 |
 | `to` | `string \| HTMLElement` | `'body'` | Teleport 目标 |
 | `flip` | `boolean` | `true` | 弹出方向空间不足时自动翻转到对面 |
 | `shift` | `boolean` | `false` | 弹层超出视口边界时是否沿轴向推回可见区域（留 4px 间距） |

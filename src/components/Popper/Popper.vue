@@ -18,6 +18,8 @@ const props = withDefaults(
     hideDelay?: number
     visible?: boolean
     disabled?: boolean
+    closeOnOutsideClick?: boolean
+    closeOnEsc?: boolean
     to?: string | HTMLElement
     flip?: boolean
     shift?: boolean
@@ -34,6 +36,8 @@ const props = withDefaults(
     hideDelay: 0,
     visible: undefined,
     disabled: false,
+    closeOnOutsideClick: true,
+    closeOnEsc: true,
     to: 'body',
     flip: true,
     shift: false,
@@ -87,9 +91,9 @@ function show() {
   }
 }
 
-function hide() {
+function hide(options: { immediate?: boolean } = {}) {
   clearTimers()
-  if (props.hideDelay > 0) {
+  if (!options.immediate && props.hideDelay > 0) {
     hideTimer = setTimeout(() => setVisible(false), props.hideDelay)
   } else {
     setVisible(false)
@@ -130,6 +134,8 @@ provide(popperContextKey, {
   toggle,
   trigger: computed(() => props.trigger),
   disabled: computed(() => props.disabled),
+  closeOnOutsideClick: computed(() => props.closeOnOutsideClick),
+  closeOnEsc: computed(() => props.closeOnEsc),
   triggerRef,
   contentRef,
   arrowRef,
@@ -151,6 +157,15 @@ watch(
       if (props.visible || internalVisible.value) {
         setVisible(false)
       }
+    }
+  },
+)
+
+watch(
+  () => props.visible,
+  (visible, oldVisible) => {
+    if (visible !== undefined && visible !== oldVisible) {
+      clearTimers()
     }
   },
 )

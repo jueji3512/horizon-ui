@@ -17,7 +17,7 @@
 | 8. Field 输入域体系 | 进行中 | Field 首版公开 primitives 已落地并迁移 Input / InputNumber / Select；后续继续用 Select 多选和 DatePicker range 验证边界。 |
 | 9. 运行时与依赖维护 | 持续 | 已升级到 Node 24 LTS / npm 11，并将直接依赖推进到当前最新可用版本；VitePress 内部 audit 项等待上游版本。 |
 | 10. 代理工作流增强 | 持续 | 已全局安装 `obra/superpowers` 14 个工作流 skills，并补装 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs`；重启 Codex 后按收益用于计划、验收、图标检索、设计压力测试、接口设计和 ADR / 决策记录。 |
-| 11. 未来组件与内部原型路线 | 进行中 | Select 单选首版和视觉/交互反馈已落地；下一步优先推进 Dropdown / Menu，TagInput 因独立使用场景较少后置到路线最后；OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context 等仅在有明确跨组件收益时沉淀。 |
+| 11. 未来组件与内部原型路线 | 进行中 | Select 与 Dropdown 首版已统一改为 slot 子组件驱动，Dropdown 为菜单语义；下一步优先推进 Menu，TagInput 因独立使用场景较少后置到路线最后；OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context 等仅在有明确跨组件收益时沉淀。 |
 | 12. Icon SVG 图标体系重整 | 完成首轮 / 持续复核 | 48 个原有本地图标已按 Lucide outline 风格同名替换，并于 2026-06-06 补充 48 个常用图标；当前共 96 个 SVG，`check:icons` 同时校验结构和常用图标必备列表。 |
 | 13. Figma 设计工作区 | 待继续 | 用户确认后续设计稿建议都在 Horizon UI Figma 文件中实现；当前受 Starter 3 页上限与 MCP 调用额度限制，后续按 `00 Workspace` / `01 Icon Library` / `02 Component Drafts` 三页结构整理。 |
 | 14. ScrollArea 底层滚动基座 | 完成首版 / 持续验证 | ScrollArea v1 已公开落地并迁移 Select 面板；支持原生滚动、自定义悬浮 scrollbar、thumb 拖拽、双轴和 viewport expose；虚拟滚动依赖暂缓，接口为未来 virtualizer 预留。 |
@@ -41,9 +41,10 @@
 - `Icon.vue` 的 raw SVG 渲染已补充本地图标安全边界说明，并关闭该处 `vue/no-v-html` 告警。
 - Field 输入域基座已落地为公开 primitives，Input / InputNumber 已完成迁移；Field 支持外部 class 后置覆盖、FieldRoot focus-within ring、FieldSegment focus-within active 视觉。
 - InputNumber 复用 Field 后保留 24/32/40 规范尺寸，步进按钮已改为复用 Button 的 outline square 形态，并补齐聚焦状态下键盘/按钮步进后的展示值同步。
-- Select 单选首版已落地：只支持 `options` prop，复用 Field 触发器和 Popper `manual` + `match-width` 定位，支持普通 option 与 `children` / `title` 一层分组混排、clearable、loading、empty、disabled option、readonly、状态、尺寸、隐藏 input、键盘导航和 combobox/listbox ARIA；内部 `SelectOptionList` 暂不公开。
+- Select slot-first 单选首版已落地：使用 `SelectOption` / `SelectOptionGroup` 子组件，复用 Field 触发器和 Popper `manual` + `match-width` 定位，支持 clearable、loading、empty、disabled option、readonly、状态、尺寸、隐藏 input、键盘导航和 combobox/listbox ARIA；数据驱动便捷写法后续再议。
+- Dropdown 菜单首版已落地：使用 `DropdownItem` / `DropdownGroup` / `DropdownDivider` 子组件，复用 Popper，支持 trigger slot、`click|hover|focus|manual`、受控显隐、菜单 surface、方向键、`select`、`match-width` 和 `max-height` ScrollArea；`trigger`、`visible` / `v-model:visible` 与 outside click / Esc 关闭策略已拆成独立语义。
 - ScrollArea v1 已落地：作为公开底层组件提供 `root > viewport > content` 结构，viewport 是唯一真实滚动容器；支持 native overflow、隐藏原生滚动条、悬浮自定义 scrollbar、thumb 拖拽、auto / always / hidden 显隐、垂直 / 水平 / 双轴滚动、`focusable` 和 `ariaLabel`。
-- ScrollArea 已 expose `viewportRef`、`contentRef`、`scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState`，并通过内部 context 服务 SelectOptionList active 项滚动；已补 `check:scroll-area` 契约检查并纳入 `npm run check`。
+- ScrollArea 已 expose `viewportRef`、`contentRef`、`scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState`，并通过内部 context / expose 服务 SelectOption、DropdownItem active 项滚动；已补 `check:scroll-area` 契约检查并纳入 `npm run check`。
 - Select 面板已从 `max-h-60 overflow-auto` 迁移为 `ScrollArea :max-height="240"`，active option 保持可见改为调用 ScrollArea `scrollToElement(..., { block: 'nearest' })`，避免直接依赖浏览器 `scrollIntoView()` 带动外层容器。
 - 2026-06-04 组件迁移扫描回合已完成：修复 Checkbox / Radio / Switch `focus-visible` 可视 ring，修正色彩指南语义 token 命名，补齐 Field primitive 文档并清理 Popper 多余 demo 标记。
 - 2026-06-04 组件迁移收敛扫描已完成：当前实现组件集未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；已修复 Tag checkable 键盘/ARIA、Input 内部 action 焦点边界、Tooltip 描述关联、Icon `ariaLabel` 语义、InputNumber `change` 事件语义、Popper 根导出、阴影 token fallback、Node 24 类型包和文档主题 stylelint 覆盖。
@@ -74,12 +75,12 @@
 | 组件级固有尺寸规范 | 完成 / 持续守护 | 首轮已定稿 Switch、Badge、Tooltip / PopperArrow、Checkbox / Radio、FieldAction、InputNumber、Callout、Divider，均作为组件内部几何规格维护，不新增通用尺寸 token。 |
 | token 文件边界 | 完成 / 持续守护 | 当前 token 文件按 color、typography、radius、size、shadow、motion、z-index 拆分；后续只在语义确实不适合共处时继续拆分。 |
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
-| Select 首版反馈修正 | 高 / 完成 | 已按用户确认方向落地 edge-to-edge 选项行、浅 brand 选中背景、左侧 brand 条、无右侧 check 图标、clearable hover 切换、触发器默认占满父容器，以及 `children` / `title` 一层 group API。 |
+| Select slot-first 改造 | 高 / 完成 | 已按用户确认方向把首版从数据 prop 改为 `SelectOption` / `SelectOptionGroup` 子组件；保留 edge-to-edge 选项行、浅 brand 选中背景、左侧 brand 条、无右侧 check 图标、clearable hover 切换和触发器默认占满父容器。 |
 | ScrollArea 底层滚动基座 | 高 / 完成首版 | 已公开组件并接入 Select；v1 不做虚拟滚动、不引入依赖，但保留 viewport expose 和 `scrollToElement`，后续 Table / Tree / Virtualized Select 出现真实需求时再优先评估 `@tanstack/vue-virtual`。 |
-| 未来组件开发路线 | 高 | Select 单选首版已完成；后续推荐顺序为 Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、TreeSelect / Cascader / ColorPicker，TagInput 后置到最后按真实需求启动。 |
+| 未来组件开发路线 | 高 | Select slot-first 首版与 Dropdown 菜单首版已完成；后续推荐顺序为 Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、TreeSelect / Cascader / ColorPicker，TagInput 后置到最后按真实需求启动。 |
 | Icon SVG 图标体系重整 | 完成首轮 / 持续复核 | 当前 96 个本地图标均按 Lucide outline 风格维护；源文件统一 `viewBox`、`currentColor`、2px round stroke 和无固定宽高，并补图标网格预览、Figma 审计页与自动校验。 |
 | Figma 设计工作区 | 中 | 后续组件设计建议、图标候选和视觉草稿优先落到用户提供的 Horizon UI Figma 文件；由于 Starter 计划最多 3 页，保持 `00 Workspace`、`01 Icon Library`、`02 Component Drafts` 三页结构，不创建额外页面。 |
-| OptionList / Collection 内部原型 | 高 | Select 首版已用私有 `SelectOptionList` 跑通 active option、disabled、empty、loading、键盘导航、滚动定位和 listbox 语义；后续等 Autocomplete、Dropdown / Menu 等真实重复出现后，再考虑抽内部 primitives / composable。 |
+| OptionList / Collection 内部原型 | 高 | Select / Dropdown 已各自用 slot 子组件 + 内部 collection 注册跑通 active item、disabled、group、键盘导航、滚动定位和 listbox/menu 语义；后续等 Autocomplete、Menu、Tabs 等真实重复出现后，再考虑抽内部 primitives / composable。 |
 | RovingFocus / Composite 内部工具 | 中 | 用于 Radio button variant、未来 ToggleGroup、Tabs、Menu、Toolbar 等复合控件，统一 roving `tabindex`、方向键、Home / End、disabled item 跳过和循环策略。 |
 | Overlay / Layer 基座 | 中 / 后置 | 等 Dialog / Drawer 启动前设计，负责全局层级、遮罩、滚动锁、Esc、focus trap 和 `aria-modal`；不要与锚点定位的 Popper 混为一谈。 |
 | FormControl context | 中 | 随 Form / FormItem 自然沉淀内部 context，统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby`、label/help/error 关联；公开 API 以 Form 体系为主。 |
@@ -99,5 +100,5 @@
 - 不能擅自删除不确定用途的文件；先记录到 `TODO.md` 并询问用户。
 - 依赖、工具链或 Node.js 升级以最终效果为准：确认升级收益后先问用户，用户确认后直接升级，不因内部适配成本保留旧方案。
 - 修改色彩 token 时，同步检查样式源文件和设计指南。
-- 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划；当前最短接入路径是确认 git clean、查看最新提交，随后优先进入 Dropdown / Menu 的接口、键盘模型和浮层结构设计。
+- 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划；当前最短接入路径是确认 git clean、查看最新提交，随后优先进入 Menu 的接口、键盘模型和内容结构设计。
 - Superpowers 是工作流辅助，不替代项目内 `base-component-review`、记忆文档和实际验证；复杂任务可结合其计划、执行、验收、分支收尾与子代理协作流程。

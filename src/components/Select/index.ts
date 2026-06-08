@@ -1,10 +1,5 @@
 export { default as Select } from './Select.vue'
-export type {
-  SelectOption,
-  SelectOptionGroup,
-  SelectOptionItem,
-  SelectPlacement,
-  SelectSize,
-  SelectStatus,
-  SelectValue,
-} from './types'
+export { default as SelectOption } from './SelectOption.vue'
+export { default as SelectOptionGroup } from './SelectOptionGroup.vue'
+export type { SelectPlacement, SelectSize, SelectStatus, SelectValue } from './types'
+export { selectContextKey, selectOptionGroupContextKey, useSelectContext } from './context'

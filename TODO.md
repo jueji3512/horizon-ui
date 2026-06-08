@@ -16,8 +16,8 @@
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。
 - [ ] 后续 VitePress 发布高于 `1.6.4` 的正式版本时，复查并升级以消除当前嵌套 Vite/esbuild 的 audit 项。
 - [ ] 评估并迁移包管理器：优先考虑 pnpm，备选继续 npm，不优先 Bun / Yarn；迁移时使用 Corepack 固定 pnpm 11，替换 `package-lock.json` 为 `pnpm-lock.yaml`，统一 scripts、`packageManager`、`engines` 和项目记忆文档，并验证 `pnpm install`、`pnpm run check`、audit 等价项和关键文档页面。
-- [ ] 按新的组件路线继续推进：Select 单选首版已落地，后续优先推进 Dropdown / Menu，再推进 Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、TreeSelect / Cascader / ColorPicker；TagInput 因独立使用场景较少，先后置到路线最后。
-- [ ] 评估并沉淀真正有收益的内部通用原型：Select 首版的 OptionList 先保持私有；后续等 Autocomplete、Dropdown / Menu 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Overlay / Layer 等到 Dialog / Drawer 前设计；FormControl context 随 Form / FormItem 自然沉淀；PopupSurface 暂缓，等 Select / Dropdown / Popconfirm 出现稳定重复后再抽。
+- [ ] 按新的组件路线继续推进：Select slot-first 首版与 Dropdown 菜单首版已落地，后续优先推进 Menu，再推进 Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、TreeSelect / Cascader / ColorPicker；TagInput 因独立使用场景较少，先后置到路线最后。
+- [ ] 评估并沉淀真正有收益的内部通用原型：Select / Dropdown 已各自用 slot 子组件 + 内部 collection 注册跑通首版；后续等 Autocomplete、Menu、Tabs 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Overlay / Layer 等到 Dialog / Drawer 前设计；FormControl context 随 Form / FormItem 自然沉淀；PopupSurface 暂缓，等 Select / Dropdown / Popconfirm 出现稳定重复后再抽。
 - [x] 2026-06-06 ScrollArea v1 已作为公开底层组件落地：结构固定为 `root > viewport > content`，viewport 是唯一真实滚动容器；支持原生滚动、隐藏原生滚动条、悬浮自定义 scrollbar、thumb 拖拽、auto / always / hidden 显隐、垂直 / 水平 / 双轴滚动、`maxHeight` / `maxWidth`、`focusable`、`ariaLabel` 和 `scroll` / `update` 事件。
 - [x] ScrollArea 已 expose `viewportRef`、`contentRef`、`scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState`，并提供内部 context；v1 不引入虚拟滚动依赖，但 viewport 接口可服务未来 `@tanstack/vue-virtual` 等 virtualizer。
 - [x] Select 面板已迁移到 `ScrollArea :max-height="240"`，active option 保持可见改为通过 ScrollArea `scrollToElement(..., { block: 'nearest' })` 完成，不再直接调用浏览器 `scrollIntoView()`。
@@ -25,7 +25,8 @@
 - [x] 2026-06-05 已全局安装 `better-auth/better-icons@better-icons`、`mattpocock/skills@grill-me`、`mattpocock/skills@design-an-interface`、`addyosmani/agent-skills@documentation-and-adrs`；重启 Codex 后可用于统一 SVG 图标检索、重要设计压力测试、模块接口多方案比较和 ADR / 决策记录。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。
 - [x] 2026-06-05 已完成 Icon SVG 图标体系首轮重整：当前 48 个本地图标已按 Lucide outline 风格同名替换，并统一 `viewBox="0 0 24 24"`、`currentColor`、`stroke-width="2"`、round linecap / linejoin 和无固定 `width` / `height` 的源文件规范；已补 `npm run check:icons` 并纳入 `npm run check`。
 - [x] 2026-06-06 已补充 48 个企业组件库常用本地图标，当前内置图标总数为 96；新增图标覆盖导航、数据、表单、反馈、权限、文件、操作和系统场景，并加入 `check:icons` 必备列表。
-- [x] 2026-06-06 Select 单选首版已落地：只支持 `options` prop，复用 Field / Popper，支持普通 option 与 `children` / `title` 一层分组混排、clearable、loading、empty、disabled option、readonly、尺寸、状态、隐藏 input、键盘导航和 combobox/listbox ARIA；内部 `SelectOptionList` 暂不公开。
+- [x] 2026-06-08 Select 已改为 slot-first 单选首版：使用 `SelectOption` / `SelectOptionGroup` 子组件，不再暴露首版数据 prop；复用 Field / Popper / ScrollArea，保留 clearable、loading、empty、disabled option、readonly、尺寸、状态、隐藏 input、键盘导航和 combobox/listbox ARIA。
+- [x] 2026-06-08 Dropdown 已改为菜单语义首版：使用 `DropdownItem` / `DropdownGroup` / `DropdownDivider` 子组件，支持 trigger slot、Popper 定位 / 显隐、菜单 surface、方向键、`select` 事件、`match-width` 和可选 `maxHeight` ScrollArea；outside click / Esc 是否关闭由 `close-on-outside-click` / `close-on-esc` 独立控制，不和 `trigger` 或 `v-model:visible` 混用。
 - [ ] 在 Figma `Horizon Icons Audit` 页面继续人工复核新版图标的视觉中心和真实容器表现；如发现单个图标仍不理想，再按同名文件局部替换或微调 SVG。
 - [ ] 后续设计稿、组件视觉方案和图标审阅优先落到用户提供的 Figma `Horizon UI` 文件。当前 Figma Starter 计划最多 3 页，推荐整理为 `00 Workspace`、`01 Icon Library`、`02 Component Drafts`；2026-06-05 继续补常用图标时因 MCP 工具调用额度被拦，额度恢复后再重跑。
 - [x] 2026-06-05 收尾时遗留的记忆文档改动已在 `4517523 docs(project): 更新未来计划与技能记忆` 中提交。
@@ -36,13 +37,13 @@
 ## 隐藏问题
 
 - [ ] Field 一旦公开，API 需要谨慎收敛：首版只暴露结构、状态和样式基座，不承载 Select/DatePicker 等业务行为；多选 Select 的 Tag wrap / searchable / maxTagCount 是后续关键压力测试。
-- [x] Select group public option 数据结构已确定并落地：只要有 `children` 字段就视为分组，分组标题使用 `title`，普通选项继续使用 `label` / `value`；首版只支持一层 group，不新增 slot 版 `<SelectOptionGroup>`。
+- [x] Select 分组首版已改为 `<SelectOptionGroup title="...">` slot 子组件；旧 `children` 数据结构仅作为历史记录，不再是当前首版公开契约。
 - [ ] 组件级固有尺寸首轮已统一为组件内部 geometry map / 常量策略；后续扫描新组件时避免把强耦合结构尺寸误沉淀为通用 token。
 - [ ] Checkbox / Radio 的 button variant 未来可迁移或抽象到 Toggle / ToggleGroup；迁移前需确认是否保持多选/单选语义差异，避免只为了视觉复用而损失表单语义。
 - [ ] Radio button variant 当前方向键可用，但尚未做 roving `tabindex`；若继续提升 radiogroup 键盘模型，应与 Toggle / ToggleGroup 方向一起设计。
 - [ ] 内部通用原型必须有明确跨组件收益才沉淀：OptionList / Collection 和 RovingFocus / Composite 可优先作为内部 composable / primitives 验证，不急于公开；Overlay / Layer 在 Dialog / Drawer 真实启动前不空转；PopupSurface 不为了统一边框、背景、圆角和阴影而提前抽成万能盒子。
 - [ ] ScrollArea v1 暂不做虚拟滚动和轨道点击分页；未来 Table、Tree、Virtualized Select 或大型 Dropdown 出现真实需求时，优先评估 `@tanstack/vue-virtual`，因为它以 HTML scroll element 为核心接入点，和 ScrollArea 暴露的 viewport 契约匹配。
-- [ ] Popper 未来可按上层组件需要继续扩展边界能力，例如嵌套弹出层协调、boundary 自定义、crossAxis offset 或 fallback placement；当前 Select/Dropdown 前置的响应式配置、disabled 自动关闭、matchWidth trigger resize 和 base-component review 已完成。
+- [ ] Popper 未来可按上层组件需要继续扩展边界能力，例如嵌套弹出层协调、boundary 自定义、crossAxis offset 或 fallback placement；当前 Select/Dropdown 前置的响应式配置、disabled 自动关闭、matchWidth trigger resize、可配置 outside click / Esc 关闭和 base-component review 已完成。
 - [ ] 当前 in-app browser 控制通道对 hover 事件触发仍不稳定；Tooltip hover 与 Popper V-02 已检查源码事件链和视觉结构，后续如需稳定回归 hover，应优先补专门的浏览器测试环境或人工实测；Tooltip focus 与 Popper V-03 已在内置浏览器复验通过。
 - [ ] VitePress 文档站样式污染应统一在文档 shell / theme 层处理，不要写进组件源码。当前 demo 体系使用 `ComponentDemo` 的 `.vp-raw` 与 `postcssIsolateStyles` 隔离 VitePress `base.css` / `vp-doc.css`，不要为了文档表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖。
 - [x] Icon 首轮重整已保留当前 `Icon` 组件 API：默认 `1em`、继承 `currentColor`、不恢复固定 `size` prop；本轮只替换 / 规范化 SVG 源文件、补校验脚本和增强图标网格预览。

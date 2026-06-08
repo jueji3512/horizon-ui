@@ -6,18 +6,20 @@ export type { Placement, TriggerType } from './types'
 export type { UsePopperOptions, UsePopperReturn } from './types'
 
 export interface PopperContext {
-  visible: Ref<boolean>
+  visible: ComputedRef<boolean>
   show: () => void
-  hide: () => void
+  hide: (options?: { immediate?: boolean }) => void
   toggle: () => void
   trigger: ComputedRef<TriggerType>
   disabled: ComputedRef<boolean>
+  closeOnOutsideClick: ComputedRef<boolean>
+  closeOnEsc: ComputedRef<boolean>
   triggerRef: Ref<HTMLElement | undefined>
   contentRef: Ref<HTMLElement | undefined>
   arrowRef: Ref<HTMLElement | undefined>
-  floatingStyles: ComputedRef<CSSProperties>
-  middlewareData: Ref<MiddlewareData>
-  currentPlacement: Ref<Placement>
+  floatingStyles: Readonly<Ref<CSSProperties>>
+  middlewareData: Readonly<Ref<MiddlewareData>>
+  currentPlacement: Readonly<Ref<Placement>>
   to: ComputedRef<string | HTMLElement>
   updatePosition: () => void
   zIndex: ComputedRef<number>

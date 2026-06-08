@@ -73,40 +73,54 @@
     </PopperTrigger>
 
     <PopperContent :class="panelClasses">
-      <ScrollArea :max-height="240">
-        <SelectOptionList
-          :items="optionListItems"
-          :selected-value="modelValue"
-          :active-index="activeIndex"
-          :active-scroll-key="activeScrollKey"
-          :size="size"
-          :loading="loading"
-          :empty-text="emptyText"
-          :listbox-id="listboxId"
-          :option-id-prefix="optionIdPrefix"
-          @active="setActiveIndex"
-          @select="handleOptionSelect"
-        />
+      <ScrollArea ref="scrollAreaRef" :max-height="240">
+        <div :id="listboxId" role="listbox" :aria-busy="loading || undefined" :class="listClasses">
+          <div v-if="loading" role="status" :class="messageClasses">
+            <Icon name="loading" class="select-loading" />
+            <span>加载中</span>
+          </div>
+
+          <template v-else>
+            <slot />
+            <div v-if="!hasOptions" :class="messageClasses">
+              {{ emptyText }}
+            </div>
+          </template>
+        </div>
       </ScrollArea>
     </PopperContent>
   </Popper>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, useAttrs, useId, watch } from 'vue'
+import {
+  Comment,
+  Fragment,
+  Text as TextNode,
+  computed,
+  nextTick,
+  provide,
+  ref,
+  useAttrs,
+  useId,
+  useSlots,
+  watch,
+  type VNode,
+} from 'vue'
 import FieldAction from '../Field/FieldAction.vue'
 import FieldContent from '../Field/FieldContent.vue'
 import FieldRoot from '../Field/FieldRoot.vue'
 import FieldSuffix from '../Field/FieldSuffix.vue'
 import Icon from '../Icon/Icon.vue'
 import { Popper, PopperContent, PopperTrigger } from '../Popper'
-import { ScrollArea } from '../ScrollArea'
+import { ScrollArea, type ScrollAreaExpose } from '../ScrollArea'
 import { cn } from '../../utils'
-import SelectOptionList from './SelectOptionList.vue'
+import SelectOption from './SelectOption.vue'
+import SelectOptionGroup from './SelectOptionGroup.vue'
+import { selectContextKey } from './context'
 import type {
-  SelectOption,
-  SelectOptionGroup,
-  SelectOptionItem,
+  SelectOptionRegistration,
+  SelectParsedOption,
   SelectPlacement,
   SelectSize,
   SelectStatus,
@@ -118,7 +132,6 @@ defineOptions({ inheritAttrs: false })
 const props = withDefaults(
   defineProps<{
     modelValue?: SelectValue | null
-    options?: SelectOption[]
     placeholder?: string
     size?: SelectSize
     status?: SelectStatus
@@ -134,7 +147,6 @@ const props = withDefaults(
   }>(),
   {
     modelValue: null,
-    options: () => [],
     placeholder: '请选择',
     size: 'md',
     status: undefined,
@@ -159,32 +171,17 @@ const emit = defineEmits<{
   'visible-change': [value: boolean]
 }>()
 
-interface SelectOptionListOptionItem {
-  type: 'option'
-  key: string
-  option: SelectOptionItem
-  optionIndex: number
-  disabled: boolean
-}
-
-interface SelectOptionListGroupItem {
-  type: 'group'
-  key: string
-  title: string
-  disabled: boolean
-  children: SelectOptionListOptionItem[]
-}
-
-type SelectOptionListItem = SelectOptionListOptionItem | SelectOptionListGroupItem
-
 const attrs = useAttrs()
+const slots = useSlots()
 const selectId = useId()
 const wrapperRef = ref<HTMLElement | null>(null)
+const scrollAreaRef = ref<ScrollAreaExpose | null>(null)
 const isOpen = ref(false)
 const isFocused = ref(false)
 const isHovered = ref(false)
-const activeIndex = ref(-1)
+const activeValue = ref<SelectValue | null>(null)
 const activeScrollKey = ref(0)
+const registeredOptions = ref<Map<string, SelectOptionRegistration>>(new Map())
 
 const rootAttrs = computed(() => {
   const { class: className, style } = attrs
@@ -196,65 +193,116 @@ const controlAttrs = computed(() => {
   return controlOnlyAttrs
 })
 
-function isSelectOptionGroup(option: SelectOption): option is SelectOptionGroup {
-  return 'children' in option
+function getOptionKey(value: SelectValue) {
+  return `${typeof value}:${String(value)}`
 }
 
-const optionListItems = computed<SelectOptionListItem[]>(() => {
-  const items: SelectOptionListItem[] = []
-  let optionIndex = 0
+function getOptionIdSafeKey(value: SelectValue) {
+  return getOptionKey(value).replace(/[^A-Za-z0-9_-]/g, '-')
+}
 
-  props.options.forEach((option, index) => {
-    if (isSelectOptionGroup(option)) {
-      if (option.children.length === 0) return
+function isSelectOptionNode(node: VNode) {
+  return node.type === SelectOption || getComponentName(node) === 'SelectOption'
+}
 
-      const groupDisabled = Boolean(option.disabled)
-      const children = option.children.map((child, childIndex) => {
-        const item: SelectOptionListOptionItem = {
-          type: 'option',
-          key: `group-${index}-option-${childIndex}-${String(child.value)}`,
-          option: child,
-          optionIndex,
-          disabled: groupDisabled || Boolean(child.disabled),
-        }
-        optionIndex += 1
-        return item
-      })
+function isSelectOptionGroupNode(node: VNode) {
+  return node.type === SelectOptionGroup || getComponentName(node) === 'SelectOptionGroup'
+}
 
-      items.push({
-        type: 'group',
-        key: `group-${index}-${option.title}`,
-        title: option.title,
-        disabled: groupDisabled,
-        children,
-      })
+function getComponentName(node: VNode) {
+  if (typeof node.type !== 'object' || node.type === null) return ''
+  return (
+    (node.type as { name?: string; __name?: string }).name ??
+    (node.type as { __name?: string }).__name
+  )
+}
+
+function getBooleanProp(value: unknown) {
+  return value === '' || value === true
+}
+
+function getNodeChildren(node: VNode): VNode[] {
+  if (Array.isArray(node.children)) return node.children as VNode[]
+
+  if (
+    typeof node.children === 'object' &&
+    node.children !== null &&
+    'default' in node.children &&
+    typeof node.children.default === 'function'
+  ) {
+    return node.children.default()
+  }
+
+  return []
+}
+
+function getSlotText(nodes: VNode[] | undefined): string {
+  if (!nodes) return ''
+
+  return nodes
+    .map((node) => {
+      if (node.type === Comment) return ''
+      if (node.type === TextNode && typeof node.children === 'string') return node.children
+      if (node.type === Fragment) return getSlotText(getNodeChildren(node))
+      if (typeof node.children === 'string') return node.children
+      if (Array.isArray(node.children)) return getSlotText(node.children as VNode[])
+      return ''
+    })
+    .join('')
+    .trim()
+}
+
+function collectOptions(
+  nodes: VNode[] | undefined,
+  options: SelectParsedOption[] = [],
+  inheritedDisabled = false,
+) {
+  if (!nodes) return options
+
+  nodes.forEach((node) => {
+    if (node.type === Comment) return
+
+    if (node.type === Fragment) {
+      collectOptions(getNodeChildren(node), options, inheritedDisabled)
       return
     }
 
-    items.push({
-      type: 'option',
-      key: `option-${index}-${String(option.value)}`,
-      option,
-      optionIndex,
-      disabled: Boolean(option.disabled),
+    if (isSelectOptionGroupNode(node)) {
+      const groupDisabled = inheritedDisabled || getBooleanProp(node.props?.disabled)
+      collectOptions(getNodeChildren(node), options, groupDisabled)
+      return
+    }
+
+    if (!isSelectOptionNode(node)) return
+
+    const value = node.props?.value as SelectValue | undefined
+    if (value === undefined || value === null) return
+
+    const label = String(node.props?.label ?? getSlotText(getNodeChildren(node)) ?? value)
+    const disabled = inheritedDisabled || getBooleanProp(node.props?.disabled)
+    const key = getOptionKey(value)
+
+    options.push({
+      key,
+      value,
+      label,
+      disabled,
     })
-    optionIndex += 1
   })
 
-  return items
-})
+  return options
+}
 
-const selectableOptions = computed<SelectOptionListOptionItem[]>(() =>
-  optionListItems.value.flatMap((item) => (item.type === 'group' ? item.children : [item])),
-)
+const optionListItems = computed(() => collectOptions(slots.default?.()))
+const hasOptions = computed(() => optionListItems.value.length > 0)
 
 const selectedOption = computed(
-  () => selectableOptions.value.find((item) => item.option.value === props.modelValue)?.option,
+  () => optionListItems.value.find((item) => item.value === props.modelValue) ?? null,
 )
 
 const selectableOptionState = computed(() =>
-  selectableOptions.value
-    .map(({ option, disabled }) => `${String(option.value)}:${disabled ? '1' : '0'}`)
+  optionListItems.value
+    .map(({ value, disabled }) => `${String(value)}:${disabled ? '1' : '0'}`)
     .join('|'),
 )
 
@@ -265,9 +313,12 @@ const showClear = computed(
 )
 const listboxId = computed(() => `${selectId}-listbox`)
 const optionIdPrefix = computed(() => `${selectId}-option`)
+const activeOption = computed(
+  () => optionListItems.value.find((item) => item.value === activeValue.value) ?? null,
+)
 const activeOptionId = computed(() => {
-  if (!isOpen.value || activeIndex.value < 0 || props.loading) return undefined
-  return `${optionIdPrefix.value}-${activeIndex.value}`
+  if (!isOpen.value || !activeOption.value || props.loading) return undefined
+  return getOptionId(activeOption.value.value)
 })
 
 const resolvedAriaLabel = computed(() => {
@@ -277,6 +328,45 @@ const resolvedAriaLabel = computed(() => {
 })
 
 const hiddenValue = computed(() => (props.modelValue === null ? '' : String(props.modelValue)))
+
+provide(selectContextKey, {
+  selectedValue: computed(() => props.modelValue ?? null),
+  activeValue,
+  size: computed(() => props.size),
+  registerOption,
+  unregisterOption,
+  setActiveValue,
+  selectOption,
+  getOptionId,
+  isOptionSelected,
+  isOptionActive,
+})
+
+function registerOption(option: SelectOptionRegistration) {
+  const key = getOptionKey(option.value)
+  const next = new Map(registeredOptions.value)
+  next.set(key, option)
+  registeredOptions.value = next
+}
+
+function unregisterOption(value: SelectValue) {
+  const key = getOptionKey(value)
+  const next = new Map(registeredOptions.value)
+  next.delete(key)
+  registeredOptions.value = next
+}
+
+function getOptionId(value: SelectValue) {
+  return `${optionIdPrefix.value}-${getOptionIdSafeKey(value)}`
+}
+
+function isOptionSelected(value: SelectValue) {
+  return props.modelValue !== null && value === props.modelValue
+}
+
+function isOptionActive(value: SelectValue) {
+  return activeValue.value !== null && value === activeValue.value
+}
 
 function focusTrigger() {
   const trigger = wrapperRef.value?.querySelector<HTMLElement>('[role="combobox"]')
@@ -336,8 +426,9 @@ function handleClear() {
   nextTick(focusTrigger)
 }
 
-function handleOptionSelect(option: SelectOptionItem) {
-  if (option.disabled) return
+function selectOption(value: SelectValue) {
+  const option = optionListItems.value.find((item) => item.value === value)
+  if (!option || option.disabled) return
 
   if (option.value !== props.modelValue) {
     emit('update:modelValue', option.value)
@@ -348,69 +439,73 @@ function handleOptionSelect(option: SelectOptionItem) {
   nextTick(focusTrigger)
 }
 
-function setActiveIndex(index: number) {
-  activeIndex.value = index
+function setActiveValue(value: SelectValue) {
+  activeValue.value = value
 }
 
-function getFirstEnabledIndex() {
-  return selectableOptions.value.findIndex((option) => !option.disabled)
+function getEnabledOptions() {
+  return optionListItems.value.filter((option) => !option.disabled)
 }
 
-function getLastEnabledIndex() {
-  const options = selectableOptions.value
-
-  for (let index = options.length - 1; index >= 0; index -= 1) {
-    if (!options[index]?.disabled) return index
-  }
-  return -1
+function getFirstEnabledOption() {
+  return getEnabledOptions()[0] ?? null
 }
 
-function getNextEnabledIndex(currentIndex: number, direction: 1 | -1) {
-  const options = selectableOptions.value
-
-  if (options.length === 0) return -1
-
-  let index = currentIndex
-  for (let attempt = 0; attempt < options.length; attempt += 1) {
-    index += direction
-    if (index < 0) index = options.length - 1
-    if (index >= options.length) index = 0
-    if (!options[index]?.disabled) return index
-  }
-
-  return -1
+function getLastEnabledOption() {
+  const options = getEnabledOptions()
+  return options[options.length - 1] ?? null
 }
 
-function getSelectedIndex() {
-  return selectableOptions.value.findIndex((option) => option.option.value === props.modelValue)
+function getSelectedOption() {
+  const option = optionListItems.value.find((item) => item.value === props.modelValue)
+  return option && !option.disabled ? option : null
+}
+
+function getNextEnabledOption(direction: 1 | -1) {
+  const options = getEnabledOptions()
+  if (options.length === 0) return null
+
+  const currentIndex = options.findIndex((option) => option.value === activeValue.value)
+  const nextIndex =
+    currentIndex < 0
+      ? direction === 1
+        ? 0
+        : options.length - 1
+      : (currentIndex + direction + options.length) % options.length
+
+  return options[nextIndex] ?? null
 }
 
 function syncActiveOption(options: { scroll?: boolean } = {}) {
   if (props.loading) {
-    activeIndex.value = -1
+    activeValue.value = null
     return
   }
 
-  const selectedIndex = getSelectedIndex()
-  if (selectedIndex >= 0 && !selectableOptions.value[selectedIndex]?.disabled) {
-    activeIndex.value = selectedIndex
-    if (options.scroll) activeScrollKey.value += 1
-    return
-  }
-
-  activeIndex.value = getFirstEnabledIndex()
+  activeValue.value = getSelectedOption()?.value ?? getFirstEnabledOption()?.value ?? null
   if (options.scroll) activeScrollKey.value += 1
 }
 
 function moveActiveOption(direction: 1 | -1) {
-  activeIndex.value = getNextEnabledIndex(activeIndex.value, direction)
+  activeValue.value = getNextEnabledOption(direction)?.value ?? null
   activeScrollKey.value += 1
 }
 
+function scrollActiveOption() {
+  const option = activeOption.value
+  if (!option) return
+
+  nextTick(() => {
+    const element = registeredOptions.value.get(option.key)?.element
+    if (!element) return
+    scrollAreaRef.value?.scrollToElement(element, { block: 'nearest' })
+  })
+}
+
 function selectActiveOption() {
-  const option = selectableOptions.value[activeIndex.value]
+  const option = activeOption.value
   if (!option || option.disabled) return
-  handleOptionSelect(option.option)
+  selectOption(option.value)
 }
 
 function handleKeydown(e: KeyboardEvent) {
@@ -451,7 +546,7 @@ function handleKeydown(e: KeyboardEvent) {
   if (e.key === 'Home') {
     if (!isOpen.value) return
     e.preventDefault()
-    activeIndex.value = getFirstEnabledIndex()
+    activeValue.value = getFirstEnabledOption()?.value ?? null
     activeScrollKey.value += 1
     return
   }
@@ -459,7 +554,7 @@ function handleKeydown(e: KeyboardEvent) {
   if (e.key === 'End') {
     if (!isOpen.value) return
     e.preventDefault()
-    activeIndex.value = getLastEnabledIndex()
+    activeValue.value = getLastEnabledOption()?.value ?? null
     activeScrollKey.value += 1
     return
   }
@@ -494,6 +589,13 @@ watch(
   () => selectableOptionState.value,
   () => {
     if (isOpen.value) syncActiveOption({ scroll: true })
+  },
+)
+
+watch(
+  () => activeScrollKey.value,
+  () => {
+    scrollActiveOption()
   },
 )
 
@@ -544,6 +646,21 @@ const panelClasses = computed(() =>
   cn(
     'overflow-hidden rounded-[var(--round-default)] bg-[var(--bg-color-container)] text-[var(--text-color-primary)] shadow-popper outline-none',
     panelSizeMap[props.size],
+  ),
+)
+
+const listClasses = computed(() => cn('py-1'))
+
+const messageSizeMap: Record<SelectSize, string> = {
+  sm: 'font-body-sm min-h-7 px-2 py-1',
+  md: 'font-body-md min-h-8 px-3 py-1.5',
+  lg: 'font-body-lg min-h-9 px-3 py-2',
+}
+
+const messageClasses = computed(() =>
+  cn(
+    'flex items-center gap-2 text-[var(--text-color-secondary)] select-none',
+    messageSizeMap[props.size],
   ),
 )
 </script>

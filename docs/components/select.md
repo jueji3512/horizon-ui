@@ -1,6 +1,6 @@
 # Select 选择器
 
-用于从固定选项列表中选择一个值。首版只支持单选和 `options` 数据源。
+用于从固定候选项中选择一个值。首版采用 slot 子组件驱动，通过 `SelectOption` 与 `SelectOptionGroup` 声明选项；数据源便捷写法后续再单独评估。
 
 ## 基本用法
 
@@ -12,7 +12,7 @@ select/example-01
 
 ## 尺寸 Size
 
-`sm` / `md` (默认) / `lg` 三档。
+`sm` / `md`（默认）/ `lg` 三档。
 
 :::demo 尺寸 Size
 select/example-02
@@ -20,7 +20,7 @@ select/example-02
 
 ## 可清空
 
-设置 `clearable`，有值时显示清空按钮，清空后值为 `null`。
+设置 `clearable`，有值时悬停选择器显示清空按钮，清空后值为 `null`。
 
 :::demo 可清空
 select/example-03
@@ -52,7 +52,7 @@ select/example-06
 
 ## 分组选项
 
-带 `children` 的项目会被视为分组，`title` 渲染为分组标题；分组自身不可选中，设置 `disabled` 会禁用组内所有选项。
+`SelectOptionGroup` 渲染分组标题，分组自身不可选；设置 `disabled` 会禁用组内所有选项。
 
 :::demo 分组选项
 select/example-08
@@ -60,7 +60,7 @@ select/example-08
 
 ## 加载与空状态
 
-`loading` 展示加载状态；选项为空时展示 `empty-text`。
+`loading` 展示加载状态；没有可用 `SelectOption` 时展示 `empty-text`。
 
 :::demo 加载与空状态
 select/example-07
@@ -71,10 +71,9 @@ select/example-07
 | Prop | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `model-value` | `string \| number \| null` | `null` | v-model 绑定值 |
-| `options` | `SelectOption[]` | `[]` | 选项列表，支持普通项与一层分组混排 |
 | `placeholder` | `string` | `'请选择'` | 占位文本 |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
-| `status` | `'error' \| 'warning' \| 'success'` | — | 校验状态 |
+| `status` | `'error' \| 'warning' \| 'success'` | - | 校验状态 |
 | `disabled` | `boolean` | `false` | 禁用 |
 | `readonly` | `boolean` | `false` | 只读 |
 | `clearable` | `boolean` | `false` | 可清空 |
@@ -87,26 +86,18 @@ select/example-07
 
 ## SelectOption
 
-```ts
-type SelectValue = string | number
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `value` | `string \| number` | - | 选项值，需唯一 |
+| `label` | `string` | - | 触发器展示与无障碍文本；不传时从默认插槽文本提取 |
+| `disabled` | `boolean` | `false` | 禁用选项 |
 
-type SelectOption = SelectOptionItem | SelectOptionGroup
+## SelectOptionGroup
 
-interface SelectOptionItem {
-  label: string
-  value: SelectValue
-  disabled?: boolean
-  children?: never
-}
-
-interface SelectOptionGroup {
-  title: string
-  disabled?: boolean
-  children: SelectOptionItem[]
-  value?: never
-  label?: never
-}
-```
+| Prop | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `title` | `string` | - | 分组标题 |
+| `disabled` | `boolean` | `false` | 禁用组内所有选项 |
 
 ## Events
 
@@ -116,5 +107,5 @@ interface SelectOptionGroup {
 | `change` | `string \| number \| null` | 值变化时触发 |
 | `focus` | `FocusEvent` | 聚焦 |
 | `blur` | `FocusEvent` | 失焦 |
-| `clear` | — | 点击清空按钮时触发 |
+| `clear` | - | 点击清空按钮时触发 |
 | `visible-change` | `boolean` | 展开状态变化 |

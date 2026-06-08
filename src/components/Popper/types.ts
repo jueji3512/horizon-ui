@@ -1,4 +1,4 @@
-import type { Ref, ComputedRef, CSSProperties, MaybeRefOrGetter } from 'vue'
+import type { Ref, CSSProperties, MaybeRefOrGetter } from 'vue'
 import type { MiddlewareData } from '@floating-ui/vue'
 
 export type Placement =
@@ -18,7 +18,7 @@ export type Placement =
 export type TriggerType = 'hover' | 'click' | 'focus' | 'manual'
 
 export interface UsePopperOptions {
-  placement: Ref<Placement>
+  placement: MaybeRefOrGetter<Placement>
   strategy?: MaybeRefOrGetter<'absolute' | 'fixed'>
   offset?: MaybeRefOrGetter<number>
   flip?: MaybeRefOrGetter<boolean>
@@ -29,8 +29,8 @@ export interface UsePopperOptions {
 }
 
 export interface UsePopperReturn {
-  floatingStyles: ComputedRef<CSSProperties>
-  middlewareData: Ref<MiddlewareData>
-  placement: Ref<Placement>
+  floatingStyles: Readonly<Ref<CSSProperties>>
+  middlewareData: Readonly<Ref<MiddlewareData>>
+  placement: Readonly<Ref<Placement>>
   update: () => void
 }

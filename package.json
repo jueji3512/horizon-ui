@@ -19,7 +19,10 @@
     "lint:style": "stylelint \"src/**/*.{css,vue}\" \"docs/.vitepress/theme/**/*.vue\"",
     "check:icons": "node scripts/check-icons.mjs",
     "check:scroll-area": "node scripts/check-scroll-area.mjs",
-    "check": "npm run format:check && npm run check:icons && npm run check:scroll-area && npm run lint && npm run typecheck && npm run build",
+    "check:popper": "node scripts/check-popper.mjs",
+    "check:select": "node scripts/check-select.mjs",
+    "check:dropdown": "node scripts/check-dropdown.mjs",
+    "check": "npm run format:check && npm run check:icons && npm run check:scroll-area && npm run check:popper && npm run check:select && npm run check:dropdown && npm run lint && npm run typecheck && npm run build",
     "format": "prettier . --write",
     "format:check": "prettier . --check"
   },

@@ -26,10 +26,11 @@ const props = withDefaults(
   },
 )
 
-const ctx = inject(popperContextKey)!
-if (!ctx) {
+const injectedCtx = inject(popperContextKey)
+if (!injectedCtx) {
   throw new Error('<PopperTrigger> must be used inside <Popper>')
 }
+const ctx = injectedCtx
 
 const emit = defineEmits<{
   mouseenter: [event: MouseEvent]
@@ -64,6 +65,7 @@ onBeforeUnmount(() => {
   el?.removeEventListener('focusin', onFocusIn)
   el?.removeEventListener('blur', onBlur, true)
   el?.removeEventListener('focusout', onFocusOut)
+  ctx.hide({ immediate: true })
   ctx.triggerRef.value = undefined
 })
 

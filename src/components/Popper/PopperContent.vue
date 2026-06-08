@@ -1,6 +1,12 @@
 <template>
-  <Teleport :to="teleportTarget">
-    <div v-if="isVisible" v-bind="$attrs" :id="ctx.contentId" ref="contentEl" :style="mergedStyles">
+  <Teleport :to="resolvedTeleportTarget">
+    <div
+      v-if="ctx.visible.value"
+      v-bind="$attrs"
+      :id="ctx.contentId"
+      ref="contentEl"
+      :style="mergedStyles"
+    >
       <slot />
     </div>
   </Teleport>
@@ -12,14 +18,30 @@ import { popperContextKey } from './index'
 
 defineOptions({ inheritAttrs: false })
 
-const ctx = inject(popperContextKey)!
-if (!ctx) {
+const injectedCtx = inject(popperContextKey)
+if (!injectedCtx) {
   throw new Error('<PopperContent> must be used inside <Popper>')
 }
+const ctx = injectedCtx
 
 const contentEl = ref<HTMLElement>()
-const isVisible = computed(() => ctx.visible.value)
-const teleportTarget = computed(() => ctx.to.value)
+
+function resolveTeleportTarget(target: string | HTMLElement) {
+  if (typeof target !== 'string') return target
+  if (typeof document === 'undefined') return target
+
+  try {
+    return document.querySelector(target) ? target : 'body'
+  } catch {
+    return 'body'
+  }
+}
+
+const resolvedTeleportTarget = computed(() => {
+  return resolveTeleportTarget(ctx.to.value)
+})
+let isMouseDownListening = false
+let isEscListening = false
 
 const mergedStyles = computed<CSSProperties>(() => {
   const s: CSSProperties = { ...ctx.floatingStyles.value }
@@ -31,6 +53,8 @@ const mergedStyles = computed<CSSProperties>(() => {
 })
 
 function onMouseDown(e: MouseEvent) {
+  if (!ctx.closeOnOutsideClick.value) return
+
   if (
     !(e.target instanceof Node) ||
     ctx.triggerRef.value?.contains(e.target) ||
@@ -41,34 +65,54 @@ function onMouseDown(e: MouseEvent) {
 }
 
 function onEsc(e: KeyboardEvent) {
+  if (!ctx.closeOnEsc.value) return
   if (e.key === 'Escape') ctx.hide()
 }
 
-watch(
-  () => ctx.visible.value,
-  (val, oldVal) => {
-    if (val) {
+function syncDocumentListeners(visible: boolean) {
+  if (typeof document === 'undefined') return
+
+  if (visible && ctx.closeOnOutsideClick.value) {
+    if (!isMouseDownListening) {
       document.addEventListener('mousedown', onMouseDown, true)
+      isMouseDownListening = true
+    }
+  } else if (isMouseDownListening) {
+    document.removeEventListener('mousedown', onMouseDown, true)
+    isMouseDownListening = false
+  }
+
+  if (visible && ctx.closeOnEsc.value) {
+    if (!isEscListening) {
       document.addEventListener('keydown', onEsc)
+      isEscListening = true
+    }
+  } else if (isEscListening) {
+    document.removeEventListener('keydown', onEsc)
+    isEscListening = false
+  }
+}
+
+watch(
+  () => [ctx.visible.value, ctx.closeOnOutsideClick.value, ctx.closeOnEsc.value] as const,
+  ([val]) => {
+    syncDocumentListeners(val)
+
+    if (val) {
       nextTick(() => {
         if (contentEl.value) {
           ctx.contentRef.value = contentEl.value
         }
       })
     } else {
-      if (oldVal !== undefined) {
-        document.removeEventListener('mousedown', onMouseDown, true)
-        document.removeEventListener('keydown', onEsc)
-        ctx.contentRef.value = undefined
-      }
+      ctx.contentRef.value = undefined
     }
   },
   { immediate: true },
 )
 
 onBeforeUnmount(() => {
-  document.removeEventListener('mousedown', onMouseDown, true)
-  document.removeEventListener('keydown', onEsc)
+  syncDocumentListeners(false)
   ctx.contentRef.value = undefined
 })
 </script>

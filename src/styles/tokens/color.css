@@ -53,15 +53,15 @@
   --bg-color-component: oklch(0.92 0 0); /* neutral-200 */
   --bg-color-component-hover: oklch(0.87 0 0); /* neutral-300 */
   --bg-color-component-active: oklch(0.704 0 0); /* neutral-500 */
-  --bg-color-component-disabled: oklch(0.92 0 0); /* neutral-200 */
+  --bg-color-component-disabled: oklch(0.964 0 0); /* neutral-100 */
   --bg-color-secondarycomponent: oklch(0.87 0 0); /* neutral-300 */
   --bg-color-secondarycomponent-hover: oklch(0.787 0 0); /* neutral-400 */
   --bg-color-secondarycomponent-active: oklch(0.704 0 0); /* neutral-500 */
-  --bg-color-secondarycomponent-disabled: oklch(0.92 0 0); /* neutral-200 */
+  --bg-color-secondarycomponent-disabled: oklch(0.964 0 0); /* neutral-100 */
   --bg-color-inner: oklch(1 0 0); /* white */
   --bg-color-inner-hover: oklch(0.964 0 0); /* neutral-100 */
   --bg-color-inner-active: oklch(0.92 0 0); /* neutral-200 */
-  --bg-color-inner-disabled: oklch(0.92 0 0); /* neutral-200 */
+  --bg-color-inner-disabled: oklch(0.964 0 0); /* neutral-100 */
 
   /* 边框色 */
   --border-color-component: oklch(0.87 0 0); /* neutral-300 */

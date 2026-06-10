@@ -1,22 +1,24 @@
 <template>
   <label :class="switchClasses">
     <input
+      v-bind="controlAttrs"
       type="checkbox"
       role="switch"
       class="peer sr-only"
       :checked="modelValue"
-      :disabled="disabled || loading"
+      :disabled="isDisabled"
       :name="name"
       :aria-label="ariaLabel || undefined"
       :aria-checked="modelValue"
       @change="handleToggle"
+      @blur="notifyControlBlur"
     />
     <span :class="trackClasses">
       <span :class="thumbClasses">
         <Icon
           v-if="loading"
           name="loading"
-          :class="['animate-spin', switchGeometryMap[props.size].loadingIcon]"
+          :class="['animate-spin', switchGeometryMap[effectiveSize].loadingIcon]"
         />
       </span>
     </span>
@@ -26,6 +28,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Icon from '../Icon/Icon.vue'
+import { useFormControl } from '../Form'
 import { cn } from '../../utils'
 
 type SwitchSize = 'sm' | 'md' | 'lg'
@@ -54,11 +57,15 @@ const emit = defineEmits<{
   change: [value: boolean]
 }>()
 
+const { controlAttrs, effectiveSize, effectiveDisabled, notifyControlChange, notifyControlBlur } =
+  useFormControl(props)
+
 function handleToggle() {
-  if (props.disabled || props.loading) return
+  if (isDisabled.value) return
   const next = !props.modelValue
   emit('update:modelValue', next)
   emit('change', next)
+  notifyControlChange()
 }
 
 type SwitchGeometry = {
@@ -93,7 +100,7 @@ const switchGeometryMap: Record<SwitchSize, SwitchGeometry> = {
   },
 }
 
-const isDisabled = computed(() => props.disabled || props.loading)
+const isDisabled = computed(() => effectiveDisabled.value || props.loading)
 
 const switchClasses = computed(() =>
   cn(
@@ -105,7 +112,7 @@ const switchClasses = computed(() =>
 const trackClasses = computed(() =>
   cn(
     'relative flex items-center rounded-[var(--round-full)] transition-colors duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-brand-focus',
-    switchGeometryMap[props.size].track,
+    switchGeometryMap[effectiveSize.value].track,
     props.modelValue && !isDisabled.value && 'bg-brand',
     props.modelValue && isDisabled.value && 'bg-brand-disabled',
     !props.modelValue &&
@@ -118,10 +125,10 @@ const trackClasses = computed(() =>
 const thumbClasses = computed(() =>
   cn(
     'absolute flex items-center justify-center rounded-[var(--round-full)] bg-[var(--bg-color-container)] text-brand shadow-sm transition-transform duration-200',
-    switchGeometryMap[props.size].thumb,
-    switchGeometryMap[props.size].thumbPosition,
+    switchGeometryMap[effectiveSize.value].thumb,
+    switchGeometryMap[effectiveSize.value].thumbPosition,
     isDisabled.value && 'text-[var(--text-color-disabled)]',
-    props.modelValue ? switchGeometryMap[props.size].checkedTranslate : 'translate-x-0',
+    props.modelValue ? switchGeometryMap[effectiveSize.value].checkedTranslate : 'translate-x-0',
   ),
 )
 </script>

@@ -2,11 +2,13 @@
   <!-- default variant -->
   <label v-if="groupVariant === 'default'" :class="defaultClasses">
     <input
+      v-bind="nativeControlAttrs"
       type="checkbox"
       class="peer sr-only"
       :checked="isChecked"
       :disabled="computedDisabled"
       @change="handleToggle"
+      @blur="handleBlur"
     />
     <span class="checkbox-box" :class="boxClasses">
       <!-- indeterminate dash -->
@@ -44,12 +46,14 @@
   <button
     v-else
     type="button"
+    v-bind="nativeControlAttrs"
     role="checkbox"
     :aria-checked="isIndeterminate ? 'mixed' : isChecked"
     :disabled="computedDisabled"
     :data-selected="isChecked || undefined"
     :class="buttonClasses"
     @click="handleToggle"
+    @blur="handleBlur"
   >
     <Icon v-if="prefixIcon" :name="prefixIcon" />
     <slot>{{ label }}</slot>
@@ -59,6 +63,7 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
 import Icon from '../Icon/Icon.vue'
+import { useFormControl } from '../Form'
 import { cn } from '../../utils'
 import type { CheckboxGroupContext } from './CheckboxGroup.vue'
 import { checkboxGroupKey } from './CheckboxGroup.vue'
@@ -88,9 +93,12 @@ const emit = defineEmits<{
 }>()
 
 const group = inject<CheckboxGroupContext | null>(checkboxGroupKey, null)
+const { controlAttrs, effectiveDisabled, notifyControlChange, notifyControlBlur } =
+  useFormControl(props)
 
 const groupVariant = computed(() => group?.variant.value ?? 'default')
 const groupSize = computed(() => group?.size.value ?? 'md')
+const nativeControlAttrs = computed(() => (group ? {} : controlAttrs.value))
 
 const isChecked = computed(() => {
   if (group && props.value !== undefined) return group.modelValue.value.includes(props.value)
@@ -105,7 +113,11 @@ const limitDisabled = computed(() => {
 })
 
 const computedDisabled = computed(
-  () => props.disabled || (group?.disabled.value ?? false) || limitDisabled.value,
+  () =>
+    props.disabled ||
+    (group?.disabled.value ?? false) ||
+    (!group && effectiveDisabled.value) ||
+    limitDisabled.value,
 )
 
 const checkboxControlGeometryMap = {
@@ -127,7 +139,12 @@ function handleToggle() {
   } else {
     emit('update:checked', !props.checked)
     emit('change', !props.checked)
+    notifyControlChange()
   }
+}
+
+function handleBlur() {
+  if (!group) notifyControlBlur()
 }
 
 // ===== default variant classes =====

@@ -17,7 +17,7 @@
 | 8. Field 输入域体系 | 进行中 | Field 首版公开 primitives 已落地并迁移 Input / InputNumber / Select；后续继续用 Select 多选和 DatePicker range 验证边界。 |
 | 9. 运行时与依赖维护 | 持续 | 已升级到 Node 24 LTS / npm 11，并将直接依赖推进到当前最新可用版本；VitePress 内部 audit 项等待上游版本。 |
 | 10. 代理工作流增强 | 持续 | 已全局安装 `obra/superpowers` 14 个工作流 skills，并补装 `better-icons`、`grill-me`、`design-an-interface`、`documentation-and-adrs`；重启 Codex 后按收益用于计划、验收、图标检索、设计压力测试、接口设计和 ADR / 决策记录。 |
-| 11. 未来组件与内部原型路线 | 进行中 | Select、Popover、Menu 与 DropdownMenu 已按 slot-first / explicit composition 落地；旧泛型 Dropdown 已迁移为 DropdownMenu；下一步优先推进 Form / FormItem / Textarea，TagInput 因独立使用场景较少后置到路线最后；OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context 等仅在有明确跨组件收益时沉淀。 |
+| 11. 未来组件与内部原型路线 | 进行中 | Select、Popover、Menu、DropdownMenu 与 Form / FormItem 已按当前边界落地；旧泛型 Dropdown 已迁移为 DropdownMenu；Form / FormItem 本轮视觉与基础行为已收口；Textarea 本轮先不做、后续按真实需求再启动；下一步建议在 Popconfirm 与 Dialog / Drawer 之间选择，TagInput 因独立使用场景较少后置到路线最后；OptionList / Collection、RovingFocus / Composite、Overlay / Layer 等仅在有明确跨组件收益时沉淀。 |
 | 12. Icon SVG 图标体系重整 | 完成首轮 / 持续复核 | 48 个原有本地图标已按 Lucide outline 风格同名替换，并于 2026-06-06 补充 48 个常用图标；当前共 96 个 SVG，`check:icons` 同时校验结构和常用图标必备列表。 |
 | 13. Figma 设计工作区 | 待继续 | 用户确认后续设计稿建议都在 Horizon UI Figma 文件中实现；当前受 Starter 3 页上限与 MCP 调用额度限制，后续按 `00 Workspace` / `01 Icon Library` / `02 Component Drafts` 三页结构整理。 |
 | 14. ScrollArea 底层滚动基座 | 完成首版 / 持续验证 | ScrollArea v1 已公开落地并迁移 Select 面板；支持原生滚动、自定义悬浮 scrollbar、thumb 拖拽、双轴和 viewport expose；虚拟滚动依赖暂缓，接口为未来 virtualizer 预留。 |
@@ -42,6 +42,8 @@
 - Field 输入域基座已落地为公开 primitives，Input / InputNumber 已完成迁移；Field 支持外部 class 后置覆盖、FieldRoot focus-within ring、FieldSegment focus-within active 视觉。
 - InputNumber 复用 Field 后保留 24/32/40 规范尺寸，步进按钮已改为复用 Button 的 outline square 形态，并补齐聚焦状态下键盘/按钮步进后的展示值同步。
 - Select slot-first 单选首版已落地：使用 `SelectOption` / `SelectOptionGroup` 子组件，复用 Field 触发器和 Popper `manual` + `match-width` 定位，支持 clearable、loading、empty、disabled option、readonly、状态、尺寸、隐藏 input、键盘导航和 combobox/listbox ARIA；数据驱动便捷写法后续再议。
+- Form / FormItem 首版已落地：默认企业表单视觉为左侧 label、label 文案右对齐、`labelWidth=120`；help 通过 label 处问号 tip 展示，控件下方消息行只显示校验 / 状态文案并默认预留高度；轻量校验逻辑集中在 `src/components/Form/validator.ts`，并通过内部 FormControl context 接入 Input、InputNumber、Select、Checkbox、Radio 与 Switch。
+- Form / FormItem 本轮收口已完成：help tooltip arrow、control 与 label 垂直居中、24px 消息预留区、20px status icon 槽、并发校验即时提交、异步校验旧结果保护、单字段/多字段实例 API 拆分和 reset 递归 clone 均已落地。
 - Popover 已作为通用非模态浮层原语落地：公开状态统一为 `open` / `v-model:open`，支持 click / hover / focus / manual、delay、outside click、Esc、focus return、as-child trigger 与 nested layer；Popover surface 由上层通过 `PopoverContent` class 自定义。
 - Menu 已作为动作 / 命令菜单内容原语落地：提供 item、checkbox item、radio group / item、submenu、group、label、separator，不提供导航语义或 `selectedKeys`，active 仅表达当前聚焦 / 悬停行。
 - 旧泛型 Dropdown 已迁移为 DropdownMenu：`DropdownMenu = Popover + explicit Menu`，只作为菜单型 Popover 预设，不再保留 `DropdownItem` 系列；关闭语义统一为 `open` / `v-model:open` 与 Menu item 的 `close-on-select`。
@@ -79,15 +81,15 @@
 | Toggle / ToggleGroup 方向 | 中 | 用户建议未来将 CheckboxGroup / RadioGroup 当前 `variant="button"` 的分段切换形态单独抽成 Toggle / ToggleGroup；暂时只记录，不实现。 |
 | Select slot-first 改造 | 高 / 完成 | 已按用户确认方向把首版从数据 prop 改为 `SelectOption` / `SelectOptionGroup` 子组件；保留 edge-to-edge 选项行、浅 brand 选中背景、左侧 brand 条、无右侧 check 图标、clearable hover 切换和触发器默认占满父容器。 |
 | ScrollArea 底层滚动基座 | 高 / 完成首版 | 已公开组件并接入 Select；v1 不做虚拟滚动、不引入依赖，但保留 viewport expose 和 `scrollToElement`，后续 Table / Tree / Virtualized Select 出现真实需求时再优先评估 `@tanstack/vue-virtual`。 |
-| 未来组件开发路线 | 高 | Select slot-first、Popover、Menu 与 DropdownMenu 已完成；后续推荐顺序为 Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker，TagInput 后置到最后按真实需求启动。 |
+| 未来组件开发路线 | 高 | Select slot-first、Popover、Menu、DropdownMenu 与 Form / FormItem 首版已完成；Form / FormItem 本轮已完成视觉与基础行为收口；下一步建议在 Popconfirm 与 Dialog / Drawer 之间选择，然后再推进 Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；Textarea 本轮先不做，后续按真实需求再插入路线；TagInput 后置到最后按真实需求启动。 |
 | Icon SVG 图标体系重整 | 完成首轮 / 持续复核 | 当前 96 个本地图标均按 Lucide outline 风格维护；源文件统一 `viewBox`、`currentColor`、2px round stroke 和无固定宽高，并补图标网格预览、Figma 审计页与自动校验。 |
 | Figma 设计工作区 | 中 | 后续组件设计建议、图标候选和视觉草稿优先落到用户提供的 Horizon UI Figma 文件；由于 Starter 计划最多 3 页，保持 `00 Workspace`、`01 Icon Library`、`02 Component Drafts` 三页结构，不创建额外页面。 |
 | OptionList / Collection 内部原型 | 高 | Select / Menu 已各自用 slot 子组件 + 内部 collection 注册跑通 active item、disabled、group、键盘导航、滚动定位和 listbox/menu 语义；后续等 Autocomplete、Tabs、NavigationMenu 等真实重复出现后，再考虑抽内部 primitives / composable。 |
 | RovingFocus / Composite 内部工具 | 中 | 用于 Radio button variant、未来 ToggleGroup、Tabs、Menu、Toolbar 等复合控件，统一 roving `tabindex`、方向键、Home / End、disabled item 跳过和循环策略。 |
 | Overlay / Layer 基座 | 中 / 后置 | 等 Dialog / Drawer 启动前设计，负责全局层级、遮罩、滚动锁、Esc、focus trap 和 `aria-modal`；不要与锚点定位的 Popper 混为一谈。 |
-| FormControl context | 中 | 随 Form / FormItem 自然沉淀内部 context，统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby`、label/help/error 关联；公开 API 以 Form 体系为主。 |
+| FormControl context | 中 / 完成首版 | 已随 Form / FormItem 沉淀内部 context，统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby`、label/message 关联；公开 API 仍只暴露 Form / FormItem，不把 FormLabel / FormControl / FormMessage 做成对外 primitives。 |
 | PopupSurface 观察项 | 低 / 暂缓 | Tooltip、Select panel、Popover content、DropdownMenu content、Popconfirm 的 surface 密度和结构差异较大，暂不抽万能 surface；等稳定重复出现后再考虑很薄的内部封装。 |
-| 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea 的截图 / DOM / computed style / 交互验证；ScrollArea 与 Select 本轮使用 headless Chrome CDP 验证滚动、拖拽、显隐、focusable 和键盘 active 可见性。 |
+| 浏览器视觉验证 | 中 | 本轮已完成 Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea、Form 的截图 / DOM / computed style / 交互验证；Form 已通过 in-app Browser 验证默认右对齐 label、消息行预留、help tip、校验交互和 console。 |
 | Field 底层组件 | 中 | Input / InputNumber / Select 已完成迁移；Select 多选、DatePicker range 等复杂场景先滞后，后续再验证 FieldGroup、multiline、FieldSegment 边界。 |
 | 依赖与运行时升级 | 持续 | 已升级到 Node 24 LTS / npm 11，直接依赖当前无 outdated；后续继续按收益触发升级并修复内部适配。 |
 | VitePress audit 等待项 | 中 | 当前 `npm audit` 剩余 3 个 moderate 均来自 `vitepress@1.6.4` 内部嵌套 Vite/esbuild；等待上游正式版本后复查升级。 |
@@ -102,5 +104,5 @@
 - 不能擅自删除不确定用途的文件；先记录到 `TODO.md` 并询问用户。
 - 依赖、工具链或 Node.js 升级以最终效果为准：确认升级收益后先问用户，用户确认后直接升级，不因内部适配成本保留旧方案。
 - 修改色彩 token 时，同步检查样式源文件和设计指南。
-- 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划；当前最短接入路径是确认 git clean、查看最新提交，随后优先进入 Form / FormItem / Textarea 的接口、ARIA 关联和 Field context 边界设计。
+- 未来新对话先读 `AGENTS.md` 和 `TODO.md`，再读本计划；当前最短接入路径是确认 git 状态、查看最新提交，随后打开 `http://127.0.0.1:5193/components/form.html` 继续按用户反馈逐项校正 Form / FormItem 视觉问题；Textarea 本轮先不做，Popconfirm 暂后。
 - Superpowers 是工作流辅助，不替代项目内 `base-component-review`、记忆文档和实际验证；复杂任务可结合其计划、执行、验收、分支收尾与子代理协作流程。

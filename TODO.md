@@ -2,6 +2,13 @@
 
 本文件记录未来要处理的隐藏问题、决策项和开发计划。新对话优先阅读 `AGENTS.md`，然后阅读本文件。
 
+## 2026-06-11 收尾更新
+
+- [x] Form / FormItem 本轮视觉与基础行为已收口：help tooltip 保留 arrow；checkbox / radio / switch 与 label 垂直居中；FormItem 使用 24px 消息预留区，message 固定 20px 且不挤压控件；status icon 垂直居中并占用 20px 状态槽。
+- [x] Form 校验已改为并发启动、每项完成后立即提交自身结果；示例移除人为 200ms 延迟，避免误判为串行校验。
+- [x] Form review 发现的三项问题已在本轮修复：异步校验旧结果不再覆盖最新状态；`validateField` / `validateFields`、`resetField` / `resetFields`、`clearValidateField` / `clearValidate` API 拆清；`resetField` 初始值快照改为递归 clone。
+- [ ] 明天优先建议：先短暂确认 Form 文档页和 git 状态，然后在 Popconfirm 与 Dialog / Drawer 之间二选一。若想延续较小闭环，先做 Popconfirm；若想推进后续浮层体系，先设计 Dialog / Drawer 的 Overlay / Layer 边界。
+
 ## 需要用户决策
 
 当前没有阻塞本轮开发的用户决策项。
@@ -11,13 +18,15 @@
 - [ ] 继续完善公开底层组件 Field：首版 `src/components/Field/` primitives 已落地，并已迁移 Input / InputNumber；后续需要用 Select 多选、DatePicker range 等场景继续验证 FieldGroup、multiline 和 FieldSegment 边界。
 - [ ] 组件迁移扫描进入滚动守护：2026-06-04 已对当前实现组件集完成收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件和复杂场景继续扫描。
 - [ ] 后续扫描时只把组件源码内部实现作为规范约束对象；文档示例可保留外部使用者风格，不强制迁移到 Horizon token。
-- [ ] 为后续新增或继续迁移的关键组件补充更稳定的浏览器级视觉验证；Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea 已完成一轮浏览器验证并修复或确认发现的问题，本轮收敛扫描又复验了 Tag、Tooltip、Input、InputNumber 和关键指南页。
+- [ ] 为后续新增或继续迁移的关键组件补充更稳定的浏览器级视觉验证；Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea、Form 已完成一轮浏览器验证并修复或确认发现的问题，本轮收敛扫描又复验了 Tag、Tooltip、Input、InputNumber 和关键指南页。
 - [ ] 后续新增或继续迁移组件文档时，统一使用 VitePress `:::demo`；示例源码放在 `docs/examples/<component>/`，由文档页引用同一份 `.vue` 示例。
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。
 - [ ] 后续 VitePress 发布高于 `1.6.4` 的正式版本时，复查并升级以消除当前嵌套 Vite/esbuild 的 audit 项。
 - [ ] 评估并迁移包管理器：优先考虑 pnpm，备选继续 npm，不优先 Bun / Yarn；迁移时使用 Corepack 固定 pnpm 11，替换 `package-lock.json` 为 `pnpm-lock.yaml`，统一 scripts、`packageManager`、`engines` 和项目记忆文档，并验证 `pnpm install`、`pnpm run check`、audit 等价项和关键文档页面。
-- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu 与 DropdownMenu 已落地；后续优先推进 Form / FormItem / Textarea，再推进 Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；TagInput 因独立使用场景较少，先后置到路线最后。
-- [ ] 评估并沉淀真正有收益的内部通用原型：Select 与 Menu 已各自用 slot 子组件 + 内部 collection 注册跑通首版；后续等 Autocomplete、Tabs、NavigationMenu 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Overlay / Layer 等到 Dialog / Drawer 前设计；FormControl context 随 Form / FormItem 自然沉淀；PopupSurface 暂缓，等 Select / Popover / DropdownMenu / Popconfirm 出现稳定重复后再抽。
+- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu、DropdownMenu 与 Form / FormItem 首版已落地；Form / FormItem 本轮已完成视觉与基础行为收口；Textarea 本轮先不做、后续按真实需求再启动；下一步优先在 Popconfirm 与 Dialog / Drawer 之间选择，随后再推进 Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；TagInput 因独立使用场景较少，先后置到路线最后。
+- [ ] 评估并沉淀真正有收益的内部通用原型：Select 与 Menu 已各自用 slot 子组件 + 内部 collection 注册跑通首版；后续等 Autocomplete、Tabs、NavigationMenu 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Overlay / Layer 等到 Dialog / Drawer 前设计；Form / FormItem 已沉淀内部 FormControl context，但不对外暴露 FormLabel / FormControl / FormMessage primitives；PopupSurface 暂缓，等 Select / Popover / DropdownMenu / Popconfirm 出现稳定重复后再抽。
+- [x] 2026-06-10 Form / FormItem 首版已落地：默认 `labelAlign="right"`、`labelWidth=120`，help 通过 label 问号 tip 展示，控件下方消息行仅显示校验 / 状态文案并默认预留高度；轻量校验逻辑集中在 `src/components/Form/validator.ts`，并新增 `npm run check:form` 守护。
+- [x] 继续按用户反馈逐项校正 Form / FormItem 视觉细节：已完成 label / control / action 三段布局、20px 状态图标槽、help tooltip arrow、控件与 label 垂直居中、24px 消息预留区、message 20px 绝对定位、并发校验即时提交、异步校验竞态保护和表单实例 API 拆分。
 - [x] 2026-06-06 ScrollArea v1 已作为公开底层组件落地：结构固定为 `root > viewport > content`，viewport 是唯一真实滚动容器；支持原生滚动、隐藏原生滚动条、悬浮自定义 scrollbar、thumb 拖拽、auto / always / hidden 显隐、垂直 / 水平 / 双轴滚动、`maxHeight` / `maxWidth`、`focusable`、`ariaLabel` 和 `scroll` / `update` 事件。
 - [x] ScrollArea 已 expose `viewportRef`、`contentRef`、`scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState`，并提供内部 context；v1 不引入虚拟滚动依赖，但 viewport 接口可服务未来 `@tanstack/vue-virtual` 等 virtualizer。
 - [x] Select 面板已迁移到 `ScrollArea :max-height="240"`，active option 保持可见改为通过 ScrollArea `scrollToElement(..., { block: 'nearest' })` 完成，不再直接调用浏览器 `scrollIntoView()`。

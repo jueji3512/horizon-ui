@@ -18,21 +18,21 @@
         @mouseleave="handleMouseLeave"
       >
         <FieldRoot
-          v-bind="controlAttrs"
+          v-bind="mergedControlAttrs"
           role="combobox"
           aria-haspopup="listbox"
           :aria-expanded="isOpen"
           :aria-controls="listboxId"
           :aria-activedescendant="activeOptionId"
-          :aria-disabled="disabled || undefined"
-          :aria-readonly="readonly || undefined"
-          :aria-invalid="status === 'error' || undefined"
+          :aria-disabled="effectiveDisabled || undefined"
+          :aria-readonly="effectiveReadonly || undefined"
+          :aria-invalid="effectiveStatus === 'error' || undefined"
           :aria-label="resolvedAriaLabel"
-          :tabindex="disabled ? undefined : 0"
-          :size="size"
-          :status="status"
-          :disabled="disabled"
-          :readonly="readonly"
+          :tabindex="effectiveDisabled ? undefined : 0"
+          :size="effectiveSize"
+          :status="effectiveStatus"
+          :disabled="effectiveDisabled"
+          :readonly="effectiveReadonly"
           :focused="isFocused"
           :active="isOpen"
           :class="fieldClasses"
@@ -67,7 +67,7 @@
           type="hidden"
           :name="name"
           :value="hiddenValue"
-          :disabled="disabled || undefined"
+          :disabled="effectiveDisabled || undefined"
         />
       </div>
     </PopperTrigger>
@@ -112,6 +112,7 @@ import FieldContent from '../Field/FieldContent.vue'
 import FieldRoot from '../Field/FieldRoot.vue'
 import FieldSuffix from '../Field/FieldSuffix.vue'
 import Icon from '../Icon/Icon.vue'
+import { useFormControl } from '../Form'
 import { Popper, PopperContent, PopperTrigger } from '../Popper'
 import { ScrollArea, type ScrollAreaExpose } from '../ScrollArea'
 import { cn } from '../../utils'
@@ -173,6 +174,15 @@ const emit = defineEmits<{
 
 const attrs = useAttrs()
 const slots = useSlots()
+const {
+  controlAttrs: formControlAttrs,
+  effectiveSize,
+  effectiveStatus,
+  effectiveDisabled,
+  effectiveReadonly,
+  notifyControlChange,
+  notifyControlBlur,
+} = useFormControl(props)
 const selectId = useId()
 const wrapperRef = ref<HTMLElement | null>(null)
 const scrollAreaRef = ref<ScrollAreaExpose | null>(null)
@@ -188,10 +198,15 @@ const rootAttrs = computed(() => {
   return { class: className, style }
 })
 
-const controlAttrs = computed(() => {
+const passthroughControlAttrs = computed(() => {
   const { class: _class, style: _style, 'aria-label': _ariaLabel, ...controlOnlyAttrs } = attrs
   return controlOnlyAttrs
 })
+
+const mergedControlAttrs = computed(() => ({
+  ...formControlAttrs.value,
+  ...passthroughControlAttrs.value,
+}))
 
 function getOptionKey(value: SelectValue) {
   return `${typeof value}:${String(value)}`
@@ -306,7 +321,7 @@ const selectableOptionState = computed(() =>
     .join('|'),
 )
 
-const canOpen = computed(() => !props.disabled && !props.readonly)
+const canOpen = computed(() => !effectiveDisabled.value && !effectiveReadonly.value)
 const hasValue = computed(() => props.modelValue !== null && props.modelValue !== undefined)
 const showClear = computed(
   () => props.clearable && canOpen.value && hasValue.value && isHovered.value && !props.loading,
@@ -332,7 +347,7 @@ const hiddenValue = computed(() => (props.modelValue === null ? '' : String(prop
 provide(selectContextKey, {
   selectedValue: computed(() => props.modelValue ?? null),
   activeValue,
-  size: computed(() => props.size),
+  size: effectiveSize,
   registerOption,
   unregisterOption,
   setActiveValue,
@@ -414,6 +429,7 @@ function handleBlur(e: FocusEvent) {
   isFocused.value = false
   setOpen(false)
   emit('blur', e)
+  notifyControlBlur()
 }
 
 function handleClear() {
@@ -422,6 +438,7 @@ function handleClear() {
   emit('update:modelValue', null)
   emit('change', null)
   emit('clear')
+  notifyControlChange()
   setOpen(false)
   nextTick(focusTrigger)
 }
@@ -433,6 +450,7 @@ function selectOption(value: SelectValue) {
   if (option.value !== props.modelValue) {
     emit('update:modelValue', option.value)
     emit('change', option.value)
+    notifyControlChange()
   }
 
   setOpen(false)
@@ -509,7 +527,7 @@ function selectActiveOption() {
 }
 
 function handleKeydown(e: KeyboardEvent) {
-  if (props.disabled) return
+  if (effectiveDisabled.value) return
 
   if (e.key === 'Tab') {
     setOpen(false)
@@ -524,7 +542,7 @@ function handleKeydown(e: KeyboardEvent) {
     return
   }
 
-  if (props.readonly) return
+  if (effectiveReadonly.value) return
 
   if (e.key === 'ArrowDown') {
     e.preventDefault()
@@ -570,7 +588,7 @@ function handleKeydown(e: KeyboardEvent) {
 }
 
 watch(
-  () => [props.disabled, props.readonly] as const,
+  () => [effectiveDisabled.value, effectiveReadonly.value] as const,
   ([disabled, readonly]) => {
     if (disabled || readonly) {
       setOpen(false)
@@ -602,13 +620,16 @@ watch(
 const wrapperClasses = computed(() =>
   cn(
     'inline-flex w-full min-w-0 align-middle',
-    props.disabled && 'cursor-not-allowed',
-    props.readonly && !props.disabled && 'cursor-default',
+    effectiveDisabled.value && 'cursor-not-allowed',
+    effectiveReadonly.value && !effectiveDisabled.value && 'cursor-default',
   ),
 )
 
 const fieldClasses = computed(() =>
-  cn(canOpen.value && 'cursor-pointer', props.readonly && !props.disabled && 'cursor-default'),
+  cn(
+    canOpen.value && 'cursor-pointer',
+    effectiveReadonly.value && !effectiveDisabled.value && 'cursor-default',
+  ),
 )
 
 const contentPaddingMap: Record<SelectSize, string> = {
@@ -617,14 +638,16 @@ const contentPaddingMap: Record<SelectSize, string> = {
   lg: 'pl-3 pr-1',
 }
 
-const contentClasses = computed(() => cn('min-w-0', contentPaddingMap[props.size]))
+const contentClasses = computed(() => cn('min-w-0', contentPaddingMap[effectiveSize.value]))
 
 const displayClasses = computed(() =>
   cn(
     'block min-w-0 flex-1 truncate',
-    selectedOption.value
-      ? 'text-[var(--text-color-primary)]'
-      : 'text-[var(--text-color-placeholder)]',
+    effectiveDisabled.value
+      ? 'text-[var(--text-color-disabled)]'
+      : selectedOption.value
+        ? 'text-[var(--text-color-primary)]'
+        : 'text-[var(--text-color-placeholder)]',
   ),
 )
 
@@ -632,7 +655,7 @@ const chevronClasses = computed(() =>
   cn(
     'text-[var(--text-color-secondary)] transition-transform duration-150',
     isOpen.value && 'rotate-180 text-[var(--text-color-primary)]',
-    props.disabled && 'text-[var(--text-color-disabled)]',
+    effectiveDisabled.value && 'text-[var(--text-color-disabled)]',
   ),
 )
 
@@ -645,7 +668,7 @@ const panelSizeMap: Record<SelectSize, string> = {
 const panelClasses = computed(() =>
   cn(
     'overflow-hidden rounded-[var(--round-default)] bg-[var(--bg-color-container)] text-[var(--text-color-primary)] shadow-popper outline-none',
-    panelSizeMap[props.size],
+    panelSizeMap[effectiveSize.value],
   ),
 )
 
@@ -660,7 +683,7 @@ const messageSizeMap: Record<SelectSize, string> = {
 const messageClasses = computed(() =>
   cn(
     'flex items-center gap-2 text-[var(--text-color-secondary)] select-none',
-    messageSizeMap[props.size],
+    messageSizeMap[effectiveSize.value],
   ),
 )
 </script>

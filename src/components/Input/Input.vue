@@ -2,10 +2,10 @@
   <div v-bind="rootAttrs" class="w-full">
     <div ref="wrapperRef" :class="wrapperClasses">
       <FieldRoot
-        :size="size"
-        :status="status"
-        :disabled="disabled"
-        :readonly="readonly"
+        :size="effectiveSize"
+        :status="effectiveStatus"
+        :disabled="effectiveDisabled"
+        :readonly="effectiveReadonly"
         :focused="isFocused"
       >
         <FieldPrefix v-if="prefixIcon || $slots.prefix" class="gap-1">
@@ -19,8 +19,8 @@
           :type="inputType"
           :model-value="modelValue"
           :placeholder="placeholder || undefined"
-          :disabled="disabled"
-          :readonly="readonly"
+          :disabled="effectiveDisabled"
+          :readonly="effectiveReadonly"
           :maxlength="maxlength"
           :name="name || undefined"
           :autofocus="autofocus"
@@ -81,6 +81,7 @@ import FieldPrefix from '../Field/FieldPrefix.vue'
 import FieldRoot from '../Field/FieldRoot.vue'
 import FieldSuffix from '../Field/FieldSuffix.vue'
 import Icon from '../Icon/Icon.vue'
+import { useFormControl } from '../Form'
 import { cn } from '../../utils'
 
 type InputSize = 'sm' | 'md' | 'lg'
@@ -146,6 +147,15 @@ const wrapperRef = ref<HTMLElement | null>(null)
 const passwordVisible = ref(false)
 const isFocused = ref(false)
 const attrs = useAttrs()
+const {
+  controlAttrs,
+  effectiveSize,
+  effectiveStatus,
+  effectiveDisabled,
+  effectiveReadonly,
+  notifyControlChange,
+  notifyControlBlur,
+} = useFormControl(props)
 
 const rootAttrs = computed(() => {
   const { class: className, style } = attrs
@@ -154,11 +164,14 @@ const rootAttrs = computed(() => {
 
 const inputAttrs = computed(() => {
   const { class: _class, style: _style, ...inputOnlyAttrs } = attrs
-  return inputOnlyAttrs
+  return {
+    ...controlAttrs.value,
+    ...inputOnlyAttrs,
+  }
 })
 
 const showClear = computed(() => {
-  if (!props.clearable || props.disabled || props.readonly) return false
+  if (!props.clearable || effectiveDisabled.value || effectiveReadonly.value) return false
   return String(props.modelValue).length > 0
 })
 
@@ -171,6 +184,7 @@ function handleInput(e: Event) {
   const target = e.target as HTMLInputElement
   emit('update:modelValue', target.value)
   emit('input', target.value, e)
+  notifyControlChange()
 }
 
 function handleChange(e: Event) {
@@ -189,6 +203,7 @@ function handleBlur(e: FocusEvent) {
   if (nextTarget && wrapperRef.value?.contains(nextTarget)) return
   isFocused.value = false
   emit('blur', e)
+  notifyControlBlur()
 }
 
 function handleEnter(e: KeyboardEvent) {
@@ -199,6 +214,7 @@ function handleClear() {
   emit('update:modelValue', '')
   emit('input', '', new Event('input'))
   emit('clear')
+  notifyControlChange()
   inputRef.value?.focus()
 }
 
@@ -212,7 +228,7 @@ function togglePassword() {
 const wrapperClasses = computed(() =>
   cn(
     'inline-flex w-full items-stretch rounded-[var(--round-default)] align-middle',
-    props.disabled && 'cursor-not-allowed',
+    effectiveDisabled.value && 'cursor-not-allowed',
   ),
 )
 </script>

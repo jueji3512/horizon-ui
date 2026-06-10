@@ -1,5 +1,39 @@
 # 工作进度记录
 
+## 2026-06-11 Form / FormItem 收口
+
+- 继续在 `http://127.0.0.1:5194/components/form.html` 与用户一起逐项校正 Form / FormItem。
+- help 图标 tooltip 恢复默认 arrow；FormItem 控件行改为垂直居中，使 radio、checkbox、switch、status icon 与左侧 label 对齐。
+- FormItem 间距收敛为控件行自身 `mb-6`，message 固定 20px 并绝对定位在 control 下方，不再通过 Form flex gap 挤出空间。
+- 校验策略调整为并发启动、每个 FormItem 完成后立即提交自身结果；示例移除人为 `setTimeout(200)`，避免异步示例看起来像串行。
+- Review 后补三项可靠性修复：异步校验使用顺序号忽略旧结果；表单实例 API 拆分为单字段与多字段方法，避免数组路径歧义；`resetField` 初始值快照改为递归 clone。
+- 浏览器复验：Form 页 reload 后全量校验、单字段校验和 reset 均正常，console warning/error 为空。
+- 验证：`npm run check:form`、`npm run typecheck`、`npm run lint:js`、针对 Form 相关文件的 `npx prettier --check ...`、`git diff --check` 均已通过；收尾前将再跑完整 `npm run check`。
+- 明天先确认最新提交与工作区状态，然后快速打开 Form 页做一次视觉扫尾即可；下一项若追求小闭环，建议先做 Popconfirm，若想为后续复杂浮层打地基，则先设计 Dialog / Drawer 的 Overlay / Layer 边界。
+
+## 2026-06-10 Form / FormItem 收尾交接
+
+- 用户反馈 Form / FormItem 样式仍有较大问题，今天先处理第一项，明天新对话继续逐项看。
+- 已修第一项布局：FormItem 明确分为 label / control / action 三段；action/status 区固定预留 20px 状态图标槽，自定义 action 超出时向右外溢，不再挤占 control 宽度。
+- 浏览器验证 `http://127.0.0.1:5193/components/form.html`：Workspace、Owner、API key、Project 的 control 宽度一致，action 槽为 20px，API key 的 Regenerate 按钮向右外溢且未挤窄 input，console warning/error 为空。
+- 最新验证：2026-06-10 `npm run check` 与 `git diff --check` 通过；本次收尾后又只更新记忆文档，提交前至少重跑 `git diff --check` 和格式检查。
+- 新对话最短接入：先执行 `git status --short`、`git log -1 --oneline`，读 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`，确认 dev server 是否仍在 `http://127.0.0.1:5193/`，然后打开 `/components/form.html` 继续处理 Form/FormItem 剩余视觉问题；Textarea 仍暂停，Popconfirm 暂后。
+
+## 2026-06-10 Form / FormItem 首版实施
+
+- 按用户确认方案实现 Form / FormItem：默认 `labelAlign="right"`、`labelWidth=120`，视觉为左侧 label + 右侧 control / status / action，未采用表格式边框。
+- help 文案改由 label 处问号 tip 承载；控件下方消息行只显示校验 / 状态文案，并默认预留高度，避免校验后突然挤压布局。
+- 校验逻辑集中在 `src/components/Form/validator.ts`，支持 required、同步 / 异步 validator、trigger、字符串路径和数组路径；Form expose `validate`、`validateField`、`resetFields`、`clearValidate`。
+- Input、InputNumber、Select、Checkbox、Radio 与 Switch 已接入内部 FormControl context；FormLabel / FormControl / FormMessage 未做成对外 primitives，只作为内部结构和 context 使用。
+- 新增 `docs/components/form.md`、`docs/examples/form/*` 与 `scripts/check-form.mjs`，并把 `npm run check:form` 纳入 `npm run check`。
+- 浏览器验证 `http://127.0.0.1:5193/components/form.html`：默认 label cell 宽度 120px、label 右对齐；help 文案未进入消息行；空消息行和有状态消息行都为 24px；点击 Validate 后 Email / Quota 错误文案出现但 item 高度不变；console warning/error 为空。
+- 根据用户反馈调整 FormItem 布局：外层明确分为 label / control / action 三段；action/status 区固定预留 20px 状态图标槽，自定义 action 超出时向右外溢，不再处于 control 的 flex 容器内挤占控件宽度；`check:form` 已补对应守护。
+
+## 2026-06-09 Form 路线调整
+
+- 用户确认 Textarea 本轮先不做；当前组件路线从 `Form / FormItem / Textarea` 收敛为优先推进 `Form / FormItem`。
+- 已同步当前记忆文档中的路线摘要：下一步聚焦 Form / FormItem 的接口、ARIA 关联、label/help/error 关系和 Field context 边界；Textarea 后续按真实需求再启动。
+
 ## 2026-06-08 ComponentDemo 源码行号对齐修复
 
 - 排查 Button 文档源码展开区后确认根因：Shiki 输出的每行源码已经包在 `.line` 内，`ComponentDemo` 又把 `.line` 设为 block，但 code 容器仍为 `white-space: pre`，导致 `.line` 之间的格式化换行文本节点也被渲染成额外空行。
@@ -90,7 +124,7 @@
 ## 2026-06-06 TagInput 优先级调整
 
 - 用户判断 TagInput 独立使用场景相对较少，确认先把它降到组件路线最后。
-- 后续组件路线调整为：Dropdown / Menu → Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → TreeSelect / Cascader / ColorPicker → TagInput。
+- 后续组件路线当时调整为：Dropdown / Menu → Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → TreeSelect / Cascader / ColorPicker → TagInput；2026-06-09 已更新为 Textarea 本轮先不做，优先推进 Form / FormItem。
 - TagInput 的价值仍记录为 Field 多值 / Tag wrap / Backspace 删除 / 输入宽度自适应等压力测试，但不再作为 Select 之后的下一优先级。
 
 ## 2026-06-06 Popper shift 默认行为
@@ -144,7 +178,7 @@
 ## 2026-06-05 组件路线与内部原型计划
 
 - 用户确认后续组件路线方向可行，并要求将建议加入项目计划。
-- 已将未来组件开发顺序写入计划：优先 Select；Select 单选首版完成后，依次考虑 Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、TreeSelect / Cascader / ColorPicker，TagInput 后置到最后。
+- 已将未来组件开发顺序写入计划：优先 Select；Select 单选首版完成后，当时依次考虑 Dropdown / Menu、Form / FormItem / Textarea、Popconfirm、Dialog / Drawer、Message / Notification、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、TreeSelect / Cascader / ColorPicker，TagInput 后置到最后；2026-06-09 已更新为 Textarea 本轮先不做，优先推进 Form / FormItem。
 - 已将内部通用原型候选写入计划：OptionList / Collection、RovingFocus / Composite、Overlay / Layer、FormControl context；同时明确 PopupSurface / FloatingSurface 暂缓，避免为了统一 surface 样式过早抽成万能盒子。
 - 已补充判断原则：内部原型必须有明确跨组件收益，能减少真实重复、统一可访问性或降低复杂状态错误时才沉淀；不为了文件拆分、样式复用或概念完整而提前抽象。
 - 已全局安装 4 个新增技能：`better-icons` 用于获取统一 SVG icon；`grill-me` 可用于重要设计前的逐问题压力测试；`design-an-interface` 可用于 Select、OptionList、Overlay 等模块接口多方案比较；`documentation-and-adrs` 可用于重要架构/API/工具链决策记录。安装输出里 `PromptScript` 不支持全局安装的失败不影响 Codex。

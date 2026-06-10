@@ -1,16 +1,24 @@
 <template>
   <!-- default variant -->
-  <div v-if="variant === 'default'" role="radiogroup" :class="defaultContainerClasses">
+  <div
+    v-if="variant === 'default'"
+    v-bind="controlAttrs"
+    role="radiogroup"
+    :class="defaultContainerClasses"
+    @focusout="handleFocusOut"
+  >
     <slot />
   </div>
 
   <!-- button variant -->
   <div
     v-else
+    v-bind="controlAttrs"
     role="radiogroup"
     class="radio-group-button"
     :class="buttonContainerClasses"
     @keydown="handleKeydown"
+    @focusout="handleFocusOut"
   >
     <slot />
   </div>
@@ -36,6 +44,7 @@ type RadioGroupSize = 'sm' | 'md' | 'lg'
 
 <script setup lang="ts">
 import { computed, provide, useId } from 'vue'
+import { useFormControl } from '../Form'
 import { cn } from '../../utils'
 
 const props = withDefaults(
@@ -63,17 +72,20 @@ const emit = defineEmits<{
 const name = useId()
 
 const groupModelValue = computed(() => props.modelValue)
+const { controlAttrs, effectiveSize, effectiveDisabled, notifyControlChange, notifyControlBlur } =
+  useFormControl(props)
 
 function select(value: string | number) {
   emit('update:modelValue', value)
   emit('change', value)
+  notifyControlChange()
 }
 
 provide(radioGroupKey, {
   modelValue: groupModelValue,
   variant: computed(() => props.variant),
-  size: computed(() => props.size),
-  disabled: computed(() => props.disabled),
+  size: effectiveSize,
+  disabled: effectiveDisabled,
   name,
   select,
 })
@@ -106,6 +118,12 @@ function handleKeydown(e: KeyboardEvent) {
   }
 }
 
+function handleFocusOut(e: FocusEvent) {
+  const nextTarget = e.relatedTarget as Node | null
+  if (nextTarget && (e.currentTarget as HTMLElement).contains(nextTarget)) return
+  notifyControlBlur()
+}
+
 // ===== container classes =====
 
 const defaultContainerClasses = computed(() =>
@@ -121,7 +139,7 @@ const buttonSizeClassMap: Record<string, string> = {
 const buttonContainerClasses = computed(() =>
   cn(
     'inline-flex overflow-hidden border border-[var(--border-color-component)]',
-    buttonSizeClassMap[props.size],
+    buttonSizeClassMap[effectiveSize.value],
   ),
 )
 </script>

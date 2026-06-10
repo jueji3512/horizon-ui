@@ -36,7 +36,7 @@
 已实现并文档化的组件：
 
 - 基础：Button、Icon、Link、Text、Title、Divider、Space。
-- 表单/输入：Checkbox、CheckboxGroup、Radio、RadioGroup、Switch、Input、InputNumber、Select。
+- 表单/输入：Checkbox、CheckboxGroup、Radio、RadioGroup、Switch、Input、InputNumber、Select、Form、FormItem。
 - 展示/反馈：Badge、Tag、Callout、Tooltip、Popover、Menu、DropdownMenu。
 - 底层：FieldRoot、FieldContent、FieldNativeInput、FieldPrefix、FieldSuffix、FieldAction、FieldGroup、FieldSegment、Popper、PopperTrigger、PopperContent、PopperArrow、ScrollArea。
 
@@ -47,6 +47,7 @@
 - Popper 是底层定位基座，不提供业务 surface 样式；已完成 base-component review，可作为 Select、Popover、MenuSub、DropdownMenu 等上层组件的当前基座。
 - Field 已作为公开底层输入域基座落地在 `src/components/Field/`；它像 Popper 一样允许用户组合使用，不放在 `_internal`。
 - ScrollArea 已作为公开底层滚动基座落地在 `src/components/ScrollArea/`；它负责滚动容器、悬浮 scrollbar、thumb 拖拽和 viewport expose，不负责 surface 视觉。
+- Form / FormItem 已作为公开表单组件落地并完成本轮视觉与基础行为收口；内部拆分 FormItemLabel / FormItemMessage 与 FormControl context，但不把 FormLabel / FormControl / FormMessage 作为对外 primitives。
 
 ## 历史计划资料处置
 
@@ -56,22 +57,32 @@
 - Paragraph 旧计划已明确过时，当前不实现；如未来需要大段文本编排，重新按当前 API/token 规范设计。
 - Tooltip 当前已迁移到 Popper 基座；历史上“后续评估迁移”的结论已落实。
 - 早期交互规范里 `type` 迁移到 `theme`、禁用态不用 opacity、统一 token 的方向已被当前规范吸收；旧 token 名称和值不再直接沿用。
-- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu 已按当前边界落地；后续优先进入 Form / FormItem / Textarea，再推进反馈、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
+- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu 与 Form / FormItem 已按当前边界落地；Form / FormItem 本轮已完成视觉与基础行为收口；Textarea 本轮先不做，后续按真实需求再启动；下一步建议在 Popconfirm 与 Dialog / Drawer 之间选择，然后再推进反馈、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
 
 ## 2026-06-05 未来组件路线与内部原型候选
 
-- 当前建议的组件推进顺序：Form / FormItem / Textarea → Popconfirm → Dialog / Drawer → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → NavigationMenu → TreeSelect / Cascader / ColorPicker → TagInput。
+- 当前建议的组件推进顺序：Popconfirm 或 Dialog / Drawer 二选一作为下一步入口 → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → NavigationMenu → TreeSelect / Cascader / ColorPicker → TagInput。Form / FormItem 已完成本轮收口；Textarea 本轮先不做，后续按真实需求再插入路线。
 - Select slot-first 单选首版已落地，已初步验证 Field、Popper、键盘交互、ARIA、empty、loading、disabled option、readonly 和 clearable 等组合边界；多选 tag wrap、searchable、maxTagCount 等仍是后续压力测试。
 - TagInput 已降到路线最后：它仍可作为 Field 多值 / multiline / Tag wrap / Backspace 删除 / 输入宽度自适应的压力测试，但独立使用场景相对较少，先等后续出现明确自由多值输入需求时再启动。
 - Popover / Menu / DropdownMenu 已按“原语 / 英文 / ARIA 优先”的边界拆分：Popover 负责任意非模态浮层，Menu 负责动作 / 命令菜单内容，DropdownMenu 是 `Popover + explicit Menu` 的菜单型预设；导航后续由 NavigationMenu 承担。
 - 浮层公开显隐语义已统一到 `open` / `v-model:open` / `open-change`；`trigger` 只描述触发器打开策略，outside click / Esc 是否关闭由独立关闭策略表达。
-- Form / FormItem 应在 Select 跑通后推进，因为 Field 当前明确不负责 label、help、error message、校验触发时机；FormItem 可承接布局、label、help、error、required、status 传递和 ARIA 关联。
+- Form / FormItem 首版已在 Select 跑通后落地；Field 仍不负责 label、tip、message 和校验触发时机，FormItem 承接布局、label、tip、message、required、status 传递和 ARIA 关联。
 - DatePicker / TimePicker 建议后置于 Select、Form 和 Overlay 能力之后，因为日期组件牵涉解析、格式化、面板、范围选择、键盘模型和本地化，过早实现容易把底层边界和业务复杂度揉在一起。
 - 内部通用原型的判断原则：只有当一个结构或交互模型服务多个明确组件，并且能减少真实重复、统一可访问性或降低复杂状态错误时才沉淀；不为了文件拆分、样式复用或概念完整而提前抽象。
 - OptionList / Collection 是优先级最高的内部候选：服务 Select、Autocomplete、Menu、TreeSelect、Cascader，统一 option 注册、disabled、group、empty、loading、active option、键盘导航、滚动到当前项、typeahead 和 listbox/menu 语义映射。第一阶段应作为内部 primitives / composable 验证，不急于公开。
 - RovingFocus / Composite 建议作为内部交互工具：服务 Radio button variant、未来 ToggleGroup、Tabs、Menu、Toolbar，统一 roving `tabindex`、方向键移动、Home / End、disabled item 跳过和循环策略。它解决的是可访问性和键盘模型，不是视觉复用。
 - Overlay / Layer 值得抽，但应等 Dialog / Drawer 启动前设计；它负责全局层级、遮罩、滚动锁、Esc、focus trap 和 `aria-modal`，与负责锚点定位的 Popper 不同。
-- FormControl context 应随 Form / FormItem 自然出现，用于统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby`、label/help/error 关联；公开 API 应以 Form 体系为主，不建议过早暴露底层 FormControl primitives。
+- FormControl context 已随 Form / FormItem 自然出现，用于统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby` 与 label/message 关联；公开 API 仍以 Form / FormItem 为主，不建议暴露底层 FormControl primitives。
+
+## 2026-06-10 Form / FormItem 首版实现
+
+- 默认视觉采用企业表单模型：左侧 label、label 文案右对齐、`labelWidth=120`，`labelAlign` 支持 `left | right | top`。
+- help 信息不在控件下方消息行显示，而是通过 label 区问号 tip 展示；控件下方消息行只显示校验 / 状态文案，并默认预留高度，避免校验后挤压布局。
+- 校验逻辑集中在 `src/components/Form/validator.ts`，支持 `required`、同步 / 异步 `validator`、`trigger`、字符串路径和数组路径，并通过 Form expose 提供 `validate`、`validateField`、`validateFields`、`resetField`、`resetFields`、`clearValidateField`、`clearValidate`。
+- Input、InputNumber、Select、Checkbox、Radio、Switch 已接入内部 FormControl context，继承 Form/FormItem 的 size、disabled、readonly、status 与 ARIA 关联；显式传入控件自身 prop 时仍由控件自身优先。
+- 已新增 `scripts/check-form.mjs` 与 `npm run check:form`，并纳入 `npm run check`，守护组件结构、导出、文档示例、校验文件命名和常用控件接入。
+- 用户逐项审阅后的本轮收口项：help tooltip 保留 arrow；label / control / action 三段布局稳定；action/status 区固定 20px 状态图标槽，自定义 action 向右外溢，不挤占 control 宽度；radio、checkbox、switch 与 status icon 均已和 label 垂直居中；FormItem 使用 24px message 预留区，message 固定 20px。
+- 校验行为已改为并发启动、每项完成后立即显示自身结果；异步校验使用顺序号忽略旧结果，避免旧请求覆盖新状态；`resetField` 初始值快照使用递归 clone，避免嵌套对象被后续编辑污染。
 - PopupSurface / FloatingSurface 暂不建议立刻抽。Tooltip、Select panel、Popover content、DropdownMenu content、Popconfirm 的 surface 密度、padding、结构和角色差异较大；更合理的做法是先各自实现，等重复足够稳定后，再抽很薄的内部 `surfaceClass` 或 surface primitive。
 - 明确不建议抽的方向：IconButton 已由 Button 的 `shape="square|circle"` 覆盖；StatusSurface 会混淆 Callout、Alert、Message、Tag、Badge 等差异较大的结构；Panel / Card 过泛，容易变成样式垃圾桶；DatePanel 在 DatePicker 真实需求清楚前不预抽。
 

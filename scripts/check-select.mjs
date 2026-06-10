@@ -46,6 +46,11 @@ expectIncludes('src/components/Select/Select.vue', '<slot />')
 expectIncludes('src/components/Select/Select.vue', 'role="listbox"')
 expectIncludes('src/components/Select/Select.vue', 'aria-activedescendant')
 expectIncludes('src/components/Select/Select.vue', 'ScrollArea')
+expectIncludes(
+  'src/components/Select/Select.vue',
+  "effectiveDisabled.value\n      ? 'text-[var(--text-color-disabled)]'",
+  'Select display text uses disabled token when disabled',
+)
 expectIncludes('src/components/Select/SelectOption.vue', 'role="option"')
 expectIncludes('src/components/Select/SelectOption.vue', 'registerOption')
 expectIncludes('src/components/Select/SelectOption.vue', 'selectOption')

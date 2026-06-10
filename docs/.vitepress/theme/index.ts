@@ -16,6 +16,8 @@ import {
   FieldRoot,
   FieldSegment,
   FieldSuffix,
+  Form,
+  FormItem,
   Icon,
   Input,
   InputNumber,
@@ -112,6 +114,8 @@ export default {
     app.component('FieldAction', FieldAction)
     app.component('FieldGroup', FieldGroup)
     app.component('FieldSegment', FieldSegment)
+    app.component('Form', Form)
+    app.component('FormItem', FormItem)
     app.component('Radio', Radio)
     app.component('RadioGroup', RadioGroup)
     app.component('ScrollArea', ScrollArea)

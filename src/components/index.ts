@@ -45,6 +45,8 @@ import FieldSuffix from './Field/FieldSuffix.vue'
 import FieldAction from './Field/FieldAction.vue'
 import FieldGroup from './Field/FieldGroup.vue'
 import FieldSegment from './Field/FieldSegment.vue'
+import Form from './Form/Form.vue'
+import FormItem from './Form/FormItem.vue'
 import Popper from './Popper/Popper.vue'
 import PopperTrigger from './Popper/PopperTrigger.vue'
 import PopperContent from './Popper/PopperContent.vue'
@@ -78,6 +80,25 @@ export type {
   UsePopperReturn,
 } from './Popper'
 export { popperContextKey, usePopper } from './Popper'
+export type {
+  FormItemRegistration,
+  FormLabelAlign,
+  FormModel,
+  FormNamePath,
+  FormRule,
+  FormRules,
+  FormSize,
+  FormStatus,
+  FormValidateError,
+  FormValidateTrigger,
+} from './Form'
+export {
+  formContextKey,
+  formItemContextKey,
+  useFormContext,
+  useFormControl,
+  useFormItemContext,
+} from './Form'
 export type {
   PopoverCloseOptions,
   PopoverContext,
@@ -127,6 +148,8 @@ export {
   FieldRoot,
   FieldSegment,
   FieldSuffix,
+  Form,
+  FormItem,
   Icon,
   Input,
   InputNumber,

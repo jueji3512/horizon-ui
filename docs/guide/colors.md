@@ -258,15 +258,15 @@ function isDark(shade) {
 | `--bg-color-component` | neutral-200 | <span class="swatch" style="background:oklch(0.92 0 0)"> </span> | oklch(0.92 0 0) | #e8e8e8 |
 | `--bg-color-component-hover` | neutral-300 | <span class="swatch" style="background:oklch(0.87 0 0)"> </span> | oklch(0.87 0 0) | #ddd |
 | `--bg-color-component-active` | neutral-500 | <span class="swatch" style="background:oklch(0.704 0 0)"> </span> | oklch(0.704 0 0) | #a6a6a6 |
-| `--bg-color-component-disabled` | neutral-200 | <span class="swatch" style="background:oklch(0.92 0 0)"> </span> | oklch(0.92 0 0) | #eee |
+| `--bg-color-component-disabled` | neutral-100 | <span class="swatch" style="background:oklch(0.964 0 0)"> </span> | oklch(0.964 0 0) | #f3f3f3 |
 | `--bg-color-secondarycomponent` | neutral-300 | <span class="swatch" style="background:oklch(0.87 0 0)"> </span> | oklch(0.87 0 0) | #ddd |
 | `--bg-color-secondarycomponent-hover` | neutral-400 | <span class="swatch" style="background:oklch(0.787 0 0)"> </span> | oklch(0.787 0 0) | #c6c6c6 |
 | `--bg-color-secondarycomponent-active` | neutral-500 | <span class="swatch" style="background:oklch(0.704 0 0)"> </span> | oklch(0.704 0 0) | #a6a6a6 |
-| `--bg-color-secondarycomponent-disabled` | neutral-200 | <span class="swatch" style="background:oklch(0.92 0 0)"> </span> | oklch(0.92 0 0) | #eee |
+| `--bg-color-secondarycomponent-disabled` | neutral-100 | <span class="swatch" style="background:oklch(0.964 0 0)"> </span> | oklch(0.964 0 0) | #f3f3f3 |
 | `--bg-color-inner` | white | <span class="swatch" style="background:oklch(1 0 0)"> </span> | oklch(1 0 0) | #fff |
 | `--bg-color-inner-hover` | neutral-100 | <span class="swatch" style="background:oklch(0.964 0 0)"> </span> | oklch(0.964 0 0) | - |
 | `--bg-color-inner-active` | neutral-200 | <span class="swatch" style="background:oklch(0.92 0 0)"> </span> | oklch(0.92 0 0) | - |
-| `--bg-color-inner-disabled` | neutral-200 | <span class="swatch" style="background:oklch(0.92 0 0)"> </span> | oklch(0.92 0 0) | #eee |
+| `--bg-color-inner-disabled` | neutral-100 | <span class="swatch" style="background:oklch(0.964 0 0)"> </span> | oklch(0.964 0 0) | #f3f3f3 |
 
 ### 边框色 — border-color-*
 

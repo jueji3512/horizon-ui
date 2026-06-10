@@ -1,22 +1,23 @@
 <template>
-  <FieldGroup :class="wrapperClasses" :disabled="disabled">
+  <FieldGroup :class="wrapperClasses" :disabled="effectiveDisabled">
     <Button
       variant="outline"
       shape="square"
-      :size="size"
+      :size="effectiveSize"
       icon="minus"
       aria-label="减少"
       class="shrink-0"
-      :disabled="isMinReached || disabled || readonly || undefined"
+      :disabled="effectiveDisabled || (!effectiveReadonly && isMinReached) || undefined"
       @mousedown.prevent="startStep(-1)"
       @mouseup="stopStep"
       @mouseleave="stopStep"
     />
 
     <FieldRoot
-      :size="size"
-      :disabled="disabled"
-      :readonly="readonly"
+      :size="effectiveSize"
+      :status="effectiveStatus"
+      :disabled="effectiveDisabled"
+      :readonly="effectiveReadonly"
       :focused="isFocused"
       :class="inputFieldClasses"
     >
@@ -24,8 +25,9 @@
         :type="inputType"
         :inputmode="inputType === 'text' ? 'decimal' : undefined"
         :model-value="displayValue"
-        :disabled="disabled"
-        :readonly="readonly"
+        v-bind="controlAttrs"
+        :disabled="effectiveDisabled"
+        :readonly="effectiveReadonly"
         :placeholder="placeholder || undefined"
         :name="name || undefined"
         :class="inputClasses"
@@ -39,11 +41,11 @@
     <Button
       variant="outline"
       shape="square"
-      :size="size"
+      :size="effectiveSize"
       icon="plus"
       aria-label="增加"
       class="shrink-0"
-      :disabled="isMaxReached || disabled || readonly || undefined"
+      :disabled="effectiveDisabled || (!effectiveReadonly && isMaxReached) || undefined"
       @mousedown.prevent="startStep(1)"
       @mouseup="stopStep"
       @mouseleave="stopStep"
@@ -57,10 +59,12 @@ import Button from '../Button/Button.vue'
 import FieldGroup from '../Field/FieldGroup.vue'
 import FieldNativeInput from '../Field/FieldNativeInput.vue'
 import FieldRoot from '../Field/FieldRoot.vue'
+import { useFormControl } from '../Form'
 import { cn } from '../../utils'
 
 type InputNumberSize = 'sm' | 'md' | 'lg'
 type InputNumberAlign = 'left' | 'center' | 'right'
+type InputNumberStatus = 'error' | 'warning' | 'success'
 
 const props = withDefaults(
   defineProps<{
@@ -72,6 +76,7 @@ const props = withDefaults(
     precision?: number
     disabled?: boolean
     readonly?: boolean
+    status?: InputNumberStatus
     size?: InputNumberSize
     align?: InputNumberAlign
     format?: (value: number) => string
@@ -87,6 +92,7 @@ const props = withDefaults(
     precision: 0,
     disabled: false,
     readonly: false,
+    status: undefined,
     size: 'md',
     align: 'center',
     format: undefined,
@@ -105,6 +111,15 @@ const emit = defineEmits<{
 const displayValue = ref(getDisplayValue(props.modelValue))
 const isFocused = ref(false)
 const focusStartValue = ref(props.modelValue)
+const {
+  controlAttrs,
+  effectiveSize,
+  effectiveStatus,
+  effectiveDisabled,
+  effectiveReadonly,
+  notifyControlChange,
+  notifyControlBlur,
+} = useFormControl(props)
 
 function formatValue(val: number): string {
   if (!isFinite(val)) return '0'
@@ -155,7 +170,7 @@ function doStep(direction: number) {
 }
 
 function startStep(direction: number) {
-  if (props.disabled || props.readonly) return
+  if (effectiveDisabled.value || effectiveReadonly.value) return
   doStep(direction)
   stepTimer.value = setInterval(() => doStep(direction), 120)
 }
@@ -170,7 +185,7 @@ function stopStep() {
 onBeforeUnmount(stopStep)
 
 function handleKeydown(e: KeyboardEvent) {
-  if (props.disabled || props.readonly) return
+  if (effectiveDisabled.value || effectiveReadonly.value) return
   if (e.key === 'ArrowUp') {
     e.preventDefault()
     const delta = e.shiftKey ? props.step * 10 : props.step
@@ -186,6 +201,7 @@ function handleKeydown(e: KeyboardEvent) {
 
 function syncValue(value: number) {
   emit('update:modelValue', value)
+  notifyControlChange()
   if (isFocused.value) displayValue.value = String(value)
 }
 
@@ -196,6 +212,7 @@ function handleInput(e: Event) {
   const parsed = parseFloat(raw)
   if (!isNaN(parsed)) {
     emit('update:modelValue', parsed)
+    notifyControlChange()
   }
 }
 
@@ -212,8 +229,10 @@ function handleBlur(e: FocusEvent) {
   emit('update:modelValue', corrected)
   if (corrected !== focusStartValue.value) {
     emit('change', corrected)
+    notifyControlChange()
   }
   emit('blur', e)
+  notifyControlBlur()
 }
 
 function handleFocus(e: FocusEvent) {
@@ -247,10 +266,10 @@ const inputNumberGeometryMap: Record<InputNumberSize, InputNumberGeometry> = {
   },
 }
 
-const geometry = computed(() => inputNumberGeometryMap[props.size])
+const geometry = computed(() => inputNumberGeometryMap[effectiveSize.value])
 
 const wrapperClasses = computed(() =>
-  cn('items-center gap-1', props.disabled && 'cursor-not-allowed'),
+  cn('items-center gap-1', effectiveDisabled.value && 'cursor-not-allowed'),
 )
 
 const alignMap: Record<InputNumberAlign, string> = {

@@ -49,6 +49,7 @@
 - ScrollArea 已作为公开底层滚动基座落地在 `src/components/ScrollArea/`；它负责滚动容器、悬浮 scrollbar、thumb 拖拽和 viewport expose，不负责 surface 视觉。
 - Form / FormItem 已作为公开表单组件落地并完成本轮视觉与基础行为收口；内部拆分 FormItemLabel / FormItemMessage 与 FormControl context，但不把 FormLabel / FormControl / FormMessage 作为对外 primitives。
 - Dialog 已作为公开模态容器落地在 `src/components/Dialog/`；它是单一公开组件，不提供 trigger/content/close 子组件，内部沉淀 modal layer 能力但不公开 Overlay / Layer primitive。
+- Message 已作为命令式全局反馈服务落地在 `src/components/Message/`；它不公开用户态 `<Message />` 组件，不提供 `message.open()` / `message.custom()`，只通过 `message.info/success/warning/error/loading/close/closeAll/config` 使用。
 
 ## 历史计划资料处置
 
@@ -58,11 +59,11 @@
 - Paragraph 旧计划已明确过时，当前不实现；如未来需要大段文本编排，重新按当前 API/token 规范设计。
 - Tooltip 当前已迁移到 Popper 基座；历史上“后续评估迁移”的结论已落实。
 - 早期交互规范里 `type` 迁移到 `theme`、禁用态不用 opacity、统一 token 的方向已被当前规范吸收；旧 token 名称和值不再直接沿用。
-- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu、Form / FormItem 与 Dialog 已按当前边界落地；Textarea 本轮先不做，后续按真实需求再启动；Popconfirm 因应用场景较少后置，Drawer 等 Dialog 内部 modal layer 跑稳后再复用推进；后续再推进反馈、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
+- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu、Form / FormItem、Dialog 与 Message v1 已按当前边界落地；Textarea 本轮先不做，后续按真实需求再启动；Popconfirm 因应用场景较少后置，Drawer 等 Dialog 内部 modal layer 跑稳后再复用推进；后续再推进 Notification、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
 
 ## 2026-06-05 未来组件路线与内部原型候选
 
-- 当前建议的组件推进顺序：Dialog 已完成首版 → Message / Notification → Drawer → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → NavigationMenu → TreeSelect / Cascader / ColorPicker → Popconfirm / TagInput。Form / FormItem 已完成本轮收口；Textarea 本轮先不做，后续按真实需求再插入路线。
+- 当前建议的组件推进顺序：Dialog 与 Message 已完成首版 → Notification → Drawer → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → NavigationMenu → TreeSelect / Cascader / ColorPicker → Popconfirm / TagInput。Form / FormItem 已完成本轮收口；Textarea 本轮先不做，后续按真实需求再插入路线。
 - Select slot-first 单选首版已落地，已初步验证 Field、Popper、键盘交互、ARIA、empty、loading、disabled option、readonly 和 clearable 等组合边界；多选 tag wrap、searchable、maxTagCount 等仍是后续压力测试。
 - TagInput 已降到路线最后：它仍可作为 Field 多值 / multiline / Tag wrap / Backspace 删除 / 输入宽度自适应的压力测试，但独立使用场景相对较少，先等后续出现明确自由多值输入需求时再启动。
 - Popover / Menu / DropdownMenu 已按“原语 / 英文 / ARIA 优先”的边界拆分：Popover 负责任意非模态浮层，Menu 负责动作 / 命令菜单内容，DropdownMenu 是 `Popover + explicit Menu` 的菜单型预设；导航后续由 NavigationMenu 承担。
@@ -99,6 +100,17 @@
 - 本轮经三轮 base-component review 修复 z-index、非顶层关闭焦点恢复、open-change 语义、focus trap 逃逸、无标题可访问名称、overlay pointer 生命周期、快速开关焦点竞态、unmount 焦点恢复、Dialog 内 Popper 子浮层视觉层级与 Esc 优先级等问题。
 - 2026-06-14 收尾复审继续修复边界：Dialog `to` selector 无效时回退到 `body`，避免不可见 modal 锁住页面；Dialog 自定义 `zIndex` 与子 Teleport 浮层共用 resolved layer base；嵌套 Dialog 会继承父 Dialog 自定义 z-index 基准，避免子 Dialog 被压到父层下；`dialogTeleportedLayerBehaviorKey` 使用模块局部 `Symbol()`，不作为可猜全局扩展点。
 - Dialog 第 6 个文档示例覆盖 Dialog 内 Popover、兄弟 DropdownMenu，以及 PopoverContent 内嵌 DropdownMenu；浏览器验证确认 Esc 顺序为嵌套菜单 -> 父 Popover -> 父 Dialog，scroll lock 与 focus restore 正常，console warning/error 为空。
+
+## 2026-06-14 Message v1 实现
+
+- Message v1 定位为短暂全局 toast，只公开命令式服务，不暴露用户态组件；公开 API 为 `message.info/success/warning/error/loading/close/closeAll/config`，明确不提供 `message.open()` 和 `message.custom()`。
+- 视觉采用 Signal Rail 方向并在实现中紧凑化：top-center fixed stack、白底浮层、左侧 3px 语义色条、16px 状态图标、短文本、24px close 命中区、约 40px 最小高度和 `shadow-popper`。
+- Message 根节点需要保留 `w-max`：关闭离场动画期间 `TransitionGroup` 会给离场项加 `position: absolute`，若只靠 `min-w-72` 和内容 flex，长一点的单行文案会在离场瞬间宽度塌缩并换成两行。
+- 行为边界：同 `key` 的新消息更新替换已有消息并重置 timer，不触发旧消息 `onClose`；`message.close(key)` 只关闭设置了对应 key 的消息，找不到即 no-op；`message.loading()` 默认 `duration: 0`，适合同 key 后续替换为 success / error。
+- 内部通过单例 host + Vue `createApp` 挂载到 `document.body`；SSR / 无 DOM 环境返回 no-op handle，不创建 host；关闭路径统一走内部 `closeMessage(id, reason)`，为后续 beforeClose / 关闭时机函数预留扩展点但 v1 不公开。
+- `message.config()` 首版只公开行为和容器配置：`duration`、`closable`、`max`、`top`、`zIndex`；样式配置暂不公开，后续如出现重复需求再设计。
+- 新增 `scripts/check-message.mjs` 与 `npm run check:message`，并纳入 `npm run check`，守护命令式 API、禁用 open/custom、config 合并、key 更新、SSR no-op、host 单例、图标/色条映射和文档示例。
+- 浏览器验证在 `http://127.0.0.1:5201/components/message.html` 完成：基础状态按钮触发 top-center 堆叠；同 key loading 替换为 success；`close(key)`、handle close、`closeAll()`、config max/top 均生效；console warning/error 为空。
 
 ## 2026-06-06 Select 单选首版实现
 

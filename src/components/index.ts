@@ -56,6 +56,17 @@ import PopperArrow from './Popper/PopperArrow.vue'
 export type { FieldContext, FieldSize, FieldStatus } from './Field'
 export { fieldContextKey, useFieldContext } from './Field'
 export type {
+  MessageApi,
+  MessageCloseReason,
+  MessageConfig,
+  MessageHandle,
+  MessageInput,
+  MessageKey,
+  MessageOptions,
+  MessageType,
+} from './Message'
+export { message } from './Message'
+export type {
   DropdownMenuPlacement,
   DropdownMenuStrategy,
   DropdownMenuTriggerType,

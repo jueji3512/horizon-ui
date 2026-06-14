@@ -1,5 +1,17 @@
 # 工作进度记录
 
+## 2026-06-14 Message v1 实施
+
+- 按用户确认方案实现短暂全局 toast Message：仅公开命令式 `message.info/success/warning/error/loading/close/closeAll/config`，不提供用户态 `<Message />`、`message.open()` 或 `message.custom()`。
+- 新增 `src/components/Message/`：内部通过单例 host + Vue `createApp` 挂载到 `document.body`；SSR / 无 DOM 环境返回 no-op handle；同 `key` 更新替换已有消息并重置 timer，更新时不触发旧消息 `onClose`。
+- `message.loading()` 默认 `duration: 0`；`message.close(key)` 只关闭匹配 key 的消息，找不到 no-op；`message.closeAll()` 关闭当前所有消息；`message.config()` 首版支持 duration、closable、max、top、zIndex。
+- 视觉按 Signal Rail 方向落地并紧凑化：top-center fixed stack、白底浮层、左侧 3px 语义色条、语义图标、短文本、24px close 命中区、约 40px 最小高度和 `shadow-popper`。
+- 新增 `docs/components/message.md` 与 5 个 `docs/examples/message/` 示例，覆盖基础状态、同 key loading 替换、持久提示、指定关闭和全局配置；sidebar 已加入 Message。
+- 新增 `scripts/check-message.mjs` 与 `npm run check:message`，并纳入 `npm run check`，守护命令式 API、禁用 open/custom、config、key 更新替换、SSR no-op、host 单例、图标/色条映射和文档示例。
+- 浏览器验证使用 `http://127.0.0.1:5201/components/message.html`：基础状态触发 top-center 堆叠，error 使用 `role="alert"`；同 key loading 替换为 success 且不新增重复项；`close(key)`、handle close、`closeAll()` 和 config max/top 生效；console warning/error 为空。
+- 用户验收后修复 close 离场动画宽度塌缩问题：`TransitionGroup` leave 状态会让消息 `position: absolute`，Message 根节点需保持 `w-max`，否则短文案会瞬间从一行换成两行。
+- 本轮收尾已准备提交；提交前以最新 `npm run check` 结果为准。
+
 ## 2026-06-14 Dialog v1 收尾验证与提交准备
 
 - 从 `dev` 分支接入，最新提交仍为 `4498c38 feat(form): 落地表单组件与校验收口`；工作区保留 2026-06-11/12 Dialog v1、Popper context 拆分和文档站 Teleport 隔离改动。

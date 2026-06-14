@@ -6,6 +6,8 @@
 
 - [x] Dialog v1 已完成收尾复审和浏览器验证：安全 Teleport target fallback、Dialog 内 Popover / DropdownMenu 语义层 Esc、LIFO 子浮层关闭、嵌套 Dialog 自定义 z-index 继承、内部 behavior key 模块局部化均已落地。
 - [x] `check:dialog` 已扩展到 213 项，覆盖嵌套 DropdownMenu in Popover 示例、LIFO child Esc、resolved z-index、PopoverTrigger 指向真实 PopperContent id、内部 key 不公开和示例旧 API 扫描；`check:popper` 已扩展到 34 项，补 PopoverTrigger 避免从 Popper barrel 导入 context。
+- [x] Message v1 已按 Signal Rail 方向落地：仅公开命令式 `message.info/success/warning/error/loading/close/closeAll/config`，不提供用户态 `<Message />`、`message.open()` 或 `message.custom()`；支持同 `key` 更新替换、loading 默认不自动关闭、`close(key)`、`closeAll()` 和全局 `config`。
+- [x] `check:message` 已新增并纳入 `npm run check`，覆盖命令式 API、禁用 open/custom、config、key 更新、SSR no-op、host 单例、图标/色条映射和文档示例；Message 文档页已在 `http://127.0.0.1:5201/components/message.html` 通过 in-app Browser 验证。
 - [x] 2026-06-14 `npm run check` 通过；in-app Browser 在 `http://127.0.0.1:5200/components/dialog.html` 复验 Dialog 嵌套浮层 Esc 顺序、scroll lock、focus restore 和 console warning/error 为空。
 
 ## 2026-06-11 收尾更新
@@ -32,7 +34,7 @@
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。
 - [ ] 后续 VitePress 发布高于 `1.6.4` 的正式版本时，复查并升级以消除当前嵌套 Vite/esbuild 的 audit 项。
 - [ ] 评估并迁移包管理器：优先考虑 pnpm，备选继续 npm，不优先 Bun / Yarn；迁移时使用 Corepack 固定 pnpm 11，替换 `package-lock.json` 为 `pnpm-lock.yaml`，统一 scripts、`packageManager`、`engines` 和项目记忆文档，并验证 `pnpm install`、`pnpm run check`、audit 等价项和关键文档页面。
-- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu、DropdownMenu、Form / FormItem 与 Dialog 首版已落地；Textarea 本轮先不做、后续按真实需求再启动；后续建议优先推进 Message / Notification，随后再看 Drawer、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；Popconfirm 与 TagInput 因独立使用场景较少先后置。
+- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu、DropdownMenu、Form / FormItem、Dialog 与 Message v1 已落地；Textarea 本轮先不做、后续按真实需求再启动；后续建议优先推进 Notification，随后再看 Drawer、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；Popconfirm 与 TagInput 因独立使用场景较少先后置。
 - [ ] 评估并沉淀真正有收益的内部通用原型：Select 与 Menu 已各自用 slot 子组件 + 内部 collection 注册跑通首版；后续等 Autocomplete、Tabs、NavigationMenu 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Dialog 已先沉淀内部 modal layer（top layer、scroll lock、focus trap、Teleport 子浮层登记），Drawer 可在真实启动时复用；Form / FormItem 已沉淀内部 FormControl context，但不对外暴露 FormLabel / FormControl / FormMessage primitives；PopupSurface 暂缓。
 - [x] 2026-06-10 Form / FormItem 首版已落地：默认 `labelAlign="right"`、`labelWidth=120`，help 通过 label 问号 tip 展示，控件下方消息行仅显示校验 / 状态文案并默认预留高度；轻量校验逻辑集中在 `src/components/Form/validator.ts`，并新增 `npm run check:form` 守护。
 - [x] 继续按用户反馈逐项校正 Form / FormItem 视觉细节：已完成 label / control / action 三段布局、20px 状态图标槽、help tooltip arrow、控件与 label 垂直居中、24px 消息预留区、message 20px 绝对定位、并发校验即时提交、异步校验竞态保护和表单实例 API 拆分。

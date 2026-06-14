@@ -11,9 +11,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, inject, nextTick, onBeforeUnmount, provide, ref, watch } from 'vue'
 import { PopperContent } from '../Popper'
 import { cn } from '../../utils'
+import { dialogTeleportedLayerBehaviorKey } from '../_internal/dialogLayerContext'
 import { popoverContextKey } from './context'
 
 defineOptions({ inheritAttrs: false })
@@ -69,6 +70,7 @@ function onMouseDown(event: MouseEvent) {
 }
 
 function onEsc(event: KeyboardEvent) {
+  if (event.defaultPrevented) return
   if (!ctx.closeOnEsc.value) return
   if (event.key !== 'Escape') return
   if (ctx.hasOpenChildLayer()) return
@@ -76,6 +78,18 @@ function onEsc(event: KeyboardEvent) {
   event.preventDefault()
   ctx.close({ restoreFocus: true })
 }
+
+function closeOnDialogEscape() {
+  if (!ctx.closeOnEsc.value) return false
+  if (ctx.hasOpenChildLayer()) return false
+
+  ctx.close({ restoreFocus: true })
+  return true
+}
+
+provide(dialogTeleportedLayerBehaviorKey, {
+  onEscape: closeOnDialogEscape,
+})
 
 function syncDocumentListeners(open: boolean) {
   if (typeof document === 'undefined') return

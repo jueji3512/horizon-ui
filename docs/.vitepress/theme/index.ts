@@ -5,6 +5,7 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
+  Dialog,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
@@ -103,6 +104,7 @@ export default {
     app.component('Icon', Icon)
     app.component('Checkbox', Checkbox)
     app.component('CheckboxGroup', CheckboxGroup)
+    app.component('Dialog', Dialog)
     app.component('DropdownMenu', DropdownMenu)
     app.component('DropdownMenuTrigger', DropdownMenuTrigger)
     app.component('DropdownMenuContent', DropdownMenuContent)

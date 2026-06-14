@@ -48,6 +48,7 @@
 - Field 已作为公开底层输入域基座落地在 `src/components/Field/`；它像 Popper 一样允许用户组合使用，不放在 `_internal`。
 - ScrollArea 已作为公开底层滚动基座落地在 `src/components/ScrollArea/`；它负责滚动容器、悬浮 scrollbar、thumb 拖拽和 viewport expose，不负责 surface 视觉。
 - Form / FormItem 已作为公开表单组件落地并完成本轮视觉与基础行为收口；内部拆分 FormItemLabel / FormItemMessage 与 FormControl context，但不把 FormLabel / FormControl / FormMessage 作为对外 primitives。
+- Dialog 已作为公开模态容器落地在 `src/components/Dialog/`；它是单一公开组件，不提供 trigger/content/close 子组件，内部沉淀 modal layer 能力但不公开 Overlay / Layer primitive。
 
 ## 历史计划资料处置
 
@@ -57,11 +58,11 @@
 - Paragraph 旧计划已明确过时，当前不实现；如未来需要大段文本编排，重新按当前 API/token 规范设计。
 - Tooltip 当前已迁移到 Popper 基座；历史上“后续评估迁移”的结论已落实。
 - 早期交互规范里 `type` 迁移到 `theme`、禁用态不用 opacity、统一 token 的方向已被当前规范吸收；旧 token 名称和值不再直接沿用。
-- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu 与 Form / FormItem 已按当前边界落地；Form / FormItem 本轮已完成视觉与基础行为收口；Textarea 本轮先不做，后续按真实需求再启动；下一步建议在 Popconfirm 与 Dialog / Drawer 之间选择，然后再推进反馈、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
+- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu、Form / FormItem 与 Dialog 已按当前边界落地；Textarea 本轮先不做，后续按真实需求再启动；Popconfirm 因应用场景较少后置，Drawer 等 Dialog 内部 modal layer 跑稳后再复用推进；后续再推进反馈、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
 
 ## 2026-06-05 未来组件路线与内部原型候选
 
-- 当前建议的组件推进顺序：Popconfirm 或 Dialog / Drawer 二选一作为下一步入口 → Message / Notification → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → NavigationMenu → TreeSelect / Cascader / ColorPicker → TagInput。Form / FormItem 已完成本轮收口；Textarea 本轮先不做，后续按真实需求再插入路线。
+- 当前建议的组件推进顺序：Dialog 已完成首版 → Message / Notification → Drawer → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → NavigationMenu → TreeSelect / Cascader / ColorPicker → Popconfirm / TagInput。Form / FormItem 已完成本轮收口；Textarea 本轮先不做，后续按真实需求再插入路线。
 - Select slot-first 单选首版已落地，已初步验证 Field、Popper、键盘交互、ARIA、empty、loading、disabled option、readonly 和 clearable 等组合边界；多选 tag wrap、searchable、maxTagCount 等仍是后续压力测试。
 - TagInput 已降到路线最后：它仍可作为 Field 多值 / multiline / Tag wrap / Backspace 删除 / 输入宽度自适应的压力测试，但独立使用场景相对较少，先等后续出现明确自由多值输入需求时再启动。
 - Popover / Menu / DropdownMenu 已按“原语 / 英文 / ARIA 优先”的边界拆分：Popover 负责任意非模态浮层，Menu 负责动作 / 命令菜单内容，DropdownMenu 是 `Popover + explicit Menu` 的菜单型预设；导航后续由 NavigationMenu 承担。
@@ -71,7 +72,7 @@
 - 内部通用原型的判断原则：只有当一个结构或交互模型服务多个明确组件，并且能减少真实重复、统一可访问性或降低复杂状态错误时才沉淀；不为了文件拆分、样式复用或概念完整而提前抽象。
 - OptionList / Collection 是优先级最高的内部候选：服务 Select、Autocomplete、Menu、TreeSelect、Cascader，统一 option 注册、disabled、group、empty、loading、active option、键盘导航、滚动到当前项、typeahead 和 listbox/menu 语义映射。第一阶段应作为内部 primitives / composable 验证，不急于公开。
 - RovingFocus / Composite 建议作为内部交互工具：服务 Radio button variant、未来 ToggleGroup、Tabs、Menu、Toolbar，统一 roving `tabindex`、方向键移动、Home / End、disabled item 跳过和循环策略。它解决的是可访问性和键盘模型，不是视觉复用。
-- Overlay / Layer 值得抽，但应等 Dialog / Drawer 启动前设计；它负责全局层级、遮罩、滚动锁、Esc、focus trap 和 `aria-modal`，与负责锚点定位的 Popper 不同。
+- Dialog 已先沉淀内部 modal layer：负责 top-layer 栈、遮罩、滚动锁、Esc、focus trap、`aria-modal`、关闭后焦点恢复和 Dialog 内 Teleport 子浮层登记，与负责锚点定位的 Popper 不同；该能力暂不公开，等 Drawer 真实启动时再复用和校准 API 边界。
 - FormControl context 已随 Form / FormItem 自然出现，用于统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby` 与 label/message 关联；公开 API 仍以 Form / FormItem 为主，不建议暴露底层 FormControl primitives。
 
 ## 2026-06-10 Form / FormItem 首版实现
@@ -85,6 +86,19 @@
 - 校验行为已改为并发启动、每项完成后立即显示自身结果；异步校验使用顺序号忽略旧结果，避免旧请求覆盖新状态；`resetField` 初始值快照使用递归 clone，避免嵌套对象被后续编辑污染。
 - PopupSurface / FloatingSurface 暂不建议立刻抽。Tooltip、Select panel、Popover content、DropdownMenu content、Popconfirm 的 surface 密度、padding、结构和角色差异较大；更合理的做法是先各自实现，等重复足够稳定后，再抽很薄的内部 `surfaceClass` 或 surface primitive。
 - 明确不建议抽的方向：IconButton 已由 Button 的 `shape="square|circle"` 覆盖；StatusSurface 会混淆 Callout、Alert、Message、Tag、Badge 等差异较大的结构；Panel / Card 过泛，容易变成样式垃圾桶；DatePanel 在 DatePicker 真实需求清楚前不预抽。
+
+## 2026-06-11 Dialog v1 实现
+
+- 用户确认 Popconfirm 应后置，优先推进 Dialog；Dialog 采用单一公开组件，不提供 Dialog trigger/content/close 子组件，业务侧通过 `v-model:open` 控制开关。
+- Dialog 内部实现 overlay、Teleport、ARIA `role="dialog|alertdialog"`、`aria-modal`、title/description 关联、Esc 关闭、overlay click 关闭、focus trap、关闭后焦点恢复和 body scroll lock。
+- 内部 `modalLayer.ts` 沉淀 top-layer 栈、10000+ modal z-index 分配、scroll lock 引用计数和焦点工具；该能力不公开为 Overlay / Layer primitive，Drawer 后续真实启动时再复用。
+- 内部 `dialogLayerContext` 供 Dialog 内的 PopperContent / Select / Popover / DropdownMenu 等 Teleport 子浮层登记自身 DOM、Esc 关闭处理和子层 z-index；Dialog 的 focus trap 会把这些登记子层纳入逻辑 Tab 环，Esc 会按后进先出顺序先关闭最上层子浮层，再关闭父 Dialog；PopoverTrigger 的 `aria-controls` 指向真实 PopperContent id，确保 Dialog 的 aria-controls 兜底识别与公开 ARIA 关系一致。
+- Popper context key 已从 `src/components/Popper/index.ts` 拆到 `src/components/Popper/context.ts`，避免 Popper 子组件通过 barrel 导入 context 造成循环引用或热更新注入异常；`index.ts` 仍对外 re-export `PopperContext` / `popperContextKey`。
+- 视觉按用户反馈收口：footer 无分割线；右上角 close 是裸图标按钮，无边框和默认按钮底色，仅保留 hover / active / focus 状态；footer 取消按钮使用 `Button theme="default"`，主操作使用 `brand`，危险操作使用 `error`。
+- 新增 `scripts/check-dialog.mjs` 与 `npm run check:dialog`，并纳入 `npm run check`，守护单组件公开面、无 trigger primitive、modal layer、ARIA、scroll lock、focus trap、文档示例、footer 按钮约定和 Dialog 内 Teleport 子浮层行为。
+- 本轮经三轮 base-component review 修复 z-index、非顶层关闭焦点恢复、open-change 语义、focus trap 逃逸、无标题可访问名称、overlay pointer 生命周期、快速开关焦点竞态、unmount 焦点恢复、Dialog 内 Popper 子浮层视觉层级与 Esc 优先级等问题。
+- 2026-06-14 收尾复审继续修复边界：Dialog `to` selector 无效时回退到 `body`，避免不可见 modal 锁住页面；Dialog 自定义 `zIndex` 与子 Teleport 浮层共用 resolved layer base；嵌套 Dialog 会继承父 Dialog 自定义 z-index 基准，避免子 Dialog 被压到父层下；`dialogTeleportedLayerBehaviorKey` 使用模块局部 `Symbol()`，不作为可猜全局扩展点。
+- Dialog 第 6 个文档示例覆盖 Dialog 内 Popover、兄弟 DropdownMenu，以及 PopoverContent 内嵌 DropdownMenu；浏览器验证确认 Esc 顺序为嵌套菜单 -> 父 Popover -> 父 Dialog，scroll lock 与 focus restore 正常，console warning/error 为空。
 
 ## 2026-06-06 Select 单选首版实现
 
@@ -367,6 +381,13 @@ docs(project): 更新项目上下文与待办
 - Title 文档移除“字号参照 TDesign”的旧表述，改为说明 `level` 对应 `font-title-*` token。
 - Text 文档新增字体规格说明：默认文本使用 `font-body-md`，`code` / `keyboard` 使用 `font-body-sm`。
 - `docs/guide/typography.md` 已从旧 Tailwind `text-*` 阶梯更新为 Horizon 当前 `font-body-*` / `font-title-*` token 表。
+
+## 2026-06-12 文档站样式隔离后续方向
+
+- 对照 Element Plus 后确认：Element Plus 文档站更接近自定义 VitePress shell，它使用自己的 VPApp / VPContent / VPDemo、Markdown transform、Element Plus reset 和少量 VitePress 代码块样式，而不是长期依赖默认 VitePress theme 的全局 reset。
+- Horizon 当前仍沿用默认 VitePress theme，因此短期保留 `ComponentDemo.vp-raw`、`data-horizon-teleport-layer` 和 `postcssIsolateStyles`，用于隔离 `base.css` / `vp-doc.css` 对 demo preview 与 Teleport 浮层的污染。
+- `data-horizon-teleport-layer` 是阶段性兼容标记，不应被视为长期组件 API 或组件语义；它只服务当前文档站默认 theme 隔离。后续自定义文档 shell 成熟后，应移除该标记、`postcssIsolateStyles` Teleport 层白名单和对应 `check:popper` / `check:dialog` 守护逻辑。
+- 未来文档 shell 迁移应优先保留当前 `:::demo` + `docs/examples/**/*.vue` 单源示例和 Shiki 高亮成果，只替换默认 VitePress 内容样式 / reset 对组件预览的影响边界。
 
 ## 2026-06-03/04 浏览器验证与 VitePress Demo 隔离结论
 

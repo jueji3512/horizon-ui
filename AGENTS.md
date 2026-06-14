@@ -30,10 +30,11 @@ npm run check:menu # 校验 Menu 命令菜单契约
 npm run check:select # 校验 Select slot 子组件契约
 npm run check:input-number # 校验 InputNumber 只读/禁用步进契约
 npm run check:form # 校验 Form / FormItem 表单契约
+npm run check:dialog # 校验 Dialog 模态浮层契约
 npm run check:dropdown-menu # 校验 DropdownMenu 组合契约
 npm run format:check # Prettier 检查
 npm run format       # Prettier 写入
-npm run check        # format:check + check:component-demo + check:icons + check:scroll-area + check:popper + check:popover + check:menu + check:select + check:input-number + check:form + check:dropdown-menu + lint + typecheck + build
+npm run check        # format:check + check:component-demo + check:icons + check:scroll-area + check:popper + check:popover + check:menu + check:select + check:input-number + check:form + check:dialog + check:dropdown-menu + lint + typecheck + build
 ```
 
 ## 当前文档记忆
@@ -48,7 +49,7 @@ npm run check        # format:check + check:component-demo + check:icons + check
 
 1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
 2. 先读本文件，再读 `TODO.md` 和 `CODE_STYLE.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
-3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。Select 已统一为 slot 子组件驱动；Popover / Menu / DropdownMenu 已按原语边界落地；Form / FormItem 本轮视觉与基础行为已收口；Textarea 本轮先不做。下一步建议先在 Popconfirm 与 Dialog / Drawer 之间选择：小闭环优先 Popconfirm，浮层基座优先 Dialog / Drawer。
+3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。Select 已统一为 slot 子组件驱动；Popover / Menu / DropdownMenu 已按原语边界落地；Form / FormItem 本轮视觉与基础行为已收口；Dialog 已按单一公开组件落地并沉淀内部 modal layer；Textarea、Popconfirm 本轮先不做。
 4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 6. 后续遇到调研、重开发、复杂排查、跨组件验证、并行实现或其他子代理能提升效率、覆盖面、完成度的任务时，可以开启子代理协助；小而线性的任务优先主代理直接推进，避免不必要的协调成本。
@@ -62,11 +63,12 @@ npm run check        # format:check + check:component-demo + check:icons + check
 - 2026-06-04 收尾时功能与文档主线已提交并推送；近期关键提交包括 `6dc6521 refactor(styles): 拆分设计令牌文件边界` 和 `c99cc21 docs(vitepress): 优化组件示例源码展示`，本次收尾记录另见最新 `git log`。
 - 2026-06-05 已提交昨日遗留记忆文档 `4517523 docs(project): 更新未来计划与技能记忆`，并完成图标体系首轮重整提交 `2daa4b1 refactor(icons): 统一本地图标规范`。
 - 2026-06-06 至 2026-06-08 已完成图标补充、Select 首版、Select slot-first 改造、ScrollArea v1、Popover、Menu 和 DropdownMenu；Popover / DropdownMenu 的公开状态统一使用 `open` / `v-model:open`，旧泛型 Dropdown 已迁移为 `DropdownMenu = Popover + explicit Menu`。近期关键提交包括 `0a30490 feat(select): 支持分组选项与浮层滚动优化`、`d0185e6 feat(scrollarea): 实现滚动区域组件` 和 `7312ed2 feat(components): 落地下拉菜单与选择器 slot 契约`。
-- 当前工作分支为 `codex/docs-and-icon-rework`；如继续收尾，先执行 `git status --short` 和 `git log -1 --oneline` 确认是否仍停在该分支。
-- 最近一次完整验证：2026-06-11 `npm run check` 通过，包含 format、check:component-demo、check:icons、check:scroll-area、check:popper、check:popover、check:menu、check:select、check:input-number、check:form、check:dropdown-menu、lint、typecheck 和 VitePress build。
-- 最近一次轻量验证：2026-06-11 `git diff --check` 通过。
-- 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；Select 文档页曾在 `http://127.0.0.1:5185/components/select` 返回 200；ScrollArea / Select 曾使用 `http://127.0.0.1:5186/` 和 headless Chrome CDP 验证；Popover / Menu / DropdownMenu 在 `http://127.0.0.1:5190/` 通过 in-app Browser 验证；ComponentDemo 源码行号对齐在 `http://127.0.0.1:5192/components/button.html` 通过 in-app Browser 复验；Form 在 `http://127.0.0.1:5193/` 与 `http://127.0.0.1:5194/components/form.html` 通过 in-app Browser 验证默认右对齐 label、help tooltip arrow、24px 消息行预留、message 20px、help 不进入消息行、控件和 status icon 垂直居中、并发校验即时显示、reset 与 console warning/error 为空。新对话如需继续看页面，先确认 dev server 是否仍在运行。
+- 当前工作分支为本地 `dev`；旧 `codex/docs-and-icon-rework` 本地分支已删除，远端当前仍只有 `origin/master`。截至 2026-06-14，本轮 Dialog / 文档隔离改动已完成收尾验证并准备提交。
+- 最近一次完整验证：2026-06-14 `npm run check` 通过，包含 format、check:component-demo、check:icons、check:scroll-area、check:popper、check:popover、check:menu、check:select、check:input-number、check:form、check:dialog、check:dropdown-menu、lint、typecheck 和 VitePress build；build 仅保留 VitePress chunk size warning。
+- 最近一次轻量验证：2026-06-12 `npx prettier --check AGENTS.md TODO.md task_plan.md findings.md progress.md` 与 `git diff --check -- AGENTS.md TODO.md task_plan.md findings.md progress.md` 通过。
+- 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；Select 文档页曾在 `http://127.0.0.1:5185/components/select` 返回 200；ScrollArea / Select 曾使用 `http://127.0.0.1:5186/` 和 headless Chrome CDP 验证；Popover / Menu / DropdownMenu 在 `http://127.0.0.1:5190/` 通过 in-app Browser 验证；ComponentDemo 源码行号对齐在 `http://127.0.0.1:5192/components/button.html` 通过 in-app Browser 复验；Form 在 `http://127.0.0.1:5193/` 与 `http://127.0.0.1:5194/components/form.html` 通过 in-app Browser 验证默认右对齐 label、help tooltip arrow、24px 消息行预留、message 20px、help 不进入消息行、控件和 status icon 垂直居中、并发校验即时显示、reset 与 console warning/error 为空；Dialog / Popover 的 Teleport layer marker 与 Dialog footer 按钮样式在 `http://127.0.0.1:5199/` 通过 in-app Browser 验证，console warning/error 为空；Dialog 嵌套 Popover / DropdownMenu 的 LIFO Esc、scroll lock、focus restore 和 console 在 `http://127.0.0.1:5200/components/dialog.html` 通过 in-app Browser 验证。新对话如需继续看页面，先确认 dev server 是否仍在运行。
 - 2026-06-11 Form / FormItem 本轮收口：FormItem 明确分为 label / control / action 三段，action/status 固定预留 20px 状态图标槽，自定义 action 向右外溢，不挤占 control 宽度；校验改为并发启动且每项完成后立即显示；异步校验旧结果保护、单字段/多字段 API 拆分和 reset 递归 clone 已落地。明天建议先确认是否做 Popconfirm 或 Dialog / Drawer。
+- 2026-06-11/12/14 Dialog v1 已落地并收尾复审：单一公开 `Dialog` 组件，不提供 trigger/content/close 子组件；通过 `v-model:open` 控制开关，内部负责 overlay、ARIA、focus trap、Esc、overlay click、scroll lock、关闭后焦点恢复、top-layer、Dialog 内 Teleport 子浮层 LIFO Esc 和嵌套 z-index 协调；footer 无分割线，右上角 close 为裸图标按钮，取消按钮约定使用 `Button theme="default"`。6 月 12 日已将 VitePress reset 隔离改为统一 `data-horizon-teleport-layer` 阶段性方案，并记录后续参考 Element Plus 自定义文档 shell 后移除该逻辑。Popconfirm 后置，Drawer 后续复用内部 modal layer。
 
 ## 当前规范重点
 
@@ -121,7 +123,7 @@ docs(project): 更新项目上下文与待办
 
 ## 当前组件状态
 
-- 已实现并纳入文档：Button、Icon、Link、Checkbox、Radio、Text、Title、Callout、Divider、Badge、Tooltip、Popover、Menu、DropdownMenu、Switch、Input、InputNumber、Select、Form、FormItem、Tag、Space、Field、Popper、ScrollArea。
+- 已实现并纳入文档：Button、Icon、Link、Checkbox、Radio、Text、Title、Callout、Divider、Badge、Tooltip、Popover、Dialog、Menu、DropdownMenu、Switch、Input、InputNumber、Select、Form、FormItem、Tag、Space、Field、Popper、ScrollArea。
 - Badge 已加入 sidebar。
 - 历史计划目录 `docs/superpowers/**` 已审计并删除；需要保留的路线和边界结论已沉淀到 `findings.md`。
 - 本地 Switch 视觉原型 `switch-mockups.html` 已删除；后续不要提交临时原型文件。
@@ -138,6 +140,7 @@ docs(project): 更新项目上下文与待办
 - PopperContent 保持无视觉样式，默认不提供 border、background、text color、radius、shadow/elevation。
 - PopperContent 通过 `v-bind="$attrs"` 将上层 `class/style` 传给 Teleport 后的真实浮层 DOM。
 - PopperContent 已将注入的 visible 状态与 Teleport target 收束为顶层 computed，避免触发器已打开但浮层 DOM 未挂载的边界。
+- Popper context key 已拆到 `src/components/Popper/context.ts`，Popper 子组件不要从 `./index` 导入 context，避免 barrel 循环导致 provide/inject 异常；`index.ts` 仍对外 re-export `PopperContext` / `popperContextKey`。
 - Field 已作为公开底层输入域组件落地到 `src/components/Field/`，不是 `_internal`；它用于统一 Input、InputNumber、Select、DatePicker 等 field-like 组件的 surface、状态、尺寸和组合布局。Input / InputNumber 已迁移到 Field 验证首版边界。
 - 后续可沉淀的内部通用原型按真实收益推进：OptionList / Collection 优先服务 Select、Autocomplete、Menu、DropdownMenu 等 option 类组件；RovingFocus / Composite 服务 Radio button variant、ToggleGroup、Tabs、Menu 等复合控件；Overlay / Layer 等到 Dialog / Drawer 前设计；Form / FormItem 已沉淀内部 FormControl context，但不把 FormLabel / FormControl / FormMessage 作为对外 primitives；PopupSurface 暂缓，避免过早抽成万能 surface。
 - Field primitives 支持外部 `class` 后置覆盖；FieldRoot 具备 `focus-within` 默认 ring，FieldSegment 具备 `focus-within:text-brand` 分段聚焦视觉。
@@ -146,6 +149,7 @@ docs(project): 更新项目上下文与待办
 - 组件级固有尺寸已完成首轮定稿：Switch track/thumb、Badge dot/count、Tooltip surface / PopperArrow、Checkbox / Radio 控件几何、FieldAction、InputNumber 输入段宽度、Callout 左侧色条、Divider 标签线均作为组件内部几何规格维护，不新增通用 token。
 - Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea 已完成本轮浏览器验证；发现的问题已修复到组件源码或 VitePress demo 隔离层。
 - 文档演示已统一为 VitePress `:::demo` 单源示例：组件页通过 `docs/examples/**/*.vue` 渲染预览并展示源码，`ComponentDemo` 使用 `.vp-raw` 与 `postcssIsolateStyles` 隔离 VitePress 默认主题样式。
+- 2026-06-12 已记录文档站后续方向：当前 `data-horizon-teleport-layer` + `postcssIsolateStyles` 的 Teleport 层隔离是沿用默认 VitePress theme 期间的阶段性方案；后续应参考 Element Plus 自定义 VitePress shell / demo 渲染层，完成后移除该临时隔离标记、白名单和对应检查。
 - `ComponentDemo` 源码展示体验已优化：复用 VitePress / Shiki 构建期高亮，支持 `github-light` / `github-dark` 双主题、行号、示例路径、单一复制 icon 和完整亮暗 shell。
 - 旧 DemoBox / details 查看代码 / Histoire / Storybook spike 已清理；后续文档示例不要回到这些路线。
 - 当前实现组件集已完成迁移收敛扫描：未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留。
@@ -164,6 +168,7 @@ docs(project): 更新项目上下文与待办
 - 2026-06-06 ScrollArea v1 已作为公开底层组件落地：内部结构固定为 `root > viewport > content`，viewport 是唯一真实滚动容器；支持原生高性能滚动、隐藏原生滚动条、悬浮自定义 scrollbar、thumb 拖拽、auto / always / hidden 显隐、垂直 / 水平 / 双轴滚动、`maxHeight` / `maxWidth`、`focusable` 与 `ariaLabel`。
 - 2026-06-08 Popover / Menu / DropdownMenu 已按“原语 / 英文 / ARIA 优先”边界落地：Popover 负责通用非模态浮层外壳，Menu 负责动作/命令菜单内容原语，DropdownMenu 是菜单型 Popover 预设；导航后续由 NavigationMenu 承担，不使用 Menu 的 `role="menu"` 语义。
 - 2026-06-10 Form / FormItem 首版已落地：默认企业表单视觉为左侧 label、label 文案右对齐、`labelWidth=120`；help 通过 label 处问号 tip 表达，控件下方消息行只放校验 / 状态文案并默认预留高度；校验逻辑集中在 `src/components/Form/validator.ts`，`npm run check:form` 已纳入 `npm run check`。
+- 2026-06-11 Dialog v1 已落地：单一公开组件，公开状态统一为 `open` / `v-model:open` / `open-change`，不提供 trigger primitive；内部 modal layer 处理 top-layer、10000+ modal z-index、Esc、overlay click、focus trap、scroll lock、关闭后焦点恢复和 Dialog 内 Popper / Select 等 Teleport 子浮层协调；`npm run check:dialog` 已纳入 `npm run check`。
 - ScrollArea 不提供 surface 视觉，不内置背景、边框、阴影或业务主题；Select / Popover / DropdownMenu / Dialog 等上层组件继续自行定义 surface。
 - ScrollArea 已 expose `viewportRef`、`contentRef`、`scrollTo`、`scrollBy`、`scrollToElement`、`update`、`getScrollState`，并提供内部 context / expose 供 SelectOption 等子组件保持 active 项可见；v1 不做虚拟滚动、不引入依赖，但 viewport 契约预留给未来 `@tanstack/vue-virtual` 等 virtualizer。
 - Select 面板已改用 `ScrollArea :max-height="240"`，active option 滚动改为调用 ScrollArea 的 `scrollToElement(..., { block: 'nearest' })`，不再直接使用浏览器 `scrollIntoView()`。
@@ -206,6 +211,7 @@ Popper 是底层定位基座，不是最终视觉组件。
 - 如果修改颜色 token，必须同步更新 `src/styles` 和设计指南文档。
 - 如果修改代码风格或检查工具，必须同步更新 `CODE_STYLE.md` 和相关配置。
 - 文档站 VitePress 全局样式影响组件 demo 时，应优先检查 `ComponentDemo` 的 `.vp-raw` 隔离与 `docs/.vitepress/config.ts` 中的 `postcssIsolateStyles`；不要为了 VitePress 表现向组件源码加入 `!important`、文档专用 class 或特殊覆盖。
+- `data-horizon-teleport-layer` 只用于当前文档站默认 theme reset 隔离，不是长期组件 API；未来自定义文档 shell 成熟后应删除它及相关检查。
 - 可按任务收益使用子代理：调研、重开发、复杂排查、跨组件验证、并行实现、独立文件修复等，只要能提升效率、覆盖面或完成度，就可以分派；同一文件或强耦合关键改动仍由主代理集中协调。
 - 依赖、工具链或 Node.js 版本如偏旧，且升级能明显改善最终效果、性能、完整性或开发简洁度，先与用户确认后直接升级；升级造成的内部不适配应同步修正，不以兼容旧实现为主要约束。
 - 外部 Superpowers skills 是工作流辅助，不替代项目规范；使用时仍以 `AGENTS.md`、`TODO.md`、`CODE_STYLE.md`、`findings.md`、`task_plan.md`、`progress.md` 和当前源码为准。

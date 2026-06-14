@@ -35,24 +35,55 @@ expectFile('src/components/Popper/Popper.vue')
 expectFile('src/components/Popper/PopperTrigger.vue')
 expectFile('src/components/Popper/PopperContent.vue')
 expectFile('src/components/Popper/PopperArrow.vue')
+expectFile('src/components/Popper/context.ts')
 expectFile('src/components/Popper/index.ts')
 expectFile('src/components/Popper/types.ts')
 expectFile('src/components/Popper/usePopper.ts')
 
 expectIncludes(
-  'src/components/Popper/index.ts',
+  'src/components/Popper/context.ts',
   'visible: ComputedRef<boolean>',
   'PopperContext visible is readonly',
 )
 expectIncludes(
-  'src/components/Popper/index.ts',
+  'src/components/Popper/context.ts',
   'middlewareData: Readonly<Ref<MiddlewareData>>',
   'PopperContext middlewareData is readonly',
 )
 expectIncludes(
-  'src/components/Popper/index.ts',
+  'src/components/Popper/context.ts',
   'currentPlacement: Readonly<Ref<Placement>>',
   'PopperContext currentPlacement is readonly',
+)
+expectIncludes(
+  'src/components/Popper/index.ts',
+  "export { popperContextKey } from './context'",
+  'Popper index re-exports context key without defining it in the barrel',
+)
+expectNotIncludes(
+  'src/components/Popper/PopperContent.vue',
+  "from './index'",
+  'PopperContent imports context directly to avoid barrel cycles',
+)
+expectNotIncludes(
+  'src/components/Popper/PopperTrigger.vue',
+  "from './index'",
+  'PopperTrigger imports context directly to avoid barrel cycles',
+)
+expectNotIncludes(
+  'src/components/Popper/PopperArrow.vue',
+  "from './index'",
+  'PopperArrow imports context directly to avoid barrel cycles',
+)
+expectIncludes(
+  'src/components/Popover/PopoverTrigger.ts',
+  "from '../Popper/context'",
+  'PopoverTrigger imports Popper context directly to avoid barrel cycles',
+)
+expectNotIncludes(
+  'src/components/Popover/PopoverTrigger.ts',
+  "from '../Popper'",
+  'PopoverTrigger does not import Popper context through the barrel',
 )
 expectIncludes(
   'src/components/Popper/types.ts',
@@ -100,9 +131,14 @@ expectNotIncludes(
   'PopperContent does not add docs-only isolation classes',
 )
 expectIncludes(
+  'src/components/Popper/PopperContent.vue',
+  'data-horizon-teleport-layer',
+  'PopperContent marks teleported layers for docs shell reset isolation',
+)
+expectIncludes(
   'docs/.vitepress/config.ts',
-  '.shadow-popper, .shadow-popper *',
-  'VitePress reset excludes existing popper surface classes without changing components',
+  '[data-horizon-teleport-layer], [data-horizon-teleport-layer] *',
+  'VitePress reset excludes Horizon teleported layers through a shared marker',
 )
 expectIncludes(
   'src/components/Popper/PopperContent.vue',

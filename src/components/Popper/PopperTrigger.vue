@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { computed, ref, inject, onMounted, onBeforeUnmount } from 'vue'
-import { popperContextKey } from './index'
+import { popperContextKey } from './context'
 
 const props = withDefaults(
   defineProps<{

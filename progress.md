@@ -1,5 +1,36 @@
 # 工作进度记录
 
+## 2026-06-14 Dialog v1 收尾验证与提交准备
+
+- 从 `dev` 分支接入，最新提交仍为 `4498c38 feat(form): 落地表单组件与校验收口`；工作区保留 2026-06-11/12 Dialog v1、Popper context 拆分和文档站 Teleport 隔离改动。
+- 本轮按 base-component review 复查 Dialog / Popper / Popover / DropdownMenu 的底层浮层边界，修复复审发现的 Important 问题：Dialog 自身 Teleport `to` 目标若为无效 selector 时回退到 `body`；Dialog 内 Popover / DropdownMenu 的 Esc 由语义层提供内部 handler，避免父 Dialog 抢先关闭；Dialog 子浮层 Esc 改为按注册顺序后进先出处理；嵌套 Dialog 在父 Dialog 使用自定义 `zIndex` 时继承父层级基准；内部 `dialogTeleportedLayerBehaviorKey` 改为模块局部 `Symbol()`，不形成全局可猜扩展点。
+- 继续修复最终复审发现的动态边界：Dialog 内已打开子浮层的 z-index 改为注册期间响应式读取父 Dialog child layer base；PopperContent 在 close 策略变化时不再清除重登记同一个 Dialog 子层，避免扰动 LIFO 顺序；父 Popover 有打开子层时不消费 Dialog Esc，让 Dialog 继续交给真正的最上层子浮层；PopoverTrigger 的 `aria-controls` 改为指向真实 PopperContent id，避免指到 Popover 自身未渲染到 DOM 的 content id。
+- 契约守护已增强：`check:dialog` 覆盖安全 Teleport target、resolved z-index、Dialog 子浮层 z-index 响应式派生、LIFO child Esc、PopoverTrigger / PopperContent id 一致性、嵌套 DropdownMenu in Popover 示例、内部 key 不从 public barrel 暴露、所有 Dialog 示例禁止旧 Dialog primitive 和旧 `primary` / `danger` 命名；`check:popper` 补 PopoverTrigger 直接导入 Popper context 的 barrel-cycle 守护。
+- 新增 Dialog 第 6 个示例覆盖 Dialog 内 Popover、兄弟 DropdownMenu，以及 PopoverContent 内嵌 DropdownMenu 的真实嵌套浮层场景。
+- 浏览器验证使用 `http://127.0.0.1:5200/components/dialog.html`：Dialog 打开后 body scroll lock 生效；Popover Esc 先关子浮层且 Dialog 保持打开；DropdownMenu Esc 先关子浮层且 Dialog 保持打开；嵌套 DropdownMenu in Popover 的三段 Esc 顺序为嵌套菜单、父 Popover、父 Dialog；PopoverTrigger 的 `aria-controls` 可定位到真实 teleported PopperContent DOM；关闭后 overlay DOM 清空、body overflow 恢复、焦点回到触发按钮；页面 console warning/error 为空。
+- 验证：2026-06-14 `npm run check` 通过，包含 format、所有契约脚本、lint、typecheck 和 VitePress build；build 仅保留 VitePress chunk size warning。
+
+## 2026-06-12 文档站隔离策略记录
+
+- 根据用户建议，对照 Element Plus 文档站做法后确认：Element Plus 更偏向自定义 VitePress shell / demo 渲染层，并引入自身组件库 reset，而不是长期依赖默认 VitePress theme reset 再逐项白名单。
+- 当前 Horizon 仍沿用默认 VitePress theme，因此暂时保留 `ComponentDemo.vp-raw`、`data-horizon-teleport-layer` 与 `postcssIsolateStyles`，用于隔离 demo preview 和 Teleport 浮层免受 VitePress `base.css` / `vp-doc.css` 影响。
+- 已记录后续方向：未来参考 Element Plus 自定义文档 shell，完成后移除当前为默认 theme 隔离加入的 `data-horizon-teleport-layer`、Teleport 层 `postcssIsolateStyles` 白名单和相关契约检查。
+- 浏览器验证使用 `http://127.0.0.1:5199/`：Dialog footer 按钮样式恢复，close icon 保持裸图标按钮；Popover 浮层带统一 Teleport marker，背景、阴影、文字色正常；console warning/error 为空。
+- 验证：`npm run check` 通过；随后更新记忆文档并通过 `npx prettier --check AGENTS.md TODO.md task_plan.md findings.md progress.md` 与 `git diff --check -- AGENTS.md TODO.md task_plan.md findings.md progress.md`。
+- 截至收尾，Dialog v1 与文档隔离改动仍在工作区未提交；最新提交仍为 `4498c38 feat(form): 落地表单组件与校验收口`。明天新对话先看 `git status --short`，再决定继续逐项审 Dialog 视觉/交互，或先整理提交。
+
+## 2026-06-11 Dialog v1 实施
+
+- 按用户确认方案实现单一公开 `Dialog` 组件：不提供 `DialogTrigger` / `DialogContent` / `DialogClose`，业务侧通过 `v-model:open` / `open-change` 控制状态。
+- Dialog 内部负责 overlay、Teleport、ARIA `role="dialog|alertdialog"`、title / description 关联、`ariaLabel` 兜底、focus trap、Esc、overlay click、body scroll lock、关闭后焦点恢复和 top-layer 协调。
+- 视觉按用户反馈收口：footer 无分割线；右上角 close 是裸图标按钮，无边框和默认按钮底色，仅保留 hover / active / focus；footer 取消按钮使用 `Button theme="default"`，主操作使用 `brand`，危险操作使用 `error`。
+- 内部 modal layer 经 base-component review 三轮修正：默认 modal z-index 提升为 10000+；非顶层关闭不恢复焦点；快速开关焦点恢复与初始聚焦有 token 防竞态；overlay pointer down/up/cancel 不再误触关闭；unmount 时会按顶层规则恢复焦点。
+- 为 Dialog 内 Select / Popover / DropdownMenu 等 Teleport 子浮层新增内部 `dialogLayerContext` 登记：子浮层 z-index 位于 Dialog 之上，Tab 会纳入同一逻辑焦点环，Esc 会先关闭子浮层再关闭 Dialog。
+- Popper context key 已拆到 `src/components/Popper/context.ts`，避免 Popper 子组件从 barrel 导入 context 造成循环引用 / 热更新注入异常；`check:popper` 已补守护。
+- 新增 `docs/components/dialog.md`、`docs/examples/dialog/*`、`scripts/check-dialog.mjs`，并将 `npm run check:dialog` 纳入 `npm run check`。
+- 浏览器验证使用 `http://127.0.0.1:5195/components/dialog.html`：基础打开关闭、Esc、overlay click、scroll lock、focus trap、close icon、alertdialog、Dialog 内 Select 子浮层 z-index / Esc 优先级均通过；按当前验证开始时间过滤 console warning/error 为空。
+- 验证：`npm run check` 通过，包含 `check:popper` 31 项、`check:dialog` 134 项、lint、typecheck 和 VitePress build。
+
 ## 2026-06-11 Form / FormItem 收口
 
 - 继续在 `http://127.0.0.1:5194/components/form.html` 与用户一起逐项校正 Form / FormItem。

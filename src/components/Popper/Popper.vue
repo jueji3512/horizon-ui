@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { ref, computed, provide, onBeforeUnmount, useId, watch } from 'vue'
 import { usePopper } from './usePopper'
-import { popperContextKey } from './index'
+import { popperContextKey } from './context'
 import { useZIndex } from '../../utils'
 import type { Placement, TriggerType } from './types'
 

@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { ref, computed, inject, onMounted, onBeforeUnmount, type CSSProperties } from 'vue'
-import { popperContextKey } from './index'
+import { popperContextKey } from './context'
 
 const ctx = inject(popperContextKey)
 if (!ctx) {

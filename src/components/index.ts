@@ -35,6 +35,7 @@ import SelectOptionGroup from './Select/SelectOptionGroup.vue'
 import DropdownMenu from './DropdownMenu/DropdownMenu.vue'
 import DropdownMenuTrigger from './DropdownMenu/DropdownMenuTrigger.vue'
 import DropdownMenuContent from './DropdownMenu/DropdownMenuContent.vue'
+import Dialog from './Dialog/Dialog.vue'
 import Tag from './Tag/Tag.vue'
 import ScrollArea from './ScrollArea/ScrollArea.vue'
 import FieldRoot from './Field/FieldRoot.vue'
@@ -59,6 +60,7 @@ export type {
   DropdownMenuStrategy,
   DropdownMenuTriggerType,
 } from './DropdownMenu'
+export type { DialogFooterSlotProps, DialogRole, DialogSize } from './Dialog'
 export type {
   ScrollAreaAlignment,
   ScrollAreaAxis,
@@ -137,6 +139,7 @@ export {
   Button,
   Checkbox,
   CheckboxGroup,
+  Dialog,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,

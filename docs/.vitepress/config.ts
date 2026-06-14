@@ -41,6 +41,7 @@ export default defineConfig({
             { text: 'Divider 分割线', link: '/components/divider' },
             { text: 'Tooltip 文字提示', link: '/components/tooltip' },
             { text: 'Popover 弹出层', link: '/components/popover' },
+            { text: 'Dialog 对话框', link: '/components/dialog' },
             { text: 'Menu 菜单', link: '/components/menu' },
             { text: 'Switch 开关', link: '/components/switch' },
             { text: 'Input 输入框', link: '/components/input' },
@@ -90,7 +91,8 @@ export default defineConfig({
         plugins: [
           postcssIsolateStyles({
             includeFiles: [/base\.css$/, /vp-doc\.css$/],
-            prefix: ':not(:where(.vp-raw, .vp-raw *, .shadow-popper, .shadow-popper *))',
+            prefix:
+              ':not(:where(.vp-raw, .vp-raw *, [data-horizon-teleport-layer], [data-horizon-teleport-layer] *))',
           }),
         ],
       },

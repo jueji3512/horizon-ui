@@ -10,7 +10,7 @@ import {
   type PropType,
   type VNode,
 } from 'vue'
-import { popperContextKey } from '../Popper'
+import { popperContextKey } from '../Popper/context'
 import { popoverContextKey } from './context'
 
 function resolveElement(value: Element | ComponentPublicInstance | null): HTMLElement | null {
@@ -136,7 +136,7 @@ export default defineComponent({
         id: ctx.triggerId,
         'aria-haspopup': props.ariaHaspopup || undefined,
         'aria-expanded': ctx.open.value,
-        'aria-controls': ctx.open.value ? ctx.contentId : undefined,
+        'aria-controls': ctx.open.value ? (popper?.contentId ?? ctx.contentId) : undefined,
         onMouseenter,
         onMouseleave,
         onClick,

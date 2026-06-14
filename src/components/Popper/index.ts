@@ -1,33 +1,7 @@
-import type { Ref, ComputedRef, InjectionKey, CSSProperties } from 'vue'
-import type { MiddlewareData } from '@floating-ui/vue'
-import type { Placement, TriggerType } from './types'
-
 export type { Placement, TriggerType } from './types'
 export type { UsePopperOptions, UsePopperReturn } from './types'
-
-export interface PopperContext {
-  visible: ComputedRef<boolean>
-  show: () => void
-  hide: (options?: { immediate?: boolean }) => void
-  toggle: () => void
-  trigger: ComputedRef<TriggerType>
-  disabled: ComputedRef<boolean>
-  closeOnOutsideClick: ComputedRef<boolean>
-  closeOnEsc: ComputedRef<boolean>
-  triggerRef: Ref<HTMLElement | undefined>
-  contentRef: Ref<HTMLElement | undefined>
-  arrowRef: Ref<HTMLElement | undefined>
-  floatingStyles: Readonly<Ref<CSSProperties>>
-  middlewareData: Readonly<Ref<MiddlewareData>>
-  currentPlacement: Readonly<Ref<Placement>>
-  to: ComputedRef<string | HTMLElement>
-  updatePosition: () => void
-  zIndex: ComputedRef<number>
-  matchWidth: ComputedRef<boolean>
-  contentId: string
-}
-
-export const popperContextKey: InjectionKey<PopperContext> = Symbol('popperContext')
+export type { PopperContext } from './context'
+export { popperContextKey } from './context'
 
 export { default as Popper } from './Popper.vue'
 export { default as PopperTrigger } from './PopperTrigger.vue'

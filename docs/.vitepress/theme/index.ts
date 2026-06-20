@@ -56,6 +56,7 @@ import {
   Text,
   Title,
   Tooltip,
+  notification,
 } from '@/components'
 import '@/styles/horizon.css'
 import IconGrid from './components/IconGrid.vue'
@@ -101,6 +102,7 @@ export default {
   extends: DefaultTheme,
   enhanceApp({ app }) {
     registerDemoExamples(app)
+    app.provide('notification', notification)
     app.component('Button', Button)
     app.component('Icon', Icon)
     app.component('Checkbox', Checkbox)

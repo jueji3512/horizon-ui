@@ -7,6 +7,7 @@ export default defineConfig({
   title: 'Horizon UI',
   description: '简约现代企业级 Vue 3 组件库',
   lang: 'zh-CN',
+  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]],
 
   themeConfig: {
     nav: [
@@ -43,6 +44,7 @@ export default defineConfig({
             { text: 'Popover 弹出层', link: '/components/popover' },
             { text: 'Dialog 对话框', link: '/components/dialog' },
             { text: 'Message 全局提示', link: '/components/message' },
+            { text: 'Notification 通知', link: '/components/notification' },
             { text: 'Progress 进度条', link: '/components/progress' },
             { text: 'Menu 菜单', link: '/components/menu' },
             { text: 'Switch 开关', link: '/components/switch' },

@@ -1,5 +1,16 @@
 # 工作进度记录
 
+## 2026-06-20 Notification v1 实施
+
+- 根据用户确认的计划开始实现 Notification v1：定位为比 Message 更持久、更结构化的全局通知服务，用于任务状态、系统通知和需要标题 / 正文 / 操作的反馈。
+- 先按 TDD 新增 `scripts/check-notification.mjs` 与 `npm run check:notification`，并接入完整 `npm run check` 链路；首次运行 `npm run check:notification` 按预期失败 134 项，覆盖缺失源码、文档、示例、公开导出和 API 契约。
+- 新增 `src/components/Notification/`：`notification.ts` 使用单例 host + Vue `createApp`，带 SSR no-op、timer、同 key 更新、max 溢出关闭、四角 placement 和 `data-horizon-teleport-layer`；`NotificationHost.vue` 负责四角队列与过渡；`NotificationItem.vue` 渲染结构化通知卡。
+- 公开 API 为 `notification.info/success/warning/error/loading/close/closeAll/config`，不提供用户态 `<Notification />`、`notification.open()` 或 `notification.custom()`；普通通知默认 `duration: 4500`，loading 默认 `duration: 0`，默认 `placement: 'top-right'`，默认 `max: 4`。
+- Notification loading / 任务型通知的 `progress` 使用线性 `Progress`，通过 `progress: { percent, status? }` 表达任务完成度；loading 的成功、警告、错误结果继续保留进度条，并由 `progress.status` 驱动 Progress 与通知卡片视觉，不再用普通状态通知覆盖任务进度。
+- Notification 卡片宽度收口为桌面端 360px、窄屏下收缩到视口内；`TransitionGroup` 容器保持 `relative w-full`，卡片本身 `w-full`，让文案变化、单条关闭、最后一条关闭和 `closeAll()` 都不再触发横向宽度抖动或右向离场错觉。
+- 新增 `docs/components/notification.md` 与 5 个 `docs/examples/notification/` 示例，覆盖基础状态、loading 进度更新、四角位置、持久通知 / close、全局 config；并更新 VitePress sidebar、theme provide、`src/components/index.ts` 和项目记忆文档。
+- 验证：`npx prettier --check`、`git diff --check`、`npm run check:notification`、`npm run typecheck` 与完整 `npm run check` 均通过；完整 build 仅保留 VitePress chunk size warning。`http://127.0.0.1:5204/components/notification.html` 已通过 Playwright + 系统 Chrome 验证基础状态、error alert、loading 线性进度、同 key loading 更新到 success 并保留 progress、warning / error 进度状态、360px 稳定宽度、关闭离场无横向漂移、closeAll、四角 placement、config max=2 和 console warning/error 为空。
+
 ## 2026-06-20 Progress status API 与动态示例
 
 - 根据用户反馈和主流组件库方向重新审视 Progress API：结果态应使用 `status`，默认 brand 进度色不应作为状态枚举暴露；TDesign Vue Next 的类型里 progress 同时有 `status` 和用于形态的 `theme`，Element Plus 与 Ant Design 也使用 `status` 表达 Progress 结果态。

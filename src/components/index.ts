@@ -67,6 +67,20 @@ export type {
   MessageType,
 } from './Message'
 export { message } from './Message'
+export type {
+  NotificationAction,
+  NotificationApi,
+  NotificationCloseReason,
+  NotificationConfig,
+  NotificationHandle,
+  NotificationInput,
+  NotificationKey,
+  NotificationOptions,
+  NotificationPlacement,
+  NotificationProgressConfig,
+  NotificationType,
+} from './Notification'
+export { notification } from './Notification'
 export type { ProgressProps, ProgressSize, ProgressStatus, ProgressVariant } from './Progress'
 export type {
   DropdownMenuPlacement,

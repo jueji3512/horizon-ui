@@ -2,6 +2,15 @@
 
 本文件记录未来要处理的隐藏问题、决策项和开发计划。新对话优先阅读 `AGENTS.md`，然后阅读本文件。
 
+## 2026-06-20 收尾更新
+
+- [x] Notification v1 已作为结构化全局通知服务落地：仅公开命令式 `notification.info/success/warning/error/loading/close/closeAll/config`，不提供用户态 `<Notification />` 组件、`notification.open()` 或 `notification.custom()`。
+- [x] Notification 支持 `title`、`content`、四角 `placement`、同 `key` 更新替换、`duration`、`closable`、`action`、`onClose` 和全局 `config`；普通通知默认 `duration: 4500`，loading 默认 `duration: 0`，默认位置为 `top-right`，默认最大数量为 4。
+- [x] Notification loading / 任务型通知使用线性 `Progress`，通过 `progress: { percent, status? }` 表达任务完成度；loading 的成功、警告、错误结果保留进度条，并由 `progress.status` 驱动 Progress 与通知卡片视觉；v1 不支持 circle loading、通知中心、系统浏览器通知、hover 暂停倒计时、自动关闭倒计时进度条或历史持久化。
+- [x] Notification 视觉稳定性已收口：桌面端固定 360px 宽度、窄屏收缩到视口内，文案变化只做内部换行；单条关闭、最后一条关闭和 `closeAll()` 统一为向上淡出，不再出现右向消失错觉。
+- [x] `check:notification` 已新增并纳入 `npm run check`，覆盖命令式 API、禁用 open/custom、四角 placement、loading 默认不关闭、progress 复用、同 key 更新、SSR no-op、close/closeAll/config、文档示例和旧命名扫描。
+- [x] Notification 文档页已在 `http://127.0.0.1:5204/components/notification.html` 通过 Playwright + 系统 Chrome 验证：基础状态、error alert、loading 线性进度、同 key loading 更新到 success 并保留 progress、warning / error 进度状态、360px 稳定宽度、关闭离场无横向漂移、closeAll、四角 placement、config max=2 和 console warning/error 为空。
+
 ## 2026-06-15 收尾更新
 
 - [x] Progress v1 已作为公开确定进度组件落地：支持 line / circle、percent clamp、`status="success|warning|error"` 结果状态、custom color、默认 brand-only line / circle flow、circle 72/120/160px 预设尺寸；首版不支持未知进度、steps、buffer 或 success percent。
@@ -36,7 +45,7 @@
 
 - [ ] 继续完善公开底层组件 Field：首版 `src/components/Field/` primitives 已落地，并已迁移 Input / InputNumber；后续需要用 Select 多选、DatePicker range 等场景继续验证 FieldGroup、multiline 和 FieldSegment 边界。
 - [x] 继续打磨 Progress 表现：2026-06-20 已完成一轮环形中心标签视觉修正，并将 circle active 对齐为和 line 同源的渐变扫光模型。
-- [x] Progress 的尺寸模型已收口；后续按路线推进 Notification。
+- [x] Progress 的尺寸模型已收口；Notification 已按路线落地并复用线性 Progress 表达 loading 任务进度。
 - [ ] 组件迁移扫描进入滚动守护：2026-06-04 已对当前实现组件集完成收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件和复杂场景继续扫描。
 - [ ] 后续扫描时只把组件源码内部实现作为规范约束对象；文档示例可保留外部使用者风格，不强制迁移到 Horizon token。
 - [ ] 为后续新增或继续迁移的关键组件补充更稳定的浏览器级视觉验证；Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea、Form、Dialog、Message、Progress 已完成一轮浏览器验证并修复或确认发现的问题。
@@ -45,7 +54,7 @@
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。
 - [ ] 后续 VitePress 发布高于 `1.6.4` 的正式版本时，复查并升级以消除当前嵌套 Vite/esbuild 的 audit 项。
 - [ ] 评估并迁移包管理器：优先考虑 pnpm，备选继续 npm，不优先 Bun / Yarn；迁移时使用 Corepack 固定 pnpm 11，替换 `package-lock.json` 为 `pnpm-lock.yaml`，统一 scripts、`packageManager`、`engines` 和项目记忆文档，并验证 `pnpm install`、`pnpm run check`、audit 等价项和关键文档页面。
-- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Message v1 与 Progress v1 已落地；Textarea 本轮先不做、后续按真实需求再启动；后续建议优先推进 Notification，并复用 Progress 的确定进度能力，随后再看 Drawer、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；Popconfirm 与 TagInput 因独立使用场景较少先后置。
+- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Message v1、Progress v1 与 Notification v1 已落地；Textarea 本轮先不做、后续按真实需求再启动；后续建议优先推进 Drawer，并复用 Dialog 内部 modal layer 能力，随后再看 DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；Popconfirm 与 TagInput 因独立使用场景较少先后置。
 - [ ] 评估并沉淀真正有收益的内部通用原型：Select 与 Menu 已各自用 slot 子组件 + 内部 collection 注册跑通首版；后续等 Autocomplete、Tabs、NavigationMenu 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Dialog 已先沉淀内部 modal layer（top layer、scroll lock、focus trap、Teleport 子浮层登记），Drawer 可在真实启动时复用；Form / FormItem 已沉淀内部 FormControl context，但不对外暴露 FormLabel / FormControl / FormMessage primitives；PopupSurface 暂缓。
 - [x] 2026-06-10 Form / FormItem 首版已落地：默认 `labelAlign="right"`、`labelWidth=120`，help 通过 label 问号 tip 展示，控件下方消息行仅显示校验 / 状态文案并默认预留高度；轻量校验逻辑集中在 `src/components/Form/validator.ts`，并新增 `npm run check:form` 守护。
 - [x] 继续按用户反馈逐项校正 Form / FormItem 视觉细节：已完成 label / control / action 三段布局、20px 状态图标槽、help tooltip arrow、控件与 label 垂直居中、24px 消息预留区、message 20px 绝对定位、并发校验即时提交、异步校验竞态保护和表单实例 API 拆分。

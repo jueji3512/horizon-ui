@@ -34,6 +34,8 @@ Prettier 是格式化的唯一来源，VS Code 保存时使用 Prettier 格式�
 
 Tailwind class 顺序由 `prettier-plugin-tailwindcss` 自动整理，并通过 `tailwindStylesheet: './src/styles/horizon.css'` 读取 Tailwind v4 CSS-first 配置。`clsx` 和 `cn` 中的 class 字符串也纳入排序。
 
+`.prettierignore` 忽略依赖、构建产物、锁文件、Markdown 记忆文档，以及文档站 favicon 静态资源；favicon 由浏览器验证覆盖，不作为 Prettier 输入。
+
 ## ESLint
 
 ESLint 负责 JavaScript、TypeScript 和 Vue SFC 的代码质量规则。
@@ -73,11 +75,12 @@ npm run check:form # Form / FormItem 表单契约检查
 npm run check:dialog # Dialog 模态浮层契约检查
 npm run check:message # Message 命令式反馈契约检查
 npm run check:progress # Progress 确定进度契约检查
+npm run check:notification # Notification 结构化通知契约检查
 npm run check:dropdown-menu # DropdownMenu 组合契约检查
 npm run lint         # JS/TS/Vue + CSS 检查
 npm run typecheck    # vue-tsc --noEmit
 npm run build        # VitePress 构建
-npm run check        # 格式、ComponentDemo、图标规范、ScrollArea、Popper、Popover、Menu、Select、InputNumber、Form、Dialog、Message、Progress、DropdownMenu 契约、lint、typecheck、build 全量检查
+npm run check        # 格式、ComponentDemo、图标规范、ScrollArea、Popper、Popover、Menu、Select、InputNumber、Form、Dialog、Message、Progress、Notification、DropdownMenu 契约、lint、typecheck、build 全量检查
 ```
 
 ## VS Code

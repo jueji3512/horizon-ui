@@ -1,5 +1,39 @@
 # 工作进度记录
 
+## 2026-06-20 Progress 视觉打磨
+
+- 按项目文档当前待办继续查看 Progress：确认 5202 dev server 已停止后重新启动 `http://127.0.0.1:5202/`，打开 `docs/components/progress.md` 对应页面，先后检查暗色和亮色文档截图。
+- 亮色页面下确认本轮更适合修组件自身的环形中心内容比例，而不是提前处理 dark mode token；当前 dark mode token 仍按项目计划后置。
+- 按 TDD 补强 `scripts/check-progress.mjs`：先要求 `Progress.vue` 暴露环形标签字体映射和文档说明，观察到 `npm run check:progress` 失败后再改实现和文档。
+- `src/components/Progress/Progress.vue` 新增 `circleLabelTypographyClassMap`，让环形中心标签随直径递进为 `font-body-sm` / `font-body-md` / `font-body-lg`；数字直径按实际 circle size 阈值归类，线性标签保持不变。
+- `docs/components/progress.md` 尺寸章节补充环形中心标签随直径递进的说明；`check:progress` 已从 125 项扩展到 126 项。
+- 按用户反馈新增 Tabler filled 来源并按项目规范归一化的 `circle-check-filled`、`circle-alert-filled`、`circle-close-filled` SVG；Progress line 的 success / warning / error 状态改用填充圆形图标，circle 状态继续使用无圆底 `check` / `alert` / `close` 图标。
+- `scripts/check-icons.mjs` 将三枚 filled 状态图标加入必备图标列表；`scripts/check-progress.mjs` 守护三枚图标文件、line / circle 状态映射和 circle active，`check:progress` 已扩展到 153 项。
+- 浏览器复验 `http://127.0.0.1:5202/components/progress.html`：line success / warning / error 渲染 14px 填充圆形 SVG，circle 状态图标为 24px 无圆底 SVG，页面 console warning/error 为空。
+- 根据用户澄清修正图标方向：filled circle 应用于 line 形态，circle 形态中心继续使用无圆底图标，以避免外层进度环和中心状态图标重复圆形轮廓。
+- 根据用户反馈补充并修正 circle active：brand 环形进度在 `active=true` 且未满时保留静态进度弧，额外在已完成弧线上覆盖与 line 同源的白色渐变 stroke，并通过 SVG `animateTransform` 推动渐变从起点方向扫向当前进度位置；`active=false` 与 success / warning / error 状态 theme 不显示流动动画；`docs/examples/progress/example-06.vue` 已补环形 active 对照。
+- 契约检查补充守护 circle active 的 `<linearGradient gradientUnits="userSpaceOnUse">`、`<animateTransform attributeName="gradientTransform">`、`circleFlowGradientFrom` / `circleFlowGradientTo` 与 `:stroke="circleFlowGradientUrl"`，并禁止旧的旋转动画、离屏 `rect` / `mask` 和独立白色 stroke 高光段，确保 circle 与 line 使用一致的流光模型且真实可见。
+- 根据用户反馈修正 circle active 流光方向：SVG `gradientTransform` 的视觉方向与直觉相反，已将 `circleFlowGradientFrom` / `circleFlowGradientTo` 反转为从进度起点扫向当前进度端点，并在 `check:progress` 中增加方向守护。
+- 浏览器复验 `http://127.0.0.1:5202/components/progress.html`：circle sweep 实际渲染为覆盖在已完成弧线上的渐变 `circle` stroke，与 line 一样使用 `transparent -> white 0.52 -> transparent`、`1.4s` 的扫光节奏，且不存在 circle 旋转动画；修复前两张 500ms 间隔截图像素差为 0，修复后同区域像素差为 2880 / 28900、最大通道差 211，页面 console warning/error 为空。
+- 收尾记录：用户确认本轮 Progress 视觉“先这样”，但要求下次新对话继续讨论尺寸 / `size` props。待讨论方向是保留 `sm/md/lg` 预设，同时允许对象式自定义；未设定字段回退到 `md`；对象字段候选包括线性条宽 / 环形 stroke 宽度、`labelSize` px、图标字号跟随 `labelSize` 的 `2.4em`，以及 circle 额外直径设置。
+- 验证：`npx prettier --check`、`git diff --check`、`npm run check:icons`、`npm run check:progress` 与完整 `npm run check` 均通过；完整 build 仅保留 VitePress chunk size warning。
+
+## 2026-06-15 Progress v1 实施
+
+- 按用户确认方案实现公开 `Progress` 组件：首版只表达确定百分比，不提供 unknown / indeterminate、steps、buffer 或 success percent。
+- 新增 `src/components/Progress/`：支持 `variant="line|circle"`、`percent` clamp、`theme="brand|success|warning|error"`、`size="sm|md|lg"` 与 circle 数字直径、`active`、`color`、`showLabel`、`label` 和 `ariaLabel`。
+- 线性进度高度为 4/6/8px，默认不显示 label；line / circle 都只在 brand、`active` 且未满 100% 时显示流动动画，percent 本身不变化，`active=false` 或 percent clamp 到 100 时停止动画。
+- 环形进度通过 SVG `stroke-dasharray` / `stroke-dashoffset` 表达进度，sm/md/lg 直径为 72/120/160px，数字 `size` 作为自定义 px 直径；brand 默认显示居中 label，success / warning / error 默认显示状态图标。
+- `color` 只覆盖 fill / active stroke，track 统一使用 `--bg-color-component`；label 和状态图标仍跟随 theme，line 使用填充圆形状态图标，circle 使用更大的无圆底状态图标，label 与状态图标不共存。
+- 新增 `docs/components/progress.md` 与 6 个 `docs/examples/progress/` 示例，覆盖线性、环形、theme、自定义色、尺寸、active 和 percent 边界；环形状态能力已合并到 `example-02`，不单独保留“环形状态”章节；sidebar 和 VitePress theme 注册已同步。
+- 新增 `scripts/check-progress.mjs` 与 `npm run check:progress`，并纳入 `npm run check`，守护公开导出、文档注册、ARIA、clamp、geometry、flow、color、theme 图标和旧命名扫描。
+- 浏览器验证使用 `http://127.0.0.1:5202/components/progress.html`：线性高度 4/6/8px、环形直径 72/120/160px、数字直径、stroke 宽度、custom color、theme 图标、默认 circle label、active 默认扫光、`active=false`、0/100 clamp 与 console warning/error 为空均通过。
+- 实施中修复一个 Vue Boolean prop 默认值边界：可选 `active` / `showLabel` 不用显式默认会被解析成 `false`，导致默认扫光和 circle 默认 label 不生效；已改为 `withDefaults` 并加入契约检查。
+- 根据用户反馈继续收口 Progress：进度槽统一改为 `--bg-color-component`；success / warning / error 默认不显示 label；line 使用填充圆形状态图标，circle 使用更大的无圆底状态图标；新增 `#label` slot，自定义 label 出现时隐藏状态图标。
+- 继续按用户反馈调整：流动动画只在 brand 进度上出现，success / warning / error 等状态 theme 不流动；环形状态能力合并回“环形进度”示例，覆盖 brand / success / warning / error、自定义 label、自定义色和数字直径；circle 状态图标放大到 `text-2xl`。
+- 浏览器验证时发现新增 SVG 不会进入已运行 dev server 的 `import.meta.glob`，导致 warning circle 有图标位但 SVG 为空；已重启 `http://127.0.0.1:5202/` dev server 后复验，warning circle 正常显示 24px 状态图标。
+- 2026-06-15 收尾：用户要求“先这样”，并说明 2026-06-16 新对话继续修正 Progress 表现；明天优先从 Progress 文档页的实际视觉继续逐项看，不急着推进 Notification。
+
 ## 2026-06-14 Message v1 实施
 
 - 按用户确认方案实现短暂全局 toast Message：仅公开命令式 `message.info/success/warning/error/loading/close/closeAll/config`，不提供用户态 `<Message />`、`message.open()` 或 `message.custom()`。

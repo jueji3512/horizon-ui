@@ -43,6 +43,7 @@ export default defineConfig({
             { text: 'Popover 弹出层', link: '/components/popover' },
             { text: 'Dialog 对话框', link: '/components/dialog' },
             { text: 'Message 全局提示', link: '/components/message' },
+            { text: 'Progress 进度条', link: '/components/progress' },
             { text: 'Menu 菜单', link: '/components/menu' },
             { text: 'Switch 开关', link: '/components/switch' },
             { text: 'Input 输入框', link: '/components/input' },

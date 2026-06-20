@@ -15,6 +15,7 @@ import Tooltip from './Tooltip/Tooltip.vue'
 import Popover from './Popover/Popover.vue'
 import PopoverTrigger from './Popover/PopoverTrigger'
 import PopoverContent from './Popover/PopoverContent.vue'
+import Progress from './Progress/Progress.vue'
 import Menu from './Menu/Menu.vue'
 import MenuItem from './Menu/MenuItem.vue'
 import MenuCheckboxItem from './Menu/MenuCheckboxItem.vue'
@@ -66,6 +67,7 @@ export type {
   MessageType,
 } from './Message'
 export { message } from './Message'
+export type { ProgressProps, ProgressSize, ProgressTheme, ProgressVariant } from './Progress'
 export type {
   DropdownMenuPlacement,
   DropdownMenuStrategy,
@@ -183,6 +185,7 @@ export {
   MenuSubTrigger,
   Popover,
   PopoverContent,
+  Progress,
   Popper,
   PopperArrow,
   PopperContent,

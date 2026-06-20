@@ -2,6 +2,14 @@
 
 本文件记录未来要处理的隐藏问题、决策项和开发计划。新对话优先阅读 `AGENTS.md`，然后阅读本文件。
 
+## 2026-06-15 收尾更新
+
+- [x] Progress v1 已作为公开确定进度组件落地：支持 line / circle、percent clamp、theme 状态、custom color、brand-only line / circle flow、circle 72/120/160px 与数字直径；首版不支持未知进度、steps、buffer 或 success percent。
+- [x] `check:progress` 已新增并纳入 `npm run check`，覆盖公开导出、VitePress 注册、ARIA、percent clamp、line/circle、circle 数字直径、brand-only line / circle flow、color 覆盖、theme 图标、label/icon 互斥和旧 `primary/danger` 命名扫描。
+- [x] Progress 文档页已在 `http://127.0.0.1:5202/components/progress.html` 通过 in-app Browser 验证：线性高度 4/6/8px、环形直径 72/120/160px、brand line / circle active、custom color、line 填充圆形状态图标、circle 无圆底状态图标、label/icon 互斥、percent 边界与 console warning/error 为空。
+- [x] 2026-06-20 已继续修正 Progress 的视觉表现：环形中心标签按直径从 `font-body-sm`、`font-body-md` 到 `font-body-lg` 递进，success / warning / error 线性状态改用填充圆形图标，circle 状态保留无圆底图标，circle active 改为与 line 同源的渐变 stroke 扫光并通过 `animateTransform` 从进度起点扫向当前进度端点，文档与 `check:progress` 契约已同步，`http://127.0.0.1:5202/components/progress.html` 已复验无 console warning/error。
+- [ ] 下次新对话先继续讨论 Progress 的 `size` API：当前 `size="sm|md|lg"|number` 仍是首版；需要评估是否改为预设 `sm/md/lg` 加对象式自定义，并明确未指定字段回退到 `md` 规格。对象候选字段包括线性条宽 / 环形 stroke 宽度、`labelSize` px、图标字号跟随 `labelSize` 的 `2.4em`、以及 circle 额外直径设置；需要同时考虑 line 和 circle 的尺寸语义差异、文档示例、类型定义和 `check:progress` 契约。
+
 ## 2026-06-14 收尾更新
 
 - [x] Dialog v1 已完成收尾复审和浏览器验证：安全 Teleport target fallback、Dialog 内 Popover / DropdownMenu 语义层 Esc、LIFO 子浮层关闭、嵌套 Dialog 自定义 z-index 继承、内部 behavior key 模块局部化均已落地。
@@ -26,15 +34,17 @@
 ## 近期开发计划
 
 - [ ] 继续完善公开底层组件 Field：首版 `src/components/Field/` primitives 已落地，并已迁移 Input / InputNumber；后续需要用 Select 多选、DatePicker range 等场景继续验证 FieldGroup、multiline 和 FieldSegment 边界。
+- [x] 继续打磨 Progress 表现：2026-06-20 已完成一轮环形中心标签视觉修正，并将 circle active 对齐为和 line 同源的渐变扫光模型。
+- [ ] 下次继续收口 Progress 的尺寸模型后，再按路线推进 Notification。
 - [ ] 组件迁移扫描进入滚动守护：2026-06-04 已对当前实现组件集完成收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件和复杂场景继续扫描。
 - [ ] 后续扫描时只把组件源码内部实现作为规范约束对象；文档示例可保留外部使用者风格，不强制迁移到 Horizon token。
-- [ ] 为后续新增或继续迁移的关键组件补充更稳定的浏览器级视觉验证；Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea、Form、Dialog 已完成一轮浏览器验证并修复或确认发现的问题。
+- [ ] 为后续新增或继续迁移的关键组件补充更稳定的浏览器级视觉验证；Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea、Form、Dialog、Message、Progress 已完成一轮浏览器验证并修复或确认发现的问题。
 - [ ] 后续新增或继续迁移组件文档时，统一使用 VitePress `:::demo`；示例源码放在 `docs/examples/<component>/`，由文档页引用同一份 `.vue` 示例。
 - [ ] 后续参考 Element Plus 的文档站路线，逐步自定义 VitePress 文档 shell / demo 渲染层，减少对默认 VitePress theme reset 的依赖；完成后移除当前为兼容默认 theme 临时加入的 `data-horizon-teleport-layer`、`postcssIsolateStyles` Teleport 层隔离和相关契约检查。
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。
 - [ ] 后续 VitePress 发布高于 `1.6.4` 的正式版本时，复查并升级以消除当前嵌套 Vite/esbuild 的 audit 项。
 - [ ] 评估并迁移包管理器：优先考虑 pnpm，备选继续 npm，不优先 Bun / Yarn；迁移时使用 Corepack 固定 pnpm 11，替换 `package-lock.json` 为 `pnpm-lock.yaml`，统一 scripts、`packageManager`、`engines` 和项目记忆文档，并验证 `pnpm install`、`pnpm run check`、audit 等价项和关键文档页面。
-- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu、DropdownMenu、Form / FormItem、Dialog 与 Message v1 已落地；Textarea 本轮先不做、后续按真实需求再启动；后续建议优先推进 Notification，随后再看 Drawer、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；Popconfirm 与 TagInput 因独立使用场景较少先后置。
+- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Message v1 与 Progress v1 已落地；Textarea 本轮先不做、后续按真实需求再启动；后续建议优先推进 Notification，并复用 Progress 的确定进度能力，随后再看 Drawer、DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；Popconfirm 与 TagInput 因独立使用场景较少先后置。
 - [ ] 评估并沉淀真正有收益的内部通用原型：Select 与 Menu 已各自用 slot 子组件 + 内部 collection 注册跑通首版；后续等 Autocomplete、Tabs、NavigationMenu 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Dialog 已先沉淀内部 modal layer（top layer、scroll lock、focus trap、Teleport 子浮层登记），Drawer 可在真实启动时复用；Form / FormItem 已沉淀内部 FormControl context，但不对外暴露 FormLabel / FormControl / FormMessage primitives；PopupSurface 暂缓。
 - [x] 2026-06-10 Form / FormItem 首版已落地：默认 `labelAlign="right"`、`labelWidth=120`，help 通过 label 问号 tip 展示，控件下方消息行仅显示校验 / 状态文案并默认预留高度；轻量校验逻辑集中在 `src/components/Form/validator.ts`，并新增 `npm run check:form` 守护。
 - [x] 继续按用户反馈逐项校正 Form / FormItem 视觉细节：已完成 label / control / action 三段布局、20px 状态图标槽、help tooltip arrow、控件与 label 垂直居中、24px 消息预留区、message 20px 绝对定位、并发校验即时提交、异步校验竞态保护和表单实例 API 拆分。

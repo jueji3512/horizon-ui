@@ -70,11 +70,14 @@ npm run check:menu # Menu 命令菜单契约检查
 npm run check:select # Select slot 子组件契约检查
 npm run check:input-number # InputNumber 只读/禁用步进契约检查
 npm run check:form # Form / FormItem 表单契约检查
+npm run check:dialog # Dialog 模态浮层契约检查
+npm run check:message # Message 命令式反馈契约检查
+npm run check:progress # Progress 确定进度契约检查
 npm run check:dropdown-menu # DropdownMenu 组合契约检查
 npm run lint         # JS/TS/Vue + CSS 检查
 npm run typecheck    # vue-tsc --noEmit
 npm run build        # VitePress 构建
-npm run check        # 格式、ComponentDemo、图标规范、ScrollArea、Popper、Popover、Menu、Select、InputNumber、Form、DropdownMenu 契约、lint、typecheck、build 全量检查
+npm run check        # 格式、ComponentDemo、图标规范、ScrollArea、Popper、Popover、Menu、Select、InputNumber、Form、Dialog、Message、Progress、DropdownMenu 契约、lint、typecheck、build 全量检查
 ```
 
 ## VS Code

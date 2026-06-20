@@ -37,7 +37,7 @@
 
 - 基础：Button、Icon、Link、Text、Title、Divider、Space。
 - 表单/输入：Checkbox、CheckboxGroup、Radio、RadioGroup、Switch、Input、InputNumber、Select、Form、FormItem。
-- 展示/反馈：Badge、Tag、Callout、Tooltip、Popover、Menu、DropdownMenu。
+- 展示/反馈：Badge、Tag、Callout、Tooltip、Popover、Menu、DropdownMenu、Message、Progress。
 - 底层：FieldRoot、FieldContent、FieldNativeInput、FieldPrefix、FieldSuffix、FieldAction、FieldGroup、FieldSegment、Popper、PopperTrigger、PopperContent、PopperArrow、ScrollArea。
 
 特别说明：
@@ -50,6 +50,7 @@
 - Form / FormItem 已作为公开表单组件落地并完成本轮视觉与基础行为收口；内部拆分 FormItemLabel / FormItemMessage 与 FormControl context，但不把 FormLabel / FormControl / FormMessage 作为对外 primitives。
 - Dialog 已作为公开模态容器落地在 `src/components/Dialog/`；它是单一公开组件，不提供 trigger/content/close 子组件，内部沉淀 modal layer 能力但不公开 Overlay / Layer primitive。
 - Message 已作为命令式全局反馈服务落地在 `src/components/Message/`；它不公开用户态 `<Message />` 组件，不提供 `message.open()` / `message.custom()`，只通过 `message.info/success/warning/error/loading/close/closeAll/config` 使用。
+- Progress 已作为公开确定进度组件落地在 `src/components/Progress/`；它支持 line / circle、percent clamp、theme / color、label slot / icon 互斥、ARIA 和 brand-only active flow，首版不表达未知进度。2026-06-20 已继续修正环形中心标签与 circle active 视觉表现，后续如无新的 Progress 反馈可推进 Notification。
 
 ## 历史计划资料处置
 
@@ -59,11 +60,11 @@
 - Paragraph 旧计划已明确过时，当前不实现；如未来需要大段文本编排，重新按当前 API/token 规范设计。
 - Tooltip 当前已迁移到 Popper 基座；历史上“后续评估迁移”的结论已落实。
 - 早期交互规范里 `type` 迁移到 `theme`、禁用态不用 opacity、统一 token 的方向已被当前规范吸收；旧 token 名称和值不再直接沿用。
-- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu、Form / FormItem、Dialog 与 Message v1 已按当前边界落地；Textarea 本轮先不做，后续按真实需求再启动；Popconfirm 因应用场景较少后置，Drawer 等 Dialog 内部 modal layer 跑稳后再复用推进；后续再推进 Notification、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
+- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Message v1 与 Progress v1 已按当前边界落地；Textarea 本轮先不做，后续按真实需求再启动；Popconfirm 因应用场景较少后置，Drawer 等 Dialog 内部 modal layer 跑稳后再复用推进；后续再推进 Notification、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
 
 ## 2026-06-05 未来组件路线与内部原型候选
 
-- 当前建议的组件推进顺序：Dialog 与 Message 已完成首版 → Notification → Drawer → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → NavigationMenu → TreeSelect / Cascader / ColorPicker → Popconfirm / TagInput。Form / FormItem 已完成本轮收口；Textarea 本轮先不做，后续按真实需求再插入路线。
+- 当前建议的组件推进顺序：Dialog、Message 与 Progress 已完成首版 → Notification → Drawer → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → NavigationMenu → TreeSelect / Cascader / ColorPicker → Popconfirm / TagInput。Form / FormItem 已完成本轮收口；Textarea 本轮先不做，后续按真实需求再插入路线。
 - Select slot-first 单选首版已落地，已初步验证 Field、Popper、键盘交互、ARIA、empty、loading、disabled option、readonly 和 clearable 等组合边界；多选 tag wrap、searchable、maxTagCount 等仍是后续压力测试。
 - TagInput 已降到路线最后：它仍可作为 Field 多值 / multiline / Tag wrap / Backspace 删除 / 输入宽度自适应的压力测试，但独立使用场景相对较少，先等后续出现明确自由多值输入需求时再启动。
 - Popover / Menu / DropdownMenu 已按“原语 / 英文 / ARIA 优先”的边界拆分：Popover 负责任意非模态浮层，Menu 负责动作 / 命令菜单内容，DropdownMenu 是 `Popover + explicit Menu` 的菜单型预设；导航后续由 NavigationMenu 承担。
@@ -111,6 +112,20 @@
 - `message.config()` 首版只公开行为和容器配置：`duration`、`closable`、`max`、`top`、`zIndex`；样式配置暂不公开，后续如出现重复需求再设计。
 - 新增 `scripts/check-message.mjs` 与 `npm run check:message`，并纳入 `npm run check`，守护命令式 API、禁用 open/custom、config 合并、key 更新、SSR no-op、host 单例、图标/色条映射和文档示例。
 - 浏览器验证在 `http://127.0.0.1:5201/components/message.html` 完成：基础状态按钮触发 top-center 堆叠；同 key loading 替换为 success；`close(key)`、handle close、`closeAll()`、config max/top 均生效；console warning/error 为空。
+
+## 2026-06-15 Progress v1 实现
+
+- Progress v1 定位为公开确定进度组件，后续 Notification loading 可直接基于 `Progress percent` 接入；首版不做 unknown / indeterminate、steps、buffer 或 success percent。
+- 公开 API 为 `variant="line|circle"`、`percent`、`theme="brand|success|warning|error"`、`size="sm|md|lg"` / circle 数字直径、`active`、`color`、`showLabel`、`label`、`ariaLabel`。
+- `size` API 仍需下次继续收口：当前 `sm/md/lg` 预设和 circle 数字直径只是首版；用户倾向后续评估“预设规格 + 对象式自定义”，对象未指定字段回退到 `md`，并把条宽 / stroke 宽度、`labelSize` px、图标字号跟随 `labelSize` 的 `2.4em`、circle 直径等尺寸维度拆清楚。
+- 线性形态高度为 4/6/8px，track 统一使用 `--bg-color-component`，fill 使用 theme 实色或 `color`；active 默认开启且只在 brand theme、`percent < 100` 时于填充区域显示克制扫光，百分比本身不改变。
+- 环形形态的 active 默认同样只在 brand theme、`percent < 100` 时显示；实现上在已完成弧线上覆盖与 line 同源的横向渐变 stroke，并通过 SVG `animateTransform` 推动渐变从进度起点扫向当前进度端点；success / warning / error 等状态 theme 不显示流动动画，避免状态表达过度活跃。
+- 环形形态用 SVG circle 和 `stroke-dashoffset` 表达进度，sm/md/lg 直径为 72/120/160px，数字 size 只作为 circle 自定义直径；brand 默认显示居中 label，success / warning / error 默认显示状态图标。
+- Theme 图标按形态拆分：line 使用填充圆形状态图标，circle 使用更大的无圆底状态图标；label 与状态图标不共存，传入 `label` 或 `#label` 时优先显示 label；`percent >= 100` 不自动切换 success，由调用方显式传 `theme="success"`。
+- 2026-06-20 继续修正视觉表现：环形中心标签随环形直径递进，sm / md / lg 和 120px 数字直径分别命中 12px / 14px / 16px（数字直径按实际直径阈值归类）；该规则已写入文档尺寸说明和 `check:progress`。
+- 新增 `scripts/check-progress.mjs` 与 `npm run check:progress`，并纳入 `npm run check`，守护公开导出、VitePress 注册、ARIA、percent clamp、line/circle、circle 数字直径、line / circle active、color 覆盖、theme 图标、禁用未知进度 API 和旧 `primary/danger` 命名。
+- 环形状态能力已合并回“环形进度”示例 `docs/examples/progress/example-02.vue`，不再单独保留“环形状态”章节；该示例覆盖 brand / success / warning / error、自定义 label、自定义色和数字直径。
+- 浏览器验证在 `http://127.0.0.1:5202/components/progress.html` 完成：线性高度、环形直径 / stroke、`--bg-color-component` track、brand-only line / circle flow、line 填充圆形状态图标、circle 无圆底状态图标、环形中心标签 12/14/16px 递进、custom color、label/icon 互斥、ARIA、percent 边界均符合预期；console warning/error 为空。新增 SVG 需要重启 Vite dev server 才会进入 `import.meta.glob`，本轮已重启 5202 后复验 line warning 图标。
 
 ## 2026-06-06 Select 单选首版实现
 

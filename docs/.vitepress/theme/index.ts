@@ -42,6 +42,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Progress,
   Popper,
   PopperArrow,
   PopperContent,
@@ -147,6 +148,7 @@ export default {
     app.component('Popover', Popover)
     app.component('PopoverTrigger', PopoverTrigger)
     app.component('PopoverContent', PopoverContent)
+    app.component('Progress', Progress)
     app.component('Popper', Popper)
     app.component('PopperTrigger', PopperTrigger)
     app.component('PopperContent', PopperContent)

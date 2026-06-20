@@ -1,5 +1,15 @@
 # 工作进度记录
 
+## 2026-06-20 Progress status API 与动态示例
+
+- 根据用户反馈和主流组件库方向重新审视 Progress API：结果态应使用 `status`，默认 brand 进度色不应作为状态枚举暴露；TDesign Vue Next 的类型里 progress 同时有 `status` 和用于形态的 `theme`，Element Plus 与 Ant Design 也使用 `status` 表达 Progress 结果态。
+- 按 TDD 先更新 `scripts/check-progress.mjs`，要求 `ProgressStatus = 'success' | 'warning' | 'error'`、禁止公开 `ProgressTheme`、禁止 Progress 示例继续使用 `theme=`，并要求文档出现“结果状态”和动态更新示例；首次运行 `npm run check:progress` 按预期失败 17 项。
+- `src/components/Progress/types.ts` 将 `theme?: ProgressTheme` 改为 `status?: ProgressStatus`；`src/components/Progress/Progress.vue` 内部改为 `statusVisualClassMap`，默认态仍使用 brand 进度色，但 `status` 只表达 success / warning / error。
+- Progress 的 label slot props 从 `theme` 改为 `status`；`active` 流动动画只在未设置 `status` 且进度未满时显示，状态进度不显示流动动画。
+- `docs/components/progress.md` 将“语义主题”改为“结果状态”，并把所有说明改为 `status`；`docs/examples/progress/example-01.vue` 至 `example-07.vue` 的 Progress 用法均迁移到 `status`，示例中的 Button `theme="default"` 保持不变。
+- 新增 `docs/examples/progress/example-07.vue` 动态更新示例，演示同一 `percent` 同步驱动 line / circle、Pause / Resume、Step、Reset，以及上传进度对照；示例使用 `onMounted` 启动计时器并在 `onUnmounted` 清理。
+- 验证：`npx prettier --check`、`git diff --check`、`npm run check:progress`、`npm run typecheck` 与完整 `npm run check` 均通过；完整 build 仅保留 VitePress chunk size warning。
+
 ## 2026-06-20 Progress 尺寸 API 收口
 
 - 按用户明确指定的 API 形状收口 Progress `size`：使用 `ProgressSizeConfig` 对象字段 `thickness`、`labelSize`、`diameter`，不采用此前误提的 `lineHeight` / `circleSize` 命名，也不继续保留 `number` 直传。

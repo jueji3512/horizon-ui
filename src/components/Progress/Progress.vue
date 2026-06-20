@@ -15,7 +15,7 @@
         >
           <div
             class="relative h-full overflow-hidden rounded-[var(--round-full)] transition-[width,background-color] duration-300 ease-out"
-            :class="[!props.color && themeClasses.fill, isFlowing && 'h-progress-flow']"
+            :class="[!props.color && statusVisualClasses.fill, isFlowing && 'h-progress-flow']"
             :style="lineFillStyle"
           >
             <span v-if="isFlowing" class="h-progress-flow-sweep" />
@@ -28,7 +28,7 @@
               name="label"
               :percent="normalizedPercent"
               :rounded-percent="roundedPercent"
-              :theme="resolvedTheme"
+              :status="resolvedStatus"
             >
               <span>{{ displayLabel }}</span>
             </slot>
@@ -116,7 +116,7 @@
               name="label"
               :percent="normalizedPercent"
               :rounded-percent="roundedPercent"
-              :theme="resolvedTheme"
+              :status="resolvedStatus"
             >
               <span>{{ displayLabel }}</span>
             </slot>
@@ -141,14 +141,13 @@ import type {
   ProgressProps,
   ProgressSize,
   ProgressSizeConfig,
-  ProgressTheme,
+  ProgressStatus,
   ProgressVariant,
 } from './types'
 
 const props = withDefaults(defineProps<ProgressProps>(), {
   variant: 'line',
   percent: 0,
-  theme: 'brand',
   size: 'md',
   active: true,
   showLabel: undefined,
@@ -159,11 +158,10 @@ const progressId = useId().replace(/:/g, '')
 const progressDefaults = {
   variant: 'line',
   percent: 0,
-  theme: 'brand',
   size: 'md',
   active: true,
 } satisfies Omit<
-  Required<Pick<ProgressProps, 'variant' | 'percent' | 'theme' | 'size' | 'active'>>,
+  Required<Pick<ProgressProps, 'variant' | 'percent' | 'size' | 'active'>>,
   'size'
 > & {
   size: ProgressPresetSize
@@ -200,7 +198,9 @@ interface NormalizedProgressSizeConfig {
   diameter: number
 }
 
-interface ProgressThemeClasses {
+type ProgressVisualStatus = 'default' | ProgressStatus
+
+interface ProgressStatusVisualClasses {
   fill: string
   label: string
   lineIcon: string
@@ -209,8 +209,8 @@ interface ProgressThemeClasses {
   trackColor: string
 }
 
-const themeClassMap: Record<ProgressTheme, ProgressThemeClasses> = {
-  brand: {
+const statusVisualClassMap: Record<ProgressVisualStatus, ProgressStatusVisualClasses> = {
+  default: {
     fill: 'bg-brand',
     label: 'text-brand',
     lineIcon: 'info',
@@ -245,8 +245,9 @@ const themeClassMap: Record<ProgressTheme, ProgressThemeClasses> = {
 }
 
 const resolvedVariant = computed<ProgressVariant>(() => props.variant)
-const resolvedTheme = computed<ProgressTheme>(() => props.theme)
-const themeClasses = computed(() => themeClassMap[resolvedTheme.value])
+const resolvedStatus = computed<ProgressStatus | undefined>(() => props.status)
+const statusVisualKey = computed<ProgressVisualStatus>(() => resolvedStatus.value ?? 'default')
+const statusVisualClasses = computed(() => statusVisualClassMap[statusVisualKey.value])
 
 function isProgressSizeConfig(size: ProgressSize): size is ProgressSizeConfig {
   return typeof size === 'object' && size !== null
@@ -287,15 +288,18 @@ const displayLabel = computed(() =>
 )
 
 const hasCustomLabel = computed(() => Boolean(slots.label || props.label !== undefined))
-const isStatusTheme = computed(() => resolvedTheme.value !== 'brand')
 const resolvedShowGeneratedLabel = computed(
-  () => props.showLabel ?? (resolvedVariant.value === 'circle' && !isStatusTheme.value),
+  () => props.showLabel ?? (resolvedVariant.value === 'circle' && !resolvedStatus.value),
 )
 const resolvedShowLabel = computed(() => hasCustomLabel.value || resolvedShowGeneratedLabel.value)
-const shouldShowStatusIcon = computed(() => !resolvedShowLabel.value && isStatusTheme.value)
+const shouldShowStatusIcon = computed(
+  () => !resolvedShowLabel.value && Boolean(resolvedStatus.value),
+)
 const shouldRenderMeta = computed(() => resolvedShowLabel.value || shouldShowStatusIcon.value)
 const statusIconName = computed(() =>
-  resolvedVariant.value === 'circle' ? themeClasses.value.circleIcon : themeClasses.value.lineIcon,
+  resolvedVariant.value === 'circle'
+    ? statusVisualClasses.value.circleIcon
+    : statusVisualClasses.value.lineIcon,
 )
 const statusIconClasses = computed(() =>
   resolvedVariant.value === 'circle' ? 'text-[2.4em]' : 'text-[1em]',
@@ -326,7 +330,7 @@ const shouldStopFlow = computed(
 const isFlowing = computed(
   () =>
     resolvedVariant.value === 'line' &&
-    resolvedTheme.value === 'brand' &&
+    !resolvedStatus.value &&
     props.active &&
     roundedPercent.value > 0 &&
     !shouldStopFlow.value,
@@ -334,7 +338,7 @@ const isFlowing = computed(
 const isCircleFlowing = computed(
   () =>
     resolvedVariant.value === 'circle' &&
-    resolvedTheme.value === 'brand' &&
+    !resolvedStatus.value &&
     props.active &&
     roundedPercent.value > 0 &&
     !shouldStopFlow.value,
@@ -348,13 +352,16 @@ const rootClasses = computed(() =>
 )
 
 const labelClasses = computed(() =>
-  cn('inline-flex shrink-0 items-center gap-1 leading-none tabular-nums', themeClasses.value.label),
+  cn(
+    'inline-flex shrink-0 items-center gap-1 leading-none tabular-nums',
+    statusVisualClasses.value.label,
+  ),
 )
 
 const circleLabelClasses = computed(() =>
   cn(
     'absolute inset-0 flex flex-col items-center justify-center gap-1 text-center leading-none font-medium tabular-nums',
-    themeClasses.value.label,
+    statusVisualClasses.value.label,
   ),
 )
 
@@ -377,11 +384,11 @@ const circleRootStyle = computed(() => ({
 }))
 
 const circleTrackStyle = computed(() => ({
-  stroke: themeClasses.value.trackColor,
+  stroke: statusVisualClasses.value.trackColor,
 }))
 
 const circleFillStyle = computed(() => ({
-  stroke: props.color || themeClasses.value.color,
+  stroke: props.color || statusVisualClasses.value.color,
   transition: 'stroke-dashoffset var(--duration-slow) ease, stroke var(--duration-fast) ease',
 }))
 </script>

@@ -53,6 +53,7 @@ expectFile('docs/examples/progress/example-03.vue')
 expectFile('docs/examples/progress/example-04.vue')
 expectFile('docs/examples/progress/example-05.vue')
 expectFile('docs/examples/progress/example-06.vue')
+expectFile('docs/examples/progress/example-07.vue')
 expectFile('src/components/Icon/icons/circle-check-filled.svg')
 expectFile('src/components/Icon/icons/circle-alert-filled.svg')
 expectFile('src/components/Icon/icons/circle-close-filled.svg')
@@ -60,8 +61,10 @@ expectFile('src/components/Icon/icons/circle-close-filled.svg')
 expectIncludes('src/components/Progress/types.ts', "ProgressVariant = 'line' | 'circle'")
 expectIncludes(
   'src/components/Progress/types.ts',
-  "ProgressTheme = 'brand' | 'success' | 'warning' | 'error'",
+  "ProgressStatus = 'success' | 'warning' | 'error'",
 )
+expectNotIncludes('src/components/Progress/types.ts', 'ProgressTheme')
+expectNotIncludes('src/components/Progress/types.ts', "'brand' | 'success' | 'warning' | 'error'")
 expectIncludes('src/components/Progress/types.ts', "ProgressPresetSize = 'sm' | 'md' | 'lg'")
 expectIncludes('src/components/Progress/types.ts', 'ProgressSizeConfig')
 expectIncludes('src/components/Progress/types.ts', 'thickness?: number')
@@ -74,7 +77,10 @@ expectIncludes(
 expectNotIncludes('src/components/Progress/types.ts', '| number')
 
 expectIncludes('src/components/Progress/Progress.vue', "variant: 'line'")
-expectIncludes('src/components/Progress/Progress.vue', "theme: 'brand'")
+expectNotIncludes('src/components/Progress/Progress.vue', "theme: 'brand'")
+expectIncludes('src/components/Progress/Progress.vue', 'ProgressStatus')
+expectIncludes('src/components/Progress/Progress.vue', 'statusVisualClassMap')
+expectIncludes('src/components/Progress/Progress.vue', 'resolvedStatus')
 expectIncludes('src/components/Progress/Progress.vue', 'percent: 0')
 expectIncludes('src/components/Progress/Progress.vue', 'active: true')
 expectIncludes('src/components/Progress/Progress.vue', 'withDefaults')
@@ -132,7 +138,7 @@ expectNotIncludes('src/components/Progress/Progress.vue', '--h-progress-circle-f
 expectNotIncludes('src/components/Progress/Progress.vue', 'transform: rotate(360deg)')
 expectNotIncludes('src/components/Progress/Progress.vue', "stroke: 'rgb(255 255 255 / 62%)'")
 expectIncludes('src/components/Progress/Progress.vue', 'props.percent >= 100')
-expectIncludes('src/components/Progress/Progress.vue', "resolvedTheme.value === 'brand'")
+expectIncludes('src/components/Progress/Progress.vue', '!resolvedStatus.value')
 expectIncludes('src/components/Progress/Progress.vue', 'props.color')
 expectIncludes('src/components/Progress/Progress.vue', 'bg-[var(--bg-color-component)]')
 expectNotIncludes('src/components/Progress/Progress.vue', 'class="bg-component')
@@ -164,19 +170,29 @@ expectNotIncludes('src/components/Progress/Progress.vue', 'font-body-lg')
 
 expectIncludes('src/components/Progress/index.ts', 'Progress')
 expectIncludes('src/components/Progress/index.ts', 'ProgressVariant')
+expectIncludes('src/components/Progress/index.ts', 'ProgressStatus')
+expectNotIncludes('src/components/Progress/index.ts', 'ProgressTheme')
 expectIncludes('src/components/index.ts', "from './Progress'")
 expectIncludes('src/components/index.ts', 'Progress,')
+expectIncludes('src/components/index.ts', 'ProgressStatus')
+expectNotIncludes('src/components/index.ts', 'ProgressTheme')
 expectIncludes('docs/.vitepress/theme/index.ts', 'Progress')
 expectIncludes('docs/.vitepress/config.ts', '/components/progress')
 expectIncludes('package.json', 'check:progress')
 
 expectIncludes('docs/components/progress.md', 'Progress')
+expectIncludes('docs/components/progress.md', '## 结果状态')
 expectIncludes('docs/components/progress.md', 'variant="circle"')
+expectIncludes('docs/components/progress.md', 'status="success"')
+expectIncludes('docs/components/progress.md', "'success' \\| 'warning' \\| 'error'")
+expectNotIncludes('docs/components/progress.md', 'theme')
+expectNotIncludes('docs/components/progress.md', 'brand"')
 expectIncludes('docs/components/progress.md', ':size="{ diameter: 120 }"')
 expectIncludes('docs/components/progress.md', 'thickness')
 expectIncludes('docs/components/progress.md', 'labelSize')
 expectIncludes('docs/components/progress.md', 'diameter')
-expectNotIncludes('docs/components/progress.md', 'progress/example-07')
+expectIncludes('docs/components/progress.md', '## 动态更新')
+expectIncludes('docs/components/progress.md', 'progress/example-07')
 expectNotIncludes('docs/components/progress.md', '## 环形状态')
 expectIncludes('docs/components/progress.md', 'active')
 expectIncludes('docs/components/progress.md', '线性和环形')
@@ -197,6 +213,7 @@ for (const example of [
   'docs/examples/progress/example-04.vue',
   'docs/examples/progress/example-05.vue',
   'docs/examples/progress/example-06.vue',
+  'docs/examples/progress/example-07.vue',
 ]) {
   expectIncludes(example, 'Progress', `${example} should use Progress`)
   expectNotIncludes(example, 'indeterminate', `${example} must not use indeterminate`)
@@ -204,6 +221,8 @@ for (const example of [
   expectNotIncludes(example, 'type="danger"', `${example} must not use old danger type API`)
   expectNotIncludes(example, 'theme="primary"', `${example} must not use old primary theme name`)
   expectNotIncludes(example, 'theme="danger"', `${example} must not use old danger theme name`)
+  expectNotIncludes(example, '<Progress theme=', `${example} must not use Progress theme API`)
+  expectNotIncludes(example, '<Progress :theme=', `${example} must not use Progress theme API`)
 }
 
 expectMatches(
@@ -243,8 +262,8 @@ expectMatches(
 )
 expectMatches(
   'docs/examples/progress/example-02.vue',
-  /variant="circle"[\s\S]*theme="success"[\s\S]*variant="circle"[\s\S]*theme="warning"[\s\S]*variant="circle"[\s\S]*theme="error"/,
-  'Progress docs should cover circle status themes',
+  /variant="circle"[\s\S]*status="success"[\s\S]*variant="circle"[\s\S]*status="warning"[\s\S]*variant="circle"[\s\S]*status="error"/,
+  'Progress docs should cover circle status states',
 )
 expectMatches(
   'docs/examples/progress/example-02.vue',
@@ -255,6 +274,31 @@ expectMatches(
   'docs/examples/progress/example-02.vue',
   /variant="circle"[\s\S]*color=/,
   'Progress docs should cover circle custom color',
+)
+expectIncludes(
+  'docs/examples/progress/example-07.vue',
+  'setInterval',
+  'Progress dynamic demo should update percent over time',
+)
+expectIncludes(
+  'docs/examples/progress/example-07.vue',
+  'onUnmounted',
+  'Progress dynamic demo should clear its timer on unmount',
+)
+expectIncludes(
+  'docs/examples/progress/example-07.vue',
+  'toggleRunning',
+  'Progress dynamic demo should support pausing and resuming',
+)
+expectIncludes(
+  'docs/examples/progress/example-07.vue',
+  'resetProgress',
+  'Progress dynamic demo should support reset',
+)
+expectMatches(
+  'docs/examples/progress/example-07.vue',
+  /<Progress[\s\S]*:percent="percent"[\s\S]*<Progress[\s\S]*variant="circle"[\s\S]*:percent="percent"/,
+  'Progress dynamic demo should show line and circle with the same percent',
 )
 
 const failures = checks.filter((check) => !check.pass)

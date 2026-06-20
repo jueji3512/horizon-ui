@@ -4,11 +4,12 @@
 
 ## 2026-06-15 收尾更新
 
-- [x] Progress v1 已作为公开确定进度组件落地：支持 line / circle、percent clamp、theme 状态、custom color、brand-only line / circle flow、circle 72/120/160px 预设尺寸；首版不支持未知进度、steps、buffer 或 success percent。
-- [x] `check:progress` 已新增并纳入 `npm run check`，覆盖公开导出、VitePress 注册、ARIA、percent clamp、line/circle、对象式尺寸配置、brand-only line / circle flow、color 覆盖、theme 图标、label/icon 互斥和旧 `primary/danger` 命名扫描。
+- [x] Progress v1 已作为公开确定进度组件落地：支持 line / circle、percent clamp、`status="success|warning|error"` 结果状态、custom color、默认 brand-only line / circle flow、circle 72/120/160px 预设尺寸；首版不支持未知进度、steps、buffer 或 success percent。
+- [x] `check:progress` 已新增并纳入 `npm run check`，覆盖公开导出、VitePress 注册、ARIA、percent clamp、line/circle、对象式尺寸配置、默认态 line / circle flow、color 覆盖、status 图标、label/icon 互斥和旧 `primary/danger` / Progress `theme` API 命名扫描。
 - [x] Progress 文档页已在 `http://127.0.0.1:5202/components/progress.html` 通过 in-app Browser 验证：线性高度 4/6/8px、环形直径 72/120/160px、brand line / circle active、custom color、line 填充圆形状态图标、circle 无圆底状态图标、label/icon 互斥、percent 边界与 console warning/error 为空。
 - [x] 2026-06-20 已继续修正 Progress 的视觉表现：环形中心标签按直径从 `font-body-sm`、`font-body-md` 到 `font-body-lg` 递进，success / warning / error 线性状态改用填充圆形图标，circle 状态保留无圆底图标，circle active 改为与 line 同源的渐变 stroke 扫光并通过 `animateTransform` 从进度起点扫向当前进度端点，文档与 `check:progress` 契约已同步，`http://127.0.0.1:5202/components/progress.html` 已复验无 console warning/error。
 - [x] 2026-06-20 已收口 Progress 的 `size` API：`size` 改为 `sm|md|lg|ProgressSizeConfig`，不再支持数字直传；对象字段为 `thickness`、`labelSize`、`diameter`，未指定字段回退到 `md` 规格；`thickness` 在线性表示 track height、在环形表示 stroke width，`diameter` 只用于 circle，状态图标跟随 `labelSize`，line 为 `1em`、circle 为 `2.4em`。
+- [x] 2026-06-20 已将 Progress 公开状态语义从 `theme` 改为 `status`：默认 brand 进度色不作为状态枚举暴露，`status` 仅表达 `success` / `warning` / `error` 结果态；动态更新示例已补充，演示同一 `percent` 同步驱动 line / circle、暂停 / 继续、步进和重置。
 
 ## 2026-06-14 收尾更新
 

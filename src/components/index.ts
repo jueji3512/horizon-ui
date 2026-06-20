@@ -67,7 +67,7 @@ export type {
   MessageType,
 } from './Message'
 export { message } from './Message'
-export type { ProgressProps, ProgressSize, ProgressTheme, ProgressVariant } from './Progress'
+export type { ProgressProps, ProgressSize, ProgressStatus, ProgressVariant } from './Progress'
 export type {
   DropdownMenuPlacement,
   DropdownMenuStrategy,

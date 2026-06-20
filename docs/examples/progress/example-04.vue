@@ -7,7 +7,7 @@
       variant="circle"
       :percent="64"
       color="#0891b2"
-      theme="success"
+      status="success"
       aria-label="自定义颜色环形进度"
     />
   </div>

@@ -1,5 +1,5 @@
 export type ProgressVariant = 'line' | 'circle'
-export type ProgressTheme = 'brand' | 'success' | 'warning' | 'error'
+export type ProgressStatus = 'success' | 'warning' | 'error'
 export type ProgressPresetSize = 'sm' | 'md' | 'lg'
 
 export interface ProgressSizeConfig {
@@ -26,7 +26,7 @@ export type ProgressSize = ProgressPresetSize | ProgressSizeConfig
 export interface ProgressProps {
   variant?: ProgressVariant
   percent?: number
-  theme?: ProgressTheme
+  status?: ProgressStatus
   size?: ProgressSize
   active?: boolean
   color?: string

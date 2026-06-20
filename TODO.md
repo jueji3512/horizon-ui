@@ -4,11 +4,11 @@
 
 ## 2026-06-15 收尾更新
 
-- [x] Progress v1 已作为公开确定进度组件落地：支持 line / circle、percent clamp、theme 状态、custom color、brand-only line / circle flow、circle 72/120/160px 与数字直径；首版不支持未知进度、steps、buffer 或 success percent。
-- [x] `check:progress` 已新增并纳入 `npm run check`，覆盖公开导出、VitePress 注册、ARIA、percent clamp、line/circle、circle 数字直径、brand-only line / circle flow、color 覆盖、theme 图标、label/icon 互斥和旧 `primary/danger` 命名扫描。
+- [x] Progress v1 已作为公开确定进度组件落地：支持 line / circle、percent clamp、theme 状态、custom color、brand-only line / circle flow、circle 72/120/160px 预设尺寸；首版不支持未知进度、steps、buffer 或 success percent。
+- [x] `check:progress` 已新增并纳入 `npm run check`，覆盖公开导出、VitePress 注册、ARIA、percent clamp、line/circle、对象式尺寸配置、brand-only line / circle flow、color 覆盖、theme 图标、label/icon 互斥和旧 `primary/danger` 命名扫描。
 - [x] Progress 文档页已在 `http://127.0.0.1:5202/components/progress.html` 通过 in-app Browser 验证：线性高度 4/6/8px、环形直径 72/120/160px、brand line / circle active、custom color、line 填充圆形状态图标、circle 无圆底状态图标、label/icon 互斥、percent 边界与 console warning/error 为空。
 - [x] 2026-06-20 已继续修正 Progress 的视觉表现：环形中心标签按直径从 `font-body-sm`、`font-body-md` 到 `font-body-lg` 递进，success / warning / error 线性状态改用填充圆形图标，circle 状态保留无圆底图标，circle active 改为与 line 同源的渐变 stroke 扫光并通过 `animateTransform` 从进度起点扫向当前进度端点，文档与 `check:progress` 契约已同步，`http://127.0.0.1:5202/components/progress.html` 已复验无 console warning/error。
-- [ ] 下次新对话先继续讨论 Progress 的 `size` API：当前 `size="sm|md|lg"|number` 仍是首版；需要评估是否改为预设 `sm/md/lg` 加对象式自定义，并明确未指定字段回退到 `md` 规格。对象候选字段包括线性条宽 / 环形 stroke 宽度、`labelSize` px、图标字号跟随 `labelSize` 的 `2.4em`、以及 circle 额外直径设置；需要同时考虑 line 和 circle 的尺寸语义差异、文档示例、类型定义和 `check:progress` 契约。
+- [x] 2026-06-20 已收口 Progress 的 `size` API：`size` 改为 `sm|md|lg|ProgressSizeConfig`，不再支持数字直传；对象字段为 `thickness`、`labelSize`、`diameter`，未指定字段回退到 `md` 规格；`thickness` 在线性表示 track height、在环形表示 stroke width，`diameter` 只用于 circle，状态图标跟随 `labelSize`，line 为 `1em`、circle 为 `2.4em`。
 
 ## 2026-06-14 收尾更新
 
@@ -35,7 +35,7 @@
 
 - [ ] 继续完善公开底层组件 Field：首版 `src/components/Field/` primitives 已落地，并已迁移 Input / InputNumber；后续需要用 Select 多选、DatePicker range 等场景继续验证 FieldGroup、multiline 和 FieldSegment 边界。
 - [x] 继续打磨 Progress 表现：2026-06-20 已完成一轮环形中心标签视觉修正，并将 circle active 对齐为和 line 同源的渐变扫光模型。
-- [ ] 下次继续收口 Progress 的尺寸模型后，再按路线推进 Notification。
+- [x] Progress 的尺寸模型已收口；后续按路线推进 Notification。
 - [ ] 组件迁移扫描进入滚动守护：2026-06-04 已对当前实现组件集完成收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件和复杂场景继续扫描。
 - [ ] 后续扫描时只把组件源码内部实现作为规范约束对象；文档示例可保留外部使用者风格，不强制迁移到 Horizon token。
 - [ ] 为后续新增或继续迁移的关键组件补充更稳定的浏览器级视觉验证；Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea、Form、Dialog、Message、Progress 已完成一轮浏览器验证并修复或确认发现的问题。

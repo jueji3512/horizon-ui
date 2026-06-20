@@ -22,7 +22,7 @@
           </div>
         </div>
 
-        <div v-if="shouldRenderMeta" :class="labelClasses">
+        <div v-if="shouldRenderMeta" :class="labelClasses" :style="metaStyle">
           <template v-if="resolvedShowLabel">
             <slot
               name="label"
@@ -110,7 +110,7 @@
           />
         </svg>
 
-        <div v-if="shouldRenderMeta" :class="circleLabelClasses">
+        <div v-if="shouldRenderMeta" :class="circleLabelClasses" :style="metaStyle">
           <template v-if="resolvedShowLabel">
             <slot
               name="label"
@@ -136,7 +136,14 @@
 import { computed, useId, useSlots } from 'vue'
 import { cn } from '../../utils'
 import Icon from '../Icon/Icon.vue'
-import type { ProgressProps, ProgressSize, ProgressTheme, ProgressVariant } from './types'
+import type {
+  ProgressPresetSize,
+  ProgressProps,
+  ProgressSize,
+  ProgressSizeConfig,
+  ProgressTheme,
+  ProgressVariant,
+} from './types'
 
 const props = withDefaults(defineProps<ProgressProps>(), {
   variant: 'line',
@@ -155,7 +162,12 @@ const progressDefaults = {
   theme: 'brand',
   size: 'md',
   active: true,
-} satisfies Required<Pick<ProgressProps, 'variant' | 'percent' | 'theme' | 'size' | 'active'>>
+} satisfies Omit<
+  Required<Pick<ProgressProps, 'variant' | 'percent' | 'theme' | 'size' | 'active'>>,
+  'size'
+> & {
+  size: ProgressPresetSize
+}
 
 const progressGeometryMap = {
   lineHeightMap: {
@@ -173,15 +185,20 @@ const progressGeometryMap = {
     md: 6,
     lg: 8,
   },
+  labelSizeMap: {
+    sm: 12,
+    md: 14,
+    lg: 16,
+  },
 } as const
 
-const { lineHeightMap, circleSizeMap, circleStrokeMap } = progressGeometryMap
+const { lineHeightMap, circleSizeMap, circleStrokeMap, labelSizeMap } = progressGeometryMap
 
-const circleLabelTypographyClassMap = {
-  sm: 'font-body-sm',
-  md: 'font-body-md',
-  lg: 'font-body-lg',
-} as const satisfies Record<Extract<ProgressSize, string>, string>
+interface NormalizedProgressSizeConfig {
+  thickness: number
+  labelSize: number
+  diameter: number
+}
 
 interface ProgressThemeClasses {
   fill: string
@@ -229,8 +246,34 @@ const themeClassMap: Record<ProgressTheme, ProgressThemeClasses> = {
 
 const resolvedVariant = computed<ProgressVariant>(() => props.variant)
 const resolvedTheme = computed<ProgressTheme>(() => props.theme)
-const resolvedSize = computed<ProgressSize>(() => props.size)
 const themeClasses = computed(() => themeClassMap[resolvedTheme.value])
+
+function isProgressSizeConfig(size: ProgressSize): size is ProgressSizeConfig {
+  return typeof size === 'object' && size !== null
+}
+
+function resolvePositiveSize(value: number | undefined, fallback: number) {
+  return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : fallback
+}
+
+function resolveProgressSizeConfig(): NormalizedProgressSizeConfig {
+  if (isProgressSizeConfig(props.size)) {
+    return {
+      thickness: resolvePositiveSize(props.size.thickness, circleStrokeMap[progressDefaults.size]),
+      labelSize: resolvePositiveSize(props.size.labelSize, labelSizeMap[progressDefaults.size]),
+      diameter: resolvePositiveSize(props.size.diameter, circleSizeMap[progressDefaults.size]),
+    }
+  }
+
+  return {
+    thickness:
+      resolvedVariant.value === 'line' ? lineHeightMap[props.size] : circleStrokeMap[props.size],
+    labelSize: labelSizeMap[props.size],
+    diameter: circleSizeMap[props.size],
+  }
+}
+
+const normalizedSizeConfig = computed(() => resolveProgressSizeConfig())
 
 function clampPercent(value = progressDefaults.percent) {
   if (!Number.isFinite(value)) return progressDefaults.percent
@@ -255,40 +298,16 @@ const statusIconName = computed(() =>
   resolvedVariant.value === 'circle' ? themeClasses.value.circleIcon : themeClasses.value.lineIcon,
 )
 const statusIconClasses = computed(() =>
-  resolvedVariant.value === 'circle' ? 'text-2xl' : 'text-sm',
-)
-const circleLabelTypographyClass = computed(() => {
-  if (typeof resolvedSize.value === 'number') {
-    if (circleSize.value >= circleSizeMap.lg) return circleLabelTypographyClassMap.lg
-    if (circleSize.value >= circleSizeMap.md) return circleLabelTypographyClassMap.md
-    return circleLabelTypographyClassMap.sm
-  }
-
-  return circleLabelTypographyClassMap[resolvedSize.value]
-})
-
-const isCustomCircleSize = computed(
-  () => resolvedVariant.value === 'circle' && typeof resolvedSize.value === 'number',
+  resolvedVariant.value === 'circle' ? 'text-[2.4em]' : 'text-[1em]',
 )
 
 const lineHeight = computed(() => {
-  if (typeof resolvedSize.value === 'number') return lineHeightMap[progressDefaults.size]
-  return lineHeightMap[resolvedSize.value]
+  return normalizedSizeConfig.value.thickness
 })
 
-const circleSize = computed(() => {
-  if (isCustomCircleSize.value) return resolvedSize.value as number
-  if (typeof resolvedSize.value === 'number') return circleSizeMap[progressDefaults.size]
-  return circleSizeMap[resolvedSize.value]
-})
-
-const circleStroke = computed(() => {
-  if (typeof resolvedSize.value === 'number') {
-    return Math.max(4, Math.round((resolvedSize.value as number) / 20))
-  }
-  return circleStrokeMap[resolvedSize.value]
-})
-
+const circleSize = computed(() => normalizedSizeConfig.value.diameter)
+const circleStroke = computed(() => normalizedSizeConfig.value.thickness)
+const labelSize = computed(() => normalizedSizeConfig.value.labelSize)
 const circleCenter = computed(() => circleSize.value / 2)
 const circleRadius = computed(() => (circleSize.value - circleStroke.value) / 2)
 const circleCircumference = computed(() => 2 * Math.PI * circleRadius.value)
@@ -334,11 +353,14 @@ const labelClasses = computed(() =>
 
 const circleLabelClasses = computed(() =>
   cn(
-    'absolute inset-0 flex flex-col items-center justify-center gap-1 text-center font-medium tabular-nums',
-    circleLabelTypographyClass.value,
+    'absolute inset-0 flex flex-col items-center justify-center gap-1 text-center leading-none font-medium tabular-nums',
     themeClasses.value.label,
   ),
 )
+
+const metaStyle = computed(() => ({
+  fontSize: `${labelSize.value}px`,
+}))
 
 const lineTrackStyle = computed(() => ({
   height: `${lineHeight.value}px`,

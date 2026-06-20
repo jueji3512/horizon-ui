@@ -36,7 +36,7 @@ progress/example-04
 
 ## 尺寸
 
-线性进度条的 `size` 控制高度；环形进度的 `sm`、`md`、`lg` 直径分别为 72、120、160px，也可以通过数字直接指定直径，例如 `:size="120"`。环形中心标签会随直径从 `font-body-sm`、`font-body-md` 到 `font-body-lg` 递进。
+`size` 支持 `sm`、`md`、`lg` 预设，也支持对象式自定义，例如 `:size="{ diameter: 120 }"`。对象字段未传时回退到 `md`：`thickness` 在线性进度中表示轨道高度，在环形进度中表示 stroke 宽度；`labelSize` 表示标签字号 px，状态图标基于同一字号缩放，线性为 `1em`、环形为 `2.4em`；`diameter` 表示环形直径，只对 `variant="circle"` 生效。
 
 :::demo 尺寸
 progress/example-05
@@ -57,12 +57,33 @@ progress/example-06
 | `variant` | `'line' \| 'circle'` | `'line'` | 进度条形态 |
 | `percent` | `number` | `0` | 进度百分比，会限制在 0 到 100 |
 | `theme` | `'brand' \| 'success' \| 'warning' \| 'error'` | `'brand'` | 语义主题 |
-| `size` | `'sm' \| 'md' \| 'lg' \| number` | `'md'` | 尺寸；数字仅用于环形直径，单位 px |
+| `size` | `'sm' \| 'md' \| 'lg' \| ProgressSizeConfig` | `'md'` | 尺寸预设或对象式自定义 |
 | `active` | `boolean` | `true` | brand 线性和环形进度未满时是否显示流动动画 |
 | `color` | `string` | - | 自定义进度填充色 |
 | `show-label` | `boolean` | 线性为 `false`，brand 环形为 `true` | 是否显示百分比标签；显示标签时不会同时显示状态图标 |
 | `label` | `string` | `${percent}%` | 自定义标签文案 |
 | `aria-label` | `string` | - | 无外部标签时的可访问名称 |
+
+```ts
+type ProgressSizeConfig = {
+  /**
+   * line: track height
+   * circle: stroke width
+   */
+  thickness?: number
+
+  /**
+   * Label font size in px.
+   * Status icon follows the same px size.
+   */
+  labelSize?: number
+
+  /**
+   * Circle diameter in px. Only for variant="circle".
+   */
+  diameter?: number
+}
+```
 
 ## Slots
 

@@ -1,5 +1,15 @@
 # 工作进度记录
 
+## 2026-06-20 Progress 尺寸 API 收口
+
+- 按用户明确指定的 API 形状收口 Progress `size`：使用 `ProgressSizeConfig` 对象字段 `thickness`、`labelSize`、`diameter`，不采用此前误提的 `lineHeight` / `circleSize` 命名，也不继续保留 `number` 直传。
+- 按 TDD 先更新 `scripts/check-progress.mjs`，要求类型定义、组件实现、文档示例都使用新尺寸模型，并禁止旧的 `ProgressSize | number` 与 `:size="120"`；首次运行 `npm run check:progress` 按预期失败 27 项。
+- `src/components/Progress/types.ts` 新增 `ProgressPresetSize`、`ProgressSizeConfig` 与 `ProgressSize = ProgressPresetSize | ProgressSizeConfig`；`src/components/Progress/Progress.vue` 改为统一解析 `normalizedSizeConfig`，对象未指定字段回退到 `md`。
+- 尺寸语义已落地：`thickness` 在线性进度中表示 track height，在环形进度中表示 stroke width；`labelSize` 表示标签字号 px；`diameter` 只对 `variant="circle"` 生效。
+- 状态图标尺寸已跟随 `labelSize`：line 使用 `1em`，circle 使用 `2.4em`；预设 `sm/md/lg` 的 labelSize 分别为 12/14/16px。
+- `docs/components/progress.md` 和 `docs/examples/progress/example-02.vue`、`example-05.vue` 已迁移到对象式写法，例如 `:size="{ diameter: 120 }"`、`:size="{ thickness: 10, labelSize: 16 }"` 和 `:size="{ diameter: 144, thickness: 8, labelSize: 18 }"`。
+- 验证：`npx prettier --check`、`git diff --check`、`npm run check:progress`、`npm run typecheck` 与完整 `npm run check` 均通过；`check:progress` 扩展到 171 项，完整 build 仅保留 VitePress chunk size warning。
+
 ## 2026-06-20 Progress 视觉打磨
 
 - 按项目文档当前待办继续查看 Progress：确认 5202 dev server 已停止后重新启动 `http://127.0.0.1:5202/`，打开 `docs/components/progress.md` 对应页面，先后检查暗色和亮色文档截图。

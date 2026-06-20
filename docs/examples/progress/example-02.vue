@@ -18,7 +18,7 @@
         variant="circle"
         theme="success"
         :percent="58"
-        :size="120"
+        :size="{ diameter: 120 }"
         color="#0f766e"
         aria-label="自定义颜色环形进度"
       />

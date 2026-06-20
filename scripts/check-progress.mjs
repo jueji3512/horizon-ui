@@ -62,7 +62,16 @@ expectIncludes(
   'src/components/Progress/types.ts',
   "ProgressTheme = 'brand' | 'success' | 'warning' | 'error'",
 )
-expectIncludes('src/components/Progress/types.ts', "ProgressSize = 'sm' | 'md' | 'lg' | number")
+expectIncludes('src/components/Progress/types.ts', "ProgressPresetSize = 'sm' | 'md' | 'lg'")
+expectIncludes('src/components/Progress/types.ts', 'ProgressSizeConfig')
+expectIncludes('src/components/Progress/types.ts', 'thickness?: number')
+expectIncludes('src/components/Progress/types.ts', 'labelSize?: number')
+expectIncludes('src/components/Progress/types.ts', 'diameter?: number')
+expectIncludes(
+  'src/components/Progress/types.ts',
+  'ProgressSize = ProgressPresetSize | ProgressSizeConfig',
+)
+expectNotIncludes('src/components/Progress/types.ts', '| number')
 
 expectIncludes('src/components/Progress/Progress.vue', "variant: 'line'")
 expectIncludes('src/components/Progress/Progress.vue', "theme: 'brand'")
@@ -84,7 +93,12 @@ expectIncludes('src/components/Progress/Progress.vue', 'progressGeometryMap')
 expectIncludes('src/components/Progress/Progress.vue', 'circleSizeMap')
 expectIncludes('src/components/Progress/Progress.vue', 'lineHeightMap')
 expectIncludes('src/components/Progress/Progress.vue', 'circleStrokeMap')
-expectIncludes('src/components/Progress/Progress.vue', 'isCustomCircleSize')
+expectIncludes('src/components/Progress/Progress.vue', 'labelSizeMap')
+expectIncludes('src/components/Progress/Progress.vue', 'resolveProgressSizeConfig')
+expectIncludes('src/components/Progress/Progress.vue', 'normalizedSizeConfig')
+expectIncludes('src/components/Progress/Progress.vue', 'props.size.thickness')
+expectIncludes('src/components/Progress/Progress.vue', 'props.size.labelSize')
+expectIncludes('src/components/Progress/Progress.vue', 'props.size.diameter')
 expectIncludes('src/components/Progress/Progress.vue', 'stroke-dashoffset')
 expectIncludes('src/components/Progress/Progress.vue', 'h-progress-flow')
 expectIncludes('src/components/Progress/Progress.vue', 'h-progress-flow-sweep')
@@ -126,10 +140,12 @@ expectIncludes('src/components/Progress/Progress.vue', "trackColor: 'var(--bg-co
 expectIncludes('src/components/Progress/Progress.vue', 'shouldShowStatusIcon')
 expectIncludes('src/components/Progress/Progress.vue', 'statusIconName')
 expectIncludes('src/components/Progress/Progress.vue', 'statusIconClasses')
-expectIncludes('src/components/Progress/Progress.vue', 'circleLabelTypographyClass')
-expectIncludes('src/components/Progress/Progress.vue', "sm: 'font-body-sm'")
-expectIncludes('src/components/Progress/Progress.vue', "md: 'font-body-md'")
-expectIncludes('src/components/Progress/Progress.vue', "lg: 'font-body-lg'")
+expectIncludes('src/components/Progress/Progress.vue', 'metaStyle')
+expectIncludes('src/components/Progress/Progress.vue', 'fontSize: `${labelSize.value}px`')
+expectIncludes(
+  'src/components/Progress/Progress.vue',
+  "resolvedVariant.value === 'circle' ? 'text-[2.4em]' : 'text-[1em]'",
+)
 expectIncludes('src/components/Progress/Progress.vue', "lineIcon: 'info'")
 expectIncludes('src/components/Progress/Progress.vue', "lineIcon: 'circle-check-filled'")
 expectIncludes('src/components/Progress/Progress.vue', "lineIcon: 'circle-alert-filled'")
@@ -138,15 +154,13 @@ expectIncludes('src/components/Progress/Progress.vue', "circleIcon: 'info-plain'
 expectIncludes('src/components/Progress/Progress.vue', "circleIcon: 'check'")
 expectIncludes('src/components/Progress/Progress.vue', "circleIcon: 'alert'")
 expectIncludes('src/components/Progress/Progress.vue', "circleIcon: 'close'")
-expectIncludes(
-  'src/components/Progress/Progress.vue',
-  "resolvedVariant.value === 'circle' ? 'text-2xl' : 'text-sm'",
-)
 expectNotIncludes('src/components/Progress/Progress.vue', 'indeterminate')
 expectNotIncludes('src/components/Progress/types.ts', 'indeterminate')
 expectNotIncludes('src/components/Progress/Progress.vue', 'successPercent')
 expectNotIncludes('src/components/Progress/Progress.vue', 'buffer')
 expectNotIncludes('src/components/Progress/Progress.vue', 'steps')
+expectNotIncludes('src/components/Progress/Progress.vue', 'typeof resolvedSize.value ===')
+expectNotIncludes('src/components/Progress/Progress.vue', 'font-body-lg')
 
 expectIncludes('src/components/Progress/index.ts', 'Progress')
 expectIncludes('src/components/Progress/index.ts', 'ProgressVariant')
@@ -158,7 +172,10 @@ expectIncludes('package.json', 'check:progress')
 
 expectIncludes('docs/components/progress.md', 'Progress')
 expectIncludes('docs/components/progress.md', 'variant="circle"')
-expectIncludes('docs/components/progress.md', ':size="120"')
+expectIncludes('docs/components/progress.md', ':size="{ diameter: 120 }"')
+expectIncludes('docs/components/progress.md', 'thickness')
+expectIncludes('docs/components/progress.md', 'labelSize')
+expectIncludes('docs/components/progress.md', 'diameter')
 expectNotIncludes('docs/components/progress.md', 'progress/example-07')
 expectNotIncludes('docs/components/progress.md', '## 环形状态')
 expectIncludes('docs/components/progress.md', 'active')
@@ -166,7 +183,9 @@ expectIncludes('docs/components/progress.md', '线性和环形')
 expectIncludes('docs/components/progress.md', '从起点')
 expectIncludes('docs/components/progress.md', 'color')
 expectIncludes('docs/components/progress.md', '#label')
-expectIncludes('docs/components/progress.md', '环形中心标签')
+expectIncludes('docs/components/progress.md', '状态图标基于同一字号缩放')
+expectNotIncludes('docs/components/progress.md', ':size="120"')
+expectNotIncludes('docs/components/progress.md', "'sm' \\| 'md' \\| 'lg' \\| number")
 expectNotIncludes('docs/components/progress.md', 'indeterminate')
 expectFile('src/components/Icon/icons/info-plain.svg')
 expectFile('src/components/Icon/icons/alert.svg')
@@ -199,8 +218,18 @@ expectMatches(
 )
 expectMatches(
   'docs/examples/progress/example-05.vue',
-  /<Progress[\s\S]*:size="120"/,
-  'Progress docs should cover numeric circle size',
+  /<Progress[\s\S]*:size="\{ diameter: 120 \}"/,
+  'Progress docs should cover object circle diameter size',
+)
+expectMatches(
+  'docs/examples/progress/example-05.vue',
+  /<Progress[\s\S]*:size="\{ thickness: 10, labelSize: 16 \}"/,
+  'Progress docs should cover object line thickness and label size',
+)
+expectMatches(
+  'docs/examples/progress/example-05.vue',
+  /<Progress[\s\S]*:size="\{ diameter: 144, thickness: 8, labelSize: 18 \}"/,
+  'Progress docs should cover object circle diameter, thickness and label size',
 )
 expectMatches(
   'docs/examples/progress/example-06.vue',

@@ -50,7 +50,7 @@
 - Form / FormItem 已作为公开表单组件落地并完成本轮视觉与基础行为收口；内部拆分 FormItemLabel / FormItemMessage 与 FormControl context，但不把 FormLabel / FormControl / FormMessage 作为对外 primitives。
 - Dialog 已作为公开模态容器落地在 `src/components/Dialog/`；它是单一公开组件，不提供 trigger/content/close 子组件，内部沉淀 modal layer 能力但不公开 Overlay / Layer primitive。
 - Message 已作为命令式全局反馈服务落地在 `src/components/Message/`；它不公开用户态 `<Message />` 组件，不提供 `message.open()` / `message.custom()`，只通过 `message.info/success/warning/error/loading/close/closeAll/config` 使用。
-- Progress 已作为公开确定进度组件落地在 `src/components/Progress/`；它支持 line / circle、percent clamp、theme / color、label slot / icon 互斥、ARIA 和 brand-only active flow，首版不表达未知进度。2026-06-20 已继续修正环形中心标签与 circle active 视觉表现，后续如无新的 Progress 反馈可推进 Notification。
+- Progress 已作为公开确定进度组件落地在 `src/components/Progress/`；它支持 line / circle、percent clamp、theme / color、label slot / icon 互斥、ARIA、brand-only active flow 和对象式尺寸配置，首版不表达未知进度。2026-06-20 已继续修正 circle active 视觉表现并收口 `size` API，后续如无新的 Progress 反馈可推进 Notification。
 
 ## 历史计划资料处置
 
@@ -116,16 +116,16 @@
 ## 2026-06-15 Progress v1 实现
 
 - Progress v1 定位为公开确定进度组件，后续 Notification loading 可直接基于 `Progress percent` 接入；首版不做 unknown / indeterminate、steps、buffer 或 success percent。
-- 公开 API 为 `variant="line|circle"`、`percent`、`theme="brand|success|warning|error"`、`size="sm|md|lg"` / circle 数字直径、`active`、`color`、`showLabel`、`label`、`ariaLabel`。
-- `size` API 仍需下次继续收口：当前 `sm/md/lg` 预设和 circle 数字直径只是首版；用户倾向后续评估“预设规格 + 对象式自定义”，对象未指定字段回退到 `md`，并把条宽 / stroke 宽度、`labelSize` px、图标字号跟随 `labelSize` 的 `2.4em`、circle 直径等尺寸维度拆清楚。
+- 公开 API 为 `variant="line|circle"`、`percent`、`theme="brand|success|warning|error"`、`size="sm|md|lg|ProgressSizeConfig"`、`active`、`color`、`showLabel`、`label`、`ariaLabel`；不再支持 `size` 数字直传。
+- `ProgressSizeConfig` 字段为 `thickness`、`labelSize`、`diameter`，未指定字段回退到 `md`：`thickness` 在线性表示 track height、在环形表示 stroke width；`labelSize` 是标签字号 px，状态图标基于同一字号缩放，line 为 `1em`、circle 为 `2.4em`；`diameter` 只对 `variant="circle"` 生效。
 - 线性形态高度为 4/6/8px，track 统一使用 `--bg-color-component`，fill 使用 theme 实色或 `color`；active 默认开启且只在 brand theme、`percent < 100` 时于填充区域显示克制扫光，百分比本身不改变。
 - 环形形态的 active 默认同样只在 brand theme、`percent < 100` 时显示；实现上在已完成弧线上覆盖与 line 同源的横向渐变 stroke，并通过 SVG `animateTransform` 推动渐变从进度起点扫向当前进度端点；success / warning / error 等状态 theme 不显示流动动画，避免状态表达过度活跃。
-- 环形形态用 SVG circle 和 `stroke-dashoffset` 表达进度，sm/md/lg 直径为 72/120/160px，数字 size 只作为 circle 自定义直径；brand 默认显示居中 label，success / warning / error 默认显示状态图标。
+- 环形形态用 SVG circle 和 `stroke-dashoffset` 表达进度，sm/md/lg 直径为 72/120/160px，自定义直径通过 `:size="{ diameter: 120 }"` 等对象式配置表达；brand 默认显示居中 label，success / warning / error 默认显示状态图标。
 - Theme 图标按形态拆分：line 使用填充圆形状态图标，circle 使用更大的无圆底状态图标；label 与状态图标不共存，传入 `label` 或 `#label` 时优先显示 label；`percent >= 100` 不自动切换 success，由调用方显式传 `theme="success"`。
-- 2026-06-20 继续修正视觉表现：环形中心标签随环形直径递进，sm / md / lg 和 120px 数字直径分别命中 12px / 14px / 16px（数字直径按实际直径阈值归类）；该规则已写入文档尺寸说明和 `check:progress`。
-- 新增 `scripts/check-progress.mjs` 与 `npm run check:progress`，并纳入 `npm run check`，守护公开导出、VitePress 注册、ARIA、percent clamp、line/circle、circle 数字直径、line / circle active、color 覆盖、theme 图标、禁用未知进度 API 和旧 `primary/danger` 命名。
-- 环形状态能力已合并回“环形进度”示例 `docs/examples/progress/example-02.vue`，不再单独保留“环形状态”章节；该示例覆盖 brand / success / warning / error、自定义 label、自定义色和数字直径。
-- 浏览器验证在 `http://127.0.0.1:5202/components/progress.html` 完成：线性高度、环形直径 / stroke、`--bg-color-component` track、brand-only line / circle flow、line 填充圆形状态图标、circle 无圆底状态图标、环形中心标签 12/14/16px 递进、custom color、label/icon 互斥、ARIA、percent 边界均符合预期；console warning/error 为空。新增 SVG 需要重启 Vite dev server 才会进入 `import.meta.glob`，本轮已重启 5202 后复验 line warning 图标。
+- 2026-06-20 继续修正视觉表现并收口尺寸 API：预设 `sm/md/lg` 仍对应 line 高度 4/6/8px、circle 直径 72/120/160px 与 stroke 4/6/8px，labelSize 对应 12/14/16px；对象式配置覆盖指定字段，未指定字段回退 `md`。
+- 新增 `scripts/check-progress.mjs` 与 `npm run check:progress`，并纳入 `npm run check`，守护公开导出、VitePress 注册、ARIA、percent clamp、line/circle、对象式尺寸配置、line / circle active、color 覆盖、theme 图标、禁用未知进度 API 和旧 `primary/danger` 命名。
+- 环形状态能力已合并回“环形进度”示例 `docs/examples/progress/example-02.vue`，不再单独保留“环形状态”章节；该示例覆盖 brand / success / warning / error、自定义 label、自定义色和对象式直径。
+- 浏览器验证在 `http://127.0.0.1:5202/components/progress.html` 完成：线性高度、环形直径 / stroke、`--bg-color-component` track、brand-only line / circle flow、line 填充圆形状态图标、circle 无圆底状态图标、custom color、label/icon 互斥、ARIA、percent 边界均符合预期；console warning/error 为空。新增 SVG 需要重启 Vite dev server 才会进入 `import.meta.glob`，本轮已重启 5202 后复验 line warning 图标。
 
 ## 2026-06-06 Select 单选首版实现
 

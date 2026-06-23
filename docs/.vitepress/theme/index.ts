@@ -26,6 +26,7 @@ import {
   Select,
   SelectOption,
   SelectOptionGroup,
+  TimePanel,
   Callout,
   Divider,
   Link,
@@ -148,6 +149,7 @@ export default {
     app.component('Select', Select)
     app.component('SelectOption', SelectOption)
     app.component('SelectOptionGroup', SelectOptionGroup)
+    app.component('TimePanel', TimePanel)
     app.component('Tooltip', Tooltip)
     app.component('Popover', Popover)
     app.component('PopoverTrigger', PopoverTrigger)

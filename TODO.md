@@ -12,6 +12,10 @@
 - [x] Drawer v1 作为第一版先收住；当前能力偏基础，后续增强抽屉业务能力时再按真实需求补充，不在本轮继续扩 API。
 - [x] `check:drawer` 已新增并纳入 `npm run check`，覆盖公开导出、文档注册、单组件公开面、modal layer 复用、四方向过渡、默认尺寸与 `style` 透传契约、ARIA / focus / scroll lock、示例覆盖和旧 primitive 命名扫描。
 - [x] Drawer 文档页已在 `http://127.0.0.1:5205/components/drawer.html` 通过 in-app Browser 验证：基础打开 / Esc 关闭、右 / 左 / 上 / 下四方向、长内容 ScrollArea、Drawer 内 Popover + DropdownMenu 的 LIFO Esc 3→2→1→0、body scroll lock 恢复和本次时间戳后 console warning/error 为空。
+- [x] TimePanel v1 已作为公开底层时间列面板落地：只负责时间列选择，不处理日期、输入框、浮层触发、自由输入解析、范围选择或表单接入。
+- [x] TimePanel 支持 `format` 输出 `HH:mm`、`HH:mm:ss`、`HH:mm:ss:SSS`、`hh:mm A`、`hh:mm:ss A`、`hh:mm:ss:SSS A`；由格式决定秒列、毫秒列与 AM/PM 列；支持 `steps` 四元组、`disabledTime`、即时选择、键盘列选择和 `focus` / `setNow` / `clear` 等 Expose 方法；确认、Now、Clear 等上层操作由后续时间输入组件组合。
+- [x] `check:time-panel` 已新增并纳入 `npm run check`，覆盖公开导出、格式列控制、四元组步长、12/24 小时格式、Expose 方法、禁用项、文档示例、无内建 footer 操作和旧 API 扫描。
+- [x] TimePanel 文档页已在 `http://127.0.0.1:5205/components/time-panel.html` 通过 in-app Browser 验证：默认 HH:mm、秒 / 毫秒列、12h AM/PM、steps、disabledTime、外层示例按钮通过 Expose 方法调用 setNow / clear、键盘列选择、可选项 cursor pointer / 禁用项 not-allowed、ScrollArea 滚动列无可见滚动条、轻浮层视觉和 console warning/error 为空。
 
 ## 2026-06-20 收尾更新
 
@@ -66,7 +70,7 @@
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。
 - [ ] 后续 VitePress 发布高于 `1.6.4` 的正式版本时，复查并升级以消除当前嵌套 Vite/esbuild 的 audit 项。
 - [ ] 评估并迁移包管理器：优先考虑 pnpm，备选继续 npm，不优先 Bun / Yarn；迁移时使用 Corepack 固定 pnpm 11，替换 `package-lock.json` 为 `pnpm-lock.yaml`，统一 scripts、`packageManager`、`engines` 和项目记忆文档，并验证 `pnpm install`、`pnpm run check`、audit 等价项和关键文档页面。
-- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Drawer、Message v1、Progress v1 与 Notification v1 已落地；Textarea 本轮先不做、后续按真实需求再启动；后续建议看 DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；Popconfirm 与 TagInput 因独立使用场景较少先后置。
+- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Drawer、TimePanel v1、Message v1、Progress v1 与 Notification v1 已落地；Textarea 本轮先不做、后续按真实需求再启动；后续建议先看 DatePanel / CalendarPanel，再组合 DatePicker / TimePicker / DateTimePicker，上层输入、Popper、解析和表单接入后置；再看 Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；Popconfirm 与 TagInput 因独立使用场景较少先后置。
 - [ ] 评估并沉淀真正有收益的内部通用原型：Select 与 Menu 已各自用 slot 子组件 + 内部 collection 注册跑通首版；后续等 Autocomplete、Tabs、NavigationMenu 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Dialog 已先沉淀内部 modal layer（top layer、scroll lock、focus trap、Teleport 子浮层登记），Drawer 已复用该能力验证抽屉场景；Form / FormItem 已沉淀内部 FormControl context，但不对外暴露 FormLabel / FormControl / FormMessage primitives；PopupSurface 暂缓。
 - [x] 2026-06-10 Form / FormItem 首版已落地：默认 `labelAlign="right"`、`labelWidth=120`，help 通过 label 问号 tip 展示，控件下方消息行仅显示校验 / 状态文案并默认预留高度；轻量校验逻辑集中在 `src/components/Form/validator.ts`，并新增 `npm run check:form` 守护。
 - [x] 继续按用户反馈逐项校正 Form / FormItem 视觉细节：已完成 label / control / action 三段布局、20px 状态图标槽、help tooltip arrow、控件与 label 垂直居中、24px 消息预留区、message 20px 绝对定位、并发校验即时提交、异步校验竞态保护和表单实例 API 拆分。

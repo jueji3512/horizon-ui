@@ -64,6 +64,7 @@ export default defineConfig({
             { text: 'Field 输入域', link: '/components/field' },
             { text: 'Popper 弹出定位引擎', link: '/components/popper' },
             { text: 'ScrollArea 滚动区域', link: '/components/scrollarea' },
+            { text: 'TimePanel 时间面板', link: '/components/time-panel' },
           ],
         },
       ],

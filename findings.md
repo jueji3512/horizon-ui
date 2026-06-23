@@ -38,7 +38,7 @@
 - 基础：Button、Icon、Link、Text、Title、Divider、Space。
 - 表单/输入：Checkbox、CheckboxGroup、Radio、RadioGroup、Switch、Input、InputNumber、Select、Form、FormItem。
 - 展示/反馈：Badge、Tag、Callout、Tooltip、Popover、Menu、DropdownMenu、Drawer、Message、Progress、Notification。
-- 底层：FieldRoot、FieldContent、FieldNativeInput、FieldPrefix、FieldSuffix、FieldAction、FieldGroup、FieldSegment、Popper、PopperTrigger、PopperContent、PopperArrow、ScrollArea。
+- 底层：FieldRoot、FieldContent、FieldNativeInput、FieldPrefix、FieldSuffix、FieldAction、FieldGroup、FieldSegment、Popper、PopperTrigger、PopperContent、PopperArrow、ScrollArea、TimePanel。
 
 特别说明：
 
@@ -47,6 +47,7 @@
 - Popper 是底层定位基座，不提供业务 surface 样式；已完成 base-component review，可作为 Select、Popover、MenuSub、DropdownMenu 等上层组件的当前基座。
 - Field 已作为公开底层输入域基座落地在 `src/components/Field/`；它像 Popper 一样允许用户组合使用，不放在 `_internal`。
 - ScrollArea 已作为公开底层滚动基座落地在 `src/components/ScrollArea/`；它负责滚动容器、悬浮 scrollbar、thumb 拖拽和 viewport expose，不负责 surface 视觉。
+- TimePanel 已作为公开底层时间列面板落地在 `src/components/TimePanel/`；它只负责时间列选择和格式化输出，不处理日期、输入框、浮层触发、自由输入解析、范围选择或表单接入，后续完整时间输入再组合 Field、Popper 和解析逻辑。
 - Form / FormItem 已作为公开表单组件落地并完成本轮视觉与基础行为收口；内部拆分 FormItemLabel / FormItemMessage 与 FormControl context，但不把 FormLabel / FormControl / FormMessage 作为对外 primitives。
 - Dialog 已作为公开模态容器落地在 `src/components/Dialog/`；它是单一公开组件，不提供 trigger/content/close 子组件，内部沉淀 modal layer 能力但不公开 Overlay / Layer primitive。
 - Drawer 已作为公开抽屉模态容器落地在 `src/components/Drawer/`；它是单一公开组件，不提供 trigger/content/close 子组件，复用 Dialog 内部 modal layer，支持四方向 placement、默认左右 400px / 上下 320px 尺寸、通过 `class` / `style` / `panelClass` 控制面板尺寸、title/description/ariaLabel、footer close helper、Esc、overlay click、close icon、scroll lock、focus trap 和 Drawer 内 Teleport 子浮层 LIFO Esc。
@@ -62,7 +63,7 @@
 - Paragraph 旧计划已明确过时，当前不实现；如未来需要大段文本编排，重新按当前 API/token 规范设计。
 - Tooltip 当前已迁移到 Popper 基座；历史上“后续评估迁移”的结论已落实。
 - 早期交互规范里 `type` 迁移到 `theme`、禁用态不用 opacity、统一 token 的方向已被当前规范吸收；旧 token 名称和值不再直接沿用。
-- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Drawer、Message v1、Progress v1 与 Notification v1 已按当前边界落地；Textarea 本轮先不做，后续按真实需求再启动；Popconfirm 因应用场景较少后置；后续再推进日期时间、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
+- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Drawer、TimePanel v1、Message v1、Progress v1 与 Notification v1 已按当前边界落地；Textarea 本轮先不做，后续按真实需求再启动；Popconfirm 因应用场景较少后置；后续再推进日期时间、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
 
 ## 2026-06-05 未来组件路线与内部原型候选
 

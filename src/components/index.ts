@@ -33,6 +33,7 @@ import InputNumber from './InputNumber/InputNumber.vue'
 import Select from './Select/Select.vue'
 import SelectOption from './Select/SelectOption.vue'
 import SelectOptionGroup from './Select/SelectOptionGroup.vue'
+import TimePanel from './TimePanel/TimePanel.vue'
 import DropdownMenu from './DropdownMenu/DropdownMenu.vue'
 import DropdownMenuTrigger from './DropdownMenu/DropdownMenuTrigger.vue'
 import DropdownMenuContent from './DropdownMenu/DropdownMenuContent.vue'
@@ -103,6 +104,18 @@ export type {
 } from './ScrollArea'
 export { scrollAreaContextKey, useScrollAreaContext } from './ScrollArea'
 export type { SelectPlacement, SelectSize, SelectStatus, SelectValue } from './Select'
+export type {
+  TimePanelDisabledTime,
+  TimePanelDisabledTimeContext,
+  TimePanelExpose,
+  TimePanelFormat,
+  TimePanelMeridiem,
+  TimePanelProps,
+  TimePanelScrollBehavior,
+  TimePanelSteps,
+  TimePanelUnit,
+  TimePanelValueParts,
+} from './TimePanel'
 export type {
   Placement,
   PopperContext,
@@ -218,6 +231,7 @@ export {
   SelectOptionGroup,
   Tag,
   Text,
+  TimePanel,
   Title,
   Tooltip,
 }

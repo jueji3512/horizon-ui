@@ -1,5 +1,17 @@
 # 工作进度记录
 
+## 2026-06-23 TimePanel v1 实施
+
+- 按用户确认计划先实现公开底层 `TimePanel`，不做完整时间输入组件；边界限定为时间列选择、即时提交、格式化输出、Expose 方法和键盘交互。
+- 按 TDD 新增 `scripts/check-time-panel.mjs` 与 `npm run check:time-panel`，并接入完整 `npm run check`；首次运行按预期失败 119 项，覆盖缺失源码、文档、示例、导出、注册和 API 契约。
+- 新增 `src/components/TimePanel/`：`TimePanel.vue`、`types.ts`、`index.ts`；公开 `TimePanelFormat`、`TimePanelSteps`、`TimePanelDisabledTime` 等类型，并在根导出与 VitePress theme 中注册。
+- TimePanel v1 支持 `format="HH:mm|HH:mm:ss|HH:mm:ss:SSS|hh:mm A|hh:mm:ss A|hh:mm:ss:SSS A"`，由格式控制秒列、毫秒列与 AM/PM 列；`modelValue` 始终按当前格式输出，无效或空值不选中任何项。
+- 支持 `steps` 四元组、`disabledTime(unit, value, context)`、即时提交、ScrollArea 滚动列、选中项居中滚动、方向键 / Home / End / Enter 键盘操作，并通过 `TimePanelExpose` 暴露 `focus` / `scrollToActive` / `getValue` / `getParts` / `setValue` / `setNow` / `clear`；Now / Clear / OK / Cancel 等操作由后续上层时间输入组件组合。
+- 新增 `docs/components/time-panel.md` 与 4 个 `docs/examples/time-panel/` 示例，覆盖默认 HH:mm、秒 / 毫秒格式、12 小时制、Expose 方法、steps 和 disabledTime。
+- 已同步 `AGENTS.md`、`TODO.md`、`task_plan.md` 与 `findings.md`；后续完整输入、浮层触发、自由输入解析、表单接入、日期组合和 DateTime 组合仍后置。
+- 验证：`npm run check` 通过，包含新增 `check:time-panel` 契约、lint、typecheck 和 VitePress build；build 仅保留既有 VitePress chunk size warning。
+- 浏览器验证：`http://127.0.0.1:5205/components/time-panel.html` 已通过 in-app Browser 验证 4 个文档 demo / 5 个 TimePanel 实例、默认 HH:mm、秒 / 毫秒列、12h AM/PM、steps、disabledTime、外层示例按钮通过 Expose 方法调用 setNow / clear、键盘列选择、可选项 cursor pointer / 禁用项 not-allowed、ScrollArea 滚动列无可见滚动条、轻浮层视觉；本次时间戳后 console warning/error 为空。
+
 ## 2026-06-23 本地工作流目录规则调整
 
 - 用户确认可以去掉“禁止恢复 `docs/superpowers/**`”的限制：该目录后续可作为本地工作流 / spec 临时产物目录使用。

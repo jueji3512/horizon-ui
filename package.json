@@ -27,11 +27,12 @@
     "check:input-number": "node scripts/check-input-number.mjs",
     "check:form": "node scripts/check-form.mjs",
     "check:dialog": "node scripts/check-dialog.mjs",
+    "check:drawer": "node scripts/check-drawer.mjs",
     "check:message": "node scripts/check-message.mjs",
     "check:progress": "node scripts/check-progress.mjs",
     "check:notification": "node scripts/check-notification.mjs",
     "check:dropdown-menu": "node scripts/check-dropdown-menu.mjs",
-    "check": "npm run format:check && npm run check:component-demo && npm run check:icons && npm run check:scroll-area && npm run check:popper && npm run check:popover && npm run check:menu && npm run check:select && npm run check:input-number && npm run check:form && npm run check:dialog && npm run check:message && npm run check:progress && npm run check:notification && npm run check:dropdown-menu && npm run lint && npm run typecheck && npm run build",
+    "check": "npm run format:check && npm run check:component-demo && npm run check:icons && npm run check:scroll-area && npm run check:popper && npm run check:popover && npm run check:menu && npm run check:select && npm run check:input-number && npm run check:form && npm run check:dialog && npm run check:drawer && npm run check:message && npm run check:progress && npm run check:notification && npm run check:dropdown-menu && npm run lint && npm run typecheck && npm run build",
     "format": "prettier . --write",
     "format:check": "prettier . --check"
   },

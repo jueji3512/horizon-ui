@@ -43,6 +43,7 @@ export default defineConfig({
             { text: 'Tooltip 文字提示', link: '/components/tooltip' },
             { text: 'Popover 弹出层', link: '/components/popover' },
             { text: 'Dialog 对话框', link: '/components/dialog' },
+            { text: 'Drawer 抽屉', link: '/components/drawer' },
             { text: 'Message 全局提示', link: '/components/message' },
             { text: 'Notification 通知', link: '/components/notification' },
             { text: 'Progress 进度条', link: '/components/progress' },

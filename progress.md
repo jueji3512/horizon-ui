@@ -1,5 +1,26 @@
 # 工作进度记录
 
+## 2026-06-23 本地工作流目录规则调整
+
+- 用户确认可以去掉“禁止恢复 `docs/superpowers/**`”的限制：该目录后续可作为本地工作流 / spec 临时产物目录使用。
+- 新边界是 `docs/superpowers/**` 不能进入 git 提交；当前 `.gitignore` 已包含 `docs/superpowers/`，保持忽略即可。
+- 已同步 `AGENTS.md`、`TODO.md`、`task_plan.md` 和 `findings.md`：历史内容不再作为最新依据，长期项目记忆仍沉淀到根目录文档；本地 workflow/spec 产物只服务当前开发过程。
+
+## 2026-06-23 Drawer v1 实施
+
+- 开始实现前先按用户要求检查并推送本地提交：本地 `dev` 分支已推送到 `origin/dev` 并设置 upstream。
+- 使用 `docs/superpowers/**` 作为被 `.gitignore` 忽略的本地工作流目录，新增 Drawer 设计 spec 和执行计划；已用 `git check-ignore -v` 确认该目录不会进入 git。
+- 按 TDD 新增 `scripts/check-drawer.mjs` 与 `npm run check:drawer`，并接入完整 `npm run check`；首次运行 `npm run check:drawer` 按预期失败 138 项，覆盖缺失源码、文档、示例、导出、注册和 API 契约。
+- 新增 `src/components/Drawer/`：`Drawer.vue`、`types.ts`、`index.ts`；公开单一 `Drawer` 组件，不提供 trigger / content / close primitive；公开状态统一为 `open` / `v-model:open` / `open-change`。
+- Drawer 复用 Dialog 内部 modal layer：负责 top-layer z-index、body scroll lock、focus trap、Esc、overlay click、关闭后焦点恢复，以及 Drawer 内 Popover / DropdownMenu 等 Teleport 子浮层登记和 LIFO Esc。
+- 公开能力包括 right / left / top / bottom 四方向、默认左右 400px / 上下 320px 尺寸、透传到面板 DOM 的 `class` / `style`、`role="dialog|alertdialog"`、title / description / ariaLabel、右上角 close icon、footer slot close helper、`panelClass`、`to` 和 `zIndex`。
+- 根据用户反馈移除 Drawer `size` prop 与 `DrawerSize` 类型；自定义宽高改为通过 `style` / `class` / `panelClass` 控制，长内容示例改用 `style="width: 520px"` 展示面板宽度覆盖。
+- 用户确认 Drawer v1 作为第一版先收住；当前能力偏基础，后续增强抽屉业务能力时再按真实需求补充，不在本轮继续扩 API。
+- 新增 `docs/components/drawer.md` 与 4 个 `docs/examples/drawer/` 示例，覆盖基础资料抽屉、四方向、长内容 ScrollArea 和嵌套 Popover / DropdownMenu；同步 VitePress sidebar、theme 注册和 `src/components/index.ts` 根导出。
+- 浏览器验证时发现嵌套示例里 `DropdownMenuContent` 直接放 `MenuItem` 且缺少 `value`，导致 Vue warning；已补 `Menu` 包裹与每个 `MenuItem value`，保持与 DropdownMenu 既有契约一致。
+- 验证：`npm run check` 通过，包含新增 `check:drawer` 170 项、lint、typecheck 和 VitePress build；build 仅保留 VitePress chunk size warning。
+- 浏览器验证：`http://127.0.0.1:5205/components/drawer.html` 已通过 in-app Browser 验证基础打开 / Esc 关闭、四方向 placement、长内容 ScrollArea、Drawer 内 Popover + DropdownMenu 的 LIFO Esc 3→2→1→0、body scroll lock 恢复；按本次时间戳过滤后 console warning/error 为空。
+
 ## 2026-06-20 Notification v1 实施
 
 - 根据用户确认的计划开始实现 Notification v1：定位为比 Message 更持久、更结构化的全局通知服务，用于任务状态、系统通知和需要标题 / 正文 / 操作的反馈。

@@ -31,13 +31,14 @@ npm run check:select # 校验 Select slot 子组件契约
 npm run check:input-number # 校验 InputNumber 只读/禁用步进契约
 npm run check:form # 校验 Form / FormItem 表单契约
 npm run check:dialog # 校验 Dialog 模态浮层契约
+npm run check:drawer # 校验 Drawer 抽屉模态契约
 npm run check:message # 校验 Message 命令式反馈契约
 npm run check:progress # 校验 Progress 确定进度契约
 npm run check:notification # 校验 Notification 结构化通知契约
 npm run check:dropdown-menu # 校验 DropdownMenu 组合契约
 npm run format:check # Prettier 检查
 npm run format       # Prettier 写入
-npm run check        # format:check + check:component-demo + check:icons + check:scroll-area + check:popper + check:popover + check:menu + check:select + check:input-number + check:form + check:dialog + check:message + check:progress + check:notification + check:dropdown-menu + lint + typecheck + build
+npm run check        # format:check + check:component-demo + check:icons + check:scroll-area + check:popper + check:popover + check:menu + check:select + check:input-number + check:form + check:dialog + check:drawer + check:message + check:progress + check:notification + check:dropdown-menu + lint + typecheck + build
 ```
 
 ## 当前文档记忆
@@ -52,8 +53,8 @@ npm run check        # format:check + check:component-demo + check:icons + check
 
 1. 先执行 `git status --short` 和 `git log -1 --oneline`，确认工作区是否干净、最新提交是否已经推送。
 2. 先读本文件，再读 `TODO.md` 和 `CODE_STYLE.md`；如需更多背景，再读 `findings.md`、`task_plan.md`、`progress.md`。
-3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。Select 已统一为 slot 子组件驱动；Popover / Menu / DropdownMenu 已按原语边界落地；Form / FormItem 本轮视觉与基础行为已收口；Dialog 已按单一公开组件落地并沉淀内部 modal layer；Message 已按命令式 toast 服务落地；Progress 已按确定进度组件落地；Notification 已按命令式结构化通知服务落地；Textarea、Popconfirm 本轮先不做。
-4. 继续开发时以当前源码为准；历史计划目录 `docs/superpowers/**` 已审计并删除，后续不再补充。
+3. 当前实现组件集已完成一轮迁移收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件、复杂场景和发现的问题滚动守护。Select 已统一为 slot 子组件驱动；Popover / Menu / DropdownMenu 已按原语边界落地；Form / FormItem 本轮视觉与基础行为已收口；Dialog 已按单一公开组件落地并沉淀内部 modal layer；Drawer 已复用该 modal layer 落地；Message 已按命令式 toast 服务落地；Progress 已按确定进度组件落地；Notification 已按命令式结构化通知服务落地；Textarea、Popconfirm 本轮先不做。
+4. 继续开发时以当前源码为准；历史 `docs/superpowers/**` 内容已审计并删除，保留结论已沉淀到根目录记忆文档。该目录后续可作为本地工作流 / spec 临时产物目录使用，但必须保持被 `.gitignore` 忽略，不进入提交。
 5. 有不确定的删除、API 取舍或视觉规范问题，先记录并询问用户；用户更希望按他的理解完整推进。
 6. 后续遇到调研、重开发、复杂排查、跨组件验证、并行实现或其他子代理能提升效率、覆盖面、完成度的任务时，可以开启子代理协助；小而线性的任务优先主代理直接推进，避免不必要的协调成本。
 7. 如果发现依赖、工具链或 Node.js 版本偏旧，且升级能提升完整性、性能、简洁性或最终效果，先和用户确认；确认后直接升级，并修正项目内部不适配问题，不为旧适配成本保留低效方案。
@@ -66,12 +67,14 @@ npm run check        # format:check + check:component-demo + check:icons + check
 - 2026-06-04 收尾时功能与文档主线已提交并推送；近期关键提交包括 `6dc6521 refactor(styles): 拆分设计令牌文件边界` 和 `c99cc21 docs(vitepress): 优化组件示例源码展示`，本次收尾记录另见最新 `git log`。
 - 2026-06-05 已提交昨日遗留记忆文档 `4517523 docs(project): 更新未来计划与技能记忆`，并完成图标体系首轮重整提交 `2daa4b1 refactor(icons): 统一本地图标规范`。
 - 2026-06-06 至 2026-06-08 已完成图标补充、Select 首版、Select slot-first 改造、ScrollArea v1、Popover、Menu 和 DropdownMenu；Popover / DropdownMenu 的公开状态统一使用 `open` / `v-model:open`，旧泛型 Dropdown 已迁移为 `DropdownMenu = Popover + explicit Menu`。近期关键提交包括 `0a30490 feat(select): 支持分组选项与浮层滚动优化`、`d0185e6 feat(scrollarea): 实现滚动区域组件` 和 `7312ed2 feat(components): 落地下拉菜单与选择器 slot 契约`。
-- 当前工作分支为本地 `dev`；旧 `codex/docs-and-icon-rework` 本地分支已删除，远端当前仍只有 `origin/master`。截至 2026-06-20，已继续完成 Progress 视觉修正、`size` API 收口和状态 API 调整，并完成 Notification v1：Notification 只公开命令式 `notification.info/success/warning/error/loading/close/closeAll/config`，不提供用户态组件；loading / 任务型通知默认使用线性 Progress，`progress` 表示任务完成度而不是自动关闭倒计时，成功 / 警告 / 错误结果通过 `progress.status` 在同一条 loading 通知里保留进度条；Notification 桌面端固定 360px 宽度，离场统一向上淡出。新对话以 `git status --short` 与 `git log -1 --oneline` 为准。
-- 最近一次完整验证：2026-06-20 `npm run check` 通过，包含 format、check:component-demo、check:icons、check:scroll-area、check:popper、check:popover、check:menu、check:select、check:input-number、check:form、check:dialog、check:message、check:progress、check:notification、check:dropdown-menu、lint、typecheck 和 VitePress build；build 仅保留 VitePress chunk size warning。
+- 当前工作分支为本地 `dev`；旧 `codex/docs-and-icon-rework` 本地分支已删除。2026-06-23 已将本地 `dev` 推送到 `origin/dev` 并设置 upstream；新对话以 `git status --short` 与 `git log -1 --oneline` 为准。
+- 截至 2026-06-23，已继续完成 Progress 视觉修正、`size` API 收口和状态 API 调整、Notification v1 与 Drawer v1：Drawer 是单一公开组件，使用 `open` / `v-model:open` / `open-change`，不提供 trigger/content/close primitive，内部复用 Dialog modal layer 的 top-layer、scroll lock、focus trap、关闭后焦点恢复和 Dialog 内 Teleport 子浮层 LIFO Esc 能力；支持 `placement="right|left|top|bottom"`、默认左右 400px / 上下 320px 尺寸、通过 `class` / `style` / `panelClass` 控制面板尺寸、title/description/aria label、footer slot close helper、Esc / overlay click / close icon。
+- 最近一次完整验证：2026-06-23 `npm run check` 通过，包含 format、check:component-demo、check:icons、check:scroll-area、check:popper、check:popover、check:menu、check:select、check:input-number、check:form、check:dialog、check:drawer、check:message、check:progress、check:notification、check:dropdown-menu、lint、typecheck 和 VitePress build；build 仅保留 VitePress chunk size warning。
 - 最近一次轻量验证：2026-06-12 `npx prettier --check AGENTS.md TODO.md task_plan.md findings.md progress.md` 与 `git diff --check -- AGENTS.md TODO.md task_plan.md findings.md progress.md` 通过。
-- 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；Select 文档页曾在 `http://127.0.0.1:5185/components/select` 返回 200；ScrollArea / Select 曾使用 `http://127.0.0.1:5186/` 和 headless Chrome CDP 验证；Popover / Menu / DropdownMenu 在 `http://127.0.0.1:5190/` 通过 in-app Browser 验证；ComponentDemo 源码行号对齐在 `http://127.0.0.1:5192/components/button.html` 通过 in-app Browser 复验；Form 在 `http://127.0.0.1:5193/` 与 `http://127.0.0.1:5194/components/form.html` 通过 in-app Browser 验证默认右对齐 label、help tooltip arrow、24px 消息行预留、message 20px、help 不进入消息行、控件和 status icon 垂直居中、并发校验即时显示、reset 与 console warning/error 为空；Dialog / Popover 的 Teleport layer marker 与 Dialog footer 按钮样式在 `http://127.0.0.1:5199/` 通过 in-app Browser 验证，console warning/error 为空；Dialog 嵌套 Popover / DropdownMenu 的 LIFO Esc、scroll lock、focus restore 和 console 在 `http://127.0.0.1:5200/components/dialog.html` 通过 in-app Browser 验证；Message 状态堆叠、同 key loading 替换、close(key)、handle close、closeAll、config max/top 和 console 在 `http://127.0.0.1:5201/components/message.html` 通过 in-app Browser 验证；Progress 在 `http://127.0.0.1:5202/components/progress.html` 通过 in-app Browser 验证线性高度、环形直径 / stroke、`--bg-color-component` track、默认态 line / circle flow、circle active 渐变 stroke 扫光、line 填充圆形状态图标、circle 无圆底状态图标、自定义色、label/icon 互斥、percent clamp、ARIA 和 console；Notification 在 `http://127.0.0.1:5204/components/notification.html` 通过 Playwright + 系统 Chrome 验证基础状态、固定 360px 宽度、关闭离场无横向漂移、loading 线性进度、`progress.status` 任务结果、同 key 更新保留 progress、closeAll、四角 placement、config max 和 console。新对话如需继续看页面，先确认 dev server 是否仍在运行；2026-06-20 本轮已启动 5204 dev server。
-- 2026-06-11 Form / FormItem 本轮收口：FormItem 明确分为 label / control / action 三段，action/status 固定预留 20px 状态图标槽，自定义 action 向右外溢，不挤占 control 宽度；校验改为并发启动且每项完成后立即显示；异步校验旧结果保护、单字段/多字段 API 拆分和 reset 递归 clone 已落地。明天建议先确认是否做 Popconfirm 或 Dialog / Drawer。
-- 2026-06-11/12/14 Dialog v1 已落地并收尾复审：单一公开 `Dialog` 组件，不提供 trigger/content/close 子组件；通过 `v-model:open` 控制开关，内部负责 overlay、ARIA、focus trap、Esc、overlay click、scroll lock、关闭后焦点恢复、top-layer、Dialog 内 Teleport 子浮层 LIFO Esc 和嵌套 z-index 协调；footer 无分割线，右上角 close 为裸图标按钮，取消按钮约定使用 `Button theme="default"`。6 月 12 日已将 VitePress reset 隔离改为统一 `data-horizon-teleport-layer` 阶段性方案，并记录后续参考 Element Plus 自定义文档 shell 后移除该逻辑。Popconfirm 后置，Drawer 后续复用内部 modal layer。
+- 本地 dev server 曾在 `http://127.0.0.1:5181/` 验证过 Tag、Tooltip、Input、InputNumber 和关键指南页，也曾在 `http://127.0.0.1:5182/` 验证过 ComponentDemo / Button 源码展示；Select 文档页曾在 `http://127.0.0.1:5185/components/select` 返回 200；ScrollArea / Select 曾使用 `http://127.0.0.1:5186/` 和 headless Chrome CDP 验证；Popover / Menu / DropdownMenu 在 `http://127.0.0.1:5190/` 通过 in-app Browser 验证；ComponentDemo 源码行号对齐在 `http://127.0.0.1:5192/components/button.html` 通过 in-app Browser 复验；Form 在 `http://127.0.0.1:5193/` 与 `http://127.0.0.1:5194/components/form.html` 通过 in-app Browser 验证默认右对齐 label、help tooltip arrow、24px 消息行预留、message 20px、help 不进入消息行、控件和 status icon 垂直居中、并发校验即时显示、reset 与 console warning/error 为空；Dialog / Popover 的 Teleport layer marker 与 Dialog footer 按钮样式在 `http://127.0.0.1:5199/` 通过 in-app Browser 验证，console warning/error 为空；Dialog 嵌套 Popover / DropdownMenu 的 LIFO Esc、scroll lock、focus restore 和 console 在 `http://127.0.0.1:5200/components/dialog.html` 通过 in-app Browser 验证；Message 状态堆叠、同 key loading 替换、close(key)、handle close、closeAll、config max/top 和 console 在 `http://127.0.0.1:5201/components/message.html` 通过 in-app Browser 验证；Progress 在 `http://127.0.0.1:5202/components/progress.html` 通过 in-app Browser 验证线性高度、环形直径 / stroke、`--bg-color-component` track、默认态 line / circle flow、circle active 渐变 stroke 扫光、line 填充圆形状态图标、circle 无圆底状态图标、自定义色、label/icon 互斥、percent clamp、ARIA 和 console；Notification 在 `http://127.0.0.1:5204/components/notification.html` 通过 Playwright + 系统 Chrome 验证基础状态、固定 360px 宽度、关闭离场无横向漂移、loading 线性进度、`progress.status` 任务结果、同 key 更新保留 progress、closeAll、四角 placement、config max 和 console；Drawer 在 `http://127.0.0.1:5205/components/drawer.html` 通过 in-app Browser 验证基础打开 / Esc 关闭、右 / 左 / 上 / 下四方向、长内容 ScrollArea、Drawer 内 Popover + DropdownMenu 的 LIFO Esc 3→2→1→0、body scroll lock 恢复和本次时间戳后 console warning/error 为空。新对话如需继续看页面，先确认 dev server 是否仍在运行；2026-06-23 本轮已启动 5205 dev server。
+- 2026-06-11 Form / FormItem 本轮收口：FormItem 明确分为 label / control / action 三段，action/status 固定预留 20px 状态图标槽，自定义 action 向右外溢，不挤占 control 宽度；校验改为并发启动且每项完成后立即显示；异步校验旧结果保护、单字段/多字段 API 拆分和 reset 递归 clone 已落地。
+- 2026-06-11/12/14 Dialog v1 已落地并收尾复审：单一公开 `Dialog` 组件，不提供 trigger/content/close 子组件；通过 `v-model:open` 控制开关，内部负责 overlay、ARIA、focus trap、Esc、overlay click、scroll lock、关闭后焦点恢复、top-layer、Dialog 内 Teleport 子浮层 LIFO Esc 和嵌套 z-index 协调；footer 无分割线，右上角 close 为裸图标按钮，取消按钮约定使用 `Button theme="default"`。6 月 12 日已将 VitePress reset 隔离改为统一 `data-horizon-teleport-layer` 阶段性方案，并记录后续参考 Element Plus 自定义文档 shell 后移除该逻辑。Popconfirm 后置。
+- 2026-06-23 Drawer v1 已落地：单一公开 `Drawer` 组件，不提供 trigger/content/close 子组件；公开状态为 `open` / `v-model:open` / `open-change`，支持四方向 placement、默认左右 400px / 上下 320px 尺寸、通过 `class` / `style` / `panelClass` 控制面板尺寸、title / description / ariaLabel、footer slot close helper、Esc / overlay click / close icon，并复用 Dialog 内部 modal layer 处理 top-layer、scroll lock、focus trap、关闭后焦点恢复和 Drawer 内 Teleport 子浮层 LIFO Esc；`npm run check:drawer` 已纳入 `npm run check`。Drawer v1 作为第一版先收住，后续增强抽屉业务能力时再按真实需求补充，不在本轮继续扩 API。
 - 2026-06-14 Message v1 已落地：短暂全局 toast，仅公开命令式 API，不提供用户态 `<Message />`、`message.open()` 或 `message.custom()`；支持 `message.info/success/warning/error/loading/close/closeAll/config`，同 key 更新替换、loading 默认 `duration: 0`、SSR no-op、host 单例和全局 config；Message 根节点保留 `w-max` 以避免关闭离场动画 `position: absolute` 时宽度塌缩导致文案换行；后续如需要关闭时机函数，从内部 `closeMessage(id, reason)` 扩展。
 - 2026-06-15 Progress v1 已落地；2026-06-20 继续完成一轮视觉打磨、尺寸 API 收口和状态 API 调整：公开确定进度组件支持 `variant="line|circle"`、`percent` clamp、`status="success|warning|error"`、line `sm/md/lg` 高度 4/6/8px、circle `sm/md/lg` 直径 72/120/160px、`ProgressSizeConfig` 对象式自定义、`color` 覆盖进度填充色、label/icon 互斥和 ARIA；对象字段为 `thickness`（line track height / circle stroke width）、`labelSize`、`diameter`，未指定字段回退 `md`，状态图标跟随 `labelSize`，line 为 `1em`、circle 为 `2.4em`；不支持未知进度、steps、buffer、success percent、`size` 数字直传或旧 Progress `theme` API。
 
@@ -128,9 +131,9 @@ docs(project): 更新项目上下文与待办
 
 ## 当前组件状态
 
-- 已实现并纳入文档：Button、Icon、Link、Checkbox、Radio、Text、Title、Callout、Divider、Badge、Tooltip、Popover、Dialog、Message、Progress、Notification、Menu、DropdownMenu、Switch、Input、InputNumber、Select、Form、FormItem、Tag、Space、Field、Popper、ScrollArea。
+- 已实现并纳入文档：Button、Icon、Link、Checkbox、Radio、Text、Title、Callout、Divider、Badge、Tooltip、Popover、Dialog、Drawer、Message、Progress、Notification、Menu、DropdownMenu、Switch、Input、InputNumber、Select、Form、FormItem、Tag、Space、Field、Popper、ScrollArea。
 - Badge 已加入 sidebar。
-- 历史计划目录 `docs/superpowers/**` 已审计并删除；需要保留的路线和边界结论已沉淀到 `findings.md`。
+- 历史 `docs/superpowers/**` 内容已审计并删除；需要保留的路线和边界结论已沉淀到 `findings.md`。后续该目录仅作为本地工作流 / spec 临时产物目录使用，不提交到 git。
 - 本地 Switch 视觉原型 `switch-mockups.html` 已删除；后续不要提交临时原型文件。
 
 ## 近期已完成
@@ -147,7 +150,7 @@ docs(project): 更新项目上下文与待办
 - PopperContent 已将注入的 visible 状态与 Teleport target 收束为顶层 computed，避免触发器已打开但浮层 DOM 未挂载的边界。
 - Popper context key 已拆到 `src/components/Popper/context.ts`，Popper 子组件不要从 `./index` 导入 context，避免 barrel 循环导致 provide/inject 异常；`index.ts` 仍对外 re-export `PopperContext` / `popperContextKey`。
 - Field 已作为公开底层输入域组件落地到 `src/components/Field/`，不是 `_internal`；它用于统一 Input、InputNumber、Select、DatePicker 等 field-like 组件的 surface、状态、尺寸和组合布局。Input / InputNumber 已迁移到 Field 验证首版边界。
-- 后续可沉淀的内部通用原型按真实收益推进：OptionList / Collection 优先服务 Select、Autocomplete、Menu、DropdownMenu 等 option 类组件；RovingFocus / Composite 服务 Radio button variant、ToggleGroup、Tabs、Menu 等复合控件；Overlay / Layer 等到 Dialog / Drawer 前设计；Form / FormItem 已沉淀内部 FormControl context，但不把 FormLabel / FormControl / FormMessage 作为对外 primitives；PopupSurface 暂缓，避免过早抽成万能 surface。
+- 后续可沉淀的内部通用原型按真实收益推进：OptionList / Collection 优先服务 Select、Autocomplete、Menu、DropdownMenu 等 option 类组件；RovingFocus / Composite 服务 Radio button variant、ToggleGroup、Tabs、Menu 等复合控件；Dialog 已沉淀内部 modal layer 并被 Drawer 复用，但暂不公开 Overlay / Layer primitive；Form / FormItem 已沉淀内部 FormControl context，但不把 FormLabel / FormControl / FormMessage 作为对外 primitives；PopupSurface 暂缓，避免过早抽成万能 surface。
 - Field primitives 支持外部 `class` 后置覆盖；FieldRoot 具备 `focus-within` 默认 ring，FieldSegment 具备 `focus-within:text-brand` 分段聚焦视觉。
 - InputNumber 已复用 FieldRoot / FieldNativeInput / FieldGroup，步进按钮复用 Button 的 `variant="outline"` + `shape="square"`，保留 sm/md/lg 的 24/32/40 尺寸，并修复聚焦时键盘/按钮步进后的展示值同步。
 - Checkbox / Radio 的 `variant="button"` 未来可考虑抽到 Toggle / ToggleGroup；当前只记录方向，不实现。
@@ -190,7 +193,7 @@ docs(project): 更新项目上下文与待办
 - Popper 文档去掉容易误解为内置主题的深色/浅色和默认边框表达。
 - `Icon.vue` 的 `v-html` 仅用于渲染打包期导入的本地图标 SVG，已补充安全边界说明并处理 lint warning。
 - 全项目 `lint`、`format:check`、`check:scroll-area`、`typecheck`、`build` 已通过。
-- `docs/superpowers/**` 历史计划资料已审计并删除，VitePress `srcExclude` 的过期配置已移除。
+- `docs/superpowers/**` 历史计划资料已审计并删除，VitePress `srcExclude` 的过期配置已移除；后续可在本地恢复为工作流 / spec 临时目录，但仍由 `.gitignore` 排除并禁止提交。
 - Node 已用 nvm 升级到 `24.16.0`，npm 升级到 `11.13.0`；`package.json` 已补 `engines` 与 `packageManager`，直接依赖更新到当前最新可用版本，包括 Tailwind 4.3、Vue 3.5.35、ESLint 10.4、Vite 8.0、vue-tsc 3.3。
 - `eslint.config.js` 使用的 `globals` 已补为显式 devDependency，不再依赖传递依赖偶然可用。
 - Badge 示例改为本地 import Horizon `Badge`，文档主题不再全局注册 `Badge`，避免与 VitePress 默认主题 `Badge` 重名产生 Vue warning。
@@ -212,7 +215,7 @@ Popper 是底层定位基座，不是最终视觉组件。
 
 ## 注意事项
 
-- 不要恢复或继续补充 `docs/superpowers/**`；历史计划资料已删除，后续以根目录记忆文档和当前源码为准。
+- `docs/superpowers/**` 可以恢复为本地工作流 / spec 临时目录，但不能提交到 git；历史计划资料已删除，后续长期依据仍以根目录记忆文档和当前源码为准。
 - 不要直接提交未核对的临时原型文件。
 - 运行清理命令前要确认路径在 `D:\project\ui` 内。
 - 如果未来 `Icon` 支持外部 SVG 或运行时 SVG 文本，必须重新评估当前 `v-html` 策略。

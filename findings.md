@@ -37,7 +37,7 @@
 
 - 基础：Button、Icon、Link、Text、Title、Divider、Space。
 - 表单/输入：Checkbox、CheckboxGroup、Radio、RadioGroup、Switch、Input、InputNumber、Select、Form、FormItem。
-- 展示/反馈：Badge、Tag、Callout、Tooltip、Popover、Menu、DropdownMenu、Message、Progress、Notification。
+- 展示/反馈：Badge、Tag、Callout、Tooltip、Popover、Menu、DropdownMenu、Drawer、Message、Progress、Notification。
 - 底层：FieldRoot、FieldContent、FieldNativeInput、FieldPrefix、FieldSuffix、FieldAction、FieldGroup、FieldSegment、Popper、PopperTrigger、PopperContent、PopperArrow、ScrollArea。
 
 特别说明：
@@ -49,23 +49,24 @@
 - ScrollArea 已作为公开底层滚动基座落地在 `src/components/ScrollArea/`；它负责滚动容器、悬浮 scrollbar、thumb 拖拽和 viewport expose，不负责 surface 视觉。
 - Form / FormItem 已作为公开表单组件落地并完成本轮视觉与基础行为收口；内部拆分 FormItemLabel / FormItemMessage 与 FormControl context，但不把 FormLabel / FormControl / FormMessage 作为对外 primitives。
 - Dialog 已作为公开模态容器落地在 `src/components/Dialog/`；它是单一公开组件，不提供 trigger/content/close 子组件，内部沉淀 modal layer 能力但不公开 Overlay / Layer primitive。
+- Drawer 已作为公开抽屉模态容器落地在 `src/components/Drawer/`；它是单一公开组件，不提供 trigger/content/close 子组件，复用 Dialog 内部 modal layer，支持四方向 placement、默认左右 400px / 上下 320px 尺寸、通过 `class` / `style` / `panelClass` 控制面板尺寸、title/description/ariaLabel、footer close helper、Esc、overlay click、close icon、scroll lock、focus trap 和 Drawer 内 Teleport 子浮层 LIFO Esc。
 - Message 已作为命令式全局反馈服务落地在 `src/components/Message/`；它不公开用户态 `<Message />` 组件，不提供 `message.open()` / `message.custom()`，只通过 `message.info/success/warning/error/loading/close/closeAll/config` 使用。
 - Progress 已作为公开确定进度组件落地在 `src/components/Progress/`；它支持 line / circle、percent clamp、status / color、label slot / icon 互斥、ARIA、默认态 active flow 和对象式尺寸配置，首版不表达未知进度。2026-06-20 已继续修正 circle active 视觉表现、收口 `size` API，并将公开结果态从 `theme` 调整为 `status`；Notification v1 已复用线性 Progress 表达任务进度。
 - Notification 已作为命令式结构化全局通知服务落地在 `src/components/Notification/`；它不公开用户态 `<Notification />` 组件，不提供 `notification.open()` / `notification.custom()`，只通过 `notification.info/success/warning/error/loading/close/closeAll/config` 使用；loading / 任务型通知通过线性 `Progress` 的 `progress: { percent, status? }` 表达任务完成度，并用 `progress.status` 在同一条通知里表达成功、警告或错误结果；卡片宽度固定为桌面端 360px、窄屏收缩到视口内。
 
 ## 历史计划资料处置
 
-- `docs/superpowers/**` 已于 2026-06-01 审计并删除，后续不再补充。
+- `docs/superpowers/**` 的历史内容已于 2026-06-01 审计并删除；该目录后续可作为本地工作流 / spec 临时产物目录使用，但必须保持被 `.gitignore` 忽略，不进入提交。
 - 该目录内大多数内容是早期实施草案，已经被当前源码、组件文档和根目录记忆文件覆盖；历史勾选状态不再作为依据。
 - 保留下来的有效结论是：Popper 是 Select、Popover、DropdownMenu、Popconfirm、DatePicker、TimePicker、ColorPicker、MenuSub 等弹出类能力的前置基座；Select 依赖 Field、Popper、ScrollArea；DropdownMenu 依赖 Popover 与显式 Menu。
 - Paragraph 旧计划已明确过时，当前不实现；如未来需要大段文本编排，重新按当前 API/token 规范设计。
 - Tooltip 当前已迁移到 Popper 基座；历史上“后续评估迁移”的结论已落实。
 - 早期交互规范里 `type` 迁移到 `theme`、禁用态不用 opacity、统一 token 的方向已被当前规范吸收；旧 token 名称和值不再直接沿用。
-- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Message v1、Progress v1 与 Notification v1 已按当前边界落地；Textarea 本轮先不做，后续按真实需求再启动；Popconfirm 因应用场景较少后置，Drawer 等 Dialog 内部 modal layer 跑稳后再复用推进；后续再推进数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
+- 历史路线图只保留为方向参考：Select、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Drawer、Message v1、Progress v1 与 Notification v1 已按当前边界落地；Textarea 本轮先不做，后续按真实需求再启动；Popconfirm 因应用场景较少后置；后续再推进日期时间、数据展示、导航和复杂组件集群。实际顺序以用户需求和当前源码状态为准。
 
 ## 2026-06-05 未来组件路线与内部原型候选
 
-- 当前建议的组件推进顺序：Dialog、Message、Progress 与 Notification 已完成首版 → Drawer → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → NavigationMenu → TreeSelect / Cascader / ColorPicker → Popconfirm / TagInput。Form / FormItem 已完成本轮收口；Textarea 本轮先不做，后续按真实需求再插入路线。
+- 当前建议的组件推进顺序：Dialog、Drawer、Message、Progress 与 Notification 已完成首版 → DatePicker / TimePicker → Pagination / Table → Tabs / Breadcrumb / Steps → NavigationMenu → TreeSelect / Cascader / ColorPicker → Popconfirm / TagInput。Form / FormItem 已完成本轮收口；Textarea 本轮先不做，后续按真实需求再插入路线。
 - Select slot-first 单选首版已落地，已初步验证 Field、Popper、键盘交互、ARIA、empty、loading、disabled option、readonly 和 clearable 等组合边界；多选 tag wrap、searchable、maxTagCount 等仍是后续压力测试。
 - TagInput 已降到路线最后：它仍可作为 Field 多值 / multiline / Tag wrap / Backspace 删除 / 输入宽度自适应的压力测试，但独立使用场景相对较少，先等后续出现明确自由多值输入需求时再启动。
 - Popover / Menu / DropdownMenu 已按“原语 / 英文 / ARIA 优先”的边界拆分：Popover 负责任意非模态浮层，Menu 负责动作 / 命令菜单内容，DropdownMenu 是 `Popover + explicit Menu` 的菜单型预设；导航后续由 NavigationMenu 承担。
@@ -75,7 +76,7 @@
 - 内部通用原型的判断原则：只有当一个结构或交互模型服务多个明确组件，并且能减少真实重复、统一可访问性或降低复杂状态错误时才沉淀；不为了文件拆分、样式复用或概念完整而提前抽象。
 - OptionList / Collection 是优先级最高的内部候选：服务 Select、Autocomplete、Menu、TreeSelect、Cascader，统一 option 注册、disabled、group、empty、loading、active option、键盘导航、滚动到当前项、typeahead 和 listbox/menu 语义映射。第一阶段应作为内部 primitives / composable 验证，不急于公开。
 - RovingFocus / Composite 建议作为内部交互工具：服务 Radio button variant、未来 ToggleGroup、Tabs、Menu、Toolbar，统一 roving `tabindex`、方向键移动、Home / End、disabled item 跳过和循环策略。它解决的是可访问性和键盘模型，不是视觉复用。
-- Dialog 已先沉淀内部 modal layer：负责 top-layer 栈、遮罩、滚动锁、Esc、focus trap、`aria-modal`、关闭后焦点恢复和 Dialog 内 Teleport 子浮层登记，与负责锚点定位的 Popper 不同；该能力暂不公开，等 Drawer 真实启动时再复用和校准 API 边界。
+- Dialog 已先沉淀内部 modal layer：负责 top-layer 栈、遮罩、滚动锁、Esc、focus trap、`aria-modal`、关闭后焦点恢复和 Dialog 内 Teleport 子浮层登记，与负责锚点定位的 Popper 不同；Drawer v1 已复用并校准四方向抽屉、长内容和嵌套 Teleport 子浮层边界；该能力暂不公开为 Overlay / Layer primitive。
 - FormControl context 已随 Form / FormItem 自然出现，用于统一 size、disabled、readonly、status、`aria-invalid`、`aria-describedby` 与 label/message 关联；公开 API 仍以 Form / FormItem 为主，不建议暴露底层 FormControl primitives。
 
 ## 2026-06-10 Form / FormItem 首版实现
@@ -94,7 +95,7 @@
 
 - 用户确认 Popconfirm 应后置，优先推进 Dialog；Dialog 采用单一公开组件，不提供 Dialog trigger/content/close 子组件，业务侧通过 `v-model:open` 控制开关。
 - Dialog 内部实现 overlay、Teleport、ARIA `role="dialog|alertdialog"`、`aria-modal`、title/description 关联、Esc 关闭、overlay click 关闭、focus trap、关闭后焦点恢复和 body scroll lock。
-- 内部 `modalLayer.ts` 沉淀 top-layer 栈、10000+ modal z-index 分配、scroll lock 引用计数和焦点工具；该能力不公开为 Overlay / Layer primitive，Drawer 后续真实启动时再复用。
+- 内部 `modalLayer.ts` 沉淀 top-layer 栈、10000+ modal z-index 分配、scroll lock 引用计数和焦点工具；该能力不公开为 Overlay / Layer primitive，Drawer 已在 2026-06-23 复用并验证抽屉边界。
 - 内部 `dialogLayerContext` 供 Dialog 内的 PopperContent / Select / Popover / DropdownMenu 等 Teleport 子浮层登记自身 DOM、Esc 关闭处理和子层 z-index；Dialog 的 focus trap 会把这些登记子层纳入逻辑 Tab 环，Esc 会按后进先出顺序先关闭最上层子浮层，再关闭父 Dialog；PopoverTrigger 的 `aria-controls` 指向真实 PopperContent id，确保 Dialog 的 aria-controls 兜底识别与公开 ARIA 关系一致。
 - Popper context key 已从 `src/components/Popper/index.ts` 拆到 `src/components/Popper/context.ts`，避免 Popper 子组件通过 barrel 导入 context 造成循环引用或热更新注入异常；`index.ts` 仍对外 re-export `PopperContext` / `popperContextKey`。
 - 视觉按用户反馈收口：footer 无分割线；右上角 close 是裸图标按钮，无边框和默认按钮底色，仅保留 hover / active / focus 状态；footer 取消按钮使用 `Button theme="default"`，主操作使用 `brand`，危险操作使用 `error`。
@@ -102,6 +103,18 @@
 - 本轮经三轮 base-component review 修复 z-index、非顶层关闭焦点恢复、open-change 语义、focus trap 逃逸、无标题可访问名称、overlay pointer 生命周期、快速开关焦点竞态、unmount 焦点恢复、Dialog 内 Popper 子浮层视觉层级与 Esc 优先级等问题。
 - 2026-06-14 收尾复审继续修复边界：Dialog `to` selector 无效时回退到 `body`，避免不可见 modal 锁住页面；Dialog 自定义 `zIndex` 与子 Teleport 浮层共用 resolved layer base；嵌套 Dialog 会继承父 Dialog 自定义 z-index 基准，避免子 Dialog 被压到父层下；`dialogTeleportedLayerBehaviorKey` 使用模块局部 `Symbol()`，不作为可猜全局扩展点。
 - Dialog 第 6 个文档示例覆盖 Dialog 内 Popover、兄弟 DropdownMenu，以及 PopoverContent 内嵌 DropdownMenu；浏览器验证确认 Esc 顺序为嵌套菜单 -> 父 Popover -> 父 Dialog，scroll lock 与 focus restore 正常，console warning/error 为空。
+
+## 2026-06-23 Drawer v1 实现
+
+- 用户确认可以恢复使用 `docs/superpowers/**` 作为本地 workflow / spec 临时目录，但该目录必须继续被 `.gitignore` 忽略，不能进入 git 提交；Drawer 设计 spec 和执行计划已落在该忽略目录中。
+- Drawer v1 定位为抽屉式模态容器，采用单一公开 `Drawer` 组件，不提供 trigger / content / close primitive；业务侧继续通过 `open` / `v-model:open` / `open-change` 控制开关。
+- Drawer 复用 Dialog 内部 `modalLayer.ts` 与 `dialogLayerContext`：负责 top-layer z-index、body scroll lock、focus trap、Esc 关闭、overlay click、关闭后焦点恢复，以及 Drawer 内 Popper / Popover / DropdownMenu 等 Teleport 子浮层登记和 LIFO Esc。
+- 公开能力包括 `placement="right|left|top|bottom"`、默认左右 400px / 上下 320px 尺寸、透传到面板 DOM 的 `class` / `style`、`role="dialog|alertdialog"`、`title`、`description`、`ariaLabel`、`showClose`、`closeOnEsc`、`closeOnOverlayClick`、`trapFocus`、`lockScroll`、`returnFocusOnClose`、`to`、`zIndex`、`panelClass` 和 footer slot 的 `close()` helper。
+- Drawer v1 作为第一版先收住；当前能力偏基础，后续增强抽屉业务能力时再按真实需求补充，不在本轮继续扩 API。
+- 新增 `src/components/Drawer/`、`docs/components/drawer.md` 和 4 个 `docs/examples/drawer/` 示例，覆盖基础资料抽屉、四方向、长内容 ScrollArea 和嵌套 Popover / DropdownMenu；文档 sidebar、VitePress theme 注册和根导出均已同步。
+- 新增 `scripts/check-drawer.mjs` 与 `npm run check:drawer`，并纳入 `npm run check`；契约守护公开导出、单组件公开面、modal layer 复用、四方向过渡、默认尺寸与 `style` 透传语义、ARIA / focus / scroll lock、文档示例和禁止回退 trigger/content/close primitive。
+- 浏览器验证在 `http://127.0.0.1:5205/components/drawer.html` 完成：基础打开 / Esc 关闭、右 / 左 / 上 / 下四方向、长内容 ScrollArea、Drawer 内 Popover + DropdownMenu 的 LIFO Esc 3→2→1→0、body scroll lock 恢复均通过；本次时间戳之后 console warning/error 为空。
+- 实施中发现 Drawer 嵌套示例最初漏包 `Menu` 且 `MenuItem` 缺 `value`，浏览器验证捕获到 Vue warning 后已修复，示例保持与 DropdownMenu 既有契约一致。
 
 ## 2026-06-14 Message v1 实现
 
@@ -285,7 +298,7 @@ docs(project): 更新项目上下文与待办
 - Popper deferred 行为已处理：`offset` / `flip` / `shift` / `matchWidth` / `autoUpdate` 作为响应式配置传入 Floating UI，`matchWidth` 使用 `size` middleware 并响应 trigger resize，`disabled` 变 true 时会关闭已打开浮层。
 - Popper base-component review 结论：Critical 0；Important 4 项已修复；Minor/Deferred 为未来上层组件可能需要的嵌套弹出层协调、boundary 自定义、crossAxis offset / fallback placement 等扩展。
 - Popper 文档去掉“深色/浅色”内置主题暗示。
-- `docs/superpowers/**` 历史计划资料已审计并删除，VitePress 过期 `srcExclude` 配置已移除。
+- `docs/superpowers/**` 历史计划资料已审计并删除，VitePress 过期 `srcExclude` 配置已移除；后续可在本地恢复为工作流 / spec 临时目录，但仍由 `.gitignore` 排除并禁止提交。
 - 文档示例同步新 API 和状态说明；示例外部样式不强制 token 化。
 - `.gitignore` 忽略本地 `switch-mockups.html`。
 - 删除本地 Switch 视觉原型 `switch-mockups.html`。

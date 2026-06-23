@@ -2,6 +2,17 @@
 
 本文件记录未来要处理的隐藏问题、决策项和开发计划。新对话优先阅读 `AGENTS.md`，然后阅读本文件。
 
+## 2026-06-23 收尾更新
+
+- [x] 本地 `dev` 分支已先推送到 `origin/dev` 并设置 upstream；新一轮工作基于本地 `dev` 继续。
+- [x] `docs/superpowers/**` 已解除“禁止恢复目录”的限制，可作为本地工作流 / spec 临时产物目录使用；边界是必须继续被 `.gitignore` 忽略，不能进入 git 提交。
+- [x] Drawer v1 已作为公开抽屉组件落地：单一公开 `Drawer`，不提供 trigger / content / close primitive；公开状态为 `open` / `v-model:open` / `open-change`。
+- [x] Drawer 复用 Dialog 内部 modal layer 能力，覆盖 top-layer、body scroll lock、focus trap、关闭后焦点恢复、Esc、overlay click、Drawer 内 Popover / DropdownMenu 等 Teleport 子浮层登记和 LIFO Esc。
+- [x] Drawer 支持 `placement="right|left|top|bottom"`、默认左右 400px / 上下 320px 尺寸、通过 `class` / `style` / `panelClass` 控制面板尺寸、title / description / `ariaLabel`、`role="dialog|alertdialog"`、`showClose`、`closeOnEsc`、`closeOnOverlayClick`、`trapFocus`、`lockScroll`、`returnFocusOnClose`、`to`、`zIndex` 和 footer slot close helper。
+- [x] Drawer v1 作为第一版先收住；当前能力偏基础，后续增强抽屉业务能力时再按真实需求补充，不在本轮继续扩 API。
+- [x] `check:drawer` 已新增并纳入 `npm run check`，覆盖公开导出、文档注册、单组件公开面、modal layer 复用、四方向过渡、默认尺寸与 `style` 透传契约、ARIA / focus / scroll lock、示例覆盖和旧 primitive 命名扫描。
+- [x] Drawer 文档页已在 `http://127.0.0.1:5205/components/drawer.html` 通过 in-app Browser 验证：基础打开 / Esc 关闭、右 / 左 / 上 / 下四方向、长内容 ScrollArea、Drawer 内 Popover + DropdownMenu 的 LIFO Esc 3→2→1→0、body scroll lock 恢复和本次时间戳后 console warning/error 为空。
+
 ## 2026-06-20 收尾更新
 
 - [x] Notification v1 已作为结构化全局通知服务落地：仅公开命令式 `notification.info/success/warning/error/loading/close/closeAll/config`，不提供用户态 `<Notification />` 组件、`notification.open()` 或 `notification.custom()`。
@@ -35,7 +46,8 @@
 - [x] Form review 发现的三项问题已在本轮修复：异步校验旧结果不再覆盖最新状态；`validateField` / `validateFields`、`resetField` / `resetFields`、`clearValidateField` / `clearValidate` API 拆清；`resetField` 初始值快照改为递归 clone。
 - [x] 已切到本地 `dev` 分支并删除旧 `codex/docs-and-icon-rework` 本地分支；远端当前仍只有 `origin/master`，未擅自创建远端 `dev`。
 - [x] Dialog v1 已按用户确认方案落地：单一公开组件，不提供 Dialog trigger/content/close 子组件；通过 `v-model:open` 控制，内部负责 overlay、ARIA、focus trap、Esc、overlay click、滚动锁、关闭后焦点恢复、top-layer 和 Dialog 内 Teleport 子浮层协调。
-- [ ] Popconfirm 后置；Drawer 后置到 Dialog modal layer 跑稳后复用内部能力。
+- [x] Drawer 已在 Dialog modal layer 跑稳后复用内部能力落地。
+- [ ] Popconfirm 后置，后续按真实使用场景再启动。
 
 ## 需要用户决策
 
@@ -48,14 +60,14 @@
 - [x] Progress 的尺寸模型已收口；Notification 已按路线落地并复用线性 Progress 表达 loading 任务进度。
 - [ ] 组件迁移扫描进入滚动守护：2026-06-04 已对当前实现组件集完成收敛扫描，未发现旧 `primary` / `danger` API、旧 `--color-primary` / `--color-danger` / `--radius-*` token 或组件级视觉 `type` 残留；后续按新增组件和复杂场景继续扫描。
 - [ ] 后续扫描时只把组件源码内部实现作为规范约束对象；文档示例可保留外部使用者风格，不强制迁移到 Horizon token。
-- [ ] 为后续新增或继续迁移的关键组件补充更稳定的浏览器级视觉验证；Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea、Form、Dialog、Message、Progress 已完成一轮浏览器验证并修复或确认发现的问题。
+- [ ] 为后续新增或继续迁移的关键组件补充更稳定的浏览器级视觉验证；Input、InputNumber、Tag、Popper、Callout、Checkbox、Radio、Switch、Badge、Tooltip、Select、ScrollArea、Form、Dialog、Drawer、Message、Progress、Notification 已完成一轮浏览器验证并修复或确认发现的问题。
 - [ ] 后续新增或继续迁移组件文档时，统一使用 VitePress `:::demo`；示例源码放在 `docs/examples/<component>/`，由文档页引用同一份 `.vue` 示例。
 - [ ] 后续参考 Element Plus 的文档站路线，逐步自定义 VitePress 文档 shell / demo 渲染层，减少对默认 VitePress theme reset 的依赖；完成后移除当前为兼容默认 theme 临时加入的 `data-horizon-teleport-layer`、`postcssIsolateStyles` Teleport 层隔离和相关契约检查。
 - [ ] 根据新的组件规范，继续统一文档示例里的组件 API 命名和状态说明；示例外部样式不强制 token 化。
 - [ ] 后续 VitePress 发布高于 `1.6.4` 的正式版本时，复查并升级以消除当前嵌套 Vite/esbuild 的 audit 项。
 - [ ] 评估并迁移包管理器：优先考虑 pnpm，备选继续 npm，不优先 Bun / Yarn；迁移时使用 Corepack 固定 pnpm 11，替换 `package-lock.json` 为 `pnpm-lock.yaml`，统一 scripts、`packageManager`、`engines` 和项目记忆文档，并验证 `pnpm install`、`pnpm run check`、audit 等价项和关键文档页面。
-- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Message v1、Progress v1 与 Notification v1 已落地；Textarea 本轮先不做、后续按真实需求再启动；后续建议优先推进 Drawer，并复用 Dialog 内部 modal layer 能力，随后再看 DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；Popconfirm 与 TagInput 因独立使用场景较少先后置。
-- [ ] 评估并沉淀真正有收益的内部通用原型：Select 与 Menu 已各自用 slot 子组件 + 内部 collection 注册跑通首版；后续等 Autocomplete、Tabs、NavigationMenu 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Dialog 已先沉淀内部 modal layer（top layer、scroll lock、focus trap、Teleport 子浮层登记），Drawer 可在真实启动时复用；Form / FormItem 已沉淀内部 FormControl context，但不对外暴露 FormLabel / FormControl / FormMessage primitives；PopupSurface 暂缓。
+- [ ] 按新的组件路线继续推进：Select slot-first、Popover、Menu、DropdownMenu、Form / FormItem、Dialog、Drawer、Message v1、Progress v1 与 Notification v1 已落地；Textarea 本轮先不做、后续按真实需求再启动；后续建议看 DatePicker / TimePicker、Pagination / Table、Tabs / Breadcrumb / Steps、NavigationMenu、TreeSelect / Cascader / ColorPicker；Popconfirm 与 TagInput 因独立使用场景较少先后置。
+- [ ] 评估并沉淀真正有收益的内部通用原型：Select 与 Menu 已各自用 slot 子组件 + 内部 collection 注册跑通首版；后续等 Autocomplete、Tabs、NavigationMenu 等出现真实重复后，再考虑抽 OptionList / Collection。RovingFocus / Composite 优先服务 Radio button variant、ToggleGroup、Tabs、Menu；Dialog 已先沉淀内部 modal layer（top layer、scroll lock、focus trap、Teleport 子浮层登记），Drawer 已复用该能力验证抽屉场景；Form / FormItem 已沉淀内部 FormControl context，但不对外暴露 FormLabel / FormControl / FormMessage primitives；PopupSurface 暂缓。
 - [x] 2026-06-10 Form / FormItem 首版已落地：默认 `labelAlign="right"`、`labelWidth=120`，help 通过 label 问号 tip 展示，控件下方消息行仅显示校验 / 状态文案并默认预留高度；轻量校验逻辑集中在 `src/components/Form/validator.ts`，并新增 `npm run check:form` 守护。
 - [x] 继续按用户反馈逐项校正 Form / FormItem 视觉细节：已完成 label / control / action 三段布局、20px 状态图标槽、help tooltip arrow、控件与 label 垂直居中、24px 消息预留区、message 20px 绝对定位、并发校验即时提交、异步校验竞态保护和表单实例 API 拆分。
 - [x] 2026-06-06 ScrollArea v1 已作为公开底层组件落地：结构固定为 `root > viewport > content`，viewport 是唯一真实滚动容器；支持原生滚动、隐藏原生滚动条、悬浮自定义 scrollbar、thumb 拖拽、auto / always / hidden 显隐、垂直 / 水平 / 双轴滚动、`maxHeight` / `maxWidth`、`focusable`、`ariaLabel` 和 `scroll` / `update` 事件。
@@ -68,6 +80,7 @@
 - [x] 2026-06-08 Select 已改为 slot-first 单选首版：使用 `SelectOption` / `SelectOptionGroup` 子组件，不再暴露首版数据 prop；复用 Field / Popper / ScrollArea，保留 clearable、loading、empty、disabled option、readonly、尺寸、状态、隐藏 input、键盘导航和 combobox/listbox ARIA。
 - [x] 2026-06-08 Popover / Menu / DropdownMenu 已按新边界落地：Popover 提供 `open` / `v-model:open`、全触发模式、dismiss、focus return 和 nested layer；Menu 提供 item / checkbox item / radio item / submenu / group / label / separator；DropdownMenu 作为 `Popover + explicit Menu` 预设，不再保留泛型 Dropdown。
 - [x] 2026-06-11 Dialog v1 已落地：单一公开 `Dialog` 组件，公开状态为 `open` / `v-model:open` / `open-change`；不提供 trigger primitive；默认提供 overlay、右上角裸 close icon、无 footer 分割线、focus trap、Esc、overlay click、scroll lock、ARIA、内部 top-layer 和 Dialog 内 Popper / Select 等 Teleport 子浮层协调。
+- [x] 2026-06-23 Drawer v1 已落地：单一公开 `Drawer` 组件，公开状态为 `open` / `v-model:open` / `open-change`；不提供 trigger primitive；复用 Dialog modal layer，支持四方向抽屉、预设 / 自定义尺寸、footer close helper、Esc / overlay click / close icon 和 Drawer 内 Teleport 子浮层 LIFO Esc。
 - [ ] 在 Figma `Horizon Icons Audit` 页面继续人工复核新版图标的视觉中心和真实容器表现；如发现单个图标仍不理想，再按同名文件局部替换或微调 SVG。
 - [ ] 后续设计稿、组件视觉方案和图标审阅优先落到用户提供的 Figma `Horizon UI` 文件。当前 Figma Starter 计划最多 3 页，推荐整理为 `00 Workspace`、`01 Icon Library`、`02 Component Drafts`；2026-06-05 继续补常用图标时因 MCP 工具调用额度被拦，额度恢复后再重跑。
 - [x] 2026-06-05 收尾时遗留的记忆文档改动已在 `4517523 docs(project): 更新未来计划与技能记忆` 中提交。
@@ -82,7 +95,7 @@
 - [ ] 组件级固有尺寸首轮已统一为组件内部 geometry map / 常量策略；后续扫描新组件时避免把强耦合结构尺寸误沉淀为通用 token。
 - [ ] Checkbox / Radio 的 button variant 未来可迁移或抽象到 Toggle / ToggleGroup；迁移前需确认是否保持多选/单选语义差异，避免只为了视觉复用而损失表单语义。
 - [ ] Radio button variant 当前方向键可用，但尚未做 roving `tabindex`；若继续提升 radiogroup 键盘模型，应与 Toggle / ToggleGroup 方向一起设计。
-- [ ] 内部通用原型必须有明确跨组件收益才沉淀：OptionList / Collection 和 RovingFocus / Composite 可优先作为内部 composable / primitives 验证，不急于公开；Dialog 已沉淀内部 modal layer，但暂不公开为 Overlay / Layer primitive；Popper context 已拆出 `context.ts` 避免 barrel 循环；PopupSurface 不为了统一边框、背景、圆角和阴影而提前抽成万能盒子。
+- [ ] 内部通用原型必须有明确跨组件收益才沉淀：OptionList / Collection 和 RovingFocus / Composite 可优先作为内部 composable / primitives 验证，不急于公开；Dialog 已沉淀内部 modal layer 并被 Drawer 复用，但暂不公开为 Overlay / Layer primitive；Popper context 已拆出 `context.ts` 避免 barrel 循环；PopupSurface 不为了统一边框、背景、圆角和阴影而提前抽成万能盒子。
 - [ ] ScrollArea v1 暂不做虚拟滚动和轨道点击分页；未来 Table、Tree、Virtualized Select 或大型 Dropdown 出现真实需求时，优先评估 `@tanstack/vue-virtual`，因为它以 HTML scroll element 为核心接入点，和 ScrollArea 暴露的 viewport 契约匹配。
 - [ ] Popper 未来可按上层组件需要继续扩展边界能力，例如嵌套弹出层协调、boundary 自定义、crossAxis offset 或 fallback placement；当前 Select/Dropdown 前置的响应式配置、disabled 自动关闭、matchWidth trigger resize、可配置 outside click / Esc 关闭和 base-component review 已完成。
 - [ ] 当前 in-app browser 控制通道对 hover 事件触发仍不稳定；Tooltip hover 与 Popper V-02 已检查源码事件链和视觉结构，后续如需稳定回归 hover，应优先补专门的浏览器测试环境或人工实测；Tooltip focus 与 Popper V-03 已在内置浏览器复验通过。
@@ -103,3 +116,4 @@
 - [ ] 任务较重、需要调研、重开发、复杂排查、跨组件验证、并行实现，或任何子代理能提升效率、覆盖面、完成度的场景，都可以开启子代理协助；小而线性的任务优先主代理直接完成。
 - [ ] 发现依赖、工具链或 Node.js 版本偏旧时，不因为内部适配成本而保守停留；如果升级能提升完整性、性能、简洁性或最终效果，先向用户确认，确认后直接升级并修复适配问题。
 - [ ] Codex 重启后可使用已全局安装的 `obra/superpowers` 工作流 skills；需要计划、执行、验收、分支收尾、子代理协作、review、debug 或 TDD 时按收益触发，不为触发而触发。
+- [ ] `docs/superpowers/**` 可作为本地工作流 / spec 临时产物目录使用，但必须保持被 `.gitignore` 忽略，不进入 git 提交；长期项目记忆仍同步到根目录文档。

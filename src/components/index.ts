@@ -37,6 +37,7 @@ import DropdownMenu from './DropdownMenu/DropdownMenu.vue'
 import DropdownMenuTrigger from './DropdownMenu/DropdownMenuTrigger.vue'
 import DropdownMenuContent from './DropdownMenu/DropdownMenuContent.vue'
 import Dialog from './Dialog/Dialog.vue'
+import Drawer from './Drawer/Drawer.vue'
 import Tag from './Tag/Tag.vue'
 import ScrollArea from './ScrollArea/ScrollArea.vue'
 import FieldRoot from './Field/FieldRoot.vue'
@@ -82,6 +83,7 @@ export type {
 } from './Notification'
 export { notification } from './Notification'
 export type { ProgressProps, ProgressSize, ProgressStatus, ProgressVariant } from './Progress'
+export type { DrawerFooterSlotProps, DrawerPlacement, DrawerRole } from './Drawer'
 export type {
   DropdownMenuPlacement,
   DropdownMenuStrategy,
@@ -167,6 +169,7 @@ export {
   Checkbox,
   CheckboxGroup,
   Dialog,
+  Drawer,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
